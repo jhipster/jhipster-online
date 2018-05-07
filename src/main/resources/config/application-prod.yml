@@ -41,6 +41,11 @@ spring:
                 prepStmtCacheSize: 250
                 prepStmtCacheSqlLimit: 2048
                 useServerPrepStmts: true
+    mail:
+        host: smtp.mailgun.org # Use your own SMTP server
+        port: 2525             # Use your SMTP port
+        username: xxx@xxxx.xx  # Use your SMTP username
+        password: xxxx         # Use your SMTP password
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL
@@ -99,7 +104,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret:
+                secret: change-me-in-production
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
