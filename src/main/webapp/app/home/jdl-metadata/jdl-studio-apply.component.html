@@ -1,0 +1,75 @@
+<div>
+    <h2>
+        <span class="fa fa-check"></span>&nbsp;<span>Apply JDL Model to a project</span>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <hr/>
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitHubConfigured">
+        <p>
+            <span class="fa fa-warning"></span>&nbsp;
+            <span><strong>Warning!</strong> To apply a JDL Model on a GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
+        </p>
+        <p class="text-center">
+            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub
+                account</a>
+        </p>
+    </ngb-alert>
+    <div *ngIf="gitHubConfigured">
+        <p>
+            <span class="fa fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
+                Git repository and create a new branch with this model. You can then decide if you want to merge this branch into your
+                master branch.</i>
+        </p>
+        <p>
+            Select the project on which the JDL Model <b>"{{jdlModelName}}"</b> should be applied:
+        </p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="gitHubOrganization">GitHub organization</label>
+                        <select id="gitHubOrganization" [(ngModel)]="gitHubOrganization" name="gitHubOrganization"
+                                class="form-control"
+                                #ctrl="ngModel"
+                                (ngModelChange)="updateGitHubProjects($event)">
+                            <option *ngFor="let organization of organizations">{{organization.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="gitHubProject">GitHub repository</label>
+                        <select id="gitHubProject" [(ngModel)]="gitHubProject" name="gitHubProject"
+                                class="form-control"
+                                #ctrl="ngModel">
+                            <option *ngFor="let project of projects">{{project}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label><br/>
+                        <button class="btn btn-info btn-sm" (click)="refreshGithub()">
+                            <span class="fa fa-refresh" [ngClass]="[githubRefresh]"></span>
+                            <span>
+                            Refresh
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-center">
+            <button class="btn btn-primary" (click)="applyJdl()">
+            <span>
+            Yes, apply this JDL model
+            </span>
+            </button>
+            <button class="btn btn-dark" [routerLink]="['/ci-cd']">
+            <span>
+            No, cancel this action
+            </span>
+            </button>
+        </p>
+    </div>
+</div>

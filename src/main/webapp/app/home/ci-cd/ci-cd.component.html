@@ -1,0 +1,116 @@
+<form #generatorForm="ngForm">
+
+    <h2><span class="fa fa-cloud-upload"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <jhi-alert></jhi-alert>
+    <hr/>
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitHubConfigured">
+        <p>
+            <span class="fa fa-warning"></span>&nbsp;
+            <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
+        </p>
+        <p class="text-center">
+            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub
+                account</a>
+        </p>
+    </ngb-alert>
+    <div *ngIf="gitHubConfigured">
+        <p>
+            <span class="fa fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
+            Git repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
+            master branch.</i>
+        </p>
+        <hr/>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    At the moment only <a href="https://jenkins.io/">Jenkins</a> and <a href="https://travis-ci.org/">Travis</a> configurations are supported.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Travis</h3>
+                    <ul>
+                        <li>A <code>.travis.yml</code> will be added to your project.</li>
+                        <li>Go to your <a href="https://travis-ci.org/profile" target="_blank">Travis profile page.</a></li>
+                        <li>Click on "Sync account" on your Travis profile page.</li>
+                        <li>Enable your project on your Travis profile page.</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3>Jenkins</h3>
+                    <ul>
+                        <li>A <code>Jenkinsfile</code> will be added to your project.</li>
+                        <li>Go to your Jenkins instance</li>
+                        <li>Create a new job, using a `Pipeline script from SCM`</li>
+                        <li>Point the SCM configuration to your GitHub repository</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <p>
+            Select the project on which you want to configure Continuous Integration:
+        </p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="gitHubOrganization">GitHub organization</label>
+                        <select id="gitHubOrganization" [(ngModel)]="gitHubOrganization" name="gitHubOrganization"
+                                class="form-control"
+                                #ctrl="ngModel"
+                                (ngModelChange)="updateGitHubProjects($event)">
+                            <option *ngFor="let organization of organizations">{{organization.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="gitHubProject">GitHub repository</label>
+                        <select id="gitHubProject" [(ngModel)]="gitHubProject" name="gitHubProject"
+                                class="form-control"
+                                #ctrl="ngModel">
+                            <option *ngFor="let project of projects">{{project}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label><br/>
+                        <button class="btn btn-info btn-sm" (click)="refreshGithub()">
+                            <span class="fa fa-refresh" [ngClass]="[githubRefresh]"></span>
+                            <span>
+                            Refresh
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <p>
+            Choose the Continuous Integration system you which to configure:
+        </p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <select id="ciCdTool" [(ngModel)]="ciCdTool" name="ciCdTool" class="form-control"
+                                #ctrl="ngModel">
+                            <option value="travis">Travis</option>
+                            <option value="jenkins">Jenkins</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <p class="text-center">
+            <button class="btn btn-primary" (click)="applyCiCd()">
+            <span>
+            Yes, add Continuous Integration
+            </span>
+            </button>
+        </p>
+    </div>
+</form>

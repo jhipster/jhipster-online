@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-2">
+        <span class="hipster img-fluid img-rounded"></span>
+    </div>
+    <div class="col-md-10">
+        <h1 class="display-4">Welcome to JHipster Online</h1>
+        <b>
+            JHipster Online generates <a href="http://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> applications, with no installation required!
+        </b>
+    </div>
+</div>
+<div [ngSwitch]="isAuthenticated()">
+    <hr/>
+    <div *ngSwitchCase="true">
+        <h3>Using JHipster Online with GitHub, to get the full experience</h3>
+        <ul>
+            <li><a routerLink="/github">Step 1: Configure JHipster Online to access your GitHub account</a></li>
+            <li><a routerLink="/generate-application">Step 2: Use JHipster Online to generate an application on GitHub</a></li>
+            <li><a routerLink="/design-entities">Step 3: Use the JHipster Studio to add entities to your application</a></li>
+            <li><a routerLink="/ci-cd">Step 4: Set up continuous integration for your application</a></li>
+        </ul>
+        <h3>Using JHipster Online to simply download a zipped application</h3>
+        <ul>
+            <li><a routerLink="/generate-application">Step 1: Use JHipster Online to generate an application</a></li>
+            <li><a routerLink="/design-entities">Step 2: Use the JHipster Studio to design entities</a></li>
+        </ul>
+        <h3>Next steps</h3>
+        <b>
+            Once your application is generated, the following links will be useful:
+        </b>
+        <ul>
+            <li><a href="http://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster homepage</a></li>
+            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener" data-translate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
+            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener" data-translate="home.link.bugtracker">JHipster bug tracker</a></li>
+            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener" data-translate="home.link.chat">JHipster public chat room</a></li>
+            <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener" data-translate="home.link.follow">follow @java_hipster on Twitter</a></li>
+        </ul>
+        <b>
+            If you like JHipster, don't forget to give us a star on <a href="https://github.com/jhipster/generator-jhipster" target="_blank">GitHub</a>!
+        </b>
+    </div>
+</div>

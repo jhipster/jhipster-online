@@ -1,0 +1,24 @@
+<div>
+    <h2>
+        <span class="fa fa-object-group"></span>&nbsp;<span>Deleting JDL Model</span>
+
+    </h2>
+    <jhi-alert></jhi-alert>
+    <hr/>
+    <p>
+        Warning, you are about to delete JDL Model <b>"{{jdlModelName}}"</b>! Are you sure you want to delete this model?
+    </p>
+    <p class="text-center">
+        <button class="btn btn-danger" (click)="deleteJdl(jdlId)">
+            <span>
+            Yes, delete the JDL model
+            </span>
+        </button>
+        <button class="btn btn-dark" [routerLink]="['/design-entities']">
+            <span>
+            No, cancel this action
+            </span>
+        </button>
+    </p>
+
+</div>

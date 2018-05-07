@@ -1,0 +1,53 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "project": {
+        "name": "jhonline"
+    },
+    "apps": [{
+        "root": "src/main/webapp/",
+        "outDir": "target/www/app",
+        "assets": [
+            "content",
+            "favicon.ico"
+        ],
+        "index": "index.html",
+        "main": "app/app.main.ts",
+        "polyfills": "app/polyfills.ts",
+        "test": "",
+        "tsconfig": "../../../tsconfig.json",
+        "prefix": "jhi",
+        "mobile": false,
+        "styles": [
+            "content/scss/vendor.scss",
+            "content/scss/global.scss"
+        ],
+        "scripts": []
+    }],
+    "lint": [{
+            "project": "../../../tsconfig.json"
+        },
+        {
+            "project": "../../../tsconfig-aot.json"
+        }
+    ],
+    "test": {
+        "karma": {
+            "config": "src/test/javascript/karma.conf.js"
+        }
+    },
+    "defaults": {
+        "styleExt": "scss",
+        "prefixInterfaces": false,
+        "component" : {
+            "inlineStyle" : true,
+            "inlineTemplate": false
+        },
+        "spec": {
+            "component": false,
+            "directive": false,
+            "pipe": false,
+            "service": false
+        }
+    },
+    "packageManager": "yarn"
+}
