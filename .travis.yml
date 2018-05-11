@@ -3,6 +3,7 @@ os:
 services:
   - docker
 language: java
+cache: bundler
 node_js:
   - "8.11.1"
 jdk:
