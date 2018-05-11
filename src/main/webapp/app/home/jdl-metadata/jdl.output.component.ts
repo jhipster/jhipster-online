@@ -25,7 +25,6 @@ import { JdlService } from './jdl.service';
     templateUrl: './jdl.output.component.html'
 })
 export class JdlOutputDialogComponent implements OnInit {
-
     logs = '';
 
     applyJdlId: String;
@@ -36,11 +35,7 @@ export class JdlOutputDialogComponent implements OnInit {
 
     displayBranchUrl = false;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        private jdlService: JdlService
-    ) {
-    }
+    constructor(private activeModal: NgbActiveModal, private jdlService: JdlService) {}
 
     ngOnInit() {
         this.updateLogsData();
@@ -52,7 +47,9 @@ export class JdlOutputDialogComponent implements OnInit {
 
     updateLogsData() {
         if (this.applyJdlId === undefined) {
-            setTimeout(() => { this.updateLogsData(); }, 2000);
+            setTimeout(() => {
+                this.updateLogsData();
+            }, 2000);
         } else {
             this.jdlService.getApplyJdlLogs(this.applyJdlId).subscribe(
                 (data: string) => {
@@ -67,7 +64,7 @@ export class JdlOutputDialogComponent implements OnInit {
                         }
                     }
                 },
-                (err) => {
+                () => {
                     this.logs += 'Server disconnected...';
                 }
             );

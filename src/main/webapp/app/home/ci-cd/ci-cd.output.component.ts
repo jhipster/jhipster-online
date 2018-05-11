@@ -25,7 +25,6 @@ import { CiCdService } from './ci-cd.service';
     templateUrl: './ci-cd.output.component.html'
 })
 export class CiCdOutputDialogComponent implements OnInit {
-
     logs = '';
 
     ciCdId: String;
@@ -38,11 +37,7 @@ export class CiCdOutputDialogComponent implements OnInit {
 
     displayApplicationUrl = false;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        private ciCdService: CiCdService
-    ) {
-    }
+    constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
 
     ngOnInit() {
         this.updateLogsData();
@@ -54,7 +49,9 @@ export class CiCdOutputDialogComponent implements OnInit {
 
     updateLogsData() {
         if (this.ciCdId === undefined) {
-            setTimeout(() => { this.updateLogsData(); }, 2000);
+            setTimeout(() => {
+                this.updateLogsData();
+            }, 2000);
         } else {
             this.ciCdService.getCiCdData(this.ciCdId).subscribe(
                 (data: string) => {
@@ -69,7 +66,7 @@ export class CiCdOutputDialogComponent implements OnInit {
                         }
                     }
                 },
-                (err) => {
+                () => {
                     this.logs += 'Server disconnected...';
                 }
             );

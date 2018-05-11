@@ -25,7 +25,6 @@ import { GeneratorService } from './generator.service';
     templateUrl: './generator.output.component.html'
 })
 export class GeneratorOutputDialogComponent implements OnInit {
-
     logs = '';
 
     applicationId: String;
@@ -36,11 +35,7 @@ export class GeneratorOutputDialogComponent implements OnInit {
 
     displayApplicationUrl = false;
 
-    constructor(
-        private activeModal: NgbActiveModal,
-        private generatorService: GeneratorService
-    ) {
-    }
+    constructor(private activeModal: NgbActiveModal, private generatorService: GeneratorService) {}
 
     ngOnInit() {
         this.updateLogsData();
@@ -52,7 +47,9 @@ export class GeneratorOutputDialogComponent implements OnInit {
 
     updateLogsData() {
         if (this.applicationId === undefined) {
-            setTimeout(() => { this.updateLogsData(); }, 500);
+            setTimeout(() => {
+                this.updateLogsData();
+            }, 500);
         } else {
             this.generatorService.getGenerationData(this.applicationId).subscribe(
                 (data: string) => {
@@ -67,7 +64,7 @@ export class GeneratorOutputDialogComponent implements OnInit {
                         }
                     }
                 },
-                (err) => {
+                () => {
                     this.logs += 'Server disconnected...';
                 }
             );
