@@ -22,6 +22,7 @@ import { JhonlineAppModuleNgFactory } from '../../../../target/aot/src/main/weba
 
 ProdConfig();
 
-platformBrowser().bootstrapModuleFactory(JhonlineAppModuleNgFactory)
-.then((success) => console.log(`Application started`))
-.catch((err) => console.error(err));
+platformBrowser()
+    .bootstrapModuleFactory(JhonlineAppModuleNgFactory)
+    .then(() => console.log(`Application started`))
+    .catch(err => console.error(err));

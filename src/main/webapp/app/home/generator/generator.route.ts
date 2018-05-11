@@ -19,7 +19,7 @@
 import { Route } from '@angular/router';
 
 import { GeneratorComponent } from './generator.component';
-import { UserRouteAccessService } from '../../shared';
+import { UserRouteAccessService } from 'app/core';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
 
 export const GENERATOR_ROUTE: Route = {

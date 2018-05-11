@@ -31,10 +31,10 @@
         <table class="table table-sm table-responsive">
             <thead>
                 <tr>
-                    <th class="text-right">Blocked Time</th>
-                    <th class="text-right">Blocked Count</th>
-                    <th class="text-right">Waited Time</th>
-                    <th class="text-right">Waited Count</th>
+                    <th>Blocked Time</th>
+                    <th>Blocked Count</th>
+                    <th>Waited Time</th>
+                    <th>Waited Count</th>
                     <th>Lock Name</th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                     <td>{{entry.value.blockedCount}}</td>
                     <td>{{entry.value.waitedTime}}</td>
                     <td>{{entry.value.waitedCount}}</td>
-                    <td><code>{{entry.value.lockName}}</code></td>
+                    <td class="thread-dump-modal-lock" title="{{entry.value.lockName}}"><code>{{entry.value.lockName}}</code></td>
                 </tr>
             </tbody>
         </table>
@@ -52,5 +52,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal" (click)="activeModal.dismiss('closed')">Done</button>
+    <button type="button" class="btn btn-secondary float-left" data-dismiss="modal" (click)="activeModal.dismiss('closed')">Done</button>
 </div>

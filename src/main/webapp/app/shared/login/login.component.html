@@ -4,16 +4,16 @@
     </button>
 </div>
 <div class="modal-body">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="alert alert-danger" *ngIf="authenticationError">
                 <strong>Failed to sign in!</strong> Please check your credentials and try again.
             </div>
         </div>
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-8">
             <form class="form" role="form" (ngSubmit)="login()">
                 <div class="form-group">
-                    <label for="username">Username or e-mail address</label>
+                    <label for="username">Login</label>
                     <input type="text" class="form-control" name="username" id="username" placeholder="Your username"
                     [(ngModel)]="username">
                 </div>

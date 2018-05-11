@@ -118,15 +118,12 @@ public class JdlMetadataService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public JdlMetadata findOne(String id) {
+    public Optional<JdlMetadata> findOne(String id) {
         log.debug("Request to get JdlMetadata : {}", id);
-        JdlMetadata jdlMetadata = jdlMetadataRepository.findOne(id);
-        if (jdlMetadata == null) {
-            return null;
-        }
-        if (jdlMetadata.isIsPublic() != null && jdlMetadata.isIsPublic()) {
+        Optional<JdlMetadata> jdlMetadata = jdlMetadataRepository.findById(id);
+        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && jdlMetadata.get().isIsPublic()) {
             return jdlMetadata;
-        } else if (jdlMetadata.getUser().equals(userService.getUser())) {
+        } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(userService.getUser())) {
             return jdlMetadata;
         } else {
             throw new AccessDeniedException("Current user does not have access to this JDL file");
@@ -147,6 +144,6 @@ public class JdlMetadataService {
             throw new Exception("JDL could not be found");
         }
         this.jdlRepository.delete(jdl.get());
-        jdlMetadataRepository.delete(id);
+        jdlMetadataRepository.deleteById(id);
     }
 }

@@ -1,38 +1,21 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
-import { PasswordStrengthBarComponent } from '../../../../../../main/webapp/app/account/password/password-strength-bar.component';
+import { PasswordStrengthBarComponent } from 'app/account/password/password-strength-bar.component';
 
 describe('Component Tests', () => {
-
     describe('PasswordStrengthBarComponent', () => {
-
         let comp: PasswordStrengthBarComponent;
         let fixture: ComponentFixture<PasswordStrengthBarComponent>;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                declarations: [PasswordStrengthBarComponent]
-            }).overrideTemplate(PasswordStrengthBarComponent, '')
-            .compileComponents();
-        }));
+        beforeEach(
+            async(() => {
+                TestBed.configureTestingModule({
+                    declarations: [PasswordStrengthBarComponent]
+                })
+                    .overrideTemplate(PasswordStrengthBarComponent, '')
+                    .compileComponents();
+            })
+        );
 
         beforeEach(() => {
             fixture = TestBed.createComponent(PasswordStrengthBarComponent);
@@ -55,7 +38,7 @@ describe('Component Tests', () => {
                 expect(comp.measureStrength('Aa090(**)+-07365')).toBeGreaterThanOrEqual(comp.measureStrength('Aa090(**)'));
             });
 
-             it('should change the color based on strength', () => {
+            it('should change the color based on strength', () => {
                 expect(comp.getColor(0).col).toBe(comp.colors[0]);
                 expect(comp.getColor(11).col).toBe(comp.colors[1]);
                 expect(comp.getColor(22).col).toBe(comp.colors[2]);

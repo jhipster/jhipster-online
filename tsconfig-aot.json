@@ -9,18 +9,21 @@
         "removeComments": false,
         "noImplicitAny": false,
         "suppressImplicitAnyIndexErrors": true,
+        "skipLibCheck": true,
         "outDir": "target/www/app",
-        "lib": ["es2015", "dom"],
+        "lib": ["es7", "dom"],
         "typeRoots": [
             "node_modules/@types"
-        ]
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "app/*": ["src/main/webapp/app/*"]
+        },
+        "importHelpers": true
     },
-    "files": [
-        "src/main/webapp/app/app.module.ts",
-        "src/main/webapp/app/app.main-aot.ts"
-    ],
     "angularCompilerOptions": {
         "genDir": "target/aot",
-        "skipMetadataEmit" : true
+        "skipMetadataEmit" : true,
+        "fullTemplateTypeCheck": true
     }
 }

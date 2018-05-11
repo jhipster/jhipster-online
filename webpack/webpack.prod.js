@@ -2,8 +2,9 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require('webpack-visualizer-plugin');
-const ngcWebpack = require('ngc-webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 const path = require('path');
 
 const utils = require('./utils.js');
@@ -20,7 +21,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
         global: './src/main/webapp/content/scss/global.scss',
-        main: './src/main/webapp/app/app.main-aot'
+        main: './src/main/webapp/app/app.main'
     },
     output: {
         path: utils.root('target/www'),
@@ -29,17 +30,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     },
     module: {
         rules: [{
-            test: /\.ts$/,
-            use: [
-                {
-                    loader: 'awesome-typescript-loader',
-                    options: {
-                        configFileName: 'tsconfig-aot.json'
-                    },
-                },
-                { loader: 'angular2-template-loader' }
-            ],
-            exclude: ['node_modules/generator-jhipster']
+            test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+            use: [ '@ngtools/webpack' ]
         },
         {
             test: /\.scss$/,
@@ -66,6 +58,46 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             })
         }]
     },
+    optimization: {
+        runtimeChunk: false,
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        },
+        minimizer: [
+            new UglifyJSPlugin({
+                parallel: true,
+                uglifyOptions: {
+                    ie8: false,
+                    // sourceMap: true, // Enable source maps. Please note that this will slow down the build
+                    compress: {
+                        dead_code: true,
+                        warnings: false,
+                        properties: true,
+                        drop_debugger: true,
+                        conditionals: true,
+                        booleans: true,
+                        loops: true,
+                        unused: true,
+                        toplevel: true,
+                        if_return: true,
+                        inline: true,
+                        join_vars: true
+                    },
+                    output: {
+                        comments: false,
+                        beautify: false,
+                        indent_level: 2
+                    }
+                }
+            })
+        ]
+    },
     plugins: [
         extractSASS,
         extractCSS,
@@ -73,40 +105,19 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             // Webpack statistics in target folder
             filename: '../stats.html'
         }),
-        new UglifyJSPlugin({
-            parallel: true,
-            uglifyOptions: {
-                ie8: false,
-                // sourceMap: true, // Enable source maps. Please note that this will slow down the build
-                compress: {
-                    dead_code: true,
-                    warnings: false,
-                    properties: true,
-                    drop_debugger: true,
-                    conditionals: true,
-                    booleans: true,
-                    loops: true,
-                    unused: true,
-                    toplevel: true,
-                    if_return: true,
-                    inline: true,
-                    join_vars: true
-                },
-                output: {
-                    comments: false,
-                    beautify: false,
-                    indent_level: 2
-                }
-            }
-        }),
-        new ngcWebpack.NgcWebpackPlugin({
-            disabled: false,
-            tsConfig: utils.root('tsconfig-aot.json'),
-            resourceOverride: ''
+        new AngularCompilerPlugin({
+            mainPath: utils.root('src/main/webapp/app/app.main.ts'),
+            tsConfigPath: utils.root('tsconfig-aot.json'),
+            sourceMap: true
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
+        }),
+        new WorkboxPlugin.GenerateSW({
+          clientsClaim: true,
+          skipWaiting: true,
         })
-    ]
+    ],
+    mode: 'production'
 });

@@ -3,8 +3,8 @@
 #
 # This configuration is used for unit/integration tests.
 #
-# More information on profiles: http://www.jhipster.tech/profiles/
-# More information on configuration properties: http://www.jhipster.tech/common-application-properties/
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 # ===================================================================
@@ -17,10 +17,8 @@
 spring:
     application:
         name: jhonline
-    jackson:
-        serialization.write_dates_as_timestamps: false
     cache:
-        type: none
+        type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:mem:jhonline;DB_CLOSE_DELAY=-1
@@ -43,6 +41,8 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.hbm2ddl.auto: validate
+    liquibase:
+        contexts: test
     mail:
         host: localhost
     messages:
@@ -51,14 +51,7 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: XHTML
-
-liquibase:
-    contexts: test
-
-security:
-    basic:
-        enabled: false
+        mode: HTML
 
 server:
     port: 10344
@@ -71,7 +64,7 @@ info:
 # ===================================================================
 # JHipster specific properties
 #
-# Full reference is available at: http://www.jhipster.tech/common-application-properties/
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 jhipster:
@@ -92,7 +85,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: d0399ec3ce033d830ae5fb73f19330fe0627208d
+                secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -107,7 +100,7 @@ jhipster:
 # to have type-safe configuration, like in the JHipsterProperties above
 #
 # More documentation is available at:
-# http://www.jhipster.tech/common-application-properties/
+# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
+# application:

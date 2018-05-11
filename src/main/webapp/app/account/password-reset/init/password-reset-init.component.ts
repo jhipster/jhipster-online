@@ -1,23 +1,5 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
-
+import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
 import { PasswordResetInitService } from './password-reset-init.service';
 
 @Component({
@@ -30,12 +12,7 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
     resetAccount: any;
     success: string;
 
-    constructor(
-        private passwordResetInitService: PasswordResetInitService,
-        private elementRef: ElementRef,
-        private renderer: Renderer
-    ) {
-    }
+    constructor(private passwordResetInitService: PasswordResetInitService, private elementRef: ElementRef, private renderer: Renderer) {}
 
     ngOnInit() {
         this.resetAccount = {};
@@ -49,15 +26,18 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
         this.error = null;
         this.errorEmailNotExists = null;
 
-        this.passwordResetInitService.save(this.resetAccount.email).subscribe(() => {
-            this.success = 'OK';
-        }, (response) => {
-            this.success = null;
-            if (response.status === 400 && response._body === 'email address not registered') {
-                this.errorEmailNotExists = 'ERROR';
-            } else {
-                this.error = 'ERROR';
+        this.passwordResetInitService.save(this.resetAccount.email).subscribe(
+            () => {
+                this.success = 'OK';
+            },
+            response => {
+                this.success = null;
+                if (response.status === 400 && response.error.type === EMAIL_NOT_FOUND_TYPE) {
+                    this.errorEmailNotExists = 'ERROR';
+                } else {
+                    this.error = 'ERROR';
+                }
             }
-        });
+        );
     }
 }

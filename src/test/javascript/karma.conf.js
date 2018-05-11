@@ -1,6 +1,8 @@
+process.env.CHROMIUM_BIN = require('puppeteer').executablePath();
+
 const webpackConfig = require('../../../webpack/webpack.test.js');
 
-const WATCH = process.argv.indexOf('--watch') > -1;
+const WATCH = process.argv.includes('--watch');
 
 module.exports = (config) => {
     config.set({
@@ -16,7 +18,6 @@ module.exports = (config) => {
         files: [
             'spec/entry.ts'
         ],
-
 
         // list of files to exclude
         exclude: [],
@@ -43,9 +44,9 @@ module.exports = (config) => {
             reportSuccess: true // Default: true, will notify when a suite was successful
         },
 
-
         remapIstanbulReporter: {
             reports: { // eslint-disable-line
+                'lcovonly': 'target/test-results/coverage/report-lcov/lcov.info',
                 'html': 'target/test-results/coverage',
                 'text-summary': null
             }
@@ -66,7 +67,22 @@ module.exports = (config) => {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['PhantomJS'],
+        browsers: ['ChromiumHeadlessNoSandbox'],
+
+        customLaunchers: {
+            ChromiumHeadlessNoSandbox: {
+                base: 'ChromiumHeadless',
+                    // the chrome setup is voluntarily permissive to accomodate various environments (different OSes, running inside docker, etc)
+                    // feel free to enable the sandbox if it doesn't cause problems for you
+                    // see https://www.jhipster.tech/running-tests for informations on how to troubleshoot your karma chrome configuration
+                    flags: [
+                        '--no-sandbox',
+                        '--disable-gpu',
+                        '--remote-debugging-port=9222'
+                    ],
+                    debug: true
+            }
+        },
 
         // Ensure all browsers can run tests written in .ts files
         mime: {

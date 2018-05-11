@@ -62,7 +62,7 @@ public class GithubService {
      */
     @Transactional
     public void syncUserFromGithub() throws Exception {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
         if (user.isPresent()) {
             this.getSyncedUserFromGitHub(user.get());
         } else {

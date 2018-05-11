@@ -1,39 +1,17 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
+import { VERSION } from 'app/app.constants';
+import { Principal, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
-import { Principal, LoginModalService, LoginService } from '../../shared';
-
-import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [
-        'navbar.scss'
-    ]
+    styleUrls: ['navbar.scss']
 })
 export class NavbarComponent implements OnInit {
-
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -53,7 +31,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+        this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });

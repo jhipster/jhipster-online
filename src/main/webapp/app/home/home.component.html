@@ -6,41 +6,41 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/">
-                                <span class="btn-rounded align-middle">
-                                    <i class="fa fa-home fa-2x align-middle"></i>
-                                </span>
+                                    <span class="btn-rounded align-middle">
+                                <i class="fa fa-home fa-2x align-middle"></i>
+                            </span>
                                 <span class="align-middle h5">Home</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/github">
                                 <span class="btn-rounded align-middle">
-                                    <i class="fa fa-wrench fa-2x align-middle"></i>
-                                </span>
+                                <i class="fa fa-wrench fa-2x align-middle"></i>
+                            </span>
                                 <span class="align-middle h5">Configure</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/generate-application">
                                 <span class="btn-rounded align-middle">
-                                    <i class="fa fa-rocket fa-2x align-middle"></i>
-                                </span>
+                                <i class="fa fa-rocket fa-2x align-middle"></i>
+                            </span>
                                 <span class="align-middle h5">Create Application</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/design-entities">
                                 <span class="btn-rounded align-middle">
-                                    <i class="fa fa-object-group fa-2x align-middle"></i>
-                                </span>
+                                <i class="fa fa-object-group fa-2x align-middle"></i>
+                            </span>
                                 <span class="align-middle h5">Design Entities</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
                                 <span class="btn-rounded align-middle">
-                                    <i class="fa fa-cloud-upload fa-2x align-middle"></i>
-                                </span>
+                                <i class="fas fa-cloud-upload-alt fa-2x align-middle"></i>
+                            </span>
                                 <span class="align-middle h5">Continuous Integration</span>
                             </a>
                         </li>
@@ -62,51 +62,52 @@
     <div class="col-md-9">
         <router-outlet></router-outlet>
         <router-outlet name="popup"></router-outlet>
-        <div [ngSwitch]="isAuthenticated()">
-            <div class="container" *ngSwitchCase="false">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i> Authentication
+            <div>
+            <div [ngSwitch]="isAuthenticated()">
+                <div class="container" *ngSwitchCase="false">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Authentication
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Sign in</h4>
+                                    <p class="card-text">If you already have an account:</p>
+                                    <button type="button" class="btn btn-info" (click)="login()">Please sign in</button>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Sign in</h4>
-                                <p class="card-text">If you already have an account:</p>
-                                <button type="button" class="btn btn-info" (click)="login()">Please sign in</button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i> Registration
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Register</h4>
+                                    <p class="card-text">If you want to create a new account:</p>
+                                    <a class="btn btn-info" routerLink="register">Please register</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i> Registration
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Register</h4>
-                                <p class="card-text">If you want to create a new account:</p>
-                                <a class="btn btn-info" routerLink="register">Please register</a>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <h4>JHipster is an Open Source, widely popular application generator</h4>
+                            <p>
+                                If you want more information on JHipster:
+                            </p>
+                            <ul>
+                                <li><a href="http://www.jhipster.tech/" target="_blank" rel="noopener">JHipster homepage (with documentation, slides, tutorials, etc.)</a></li>
+                                <li><a href="https://github.com/jhipster/generator-jhipster" target="_blank"
+                                       rel="noopener">JHipster soure code on GitHub</a></li>
+                                <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener">JHipster on Twitter</a></li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr>
-                        <h4>JHipster is an Open Source, widely popular application generator</h4>
-                        <p>
-                           If you want more information on JHipster:
-                        </p>
-                        <ul>
-                            <li><a href="http://www.jhipster.tech/" target="_blank" rel="noopener">JHipster homepage (with documentation, slides, tutorials, etc.)</a></li>
-                            <li><a href="https://github.com/jhipster/generator-jhipster" target="_blank"
-                                           rel="noopener">JHipster soure code on GitHub</a></li>
-                            <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener">JHipster on Twitter</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<p></p>

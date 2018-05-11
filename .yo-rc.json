@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "io.github.jhipster.online"
     },
-    "jhipsterVersion": "4.7.0",
+    "jhipsterVersion": "5.0.0-beta.1",
     "baseName": "jhonline",
     "packageName": "io.github.jhipster.online",
     "packageFolder": "io/github/jhipster/online",
@@ -27,6 +27,8 @@
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": false
+    "enableTranslation": false,
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true
   }
 }

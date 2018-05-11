@@ -22,14 +22,13 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { JdlMetadata } from './jdl-metadata.model';
 import { JdlMetadataService } from './jdl-metadata.service';
-import { Principal, ResponseWrapper } from '../../shared';
+import { Principal } from 'app/core/auth/principal.service';
 
 @Component({
     selector: 'jhi-jdl-metadata',
     templateUrl: './jdl-metadata.component.html'
 })
 export class JdlMetadataComponent implements OnInit, OnDestroy {
-
     jdlMetadata: JdlMetadata[];
     currentAccount: any;
     eventSubscriber: Subscription;
@@ -40,17 +39,16 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
-    ) {
-    }
+    ) {}
 
     loadAll() {
-        this.jdlRefresh = 'fa-spin';
+        // this.jdlRefresh = 'fa-spin';
         this.jdlMetadataService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.jdlMetadata = res.json;
+            res => {
+                this.jdlMetadata = res;
                 this.jdlRefresh = '';
             },
-            (res: ResponseWrapper) => {
+            res => {
                 this.onError(res.json);
                 this.jdlRefresh = '';
             }
@@ -58,7 +56,7 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInJdlMetadata();
@@ -73,7 +71,7 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInJdlMetadata() {
-        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
     }
 
     private onError(error) {

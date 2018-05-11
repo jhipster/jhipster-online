@@ -1,11 +1,11 @@
 <form #generatorForm="ngForm">
 
-    <h2><span class="fa fa-cloud-upload"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitHubConfigured">
         <p>
-            <span class="fa fa-warning"></span>&nbsp;
+            <span class="fas fa-exclamation-triangle"></span>&nbsp;
             <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
         </p>
         <p class="text-center">

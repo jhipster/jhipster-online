@@ -1,30 +1,13 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Renderer, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+
 import { JhonlineTestModule } from '../../../../test.module';
-import { PasswordResetInitComponent } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.component';
-import { PasswordResetInitService } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.service';
+import { PasswordResetInitComponent } from 'app/account/password-reset/init/password-reset-init.component';
+import { PasswordResetInitService } from 'app/account/password-reset/init/password-reset-init.service';
+import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
 
 describe('Component Tests', () => {
-
     describe('PasswordResetInitComponent', () => {
         let fixture: ComponentFixture<PasswordResetInitComponent>;
         let comp: PasswordResetInitComponent;
@@ -46,8 +29,9 @@ describe('Component Tests', () => {
                         useValue: new ElementRef(null)
                     }
                 ]
-            }).overrideTemplate(PasswordResetInitComponent, '')
-            .createComponent(PasswordResetInitComponent);
+            })
+                .overrideTemplate(PasswordResetInitComponent, '')
+                .createComponent(PasswordResetInitComponent);
             comp = fixture.componentInstance;
             comp.ngOnInit();
         });
@@ -59,7 +43,8 @@ describe('Component Tests', () => {
             expect(comp.resetAccount).toEqual({});
         });
 
-        it('sets focus after the view has been initialized',
+        it(
+            'sets focus after the view has been initialized',
             inject([ElementRef], (elementRef: ElementRef) => {
                 const element = fixture.nativeElement;
                 const node = {
@@ -77,7 +62,8 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of success upon successful requestReset',
+        it(
+            'notifies of success upon successful requestReset',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
                 spyOn(service, 'save').and.returnValue(Observable.of({}));
                 comp.resetAccount.email = 'user@domain.com';
@@ -91,12 +77,15 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of unknown email upon email address not registered/400',
+        it(
+            'notifies of unknown email upon email address not registered/400',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
-                    status: 400,
-                    _body: 'email address not registered'
-                }));
+                spyOn(service, 'save').and.returnValue(
+                    Observable.throw({
+                        status: 400,
+                        error: { type: EMAIL_NOT_FOUND_TYPE }
+                    })
+                );
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -108,12 +97,15 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of error upon error response',
+        it(
+            'notifies of error upon error response',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
-                    status: 503,
-                    data: 'something else'
-                }));
+                spyOn(service, 'save').and.returnValue(
+                    Observable.throw({
+                        status: 503,
+                        data: 'something else'
+                    })
+                );
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -124,6 +116,5 @@ describe('Component Tests', () => {
                 expect(comp.error).toEqual('ERROR');
             })
         );
-
     });
 });

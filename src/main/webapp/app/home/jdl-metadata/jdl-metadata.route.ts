@@ -18,12 +18,10 @@
  */
 import { Routes } from '@angular/router';
 
-import { UserRouteAccessService } from '../../shared'
+import { UserRouteAccessService } from 'app/core';
 
 import { JdlMetadataComponent } from './jdl-metadata.component';
-import {
-    ApplyJdlStudioComponent, DeleteJdlStudioComponent
-} from './jdl-studio.component';
+import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-studio.component';
 
 export const jdlMetadataRoute: Routes = [
     {
@@ -34,7 +32,8 @@ export const jdlMetadataRoute: Routes = [
             pageTitle: 'Design Entities'
         },
         canActivate: [UserRouteAccessService]
-    }, {
+    },
+    {
         path: 'design-entities-delete/:jdlId',
         component: DeleteJdlStudioComponent,
         data: {
@@ -42,7 +41,8 @@ export const jdlMetadataRoute: Routes = [
             pageTitle: 'Delete JDL Model'
         },
         canActivate: [UserRouteAccessService]
-    }, {
+    },
+    {
         path: 'design-entities-apply/:jdlId',
         component: ApplyJdlStudioComponent,
         data: {

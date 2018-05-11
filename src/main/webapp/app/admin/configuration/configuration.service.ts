@@ -1,37 +1,17 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
+import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable()
 export class JhiConfigurationService {
-
-    constructor(private http: Http) {
-    }
+    constructor(private http: HttpClient) {}
 
     get(): Observable<any> {
-        return this.http.get('management/configprops').map((res: Response) => {
+        return this.http.get(SERVER_API_URL + 'management/configprops', { observe: 'response' }).map((res: HttpResponse<any>) => {
             const properties: any[] = [];
-
-            const propertiesObject = res.json();
-
+            const propertiesObject = this.getConfigPropertiesObjects(res.body);
             for (const key in propertiesObject) {
                 if (propertiesObject.hasOwnProperty(key)) {
                     properties.push(propertiesObject[key]);
@@ -39,32 +19,43 @@ export class JhiConfigurationService {
             }
 
             return properties.sort((propertyA, propertyB) => {
-                return (propertyA.prefix === propertyB.prefix) ? 0 :
-                       (propertyA.prefix < propertyB.prefix) ? -1 : 1;
+                return propertyA.prefix === propertyB.prefix ? 0 : propertyA.prefix < propertyB.prefix ? -1 : 1;
             });
         });
     }
 
-    getEnv(): Observable<any> {
-        return this.http.get('management/env').map((res: Response) => {
-            const properties: any = {};
-
-            const propertiesObject = res.json();
-
-            for (const key in propertiesObject) {
-                if (propertiesObject.hasOwnProperty(key)) {
-                    const valsObject = propertiesObject[key];
-                    const vals: any[] = [];
-
-                    for (const valKey in valsObject) {
-                        if (valsObject.hasOwnProperty(valKey)) {
-                            vals.push({key: valKey, val: valsObject[valKey]});
-                        }
-                    }
-                    properties[key] = vals;
+    getConfigPropertiesObjects(res: Object) {
+        // This code is for Spring Boot 2
+        if (res['contexts'] !== undefined) {
+            for (const key in res['contexts']) {
+                // If the key is not bootstrap, it will be the ApplicationContext Id
+                // For default app, it is baseName
+                // For microservice, it is baseName-1
+                if (!key.startsWith('bootstrap')) {
+                    return res['contexts'][key]['beans'];
                 }
             }
+        }
+        // by default, use the default ApplicationContext Id
+        return res['contexts']['jhonline']['beans'];
+    }
 
+    getEnv(): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'management/env', { observe: 'response' }).map((res: HttpResponse<any>) => {
+            const properties: any = {};
+            const propertySources = res.body['propertySources'];
+
+            for (const propertyObject of propertySources) {
+                const name = propertyObject['name'];
+                const detailProperties = propertyObject['properties'];
+                const vals: any[] = [];
+                for (const keyDetail in detailProperties) {
+                    if (detailProperties.hasOwnProperty(keyDetail)) {
+                        vals.push({ key: keyDetail, val: detailProperties[keyDetail]['value'] });
+                    }
+                }
+                properties[name] = vals;
+            }
             return properties;
         });
     }

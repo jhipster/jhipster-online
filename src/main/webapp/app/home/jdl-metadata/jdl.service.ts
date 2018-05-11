@@ -17,21 +17,18 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class JdlService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http) { }
-
-    doApplyJdl(organizationName: String, projectName: String, jdlId: String): Observable<Response> {
-        return this.http.post('api//apply-jdl/' + organizationName + '/' + projectName + '/' + jdlId, '');
+    doApplyJdl(organizationName: String, projectName: String, jdlId: String): Observable<any> {
+        return this.http.post<any>('api//apply-jdl/' + organizationName + '/' + projectName + '/' + jdlId, '');
     }
 
     getApplyJdlLogs(applyJdlId: String): Observable<String> {
-        return this.http.get('api/apply-jdl-logs/' + applyJdlId).map((res: Response) => {
-            return res.text();
-        });
+        return this.http.get<string>('api/apply-jdl-logs/' + applyJdlId).map((res: string) => res);
     }
 }
