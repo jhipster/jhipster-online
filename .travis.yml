@@ -7,3 +7,10 @@ node_js:
   - "8.11.1"
 jdk:
   - oraclejdk8
+cache:
+  directories:
+    - $HOME/.m2
+before_cache:
+  - rm -rf $HOME/.m2/repository/io/github/jhipster/jhipster-framework/
+  - rm -rf $HOME/.m2/repository/io/github/jhipster/jhipster-dependencies/
+  - rm -rf $HOME/.m2/repository/io/github/jhipster/jhipster-parent/
