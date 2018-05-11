@@ -2,6 +2,7 @@ os:
   - linux
 services:
   - docker
+language: java
 node_js:
   - "8.11.1"
 jdk:
