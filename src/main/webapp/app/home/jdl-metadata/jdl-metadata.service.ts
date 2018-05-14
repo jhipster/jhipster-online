@@ -42,7 +42,7 @@ export class JdlMetadataService {
 
     query(req?: any): Observable<JdlMetadata[]> {
         const options = createRequestOption(req);
-        return this.http.get<JdlMetadata[]>(this.metadataUrl, { params: options }).map((res: JdlMetadata[]) => res);
+        return this.http.get<JdlMetadata[]>(this.metadataUrl, { params: options });
     }
 
     delete(id: string): Observable<any> {

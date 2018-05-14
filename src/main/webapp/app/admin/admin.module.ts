@@ -23,6 +23,8 @@ import {
     JhiMetricsService,
     LogsService,
     UserMgmtResolve,
+    UserMgmtDialogComponent,
+    UserDialogComponent,
     UserResolve
 } from './';
 
@@ -35,6 +37,8 @@ import {
     declarations: [
         AuditsComponent,
         UserMgmtComponent,
+        UserDialogComponent,
+        UserMgmtDialogComponent,
         UserMgmtDetailComponent,
         UserMgmtUpdateComponent,
         UserMgmtDeleteDialogComponent,

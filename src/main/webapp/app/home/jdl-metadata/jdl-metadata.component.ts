@@ -39,10 +39,12 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
-    ) {}
+    ) {
+        this.jdlRefresh = '';
+    }
 
     loadAll() {
-        // this.jdlRefresh = 'fa-spin';
+        this.jdlRefresh = 'fa-spin';
         this.jdlMetadataService.query().subscribe(
             res => {
                 this.jdlMetadata = res;
