@@ -6,7 +6,6 @@ import { JhonlineSharedModule } from 'app/shared';
 import {
     adminState,
     AuditsComponent,
-    UserDeleteDialogComponent,
     UserMgmtComponent,
     UserMgmtDetailComponent,
     UserMgmtUpdateComponent,
@@ -35,7 +34,6 @@ import {
     ],
     declarations: [
         AuditsComponent,
-        UserDeleteDialogComponent,
         UserMgmtComponent,
         UserMgmtDetailComponent,
         UserMgmtUpdateComponent,
@@ -48,7 +46,7 @@ import {
         JhiMetricsMonitoringComponent,
         JhiMetricsMonitoringModalComponent
     ],
-    entryComponents: [UserMgmtUpdateComponent, UserMgmtDeleteDialogComponent, JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
+    entryComponents: [UserMgmtDeleteDialogComponent, JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
     providers: [AuditsService, JhiConfigurationService, JhiHealthService, JhiMetricsService, LogsService, UserResolve, UserMgmtResolve],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

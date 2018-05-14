@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { User, UserService } from 'app/core';
 
@@ -13,7 +13,7 @@ export class UserMgmtUpdateComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
-    constructor(private userService: UserService, private route: ActivatedRoute) {}
+    constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -27,7 +27,7 @@ export class UserMgmtUpdateComponent implements OnInit {
     }
 
     previousState() {
-        window.history.back();
+        this.router.navigate(['/admin/user-management']);
     }
 
     save() {
