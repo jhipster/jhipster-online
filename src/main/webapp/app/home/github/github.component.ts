@@ -32,11 +32,7 @@ export class GithubComponent implements OnInit {
     constructor(private githubService: GithubService) {}
 
     ngOnInit(): void {
-        this.clientId = this.githubService.clientId().subscribe((clientId: string) => {
-            this.clientId = clientId;
-        });
-        this.githubService.getOrganizations().subscribe(() => {
-            this.gitHubConfigured = true;
-        });
+        this.clientId = this.githubService.clientId().subscribe(data => (this.clientId = data));
+        this.githubService.getOrganizations().subscribe(() => (this.gitHubConfigured = true));
     }
 }

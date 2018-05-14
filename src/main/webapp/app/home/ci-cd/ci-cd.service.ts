@@ -25,10 +25,10 @@ export class CiCdService {
     constructor(private http: HttpClient) {}
 
     addCiCd(organizationName: String, projectName: String, ciCdTool: String): Observable<string> {
-        return this.http.post<string>('api/ci-cd/' + organizationName + '/' + projectName + '/' + ciCdTool, { observe: 'response' });
+        return this.http.post('api/ci-cd/' + organizationName + '/' + projectName + '/' + ciCdTool, {}, { responseType: 'text' });
     }
 
     getCiCdData(ciCdId: String): Observable<string> {
-        return this.http.get<string>('api/ci-cd-logs/' + ciCdId).map((res: string) => res);
+        return this.http.get('api/ci-cd-logs/' + ciCdId, { responseType: 'text' });
     }
 }

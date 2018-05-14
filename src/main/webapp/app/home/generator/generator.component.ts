@@ -151,10 +151,13 @@ export class GeneratorComponent implements OnInit {
         this.checkModelBeforeSubmit();
         this.generatorService.generateOnGitHub(this.model).subscribe(
             res => {
-                this.openOutputModal(res.body);
+                this.openOutputModal(res);
                 this.submitted = false;
             },
-            () => console.log('Error generating the application.')
+            error => {
+                console.error('Error generating the application.');
+                console.error(error);
+            }
         );
     }
 

@@ -33,15 +33,11 @@ export class GeneratorService {
         );
     }
 
-    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<HttpResponse<string>> {
-        return this.http.post<string>(
-            'api/generate-application',
-            { 'generator-jhipster': jhipsterConfigurationModel },
-            { observe: 'response' }
-        );
+    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<string> {
+        return this.http.post('api/generate-application', { 'generator-jhipster': jhipsterConfigurationModel }, { responseType: 'text' });
     }
 
     getGenerationData(applicationId: String): Observable<string> {
-        return this.http.get<string>('api/generate-application/' + applicationId).map((res: string) => res);
+        return this.http.get('api/generate-application/' + applicationId, { responseType: 'text' });
     }
 }

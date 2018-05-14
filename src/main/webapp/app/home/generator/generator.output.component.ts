@@ -60,7 +60,9 @@ export class GeneratorOutputDialogComponent implements OnInit {
                         }, 500);
                     } else {
                         if (data.endsWith('Generation finished\n')) {
+                            console.log("It's finished, just go now, please. T.T");
                             this.displayApplicationUrl = true;
+                            console.log(this.displayApplicationUrl);
                         }
                     }
                 },

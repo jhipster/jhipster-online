@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { GithubOrganizationModel } from '../generator/github.organization.model';
 
@@ -26,7 +26,7 @@ export class GithubService {
     constructor(private http: HttpClient) {}
 
     clientId(): Observable<string> {
-        return this.http.get<string>('api/github/client-id').map((res: string) => res);
+        return this.http.get('api/github/client-id', { responseType: 'text' });
     }
 
     saveGithubOAuthToken(token: string): Observable<any> {
