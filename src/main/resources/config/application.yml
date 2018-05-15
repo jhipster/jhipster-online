@@ -53,7 +53,8 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: HTML
+        mode: XHTML
+        excluded-view-names: /jdl-studio/*
 
 server:
     servlet:

@@ -24,11 +24,11 @@ import { Observable } from 'rxjs/Rx';
 export class JdlService {
     constructor(private http: HttpClient) {}
 
-    doApplyJdl(organizationName: String, projectName: String, jdlId: String): Observable<any> {
-        return this.http.post<any>('api//apply-jdl/' + organizationName + '/' + projectName + '/' + jdlId, '');
+    doApplyJdl(organizationName: String, projectName: String, jdlId: String): Observable<string> {
+        return this.http.post('api/apply-jdl/' + organizationName + '/' + projectName + '/' + jdlId, '', { responseType: 'text' });
     }
 
-    getApplyJdlLogs(applyJdlId: String): Observable<String> {
-        return this.http.get<string>('api/apply-jdl-logs/' + applyJdlId).map((res: string) => res);
+    getApplyJdlLogs(applyJdlId: String): Observable<string> {
+        return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
     }
 }

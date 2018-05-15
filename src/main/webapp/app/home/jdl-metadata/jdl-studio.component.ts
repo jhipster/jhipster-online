@@ -158,7 +158,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     applyJdl() {
         this.jdlService.doApplyJdl(this.gitHubOrganization, this.gitHubProject, this.jdlId).subscribe(
             res => {
-                this.openOutputModal(res.text());
+                this.openOutputModal(res);
                 this.submitted = false;
             },
             () => console.log('Error applying the JDL Model.')

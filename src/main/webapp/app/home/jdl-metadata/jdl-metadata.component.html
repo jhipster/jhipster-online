@@ -29,7 +29,6 @@
             <tr>
             <th><span>Name</span></th>
             <th><span>Last update</span></th>
-            <!--<th><span>Public</span></th>-->
             <th><span></span></th>
             </tr>
             </thead>
@@ -42,14 +41,6 @@
             <tr *ngFor="let jdlMetadata of jdlMetadata ;trackBy: trackId">
                 <td>{{jdlMetadata.name}}</td>
                 <td>{{jdlMetadata.updatedDate | date:'medium'}}</td>
-                <!--
-                <td *ngIf="jdlMetadata.isPublic !== true">
-                   <span class="fa fa-toggle-off"></span>
-                </td>
-                <td *ngIf="jdlMetadata.isPublic === true">
-                   <span class="fa fa-toggle-on"></span>
-                </td>
-                -->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <a href="jdl-studio/#!/view/{{jdlMetadata.id}}" class="btn btn-info btn-sm">
@@ -67,7 +58,7 @@
                                 [routerLink]="['/design-entities-delete/'+ jdlMetadata.id]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <i class="fa fa-trash"></i>
                             <span class="hidden-md-down">Delete</span>
                         </button>
                     </div>
