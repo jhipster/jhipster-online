@@ -111,5 +111,5 @@ jhipster:
 
 application:
     github:
-        clientId: 151bffa46160f7109fd1
-        clientSecret: 56e49c5bcc52a6388ac51f9265bb6a63ef8878c2
+        clientId: XXX
+        clientSecret: XXX
