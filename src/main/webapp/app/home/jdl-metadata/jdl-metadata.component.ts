@@ -32,7 +32,7 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
     jdlMetadata: JdlMetadata[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    jdlRefresh: string;
+    jdlRefresh: boolean;
 
     constructor(
         private jdlMetadataService: JdlMetadataService,
@@ -40,19 +40,19 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
-        this.jdlRefresh = '';
+        this.jdlRefresh = false;
     }
 
     loadAll() {
-        this.jdlRefresh = 'fa-spin';
+        this.jdlRefresh = true;
         this.jdlMetadataService.query().subscribe(
             res => {
                 this.jdlMetadata = res;
-                this.jdlRefresh = '';
+                this.jdlRefresh = false;
             },
             res => {
                 this.onError(res.json);
-                this.jdlRefresh = '';
+                this.jdlRefresh = false;
             }
         );
     }

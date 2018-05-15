@@ -40,7 +40,7 @@ export class GeneratorComponent implements OnInit {
 
     organizations: GithubOrganizationModel[];
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -91,29 +91,29 @@ export class GeneratorComponent implements OnInit {
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
-        this.githubRefresh = 'fa-spin';
+        this.githubRefresh = true;
         this.githubService.getOrganizations().subscribe(
             orgs => {
                 this.organizations = orgs;
                 this.model.gitHubOrganization = orgs[0].name;
                 this.githubConfigured = true;
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             },
             () => {
                 this.githubConfigured = false;
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
+        this.githubRefresh = true;
         this.githubService.refreshGithub().subscribe(
             () => {
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             },
             () => {
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }

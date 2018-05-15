@@ -92,7 +92,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     baseName: String;
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     constructor(
         private modalService: NgbModal,
@@ -116,14 +116,14 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
+        this.githubRefresh = true;
         this.githubService.refreshGithub().subscribe(
             () => {
-                this.githubRefresh = '';
+                this.githubRefresh = false;
                 this.updateGitHubOrganizations();
             },
             () => {
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }

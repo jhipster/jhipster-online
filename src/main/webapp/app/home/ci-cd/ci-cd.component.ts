@@ -45,7 +45,7 @@ export class CiCdComponent implements OnInit {
 
     baseName: String;
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     ciCdTool = 'travis';
 
@@ -56,19 +56,19 @@ export class CiCdComponent implements OnInit {
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
+        this.githubRefresh = true;
         this.githubService.refreshGithub().subscribe(
             () => {
                 this.updateGitHubOrganizations();
             },
             () => {
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }
 
     updateGitHubOrganizations() {
-        this.githubRefresh = '';
+        this.githubRefresh = false;
         this.githubService.getOrganizations().subscribe(
             orgs => {
                 this.organizations = orgs;
@@ -78,7 +78,7 @@ export class CiCdComponent implements OnInit {
             },
             () => {
                 this.gitHubConfigured = false;
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }
@@ -92,7 +92,7 @@ export class CiCdComponent implements OnInit {
             },
             () => {
                 this.gitHubConfigured = false;
-                this.githubRefresh = '';
+                this.githubRefresh = false;
             }
         );
     }

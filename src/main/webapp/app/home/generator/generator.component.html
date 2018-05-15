@@ -29,7 +29,12 @@
                 <div class="form-group">
                     <label for="gitHubOrganization">GitHub organization</label>
                     <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                        <span class="fas fa-sync" [ngClass]="[githubRefresh]"></span>
+                        <span *ngIf="githubRefresh">
+                            <i class="fas fa-sync fa-spin"></i>
+                        </span>
+                        <span *ngIf="!githubRefresh">
+                            <i class="fas fa-sync"></i>
+                        </span>
                         <span>
                         Refresh
                         </span>

@@ -8,7 +8,12 @@
             </span>
         </a>
         <button class="btn btn-info float-right" (click)="loadAll()">
-            <span class="fas fa-sync" [ngClass]="[jdlRefresh]"></span>
+            <span *ngIf="jdlRefresh">
+                <i class="fas fa-sync fa-spin"></i>
+            </span>
+            <span *ngIf="!jdlRefresh">
+                <i class="fas fa-sync"></i>
+            </span>
             <span>
             Refresh
             </span>
