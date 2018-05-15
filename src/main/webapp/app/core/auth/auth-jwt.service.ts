@@ -10,7 +10,7 @@ export class AuthServerProvider {
     constructor(private http: HttpClient, private $localStorage: LocalStorageService, private $sessionStorage: SessionStorageService) {}
 
     getToken() {
-        return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken');
+        return this.$localStorage.retrieve('authenticationtoken') || this.$sessionStorage.retrieve('authenticationtoken');
     }
 
     login(credentials): Observable<any> {
