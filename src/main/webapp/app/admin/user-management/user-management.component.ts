@@ -6,7 +6,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { Principal, UserService, User } from 'app/core';
-import { UserMgmtDeleteDialogComponent } from 'app/admin';
+import { PasswordResetService, UserMgmtDeleteDialogComponent, UserMgmtResetDialogComponent } from 'app/admin';
 
 @Component({
     selector: 'jhi-user-mgmt',
@@ -26,6 +26,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    areMailsEnabled: boolean;
 
     constructor(
         private userService: UserService,
@@ -35,7 +36,8 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private eventManager: JhiEventManager,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private passwordResetService: PasswordResetService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -52,6 +54,17 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
             this.loadAll();
             this.registerChangeInUsers();
         });
+
+        this.passwordResetService.areMailsEnabled().subscribe(
+            result => {
+                this.areMailsEnabled = result === 'true';
+            },
+            error => {
+                console.error(error);
+                console.log('Could not retrieve mail configuration, the application will then assume that mails are disabled');
+                this.areMailsEnabled = false;
+            }
+        );
     }
 
     ngOnDestroy() {
@@ -121,6 +134,19 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
 
     deleteUser(user: User) {
         const modalRef = this.modalService.open(UserMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.user = user;
+        modalRef.result.then(
+            () => {
+                // Left blank intentionally, nothing to do here
+            },
+            () => {
+                // Left blank intentionally, nothing to do here
+            }
+        );
+    }
+
+    resetPassword(user: User) {
+        const modalRef = this.modalService.open(UserMgmtResetDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.user = user;
         modalRef.result.then(
             () => {

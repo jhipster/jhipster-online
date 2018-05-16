@@ -10,6 +10,7 @@ import {
     UserMgmtDetailComponent,
     UserMgmtUpdateComponent,
     UserMgmtDeleteDialogComponent,
+    UserMgmtResetDialogComponent,
     LogsComponent,
     JhiMetricsMonitoringModalComponent,
     JhiMetricsMonitoringComponent,
@@ -25,7 +26,8 @@ import {
     UserMgmtResolve,
     UserMgmtDialogComponent,
     UserDialogComponent,
-    UserResolve
+    UserResolve,
+    PasswordResetService
 } from './';
 
 @NgModule({
@@ -42,6 +44,7 @@ import {
         UserMgmtDetailComponent,
         UserMgmtUpdateComponent,
         UserMgmtDeleteDialogComponent,
+        UserMgmtResetDialogComponent,
         LogsComponent,
         JhiConfigurationComponent,
         JhiHealthCheckComponent,
@@ -50,8 +53,22 @@ import {
         JhiMetricsMonitoringComponent,
         JhiMetricsMonitoringModalComponent
     ],
-    entryComponents: [UserMgmtDeleteDialogComponent, JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
-    providers: [AuditsService, JhiConfigurationService, JhiHealthService, JhiMetricsService, LogsService, UserResolve, UserMgmtResolve],
+    entryComponents: [
+        UserMgmtDeleteDialogComponent,
+        JhiHealthModalComponent,
+        JhiMetricsMonitoringModalComponent,
+        UserMgmtResetDialogComponent
+    ],
+    providers: [
+        AuditsService,
+        JhiConfigurationService,
+        JhiHealthService,
+        JhiMetricsService,
+        LogsService,
+        UserResolve,
+        UserMgmtResolve,
+        PasswordResetService
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAdminModule {}

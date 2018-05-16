@@ -1,5 +1,6 @@
 package io.github.jhipster.online.service;
 
+import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -40,13 +41,19 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    private final ApplicationProperties applicationProperties;
+
+    private final boolean areMailsEnabled;
+
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+            MessageSource messageSource, SpringTemplateEngine templateEngine, ApplicationProperties applicationProperties) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+        this.applicationProperties = applicationProperties;
+        this.areMailsEnabled = isMailServerSetup();
     }
 
     @Async
@@ -101,5 +108,13 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    public boolean areMailsEnabled() {
+        return areMailsEnabled;
+    }
+
+    private boolean isMailServerSetup() {
+        return !applicationProperties.getMailServerHost().equals("");
     }
 }

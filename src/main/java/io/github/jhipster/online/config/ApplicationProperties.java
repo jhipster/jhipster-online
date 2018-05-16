@@ -1,5 +1,6 @@
 package io.github.jhipster.online.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -10,12 +11,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+
+    @Value("${spring.mail.host}")
+    private String mailServerHost;
+
     private final Github github = new Github();
 
     private String tmpFolder = "/tmp";
 
     public String getTmpFolder() {
         return tmpFolder;
+    }
+
+    public String getMailServerHost() {
+        return mailServerHost;
     }
 
     public void setTmpFolder(String tmpFolder) {

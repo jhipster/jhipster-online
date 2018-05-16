@@ -1,5 +1,6 @@
 package io.github.jhipster.online.service;
 
+import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.domain.Authority;
 import io.github.jhipster.online.domain.GithubOrganization;
 import io.github.jhipster.online.domain.User;
@@ -11,6 +12,7 @@ import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.util.RandomUtil;
 import io.github.jhipster.online.service.dto.UserDTO;
 
+import io.github.jhipster.online.web.rest.errors.EmailNotFoundException;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,18 +45,24 @@ public class UserService {
 
     private final GithubService githubService;
 
+    private final MailService mailService;
+
+    private final JHipsterProperties jHipsterProperties;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, GithubService githubService, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, GithubService githubService, MailService mailService, JHipsterProperties jHipsterProperties, CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.githubService = githubService;
+        this.mailService = mailService;
         this.cacheManager = cacheManager;
+        this.jHipsterProperties = jHipsterProperties;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -95,6 +103,11 @@ public class UserService {
             });
     }
 
+    public String generatePasswordResetLink(String resetKey) {
+        String baseUrl = jHipsterProperties.getMail().getBaseUrl();
+        return baseUrl + "/#/reset/finish?key=" + resetKey;
+    }
+
     public User registerUser(UserDTO userDTO, String password) {
 
         User newUser = new User();
@@ -107,8 +120,10 @@ public class UserService {
         newUser.setEmail(userDTO.getEmail());
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
+
+        // new user is active if mails are disabled
+        newUser.setActivated(!mailService.areMailsEnabled());
+
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
