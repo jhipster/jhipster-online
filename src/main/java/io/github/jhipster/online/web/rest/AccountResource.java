@@ -129,10 +129,13 @@ public class AccountResource {
     @Timed
     public void deleteAccount() {
         final String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new InternalServerErrorException("Current user login not found"));
+
+        // Checks if user exists
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (!user.isPresent()) {
             throw new InternalServerErrorException("User could not be found");
         }
+
         for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForCurrentUser()) {
             jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
         }
