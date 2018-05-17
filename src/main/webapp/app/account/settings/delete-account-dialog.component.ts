@@ -12,7 +12,7 @@ export class DeleteAccountDialogComponent {
     constructor(private principal: Principal, public account: AccountService, public activeModal: NgbActiveModal, private router: Router) {}
 
     clear() {
-        this.activeModal.dismiss('cancel');
+        this.activeModal.dismiss();
     }
 
     confirmDelete() {

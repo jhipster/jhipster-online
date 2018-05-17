@@ -13,7 +13,7 @@ export class AccountService {
     }
 
     delete(): Observable<any> {
-        return this.http.delete(SERVER_API_URL + 'api/account/');
+        return this.http.delete(SERVER_API_URL + 'api/account');
     }
 
     save(account: any): Observable<HttpResponse<any>> {

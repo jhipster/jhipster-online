@@ -75,12 +75,14 @@
                 <button type="submit" [disabled]="settingsForm.form.invalid" class="btn btn-primary">Save</button>
             </form>
             <hr>
-            <div>
-                <i>You can delete your JHipster Online here.
-                    If you change your mind, you will not be able to recover it.</i>
+            <div class="alert alert-warning">
+                <i>You can delete your JHipster Online account but keep in mind that this action is definitive.</i>
                     <ul>
                         <li>
-                            <i>You will lose all your content and data in your account, like jdls</i>
+                            <i>You will lose all your content and data in your account. This includes all your saved JDLs</i>
+                        </li>
+                        <li>
+                            <i>Your already generated Git project will remain untouched</i>
                         </li>
                         <li>
                             <i>You will not be able to use JHipster Online services anymore with this account</i>
