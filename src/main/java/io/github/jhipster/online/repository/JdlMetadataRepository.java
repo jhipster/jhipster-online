@@ -22,6 +22,7 @@ import io.github.jhipster.online.domain.JdlMetadata;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
 import java.util.List;
 
 /**
@@ -34,4 +35,5 @@ public interface JdlMetadataRepository extends JpaRepository<JdlMetadata, String
     @Query("select jdl_metadata from JdlMetadata jdl_metadata where jdl_metadata.user.login = ?#{principal.username}")
     List<JdlMetadata> findByUserIsCurrentUser();
 
+    void deleteAllByUserLogin(String userLogin);
 }

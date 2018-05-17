@@ -262,6 +262,11 @@ public class UserService {
         return orgs;
     }
 
+    @Transactional
+    public void deleteOrganizations(String login) {
+        githubService.deleteAllOrganizationsForCurrentUser(login);
+    }
+
     @Transactional(readOnly = true)
     public List getProjects(String organizationName) {
         Collection<GithubOrganization> organizations = this.getOrganizations();

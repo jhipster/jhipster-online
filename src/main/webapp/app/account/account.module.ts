@@ -16,6 +16,7 @@ import {
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
+    DeleteAccountDialogComponent,
     accountState
 } from './';
 
@@ -28,8 +29,10 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SettingsComponent
+        SettingsComponent,
+        DeleteAccountDialogComponent
     ],
+    entryComponents: [DeleteAccountDialogComponent],
     providers: [Register, ActivateService, PasswordService, PasswordResetInitService, PasswordResetFinishService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

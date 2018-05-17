@@ -74,7 +74,20 @@
                 </div>
                 <button type="submit" [disabled]="settingsForm.form.invalid" class="btn btn-primary">Save</button>
             </form>
+            <hr>
+            <div>
+                <i>You can delete your JHipster Online here.
+                    If you change your mind, you will not be able to recover it.</i>
+                    <ul>
+                        <li>
+                            <i>You will lose all your content and data in your account, like jdls</i>
+                        </li>
+                        <li>
+                            <i>You will not be able to use JHipster Online services anymore with this account</i>
+                        </li>
+                    </ul>
+                <button type="button" (click)="deleteAccount()" class="btn btn-danger">Delete my JHipster Online account </button>
+            </div>
         </div>
     </div>
-
 </div>

@@ -137,4 +137,7 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    github:
+        clientId: 2ddfab8a2a18e857fb36
+        clientSecret: f59b459b62c2a0f7e897a0ee4ff353fd1d17548d

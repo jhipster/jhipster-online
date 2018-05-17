@@ -7,13 +7,12 @@ import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.AuthorityRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.service.MailService;
+import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.UserDTO;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import io.github.jhipster.online.web.rest.vm.KeyAndPasswordVM;
 import io.github.jhipster.online.web.rest.vm.ManagedUserVM;
-import io.github.jhipster.online.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import org.junit.Before;
@@ -75,6 +74,15 @@ public class AccountResourceIntTest {
     @Mock
     private MailService mockMailService;
 
+    @Mock
+    private JdlMetadataService mockJdlMetadataService;
+
+    @Mock
+    private JdlService mockJdlService;
+
+    @Mock
+    private GithubService mockGithubService;
+
     private MockMvc restMvc;
 
     private MockMvc restUserMockMvc;
@@ -84,10 +92,10 @@ public class AccountResourceIntTest {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, mockJdlMetadataService, mockJdlService, mockGithubService);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, mockJdlMetadataService, mockJdlService, mockGithubService);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)

@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import io.github.jhipster.online.config.ApplicationProperties;
@@ -144,5 +145,15 @@ public class JdlService {
 
     public String kebabCaseJdlName(JdlMetadata jdlMetadata) {
         return jdlMetadata.getName().toLowerCase().replace(" ", "-");
+    }
+
+    /**
+     *  Delete all the jdlMetadata.
+     *
+     */
+    @Transactional
+    public void deleteAllForJdlMetadata(String id) {
+        log.debug("Request to delete all JdlMetadata for the given jdlMetadata");
+        jdlRepository.deleteAllByJdlMetadataId(id);
     }
 }
