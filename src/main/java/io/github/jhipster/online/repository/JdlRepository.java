@@ -33,4 +33,6 @@ import io.github.jhipster.online.domain.Jdl;
 public interface JdlRepository extends JpaRepository<Jdl, String> {
 
     Optional<Jdl> findOneByJdlMetadataId(String id);
+
+    void deleteAllByJdlMetadataId(String id);
 }

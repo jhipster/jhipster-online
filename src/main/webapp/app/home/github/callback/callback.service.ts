@@ -17,17 +17,14 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import {Http, Response, ResponseContentType} from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class GithubCallbackService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http) { }
-
-    saveToken(token: string): Observable<Response> {
-        return this.http.post('api/github/save-token',
-            token,
-            { responseType: ResponseContentType.Text });
+    saveToken(token: string): Observable<HttpResponse<string>> {
+        return this.http.post<string>('api/github/save-token', token, { observe: 'response' });
     }
 }

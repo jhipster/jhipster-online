@@ -1,13 +1,26 @@
-
 @import 'bootstrap-variables';
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
 
-body, h1, h2, h3, h4 {
+body,
+h1,
+h2,
+h3,
+h4 {
     font-weight: 300;
 }
 
+a {
+    color: #533f03;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #533f03;
+    font-weight: bold;
+}
 
 /* ==========================================================================
 Browser Upgrade Prompt
@@ -24,12 +37,13 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid green;
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid green;
 }
 
-.ng-invalid:not(form)  {
-  border-left: 5px solid red;
+.ng-invalid:not(form) {
+    border-left: 5px solid red;
 }
 
 /* other generic styles */
@@ -59,7 +73,7 @@ Generic styles
 
 .break {
     white-space: normal;
-    word-break:break-all;
+    word-break: break-all;
 }
 
 .readonly {
@@ -67,58 +81,19 @@ Generic styles
     opacity: 1;
 }
 
-.btn {
-    margin: 0 5px;
-}
-
-.btn-rounded {
-    background: 0 0;
-    transition: all .3s ease-in-out;
-    border: solid 3px $brand-primary;
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 45px;
-    // &:hover, &:focus, &:active, &.active {
-    //     border: solid 3px darken($brand-primary, 3);
-    //     color: lighten($brand-primary, 10);
-    //     background: #fff;
-    // }
-}
-
-.btn-social {
-    font-size: 20px;
-}
-
 .footer {
-    border-top: 1px solid rgba(0,0,0,.125);
-    .flat-blue a.btn-social {
-        color: #fff;
-    }
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
-
-.list-inline {
-    padding-left: 0;
-    margin-left: -5px;
-    list-style: none;
-    > li {
-        display: inline-block;
-        padding-right: 5px;
-        padding-left: 5px;
-    }
-}
-
 
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */
 a:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-.hand, [jhisortby] {
+.hand,
+[jhisortby] {
     cursor: pointer;
 }
 
@@ -128,7 +103,7 @@ Custom alerts for notification
 .alerts {
     .alert {
         text-overflow: ellipsis;
-        pre{
+        pre {
             background: none;
             border: none;
             font: inherit;
@@ -169,7 +144,7 @@ entity tables helpers
 ========================================================================== */
 
 /* Remove Bootstrap padding from the element
-   http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
+http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
 @mixin no-padding($side) {
     @if $side == 'all' {
         .no-padding {
@@ -181,25 +156,27 @@ entity tables helpers
         }
     }
 }
-@include no-padding("left");
-@include no-padding("right");
-@include no-padding("top");
-@include no-padding("bottom");
-@include no-padding("all");
+@include no-padding('left');
+@include no-padding('right');
+@include no-padding('top');
+@include no-padding('bottom');
+@include no-padding('all');
 
 /* bootstrap 3 input-group 100% width
-   http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-.width-min { width: 1% !important; }
+http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
+.width-min {
+    width: 1% !important;
+}
 
 /* Makes toolbar not wrap on smaller screens
-   http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
+http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row;
-   flex-direction: row;
-   -webkit-justify-content: flex-end;
-   justify-content: flex-end;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 /* ==========================================================================
@@ -227,18 +204,28 @@ entity detail page css
 /* ==========================================================================
 ui bootstrap tweaks
 ========================================================================== */
-.nav, .pagination, .carousel, .panel-title a {
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
     cursor: pointer;
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
-.uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
+.uib-datepicker-popup > li > div.uib-datepicker > table .btn-default {
     border: 0;
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
-.uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
+.uib-datepicker-popup > li > div.uib-datepicker > table:focus {
     outline: none;
+}
+
+.thread-dump-modal-lock {
+    max-width: 450px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

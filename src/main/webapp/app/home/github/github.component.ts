@@ -16,36 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {GithubService} from './github.service';
+import { Component, OnInit } from '@angular/core';
+import { GithubService } from './github.service';
 
 @Component({
     selector: 'jhi-github',
     templateUrl: './github.component.html',
-    styleUrls: [
-        'github.scss'
-    ]
-
+    styleUrls: ['github.scss']
 })
 export class GithubComponent implements OnInit {
-
     clientId;
 
     gitHubConfigured = false;
 
-    constructor(
-        private githubService: GithubService
-    ) {
-    }
+    constructor(private githubService: GithubService) {}
 
     ngOnInit(): void {
-        this.clientId = this.githubService.clientId().subscribe(
-            (clientId: string)  => {
-                this.clientId = clientId;
-            }
-        );
-        this.githubService.getOrganizations().subscribe((orgs) => {
-            this.gitHubConfigured = true;
-        });
+        this.clientId = this.githubService.clientId().subscribe(data => (this.clientId = data));
+        this.githubService.getOrganizations().subscribe(() => (this.gitHubConfigured = true));
     }
 }

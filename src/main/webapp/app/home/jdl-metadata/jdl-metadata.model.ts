@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BaseEntity, User } from './../../shared';
+import { User } from 'app/core';
 
-export class JdlMetadata implements BaseEntity {
+export class JdlMetadata {
     constructor(
         public id?: string,
         public key?: string,

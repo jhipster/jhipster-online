@@ -26,12 +26,9 @@ import { GithubOrganizationModel } from '../generator/github.organization.model'
 @Component({
     selector: 'jhi-generator',
     templateUrl: './ci-cd.component.html',
-    styleUrls: [
-        'ci-cd.scss'
-    ]
+    styleUrls: ['ci-cd.scss']
 })
 export class CiCdComponent implements OnInit {
-
     submitted = false;
 
     ciCdId = '';
@@ -48,68 +45,70 @@ export class CiCdComponent implements OnInit {
 
     baseName: String;
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     ciCdTool = 'travis';
 
-    constructor(
-        private modalService: NgbModal,
-        private githubService: GithubService,
-        private ciCdService: CiCdService
-    ) {}
+    constructor(private modalService: NgbModal, private githubService: GithubService, private ciCdService: CiCdService) {}
 
     ngOnInit() {
         this.updateGitHubOrganizations();
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
-        this.githubService.refreshGithub().subscribe(() => {
-            this.updateGitHubOrganizations();
-        }, () => {
-            this.githubRefresh = '';
-        });
+        this.githubRefresh = true;
+        this.githubService.refreshGithub().subscribe(
+            () => {
+                this.updateGitHubOrganizations();
+            },
+            () => {
+                this.githubRefresh = false;
+            }
+        );
     }
 
     updateGitHubOrganizations() {
-        this.githubRefresh = '';
-        this.githubService.getOrganizations().subscribe((orgs) => {
-            this.organizations = orgs;
-            this.gitHubOrganization = orgs[0].name;
-            this.gitHubConfigured = true;
-            this.updateGitHubProjects(this.gitHubOrganization);
-        }, () => {
-            this.gitHubConfigured = false;
-            this.githubRefresh = '';
-        });
+        this.githubRefresh = false;
+        this.githubService.getOrganizations().subscribe(
+            orgs => {
+                this.organizations = orgs;
+                this.gitHubOrganization = orgs[0].name;
+                this.gitHubConfigured = true;
+                this.updateGitHubProjects(this.gitHubOrganization);
+            },
+            () => {
+                this.gitHubConfigured = false;
+                this.githubRefresh = false;
+            }
+        );
     }
 
     updateGitHubProjects(organizationName: String) {
-        this.githubService.getProjects(organizationName).subscribe((projects) => {
-            this.projects = projects;
-            this.gitHubProject = projects[0];
-            this.gitHubConfigured = true;
-        }, () => {
-            this.gitHubConfigured = false;
-            this.githubRefresh = '';
-        });
+        this.githubService.getProjects(organizationName).subscribe(
+            projects => {
+                this.projects = projects;
+                this.gitHubProject = projects[0];
+                this.gitHubConfigured = true;
+            },
+            () => {
+                this.gitHubConfigured = false;
+                this.githubRefresh = false;
+            }
+        );
     }
 
     applyCiCd() {
-        this.ciCdService.addCiCd(this.gitHubOrganization, this.gitHubProject, this.ciCdTool)
-            .subscribe(
-                (res) => {
-                    this.openOutputModal(res.text());
-                    this.submitted = false;
-                } ,
-                (error) => console.log('Error configuring CI/CD.')
-            );
+        this.ciCdService.addCiCd(this.gitHubOrganization, this.gitHubProject, this.ciCdTool).subscribe(
+            res => {
+                this.openOutputModal(res);
+                this.submitted = false;
+            },
+            () => console.log('Error configuring CI/CD.')
+        );
     }
 
     openOutputModal(ciCdId: String) {
-        const modalRef =
-            this.modalService.open(CiCdOutputDialogComponent, { size: 'lg', backdrop: 'static'})
-                .componentInstance;
+        const modalRef = this.modalService.open(CiCdOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.ciCdId = ciCdId;
         modalRef.ciCdTool = this.ciCdTool;

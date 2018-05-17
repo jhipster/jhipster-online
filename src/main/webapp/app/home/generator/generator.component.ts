@@ -27,12 +27,9 @@ import { GithubOrganizationModel } from './github.organization.model';
 @Component({
     selector: 'jhi-generator',
     templateUrl: './generator.component.html',
-    styleUrls: [
-        'generator.scss'
-    ]
+    styleUrls: ['generator.scss']
 })
 export class GeneratorComponent implements OnInit {
-
     model: JHipsterConfigurationModel;
 
     submitted = false;
@@ -43,7 +40,7 @@ export class GeneratorComponent implements OnInit {
 
     organizations: GithubOrganizationModel[];
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -88,35 +85,37 @@ export class GeneratorComponent implements OnInit {
         ];
     }
 
-    constructor(
-        private modalService: NgbModal,
-        private generatorService: GeneratorService,
-        private githubService: GithubService
-    ) {
+    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private githubService: GithubService) {
         this.newGenerator();
     }
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
-        this.githubRefresh = 'fa-spin';
-        this.githubService.getOrganizations().subscribe((orgs) => {
-            this.organizations = orgs;
-            this.model.gitHubOrganization = orgs[0].name;
-            this.githubConfigured = true;
-            this.githubRefresh = '';
-        }, () => {
-            this.githubConfigured = false;
-            this.githubRefresh = '';
-        });
+        this.githubRefresh = true;
+        this.githubService.getOrganizations().subscribe(
+            orgs => {
+                this.organizations = orgs;
+                this.model.gitHubOrganization = orgs[0].name;
+                this.githubConfigured = true;
+                this.githubRefresh = false;
+            },
+            () => {
+                this.githubConfigured = false;
+                this.githubRefresh = false;
+            }
+        );
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
-        this.githubService.refreshGithub().subscribe(() => {
-            this.githubRefresh = '';
-        }, () => {
-            this.githubRefresh = '';
-        });
+        this.githubRefresh = true;
+        this.githubService.refreshGithub().subscribe(
+            () => {
+                this.githubRefresh = false;
+            },
+            () => {
+                this.githubRefresh = false;
+            }
+        );
     }
 
     checkModelBeforeSubmit() {
@@ -132,7 +131,7 @@ export class GeneratorComponent implements OnInit {
             this.model.websocket = 'spring-websocket';
         }
         if (this.model.searchEngine) {
-            this.model.searchEngine =  'elasticsearch';
+            this.model.searchEngine = 'elasticsearch';
         }
         if (this.model.enableSwaggerCodegen) {
             this.model.enableSwaggerCodegen = 'true';
@@ -150,33 +149,32 @@ export class GeneratorComponent implements OnInit {
 
     onSubmit() {
         this.checkModelBeforeSubmit();
-        this.generatorService.generateOnGitHub(this.model)
-            .subscribe(
-                (res) => {
-                    this.openOutputModal(res.text());
-                    this.submitted = false;
-                } ,
-                (error) => console.log('Error generating the application.')
-            );
+        this.generatorService.generateOnGitHub(this.model).subscribe(
+            res => {
+                this.openOutputModal(res);
+                this.submitted = false;
+            },
+            error => {
+                console.error('Error generating the application.');
+                console.error(error);
+            }
+        );
     }
 
     onSubmitDownload() {
         this.checkModelBeforeSubmit();
-        this.generatorService.download(this.model)
-            .subscribe(
-                (data) => this.downloadFile(data.blob()),
-                (error) => console.log('Error downloading the file.'),
-                () => {
-                    console.log('Application downloaded');
-                    this.submitted = false;
-                }
-            );
+        this.generatorService.download(this.model).subscribe(
+            data => this.downloadFile(data.body),
+            error => console.log(error),
+            () => {
+                console.log('Application downloaded');
+                this.submitted = false;
+            }
+        );
     }
 
     openOutputModal(applicationId: String) {
-        const modalRef =
-            this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static'})
-                .componentInstance;
+        const modalRef = this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applicationId = applicationId;
         modalRef.gitHubOrganization = this.model.gitHubOrganization;

@@ -62,7 +62,7 @@ public class GithubService {
      */
     @Transactional
     public void syncUserFromGithub() throws Exception {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
         if (user.isPresent()) {
             this.getSyncedUserFromGitHub(user.get());
         } else {
@@ -83,9 +83,7 @@ public class GithubService {
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
         Set<GithubOrganization> organizations = user.getGithubOrganizations();
-        organizations.forEach(organization -> {
-            githubOrganizationRepository.delete(organization);
-        });
+        organizations.forEach(githubOrganizationRepository::delete);
         organizations.clear();
         // Sync the current user's projects
         GithubOrganization myOrganization = new GithubOrganization();
@@ -181,5 +179,15 @@ public class GithubService {
             throw new Exception("GitHub is not configured.");
         }
         return GitHub.connectUsingOAuth(user.getGithubOAuthToken());
+    }
+
+    /**
+     *  Delete all the github organizations.
+     *
+     */
+    @Transactional
+    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
+        log.debug("Request to delete all github organizations for current user");
+        githubOrganizationRepository.deleteAllByUserLogin(userLogin);
     }
 }

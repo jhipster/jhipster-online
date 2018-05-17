@@ -1,3 +1,4 @@
 [submodule "src/main/resources/static/jdl-studio"]
 	path = src/main/resources/static/jdl-studio
 	url = https://github.com/jhipster/jdl-studio.git
+	branch = jhipster-online

@@ -19,7 +19,7 @@
 import { Route } from '@angular/router';
 
 import { CiCdComponent } from './ci-cd.component';
-import { UserRouteAccessService } from '../../shared';
+import { UserRouteAccessService } from 'app/core';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 
 export const CI_CD_ROUTE: Route = {

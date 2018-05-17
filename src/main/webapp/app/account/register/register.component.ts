@@ -1,33 +1,16 @@
-/**
- * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
- * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
+import { LoginModalService } from 'app/core';
 import { Register } from './register.service';
-import { LoginModalService } from '../../shared';
 
 @Component({
     selector: 'jhi-register',
     templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
-
     confirmPassword: string;
     doNotMatch: string;
     error: string;
@@ -42,8 +25,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         private registerService: Register,
         private elementRef: ElementRef,
         private renderer: Renderer
-    ) {
-    }
+    ) {}
 
     ngOnInit() {
         this.success = false;
@@ -63,9 +45,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             this.errorUserExists = null;
             this.errorEmailExists = null;
             this.registerAccount.langKey = 'en';
-            this.registerService.save(this.registerAccount).subscribe(() => {
-                this.success = true;
-            }, (response) => this.processError(response));
+            this.registerService.save(this.registerAccount).subscribe(
+                () => {
+                    this.success = true;
+                },
+                response => this.processError(response)
+            );
         }
     }
 
@@ -73,11 +58,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this.modalRef = this.loginModalService.open();
     }
 
-    private processError(response) {
+    private processError(response: HttpErrorResponse) {
         this.success = null;
-        if (response.status === 400 && response._body === 'login already in use') {
+        if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
             this.errorUserExists = 'ERROR';
-        } else if (response.status === 400 && response._body === 'email address already in use') {
+        } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
             this.errorEmailExists = 'ERROR';
         } else {
             this.error = 'ERROR';

@@ -83,7 +83,7 @@ public class JdlMetadataResource {
     public List<JdlMetadata> getAllJdlMetadata() {
         log.debug("REST request to get all JdlMetadata");
         return jdlMetadataService.findAllForCurrentUser();
-        }
+    }
 
     /**
      * GET  /jdl-metadata/:id : get the "id" jdlMetadata.
@@ -95,7 +95,7 @@ public class JdlMetadataResource {
     @Timed
     public ResponseEntity<JdlMetadata> getJdlMetadata(@PathVariable String id) {
         log.debug("REST request to get JdlMetadata : {}", id);
-        JdlMetadata jdlMetadata = jdlMetadataService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(jdlMetadata));
+        Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(jdlMetadata.get()));
     }
 }

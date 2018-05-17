@@ -17,39 +17,31 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import {Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { GithubOrganizationModel } from '../generator/github.organization.model';
 
 @Injectable()
 export class GithubService {
-
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) {}
 
     clientId(): Observable<string> {
-        return this.http.get('api/github/client-id').map((res: Response) => {
-            return res.text();
-        });
+        return this.http.get('api/github/client-id', { responseType: 'text' });
     }
 
-    saveGithubOAuthToken(token: string): Observable<Response> {
-        return this.http.post('api/github/save-token',
-            token);
+    saveGithubOAuthToken(token: string): Observable<any> {
+        return this.http.post<any>('api/github/save-token', token);
     }
 
-    refreshGithub(): Observable<Response> {
-        return this.http.post('api/github/refresh', '');
+    refreshGithub(): Observable<any> {
+        return this.http.post<any>('api/github/refresh', '');
     }
 
     getOrganizations(): Observable<GithubOrganizationModel[]> {
-        return this.http.get('api/github/organizations').map((res: Response) => {
-            return res.json();
-        });
+        return this.http.get<GithubOrganizationModel[]>('api/github/organizations').map((res: GithubOrganizationModel[]) => res);
     }
 
     getProjects(organizationName: String): Observable<String[]> {
-        return this.http.get('api/github/organizations/' + organizationName + '/projects').map((res: Response) => {
-            return res.json();
-        });
+        return this.http.get<string[]>('api/github/organizations/' + organizationName + '/projects').map((res: string[]) => res);
     }
 }

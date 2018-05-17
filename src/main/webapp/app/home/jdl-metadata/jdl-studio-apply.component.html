@@ -50,7 +50,12 @@
                     <div class="form-group">
                         <label>&nbsp;</label><br/>
                         <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                            <span class="fa fa-refresh" [ngClass]="[githubRefresh]"></span>
+                            <span *ngIf="githubRefresh">
+                                <i class="fa fa-sync fa-spin"></i>
+                            </span>
+                            <span *ngIf="!githubRefresh">
+                                <i class="fa fa-sync"></i>
+                            </span>
                             <span>
                             Refresh
                             </span>
@@ -61,14 +66,14 @@
         </div>
         <p class="text-center">
             <button class="btn btn-primary" (click)="applyJdl()">
-            <span>
-            Yes, apply this JDL model
-            </span>
+                <span>
+                    Yes, apply this JDL model
+                </span>
             </button>
             <button class="btn btn-dark" [routerLink]="['/ci-cd']">
-            <span>
-            No, cancel this action
-            </span>
+                <span>
+                    No, cancel this action
+                </span>
             </button>
         </p>
     </div>

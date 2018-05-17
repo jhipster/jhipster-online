@@ -17,22 +17,18 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Http, Response, ResponseContentType } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class CiCdService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http) { }
-
-    addCiCd(organizationName: String, projectName: String, ciCdTool: String): Observable<Response> {
-        return this.http.post('api/ci-cd/' + organizationName + '/' + projectName + '/' + ciCdTool,
-            { responseType: ResponseContentType.Text });
+    addCiCd(organizationName: String, projectName: String, ciCdTool: String): Observable<string> {
+        return this.http.post('api/ci-cd/' + organizationName + '/' + projectName + '/' + ciCdTool, {}, { responseType: 'text' });
     }
 
-    getCiCdData(ciCdId: String): Observable<String> {
-        return this.http.get('api/ci-cd-logs/' + ciCdId).map((res: Response) => {
-            return res.text();
-        });
+    getCiCdData(ciCdId: String): Observable<string> {
+        return this.http.get('api/ci-cd-logs/' + ciCdId, { responseType: 'text' });
     }
 }

@@ -17,25 +17,17 @@
  * limitations under the License.
  */
 import { Component } from '@angular/core';
-import {Principal} from '../../shared/auth/principal.service';
+import { Principal } from 'app/core/auth/principal.service';
 
 @Component({
     selector: 'jhi-welcome',
     templateUrl: './welcome.component.html',
-    styleUrls: [
-        'welcome.scss'
-    ]
-
+    styleUrls: ['welcome.scss']
 })
 export class WelcomeComponent {
-
-    constructor(
-        private principal: Principal
-    ) {
-    }
+    constructor(private principal: Principal) {}
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
     }
-
 }

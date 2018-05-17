@@ -17,30 +17,27 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Http, Response, ResponseContentType } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 
 @Injectable()
 export class GeneratorService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: Http) { }
-
-    download(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<Response> {
-        return this.http.post('api/download-application',
-            { 'generator-jhipster': jhipsterConfigurationModel},
-            { responseType: ResponseContentType.Blob });
+    download(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<HttpResponse<Blob>> {
+        return this.http.post(
+            'api/download-application',
+            { 'generator-jhipster': jhipsterConfigurationModel },
+            { observe: 'response', responseType: 'blob' }
+        );
     }
 
-    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<Response> {
-        return this.http.post('api/generate-application',
-            { 'generator-jhipster': jhipsterConfigurationModel},
-            { responseType: ResponseContentType.Text });
+    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<string> {
+        return this.http.post('api/generate-application', { 'generator-jhipster': jhipsterConfigurationModel }, { responseType: 'text' });
     }
 
-    getGenerationData(applicationId: String): Observable<String> {
-        return this.http.get('api/generate-application/' + applicationId).map((res: Response) => {
-            return res.text();
-        });
+    getGenerationData(applicationId: String): Observable<string> {
+        return this.http.get('api/generate-application/' + applicationId, { responseType: 'text' });
     }
 }

@@ -23,11 +23,11 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="jhi_key" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
@@ -39,11 +39,11 @@
             </column>
 
             <column name="is_public" type="bit">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="user_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

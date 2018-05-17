@@ -29,4 +29,5 @@ import io.github.jhipster.online.domain.GithubOrganization;
 @Repository
 public interface GithubOrganizationRepository extends JpaRepository<GithubOrganization, Long> {
 
+    void deleteAllByUserLogin(String userLogin);
 }

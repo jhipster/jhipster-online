@@ -1,11 +1,11 @@
 <form #generatorForm="ngForm">
 
-    <h2><span class="fa fa-cloud-upload"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitHubConfigured">
         <p>
-            <span class="fa fa-warning"></span>&nbsp;
+            <span class="fas fa-exclamation-triangle"></span>&nbsp;
             <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
         </p>
         <p class="text-center">
@@ -15,7 +15,7 @@
     </ngb-alert>
     <div *ngIf="gitHubConfigured">
         <p>
-            <span class="fa fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
+            <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
             Git repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
             master branch.</i>
         </p>
@@ -78,7 +78,12 @@
                     <div class="form-group">
                         <label>&nbsp;</label><br/>
                         <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                            <span class="fa fa-refresh" [ngClass]="[githubRefresh]"></span>
+                            <span *ngIf="githubRefresh">
+                                <i class="fas fa-sync fa-spin"></i>
+                            </span>
+                            <span *ngIf="!githubRefresh">
+                                <i class="fas fa-sync"></i>
+                            </span>
                             <span>
                             Refresh
                             </span>
