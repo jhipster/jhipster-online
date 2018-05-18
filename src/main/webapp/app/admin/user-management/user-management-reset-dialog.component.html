@@ -15,15 +15,16 @@
         <p>The user will be able to reset his password with this link.</p>
         <form>
             <label for="reset-link"></label>
-            <input type="text" id="reset-link" value="{{resetLink}}" size="50" readonly #resetLinkInput />
+            <input type="text" id="reset-link" [value]="resetLink" size="50" readonly #resetLinkInput />
+            <button (click)="generateResetLink(user.email)"><i class="fas fa-sync"></i>Generate link</button>
         </form>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" [ngxClipboard]="resetLinkInput" (cbOnSuccess)="showClipboardSuccess = true" (cbOnError)="showClipboardError = true">
-            <span class="fas fa-copy"></span>&nbsp;<span>Copy to clipboard</span>
+            <i class="fas fa-copy"></i>&nbsp;<span>Copy to clipboard</span>
         </button>
         <button type="submit" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <span class="fas fa-times"></span>&nbsp;<span>Close</span>
+            <i class="fas fa-times"></i>&nbsp;<span>Close</span>
         </button>
     </div>
 </form>

@@ -19,12 +19,11 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
         private elementRef: ElementRef,
         private renderer: Renderer,
         private passwordResetService: PasswordResetService
-    ) {
-        this.areEmailsEnabled = true;
-    }
+    ) {}
 
     ngOnInit() {
         this.resetAccount = {};
+        this.areEmailsEnabled = true;
         this.passwordResetService.areMailsEnabled().subscribe(result => (this.areEmailsEnabled = result === 'true'));
     }
 
