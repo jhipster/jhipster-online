@@ -63,7 +63,7 @@ public class AccountResource {
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        if (mailService.areMailsEnabled()) {
+        if (mailService.isServiceEnabled()) {
             mailService.sendActivationEmail(user);
         }
     }

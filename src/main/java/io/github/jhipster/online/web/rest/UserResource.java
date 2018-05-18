@@ -100,7 +100,7 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            if (mailService.areMailsEnabled()) {
+            if (mailService.isServiceEnabled()) {
                 mailService.sendCreationEmail(newUser);
             }
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))

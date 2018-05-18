@@ -27,11 +27,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         private elementRef: ElementRef,
         private renderer: Renderer,
         private passwordResetService: PasswordResetService
-    ) {
-        this.areMailsEnabled = true;
-    }
+    ) {}
 
     ngOnInit() {
+        this.areMailsEnabled = true;
         this.success = false;
         this.registerAccount = {};
         this.passwordResetService.areMailsEnabled().subscribe(result => (this.areMailsEnabled = result === 'true'));

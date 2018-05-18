@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MailResource {
     private final MailService mailService;
 
-
     public MailResource(MailService mailService) {
         this.mailService = mailService;
     }
@@ -19,6 +18,6 @@ public class MailResource {
     @GetMapping("/enabled")
     @Timed
     public boolean areMailsEnabled() {
-        return mailService.areMailsEnabled();
+        return mailService.isServiceEnabled();
     }
 }

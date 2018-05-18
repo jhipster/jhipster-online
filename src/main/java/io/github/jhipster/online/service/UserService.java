@@ -12,7 +12,6 @@ import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.util.RandomUtil;
 import io.github.jhipster.online.service.dto.UserDTO;
 
-import io.github.jhipster.online.web.rest.errors.EmailNotFoundException;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,7 +121,7 @@ public class UserService {
         newUser.setLangKey(userDTO.getLangKey());
 
         // new user is active if mails are disabled
-        newUser.setActivated(!mailService.areMailsEnabled());
+        newUser.setActivated(!mailService.isServiceEnabled());
 
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());

@@ -55,16 +55,9 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
             this.registerChangeInUsers();
         });
 
-        this.passwordResetService.areMailsEnabled().subscribe(
-            result => {
-                this.areMailsEnabled = result === 'true';
-            },
-            error => {
-                console.error(error);
-                console.log('Could not retrieve mail configuration, the application will then assume that mails are disabled');
-                this.areMailsEnabled = false;
-            }
-        );
+        this.passwordResetService
+            .areMailsEnabled()
+            .subscribe(result => (this.areMailsEnabled = result === 'true'), () => (this.areMailsEnabled = false));
     }
 
     ngOnDestroy() {
@@ -135,27 +128,11 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     deleteUser(user: User) {
         const modalRef = this.modalService.open(UserMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.user = user;
-        modalRef.result.then(
-            () => {
-                // Left blank intentionally, nothing to do here
-            },
-            () => {
-                // Left blank intentionally, nothing to do here
-            }
-        );
     }
 
     resetPassword(user: User) {
         const modalRef = this.modalService.open(UserMgmtResetDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.user = user;
-        modalRef.result.then(
-            () => {
-                // Left blank intentionally, nothing to do here
-            },
-            () => {
-                // Left blank intentionally, nothing to do here
-            }
-        );
     }
 
     private onSuccess(data, headers) {

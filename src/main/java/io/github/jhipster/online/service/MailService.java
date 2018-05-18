@@ -43,7 +43,7 @@ public class MailService {
 
     private final ApplicationProperties applicationProperties;
 
-    private final boolean areMailsEnabled;
+    private final boolean amIEnabled;
 
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
             MessageSource messageSource, SpringTemplateEngine templateEngine, ApplicationProperties applicationProperties) {
@@ -53,7 +53,7 @@ public class MailService {
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
         this.applicationProperties = applicationProperties;
-        this.areMailsEnabled = isMailServerSetup();
+        this.amIEnabled = isMailServerSetup();
     }
 
     @Async
@@ -110,8 +110,8 @@ public class MailService {
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
     }
 
-    public boolean areMailsEnabled() {
-        return areMailsEnabled;
+    public boolean isServiceEnabled() {
+        return amIEnabled;
     }
 
     private boolean isMailServerSetup() {
