@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
 import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
-import { PasswordResetInitService } from './password-reset-init.service';
+import { PasswordResetInitService } from 'app/account';
+import { PasswordResetService } from 'app/core';
 
 @Component({
     selector: 'jhi-password-reset-init',
@@ -11,11 +12,20 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
     errorEmailNotExists: string;
     resetAccount: any;
     success: string;
+    areEmailsEnabled: boolean;
 
-    constructor(private passwordResetInitService: PasswordResetInitService, private elementRef: ElementRef, private renderer: Renderer) {}
+    constructor(
+        private passwordResetInitService: PasswordResetInitService,
+        private elementRef: ElementRef,
+        private renderer: Renderer,
+        private passwordResetService: PasswordResetService
+    ) {
+        this.areEmailsEnabled = true;
+    }
 
     ngOnInit() {
         this.resetAccount = {};
+        this.passwordResetService.areMailsEnabled().subscribe(result => (this.areEmailsEnabled = result === 'true'));
     }
 
     ngAfterViewInit() {

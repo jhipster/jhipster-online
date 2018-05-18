@@ -13,7 +13,8 @@ import {
     CSRFService,
     AuthServerProvider,
     UserService,
-    UserRouteAccessService
+    UserRouteAccessService,
+    PasswordResetService
 } from './';
 
 @NgModule({
@@ -35,7 +36,8 @@ import {
         AuthServerProvider,
         UserService,
         DatePipe,
-        UserRouteAccessService
+        UserRouteAccessService,
+        PasswordResetService
     ]
 })
 export class JhonlineCoreModule {

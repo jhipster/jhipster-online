@@ -7099,6 +7099,12 @@ ng-jhipster@0.4.7:
     "@ngx-translate/core" "^8.0.0"
     "@ngx-translate/http-loader" "^2.0.0"
 
+ngx-clipboard@10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-clipboard/-/ngx-clipboard-10.0.0.tgz#1facba48db2ffe72f0f7975a50ad6abe1429373a"
+  dependencies:
+    ngx-window-token "0.0.4"
+
 ngx-cookie@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ngx-cookie/-/ngx-cookie-2.0.1.tgz#031d8938bf9026954356b3b3ae668e2e1964e584"
@@ -7110,6 +7116,10 @@ ngx-infinite-scroll@0.5.1:
 ngx-webstorage@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-2.0.1.tgz#232446262241e8fd0d794a03821c0b5e28459295"
+
+ngx-window-token@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/ngx-window-token/-/ngx-window-token-0.0.4.tgz#47e7aaa465411c4ab5f7ba17601bc593c956c736"
 
 nice-try@^1.0.4:
   version "1.0.4"

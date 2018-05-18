@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { JhonlineTestModule } from '../../../../test.module';
 import { PasswordResetInitComponent } from 'app/account/password-reset/init/password-reset-init.component';
 import { PasswordResetInitService } from 'app/account/password-reset/init/password-reset-init.service';
+import { PasswordResetService } from 'app/core';
 import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
 
 describe('Component Tests', () => {
@@ -18,6 +19,7 @@ describe('Component Tests', () => {
                 declarations: [PasswordResetInitComponent],
                 providers: [
                     PasswordResetInitService,
+                    PasswordResetService,
                     {
                         provide: Renderer,
                         useValue: {

@@ -4,7 +4,7 @@ import { of } from 'rxjs/observable/of';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { UserMgmtDetailComponent } from 'app/admin/user-management/user-management-detail.component';
-import { User } from 'app/core';
+import { User, PasswordResetService } from 'app/core';
 
 describe('Component Tests', () => {
     describe('User Management Detail Component', () => {
@@ -23,7 +23,8 @@ describe('Component Tests', () => {
                         {
                             provide: ActivatedRoute,
                             useValue: route
-                        }
+                        },
+                        PasswordResetService
                     ]
                 })
                     .overrideTemplate(UserMgmtDetailComponent, '')

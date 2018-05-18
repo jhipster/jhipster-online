@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
-import { Principal, UserService, User } from 'app/core';
-import { PasswordResetService, UserMgmtDeleteDialogComponent, UserMgmtResetDialogComponent } from 'app/admin';
+import { Principal, UserService, User, PasswordResetService } from 'app/core';
+import { UserMgmtDeleteDialogComponent, UserMgmtResetDialogComponent } from 'app/admin';
 
 @Component({
     selector: 'jhi-user-mgmt',

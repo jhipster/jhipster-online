@@ -2,6 +2,7 @@ export * from './auth/csrf.service';
 export * from './auth/state-storage.service';
 export * from './auth/account.service';
 export * from './auth/auth-jwt.service';
+export * from './auth/password-reset.service';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './auth/principal.service';
