@@ -12,16 +12,28 @@ export class UserMgmtResetDialogComponent implements OnInit {
     resetLink: string;
     showClipboardSuccess: boolean;
     showClipboardError: boolean;
+    isGeneratingLink: boolean;
 
     constructor(private passwordResetService: PasswordResetService, public activeModal: NgbActiveModal) {}
 
     ngOnInit() {
+        this.resetLink = '';
         this.showClipboardSuccess = false;
         this.showClipboardError = false;
+        this.isGeneratingLink = false;
     }
 
     generateResetLink(email: string) {
-        this.passwordResetService.getResetLink(email).subscribe(value => (this.resetLink = value));
+        this.isGeneratingLink = true;
+        this.passwordResetService.getResetLink(email).subscribe(
+            value => {
+                this.resetLink = value;
+                this.isGeneratingLink = false;
+            },
+            () => {
+                this.isGeneratingLink = false;
+            }
+        );
     }
 
     clear() {
