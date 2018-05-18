@@ -6,6 +6,9 @@
         </button>
     </div>
     <div class="modal-body">
+        <ngb-alert [dismissible]="false" type="warning" *ngIf="showAlert">
+            <strong>Account deletion is successful!</strong> You will be redirected to homepage in 2 seconds.
+        </ngb-alert>
         <jhi-alert-error></jhi-alert-error>
         <p>Are you sure you want to delete your <i>JHipster Online</i> account?</p>
     </div>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { timer } from 'rxjs/observable/timer';
 
 import { AccountService, Principal } from 'app/core';
 
@@ -8,8 +9,14 @@ import { AccountService, Principal } from 'app/core';
     selector: 'jhi-account-delete-dialog',
     templateUrl: './delete-account-dialog.component.html'
 })
-export class DeleteAccountDialogComponent {
+export class DeleteAccountDialogComponent implements OnInit {
+    showAlert: boolean;
+
     constructor(private principal: Principal, public account: AccountService, public activeModal: NgbActiveModal, private router: Router) {}
+
+    ngOnInit() {
+        this.showAlert = false;
+    }
 
     clear() {
         this.activeModal.dismiss();
@@ -17,11 +24,18 @@ export class DeleteAccountDialogComponent {
 
     confirmDelete() {
         this.account.delete().subscribe(() => {
-            this.activeModal.dismiss(true);
             this.principal.identity().then(() => {
                 this.principal.authenticate(null);
-                this.router.navigate(['/']);
+                this.redirectToHomepage();
             });
+        });
+    }
+
+    redirectToHomepage() {
+        this.showAlert = true;
+        timer(2000).subscribe(() => {
+            this.activeModal.close();
+            this.router.navigate(['/']);
         });
     }
 }
