@@ -20,7 +20,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JdlMetadataService } from './jdl-metadata.service';
-import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
 import { JdlMetadata } from './jdl-metadata.model';
 import { GithubService } from '../github/github.service';
 import { GithubOrganizationModel } from '../generator/github.organization.model';
@@ -33,33 +32,30 @@ import { JdlService } from './jdl.service';
     templateUrl: './jdl-studio-delete.component.html'
 })
 export class DeleteJdlStudioComponent implements OnInit, OnDestroy {
-
     jdlModelName = '';
     jdlId = '';
     private subscription: Subscription;
 
-    constructor(
-        private jdlMetadataService: JdlMetadataService,
-        private route: ActivatedRoute,
-        private router: Router
-    ) {}
+    constructor(private jdlMetadataService: JdlMetadataService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
+        this.subscription = this.route.params.subscribe(params => {
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
                     this.jdlId = jdlMetadata.id;
                     this.jdlModelName = jdlMetadata.name;
                 },
-                (res: ResponseWrapper) => console.log(res)
+                (res: any) => console.log(res)
             );
         });
     }
 
     deleteJdl(jdlId: string) {
-        this.jdlMetadataService.delete(jdlId).subscribe(() => {
+        this.jdlMetadataService.delete(jdlId).subscribe(
+            () => {
                 this.router.navigate(['/design-entities']);
-            }, (error) => {
+            },
+            error => {
                 console.log(error);
                 this.router.navigate(['/design-entities']);
             }
@@ -76,7 +72,6 @@ export class DeleteJdlStudioComponent implements OnInit, OnDestroy {
     templateUrl: './jdl-studio-apply.component.html'
 })
 export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
-
     private subscription: Subscription;
 
     jdlModelName = '';
@@ -97,7 +92,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     baseName: String;
 
-    githubRefresh = '';
+    githubRefresh = false;
 
     constructor(
         private modalService: NgbModal,
@@ -108,64 +103,70 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
+        this.subscription = this.route.params.subscribe(params => {
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
                     this.jdlId = jdlMetadata.id;
                     this.jdlModelName = jdlMetadata.name;
                     this.updateGitHubOrganizations();
                 },
-                (res: ResponseWrapper) => console.log(res)
+                (res: any) => console.log(res)
             );
         });
     }
 
     refreshGithub() {
-        this.githubRefresh = 'fa-spin';
-        this.githubService.refreshGithub().subscribe(() => {
-            this.githubRefresh = '';
-            this.updateGitHubOrganizations();
-        }, () => {
-            this.githubRefresh = '';
-        });
+        this.githubRefresh = true;
+        this.githubService.refreshGithub().subscribe(
+            () => {
+                this.githubRefresh = false;
+                this.updateGitHubOrganizations();
+            },
+            () => {
+                this.githubRefresh = false;
+            }
+        );
     }
 
     updateGitHubOrganizations() {
-        this.githubService.getOrganizations().subscribe((orgs) => {
-            this.organizations = orgs;
-            this.gitHubOrganization = orgs[0].name;
-            this.gitHubConfigured = true;
-            this.updateGitHubProjects(this.gitHubOrganization);
-        }, () => {
-            this.gitHubConfigured = false;
-        });
+        this.githubService.getOrganizations().subscribe(
+            orgs => {
+                this.organizations = orgs;
+                this.gitHubOrganization = orgs[0].name;
+                this.gitHubConfigured = true;
+                this.updateGitHubProjects(this.gitHubOrganization);
+            },
+            () => {
+                this.gitHubConfigured = false;
+            }
+        );
     }
 
     updateGitHubProjects(organizationName: String) {
-        this.githubService.getProjects(organizationName).subscribe((projects) => {
-            this.projects = projects;
-            this.gitHubProject = projects[0];
-            this.gitHubConfigured = true;
-        }, () => {
-            this.gitHubConfigured = false;
-        });
+        this.githubService.getProjects(organizationName).subscribe(
+            projects => {
+                this.projects = projects;
+                this.gitHubProject = projects[0];
+                this.gitHubConfigured = true;
+            },
+            () => {
+                this.gitHubConfigured = false;
+            }
+        );
     }
 
     applyJdl() {
-        this.jdlService.doApplyJdl(this.gitHubOrganization, this.gitHubProject, this.jdlId)
-            .subscribe(
-                (res) => {
-                    this.openOutputModal(res.text());
-                    this.submitted = false;
-                } ,
-                (error) => console.log('Error applying the JDL Model.')
-            );
+        this.jdlService.doApplyJdl(this.gitHubOrganization, this.gitHubProject, this.jdlId).subscribe(
+            res => {
+                this.openOutputModal(res);
+                this.submitted = false;
+            },
+            () => console.log('Error applying the JDL Model.')
+        );
     }
 
     openOutputModal(applyJdlId: String) {
-        const modalRef =
-            this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static'})
-                .componentInstance;
+        const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
         modalRef.gitHubOrganization = this.gitHubOrganization;

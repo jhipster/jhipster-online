@@ -19,5 +19,3 @@
 export * from './home.component';
 export * from './home.route';
 export * from './home.module';
-export * from './generator/generator.component';
-export * from './generator/generator.route';

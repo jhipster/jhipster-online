@@ -17,39 +17,30 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+
 import { JhonlineTestModule } from '../../../test.module';
-import { Principal, AccountService } from '../../../../../../main/webapp/app/shared';
-import { SettingsComponent } from '../../../../../../main/webapp/app/account/settings/settings.component';
-import { MockAccountService } from '../../../helpers/mock-account.service';
-import { MockPrincipal } from '../../../helpers/mock-principal.service';
+import { Principal, AccountService } from 'app/core';
+import { SettingsComponent } from 'app/account/settings/settings.component';
 
 describe('Component Tests', () => {
-
     describe('SettingsComponent', () => {
-
         let comp: SettingsComponent;
         let fixture: ComponentFixture<SettingsComponent>;
         let mockAuth: any;
         let mockPrincipal: any;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [JhonlineTestModule],
-                declarations: [SettingsComponent],
-                providers: [
-                    {
-                        provide: Principal,
-                        useClass: MockPrincipal
-                    },
-                    {
-                        provide: AccountService,
-                        useClass: MockAccountService
-                    },
-                ]
-            }).overrideTemplate(SettingsComponent, '')
-            .compileComponents();
-        }));
+        beforeEach(
+            async(() => {
+                TestBed.configureTestingModule({
+                    imports: [JhonlineTestModule],
+                    declarations: [SettingsComponent],
+                    providers: []
+                })
+                    .overrideTemplate(SettingsComponent, '')
+                    .compileComponents();
+            })
+        );
 
         beforeEach(() => {
             fixture = TestBed.createComponent(SettingsComponent);

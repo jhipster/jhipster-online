@@ -1,10 +1,12 @@
 <div>
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="alert alert-danger" *ngIf="!success">
                 Please use your real e-mail to register: the whole idea of JHipster Online is that it generates applications on your GitHub account. Giving write access to your GitHub account
                 to a disposable e-mail provider is a bad idea.
             </div>
+        </div>
+        <div class="col-md-8">
             <h1>Registration</h1>
 
             <div class="alert alert-success" *ngIf="success">
@@ -27,26 +29,28 @@
                 The password and its confirmation do not match!
             </div>
         </div>
-        <div class="col-md-8 offset-md-2">
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <form name="form" role="form" (ngSubmit)="register()" #registerForm="ngForm" *ngIf="!success">
                 <div class="form-group">
                     <label class="form-control-label" for="login">Username</label>
                     <input type="text" class="form-control" [(ngModel)]="registerAccount.login" id="login" name="login" #login="ngModel" placeholder="Your username"
-                            required minlength="1" maxlength="50" pattern="^[_'.A-Za-z0-9-]*$">
+                           required minlength="1" maxlength="50" pattern="^[_.@A-Za-z0-9-]*$">
                     <div *ngIf="login.dirty && login.invalid">
                         <small class="form-text text-danger" *ngIf="login.errors.required">
                             Your username is required.
                         </small>
                         <small class="form-text text-danger" *ngIf="login.errors.minlength"
-                               >
+                        >
                             Your username is required to be at least 1 character.
                         </small>
                         <small class="form-text text-danger" *ngIf="login.errors.maxlength"
-                               >
+                        >
                             Your username cannot be longer than 50 characters.
                         </small>
                         <small class="form-text text-danger" *ngIf="login.errors.pattern"
-                              >
+                        >
                             Your username can only contain letters and digits.
                         </small>
                     </div>
@@ -54,22 +58,22 @@
                 <div class="form-group">
                     <label class="form-control-label" for="email">Email</label>
                     <input type="email" class="form-control" id="email" name="email" #email="ngModel" placeholder="Your email"
-                            [(ngModel)]="registerAccount.email" minlength=5 maxlength=100 email required>
+                           [(ngModel)]="registerAccount.email" minlength=5 maxlength=254 email required>
                     <div *ngIf="email.dirty && email.invalid">
                         <small class="form-text text-danger" *ngIf="email.errors.required"
-                               >
+                        >
                             Your email is required.
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.invalid"
-                              >
+                        >
                             Your email is invalid.
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.minlength"
-                              >
+                        >
                             Your email is required to be at least 5 characters.
                         </small>
                         <small class="form-text text-danger" *ngIf="email.errors.maxlength"
-                              >
+                        >
                             Your email cannot be longer than 100 characters.
                         </small>
                     </div>
@@ -77,18 +81,18 @@
                 <div class="form-group">
                     <label class="form-control-label" for="password">New password</label>
                     <input type="password" class="form-control" id="password" name="password" #password="ngModel" placeholder="New password"
-                            [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
+                           [(ngModel)]="registerAccount.password" minlength=4 maxlength=50 required>
                     <div *ngIf="password.dirty && password.invalid">
                         <small class="form-text text-danger" *ngIf="password.errors.required"
-                               >
+                        >
                             Your password is required.
                         </small>
                         <small class="form-text text-danger" *ngIf="password.errors.minlength"
-                               >
+                        >
                             Your password is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger" *ngIf="password.errors.maxlength"
-                               >
+                        >
                             Your password cannot be longer than 50 characters.
                         </small>
                     </div>
@@ -97,60 +101,62 @@
                 <div class="form-group">
                     <label class="form-control-label" for="confirmPassword">New password confirmation</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" #confirmPasswordInput="ngModel" placeholder="Confirm the new password"
-                            [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
+                           [(ngModel)]="confirmPassword" minlength=4 maxlength=50 required>
                     <div *ngIf="confirmPasswordInput.dirty && confirmPasswordInput.invalid">
                         <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.required"
-                              >
+                        >
                             Your confirmation password is required.
                         </small>
                         <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.minlength"
-                             >
+                        >
                             Your confirmation password is required to be at least 4 characters.
                         </small>
                         <small class="form-text text-danger" *ngIf="confirmPasswordInput.errors.maxlength"
-                              >
+                        >
                             Your confirmation password cannot be longer than 50 characters.
                         </small>
                     </div>
                 </div>
 
-                <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary">I have read and understood the terms and conditions below, let's create my account</button>
+                <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary">
+                    I have read and understood the terms and conditions below, let's create my account
+                </button>
             </form>
-            <p></p>
+            <br />
             <div *ngIf="!success">
-            <h4>Disclaimer of Warranty</h4>
-            <p>
-                <small>
-                    THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN
-                    WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND,
-                    EITHER
-                    EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-                    PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE
-                    PROGRAM
-                    PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-                </small>
-            </p>
+                <h4>Disclaimer of Warranty</h4>
+                <p>
+                    <small>
+                        THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN
+                        WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND,
+                        EITHER
+                        EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+                        PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE
+                        PROGRAM
+                        PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+                    </small>
+                </p>
 
-            <h4>Limitation of Liability</h4>
-            <p>
-                <small>
-                    IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER
-                    PARTY
-                    WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL,
-                    SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING
-                    BUT
-                    NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-                    FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED
-                    OF
-                    THE POSSIBILITY OF SUCH DAMAGES.
-                </small>
-            </p>
-            <h4>Personal data usage</h4>
-            <p>
-                <small>
-                    When registering, you allow JHipster Online to use your email address to announce JHipster events, new features, or on behalf of relevant organizations.
-                </small>
-            </p>
+                <h4>Limitation of Liability</h4>
+                <p>
+                    <small>
+                        IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER
+                        PARTY
+                        WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL,
+                        SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING
+                        BUT
+                        NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+                        FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED
+                        OF
+                        THE POSSIBILITY OF SUCH DAMAGES.
+                    </small>
+                </p>
+                <h4>Personal data usage</h4>
+                <p>
+                    <small>
+                        When registering, you allow JHipster Online to use your email address to announce JHipster events, new features, or on behalf of relevant organizations.
+                    </small>
+                </p>
             </div>
         </div>
     </div>

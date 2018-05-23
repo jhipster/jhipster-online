@@ -18,14 +18,14 @@
  */
 package io.github.jhipster.online.service.mapper;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import io.github.jhipster.online.domain.Authority;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.service.dto.UserDTO;
+
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Mapper for the entity User and its DTO called UserDTO.
@@ -61,7 +61,7 @@ public class UserMapper {
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
-            if(authorities != null) {
+            if (authorities != null) {
                 user.setAuthorities(authorities);
             }
             return user;

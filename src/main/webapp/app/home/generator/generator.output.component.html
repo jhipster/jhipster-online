@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title"><span class="fa fa-refresh fa-spin" *ngIf="!displayApplicationUrl"></span><span class="fa fa-refresh" *ngIf="displayApplicationUrl"></span>&nbsp;Generating the application</h4>
+    <h4 class="modal-title"><span *ngIf="!displayApplicationUrl"><i class="fas fa-sync fa-spin"></i></span><span *ngIf="displayApplicationUrl"><i class="fas fa-sync"></i></span>&nbsp;Generating the application</h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
             (click)="clear()">&times;
     </button>
@@ -25,6 +25,6 @@ Sending request to the server...
 </div>
 <div class="modal-footer">
     <button type="submit" (click)="clear()" class="btn btn-primary">
-        <span class="fa fa-times-circle-o"></span>&nbsp;Close this window
+        <span class="fas fa-times-circle"></span>&nbsp;Close this window
     </button>
 </div>

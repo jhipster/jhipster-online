@@ -20,20 +20,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
+import { VERSION } from 'app/app.constants';
+import { Principal, LoginModalService, LoginService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
-import { Principal, LoginModalService, LoginService } from '../../shared';
-
-import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [
-        'navbar.scss'
-    ]
+    styleUrls: ['navbar.scss']
 })
 export class NavbarComponent implements OnInit {
-
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -53,7 +49,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+        this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });

@@ -39,7 +39,7 @@ public class JHipsterService {
         if (SystemUtils.IS_OS_LINUX) {
             jhipsterCommand = "timeout 120 ";
         }
-        jhipsterCommand += System.getProperty("user.home") + "/.yarn-global/bin/jhipster";
+        jhipsterCommand += System.getProperty("user.home") + "/.yarn/bin/jhipster";
     }
 
     public void installYarnDependencies(String generationId, File workingDir) throws IOException {

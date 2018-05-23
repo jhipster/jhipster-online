@@ -18,17 +18,16 @@
  */
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.Optional;
-
+import io.github.jhipster.online.config.audit.AuditEventConverter;
+import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.config.audit.AuditEventConverter;
-import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * Service for managing audit events.
@@ -62,7 +61,9 @@ public class AuditEventService {
     }
 
     public Optional<AuditEvent> find(Long id) {
-        return Optional.ofNullable(persistenceAuditEventRepository.findOne(id)).map
-            (auditEventConverter::convertToAuditEvent);
+        return Optional.ofNullable(persistenceAuditEventRepository.findById(id))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(auditEventConverter::convertToAuditEvent);
     }
 }

@@ -1,13 +1,13 @@
 <form #generatorForm="ngForm">
 
-    <h2><span class="fa fa-rocket"></span>&nbsp;<span>Application generation</span></h2>
+    <h2><span class="fas fa-rocket"></span>&nbsp;<span>Application generation</span></h2>
 
     <div class="container">
         <h4>Project configuration</h4>
         <hr>
         <ngb-alert [dismissible]="false" type="danger" *ngIf="!githubConfigured">
             <p>
-                <span class="fa fa-warning"></span>&nbsp;
+                <span class="fas fa-exclamation-triangle"></span>&nbsp;
                 <span><strong>Warning!</strong> To generate your application on GitHub, you must authorize JHipster Online to access your GitHub account.</span>
                 <span>You will only be able to download your application as a Zip file</span>
             </p>
@@ -19,7 +19,7 @@
         <div class="row" *ngIf="githubConfigured">
             <div class="col-md-12">
                 <p>
-                    <span class="fa fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
+                    <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
                     GitHub repository, and will push the generated project in that repository.</i>
                 </p>
             </div>
@@ -29,7 +29,12 @@
                 <div class="form-group">
                     <label for="gitHubOrganization">GitHub organization</label>
                     <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                        <span class="fa fa-refresh" [ngClass]="[githubRefresh]"></span>
+                        <span *ngIf="githubRefresh">
+                            <i class="fas fa-sync fa-spin"></i>
+                        </span>
+                        <span *ngIf="!githubRefresh">
+                            <i class="fas fa-sync"></i>
+                        </span>
                         <span>
                         Refresh
                         </span>
@@ -142,8 +147,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">[BETA] Couchbase</option>
                         <option value="no"
-                                [hidden]="model.applicationType !== 'microservice' &&
-                                          !((model.authenticationType === 'uaa' || model.authenticationType === 'oauth2') && model.applicationType === 'gateway')">No database</option>
+                                [hidden]="((model.authenticationType === 'uaa' || model.authenticationType === 'oauth2') && model.applicationType === 'gateway')">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -251,23 +255,6 @@
                                 <label for="messageBroker">Asynchronous messages using Apache Kafka</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-1">
-                                <input type="checkbox" class="form-control" id="enableSocialSignIn"
-                                       [(ngModel)]="model.enableSocialSignIn" name="enableSocialSignIn"
-                                       #clusteredHttpSession="ngModel"
-                                       [hidden]="model.databaseType === 'cassandra' || model.databaseType === 'couchbase' || model.applicationType !== 'monolith'
-                                       || (model.authenticationType !== 'session' && model.authenticationType !== 'jwt')">
-                            </div>
-                            <div class="col-md-5">
-                                <label for="enableSocialSignIn"
-                                       [hidden]="model.databaseType === 'cassandra' || model.databaseType === 'couchbase' || model.applicationType !== 'monolith'
-                                       || (model.authenticationType !== 'session' && model.authenticationType !== 'jwt')">
-                                    Social login (Google, Facebook, Twitter)</label>
-                            </div>
-                            <div class="col-md-6">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -282,7 +269,7 @@
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
                         <option value="angularX">Angular 5</option>
-                        <option value="angular1" [hidden]="model.authenticationType === 'oauth2'">AngularJS 1.x</option>
+                        <option value="react">React</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -359,7 +346,7 @@
                         </div>
                         <div *ngSwitchCase="false">
                             <span
-                                class="fa fa-refresh fa-spin"></span>
+                                class="fas fa-sync fa-spin"></span>
                             <button type="submit" class="btn btn-primary" [disabled]="true" *ngIf="githubConfigured">
                                 Generate on GitHub
                             </button>

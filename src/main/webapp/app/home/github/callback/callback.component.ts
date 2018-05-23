@@ -16,38 +16,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {GithubCallbackService} from './callback.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { GithubCallbackService } from './callback.service';
 
 @Component({
     selector: 'jhi-github-callback',
     templateUrl: './callback.component.html',
-    styleUrls: [
-        'callback.scss'
-    ]
-
+    styleUrls: ['callback.scss']
 })
 export class CallbackComponent implements OnInit {
-
     token: string;
 
     message: string;
 
-    constructor(
-        private route: ActivatedRoute,
-        private callbackService: GithubCallbackService
-    ) {
-    }
+    constructor(private route: ActivatedRoute, private callbackService: GithubCallbackService) {}
 
     ngOnInit(): void {
         this.message = 'JHipster is not linked to your GitHub repository.';
-        this.route.params
-            .subscribe((params) => {
-                this.token = params['token'];
-                this.callbackService.saveToken(this.token).subscribe(() => {
-                    this.message = 'JHipster is successfully linked to your GitHub repository.';
-                });
+        this.route.params.subscribe(params => {
+            this.token = params['token'];
+            this.callbackService.saveToken(this.token).subscribe(() => {
+                this.message = 'JHipster is successfully linked to your GitHub repository.';
             });
+        });
     }
 }

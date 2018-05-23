@@ -17,47 +17,36 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
 import { JdlMetadata } from './jdl-metadata.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import { createRequestOption } from '../../shared';
 
 @Injectable()
 export class JdlMetadataService {
-
     private metadataUrl = 'api/jdl-metadata';
 
     private jdlUrl = 'api/jdl';
 
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) {}
 
     update(jdlMetadata: JdlMetadata): Observable<JdlMetadata> {
         const copy = this.convert(jdlMetadata);
-        return this.http.put(this.metadataUrl, copy).map((res: Response) => {
-            return res.json();
-        });
+        return this.http.put<JdlMetadata>(this.metadataUrl, copy).map((res: JdlMetadata) => res);
     }
 
     find(id: number): Observable<JdlMetadata> {
-        return this.http.get(`${this.metadataUrl}/${id}`).map((res: Response) => {
-            return res.json();
-        });
+        return this.http.get<JdlMetadata>(`${this.metadataUrl}/${id}`).map((res: JdlMetadata) => res);
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<JdlMetadata[]> {
         const options = createRequestOption(req);
-        return this.http.get(this.metadataUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get<JdlMetadata[]>(this.metadataUrl, { params: options });
     }
 
-    delete(id: string): Observable<Response> {
-        return this.http.delete(`${this.jdlUrl}/${id}`);
-    }
-
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+    delete(id: string): Observable<any> {
+        return this.http.delete<any>(`${this.jdlUrl}/${id}`);
     }
 
     private convert(jdlMetadata: JdlMetadata): JdlMetadata {

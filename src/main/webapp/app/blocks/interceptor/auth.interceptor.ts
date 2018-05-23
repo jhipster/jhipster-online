@@ -17,29 +17,27 @@
  * limitations under the License.
  */
 import { Observable } from 'rxjs/Observable';
-import { RequestOptionsArgs, Response } from '@angular/http';
-import { LocalStorageService, SessionStorageService } from 'ng2-webstorage';
-import { JhiHttpInterceptor } from 'ng-jhipster';
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 
-export class AuthInterceptor extends JhiHttpInterceptor {
+import { SERVER_API_URL } from 'app/app.constants';
 
-    constructor(
-        private localStorage: LocalStorageService,
-        private sessionStorage: SessionStorageService
-    ) {
-        super();
-    }
+export class AuthInterceptor implements HttpInterceptor {
+    constructor(private localStorage: LocalStorageService, private sessionStorage: SessionStorageService) {}
 
-    requestIntercept(options?: RequestOptionsArgs): RequestOptionsArgs {
-        const token = this.localStorage.retrieve('authenticationToken') || this.sessionStorage.retrieve('authenticationToken');
-        if (!!token) {
-            options.headers.append('Authorization', 'Bearer ' + token);
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        if (!request || !request.url || (/^http/.test(request.url) && !(SERVER_API_URL && request.url.startsWith(SERVER_API_URL)))) {
+            return next.handle(request);
         }
-        return options;
-    }
 
-    responseIntercept(observable: Observable<Response>): Observable<Response> {
-        return observable; // by pass
+        const token = this.localStorage.retrieve('authenticationtoken') || this.sessionStorage.retrieve('authenticationtoken');
+        if (!!token) {
+            request = request.clone({
+                setHeaders: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+        }
+        return next.handle(request);
     }
-
 }

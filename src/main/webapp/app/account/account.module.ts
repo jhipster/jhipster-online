@@ -19,7 +19,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from '../shared';
+import { JhonlineSharedModule } from 'app/shared';
 
 import {
     Register,
@@ -38,10 +38,7 @@ import {
 } from './';
 
 @NgModule({
-    imports: [
-        JhonlineSharedModule,
-        RouterModule.forRoot(accountState, { useHash: true })
-    ],
+    imports: [JhonlineSharedModule, RouterModule.forChild(accountState)],
     declarations: [
         ActivateComponent,
         RegisterComponent,
@@ -51,13 +48,7 @@ import {
         PasswordResetFinishComponent,
         SettingsComponent
     ],
-    providers: [
-        Register,
-        ActivateService,
-        PasswordService,
-        PasswordResetInitService,
-        PasswordResetFinishService
-    ],
+    providers: [Register, ActivateService, PasswordService, PasswordResetInitService, PasswordResetFinishService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAccountModule {}

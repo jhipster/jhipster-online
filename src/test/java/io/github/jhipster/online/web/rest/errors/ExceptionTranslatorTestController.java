@@ -21,6 +21,7 @@ package io.github.jhipster.online.web.rest.errors;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -49,7 +50,7 @@ public class ExceptionTranslatorTestController {
 
     @GetMapping("/test/parameterized-error2")
     public void parameterizedError2() {
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("foo", "foo_value");
         params.put("bar", "bar_value");
         throw new CustomParameterizedException("test parameterized error", params);
@@ -68,6 +69,11 @@ public class ExceptionTranslatorTestController {
     @GetMapping("/test/access-denied")
     public void accessdenied() {
         throw new AccessDeniedException("test access denied!");
+    }
+
+    @GetMapping("/test/unauthorized")
+    public void unauthorized() {
+        throw new BadCredentialsException("test authentication failed!");
     }
 
     @GetMapping("/test/response-status")

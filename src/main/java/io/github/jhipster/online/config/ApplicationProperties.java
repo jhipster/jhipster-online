@@ -21,15 +21,13 @@ package io.github.jhipster.online.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Properties specific to JHipster.
- *
+ * Properties specific to Jhonline.
  * <p>
  * Properties are configured in the application.yml file.
- * </p>
+ * See {@link io.github.jhipster.config.JHipsterProperties} for a good example.
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
-
     private final Github github = new Github();
 
     private String tmpFolder = "/tmp";
@@ -47,11 +45,8 @@ public class ApplicationProperties {
     }
 
     public static class Github {
-
         private String clientId;
-
         private String clientSecret;
-
         private String jhipsterBotOauthToken = "";
 
         public String getClientId() {

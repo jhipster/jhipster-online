@@ -19,7 +19,7 @@
 import { Route } from '@angular/router';
 
 import { GithubComponent } from './github.component';
-import {UserRouteAccessService} from '../../shared/auth/user-route-access-service';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GITHUB_ROUTE: Route = {
     path: 'github',

@@ -22,18 +22,17 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { JdlMetadata } from './jdl-metadata.model';
 import { JdlMetadataService } from './jdl-metadata.service';
-import { Principal, ResponseWrapper } from '../../shared';
+import { Principal } from 'app/core/auth/principal.service';
 
 @Component({
     selector: 'jhi-jdl-metadata',
     templateUrl: './jdl-metadata.component.html'
 })
 export class JdlMetadataComponent implements OnInit, OnDestroy {
-
     jdlMetadata: JdlMetadata[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    jdlRefresh: string;
+    jdlRefresh: boolean;
 
     constructor(
         private jdlMetadataService: JdlMetadataService,
@@ -41,24 +40,25 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
+        this.jdlRefresh = false;
     }
 
     loadAll() {
-        this.jdlRefresh = 'fa-spin';
+        this.jdlRefresh = true;
         this.jdlMetadataService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.jdlMetadata = res.json;
-                this.jdlRefresh = '';
+            res => {
+                this.jdlMetadata = res;
+                this.jdlRefresh = false;
             },
-            (res: ResponseWrapper) => {
+            res => {
                 this.onError(res.json);
-                this.jdlRefresh = '';
+                this.jdlRefresh = false;
             }
         );
     }
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInJdlMetadata();
@@ -73,7 +73,7 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInJdlMetadata() {
-        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
     }
 
     private onError(error) {

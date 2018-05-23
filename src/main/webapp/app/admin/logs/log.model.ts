@@ -17,8 +17,5 @@
  * limitations under the License.
  */
 export class Log {
-    constructor(
-        public name: string,
-        public level: string
-    ) { }
+    constructor(public name: string, public level: string) {}
 }

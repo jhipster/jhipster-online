@@ -70,13 +70,13 @@ public class JdlResource {
     @Timed
     public ResponseEntity<JdlVM> getJdlFile(@PathVariable String jdlId) {
         log.debug("Trying to retrieve JDL: {}", jdlId);
-        JdlMetadata jdlMetadata = jdlMetadataService.findOne(jdlId);
+        Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         Optional<Jdl> jdl = this.jdlRepository.findOneByJdlMetadataId(jdlId);
         if (!jdl.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         JdlVM vm = new JdlVM();
-        vm.setName(jdlMetadata.getName());
+        vm.setName(jdlMetadata.get().getName());
         vm.setContent(jdl.get().getContent());
         return ResponseEntity.ok(vm);
     }
@@ -108,9 +108,9 @@ public class JdlResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
-        JdlMetadata jdlMetadata = jdlMetadataService.findOne(jdlId);
+        Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         try {
-            jdlMetadataService.updateJdlContent(jdlMetadata, vm.getContent());
+            jdlMetadataService.updateJdlContent(jdlMetadata.get(), vm.getContent());
         } catch (Exception e) {
             log.info("Could not update the JDL file", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -142,14 +142,14 @@ public class JdlResource {
         @PathVariable String jdlId) {
         log.info("Applying JDL `{}` on GitHub project {}/{}", jdlId, organizationName, projectName);
         User user = userService.getUser();
-        JdlMetadata jdlMetadata = this.jdlMetadataService.findOne(jdlId);
-        String applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata) + "-" +
+        Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
+        String applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" +
             System.nanoTime();
         this.logsService.addLog(applyJdlId, "JDL Model is going to be applied to " + organizationName + "/" +
             projectName);
 
         try {
-            this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata,
+            this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
                 applyJdlId);
         } catch (Exception e) {
             log.error("Error generating application", e);

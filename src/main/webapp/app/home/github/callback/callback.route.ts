@@ -19,7 +19,7 @@
 import { Route } from '@angular/router';
 
 import { CallbackComponent } from './callback.component';
-import {UserRouteAccessService} from '../../../shared/auth/user-route-access-service';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GITHUB_CALLBACK_ROUTE: Route = {
     path: 'github/callback/:token',

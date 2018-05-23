@@ -16,21 +16,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule } from '@angular/core';
-import { MockBackend } from '@angular/http/testing';
-import { Http, BaseRequestOptions } from '@angular/http';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgModule, ElementRef, Renderer } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiDataUtils, JhiDateUtils, JhiEventManager, JhiAlertService, JhiParseLinks } from 'ng-jhipster';
+
+import { Principal, AccountService, LoginModalService } from 'app/core';
+import { MockPrincipal } from './helpers/mock-principal.service';
+import { MockAccountService } from './helpers/mock-account.service';
+import { MockActivatedRoute, MockRouter } from './helpers/mock-route.service';
+import { MockActiveModal } from './helpers/mock-active-modal.service';
+import { MockEventManager } from './helpers/mock-event-manager.service';
 
 @NgModule({
     providers: [
-        MockBackend,
-        BaseRequestOptions,
+        DatePipe,
+        JhiDataUtils,
+        JhiDateUtils,
+        JhiParseLinks,
         {
-            provide: Http,
-            useFactory: (backendInstance: MockBackend, defaultOptions: BaseRequestOptions) => {
-                return new Http(backendInstance, defaultOptions);
-            },
-            deps: [MockBackend, BaseRequestOptions]
+            provide: JhiEventManager,
+            useClass: MockEventManager
+        },
+        {
+            provide: NgbActiveModal,
+            useClass: MockActiveModal
+        },
+        {
+            provide: ActivatedRoute,
+            useValue: new MockActivatedRoute({ id: 123 })
+        },
+        {
+            provide: Router,
+            useClass: MockRouter
+        },
+        {
+            provide: Principal,
+            useClass: MockPrincipal
+        },
+        {
+            provide: AccountService,
+            useClass: MockAccountService
+        },
+        {
+            provide: LoginModalService,
+            useValue: null
+        },
+        {
+            provide: ElementRef,
+            useValue: null
+        },
+        {
+            provide: Renderer,
+            useValue: null
+        },
+        {
+            provide: JhiAlertService,
+            useValue: null
+        },
+        {
+            provide: NgbModal,
+            useValue: null
         }
-    ]
+    ],
+    imports: [HttpClientTestingModule]
 })
 export class JhonlineTestModule {}

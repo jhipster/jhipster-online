@@ -16,34 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {
-    JhonlineSharedLibsModule,
-    JhiAlertComponent,
-    JhiAlertErrorComponent
-} from './';
+import { JhonlineSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent } from './';
 
 @NgModule({
-    imports: [
-        JhonlineSharedLibsModule
-    ],
-    declarations: [
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ],
-    providers: [
-        Title,
-        {
-            provide: LOCALE_ID,
-            useValue: 'en'
-        },
-    ],
-    exports: [
-        JhonlineSharedLibsModule,
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ]
+    imports: [JhonlineSharedLibsModule],
+    declarations: [JhiAlertComponent, JhiAlertErrorComponent],
+    providers: [],
+    exports: [JhonlineSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
 })
 export class JhonlineSharedCommonModule {}
