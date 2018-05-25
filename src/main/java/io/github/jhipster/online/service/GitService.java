@@ -22,18 +22,23 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.client.utils.URIUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
+import org.springframework.web.util.UriUtils;
 
 @Service
 public class GitService {
@@ -46,7 +51,7 @@ public class GitService {
         this.applicationProperties = applicationProperties;
     }
 
-    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName)
+    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
         throws GitAPIException, URISyntaxException {
 
         log.info("Create Git repository for {}", workingDir);
@@ -56,13 +61,18 @@ public class GitService {
         commit(git, workingDir, "Initial application generation by JHipster");
 
         log.debug("Adding remote repository {} / {}", organization, applicationName);
-        URIish urIish = new URIish("https://github.com/" + organization + "/" + applicationName + ".git");
+        URIish urIish = null;
+        if (gitProvider.equals(GitProvider.GITHUB)) {
+            urIish = new URIish("https://github.com/" + organization + "/" + applicationName + ".git");
+        } else if (gitProvider.equals(GitProvider.GITLAB)) {
+            urIish = new URIish("https://gitlab.ippon.fr/"+ organization + "/" + applicationName + ".git").setPass(user.getGitlabOAuthToken());
+        }
         RemoteAddCommand remoteAddCommand = git.remoteAdd();
         remoteAddCommand.setName("origin");
         remoteAddCommand.setUri(urIish);
         remoteAddCommand.call();
 
-        this.push(git, workingDir, user, organization, applicationName);
+        this.push(git, workingDir, user, organization, applicationName, gitProvider);
 
         log.debug("Repository successfully pushed!");
     }
@@ -82,23 +92,33 @@ public class GitService {
             .call();
     }
 
-    public void push(Git git, File workingDir, User user, String organization, String applicationName) throws
+    public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider gitProvider) throws
         GitAPIException {
         log.info("Pushing {} to {} / {}", workingDir, user, organization, applicationName);
-        git.push().setCredentialsProvider(getCredentialProvider(user)).call();
+        git.push().setCredentialsProvider(getCredentialProvider(user, gitProvider)).call();
     }
 
-    public Git cloneRepository(User user, File workingDir, String organization, String applicationName)
-        throws GitAPIException, URISyntaxException {
+    public Git cloneRepository(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
+        throws GitAPIException {
 
         log.debug("Cloning repository {} / {}", organization, applicationName);
-        Git git = Git
-            .cloneRepository()
-            .setURI("https://github.com/" + organization + "/" + applicationName + ".git")
-            .setDirectory(workingDir)
-            .setCredentialsProvider(getCredentialProvider(user))
-            .setCloneAllBranches(false)
-            .call();
+
+        Git git = null;
+        if (gitProvider.equals(GitProvider.GITLAB)) {
+            git = Git.cloneRepository()
+                .setURI(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
+                .setDirectory(workingDir)
+                .setCredentialsProvider(getCredentialProvider(user, gitProvider))
+                .setCloneAllBranches(false)
+                .call();
+        } else if (gitProvider.equals(GitProvider.GITHUB)) {
+            git = Git.cloneRepository()
+                .setURI("https://github.com/" + organization + "/" + applicationName + ".git")
+                .setDirectory(workingDir)
+                .setCredentialsProvider(getCredentialProvider(user, gitProvider))
+                .setCloneAllBranches(false)
+                .call();
+        }
 
         log.debug("Repository successfully cloned");
         return git;
@@ -136,8 +156,14 @@ public class GitService {
         FileUtils.deleteDirectory(workingDir);
     }
 
-    private CredentialsProvider getCredentialProvider(User user) {
-        return new UsernamePasswordCredentialsProvider(user.getGithubUser(),
-            user.getGithubOAuthToken());
+    private CredentialsProvider getCredentialProvider(User user, GitProvider gitProvider) {
+        if (gitProvider.equals(GitProvider.GITHUB)) {
+            return new UsernamePasswordCredentialsProvider(user.getGithubUser(),
+                user.getGithubOAuthToken());
+        } else if (gitProvider.equals(GitProvider.GITLAB)) {
+            return new UsernamePasswordCredentialsProvider("oauth2",
+                user.getGitlabOAuthToken());
+        }
+        return null;
     }
 }

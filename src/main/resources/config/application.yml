@@ -53,7 +53,7 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: XHTML
+        mode: HTML
         excluded-view-names: /jdl-studio/*
 
 server:
@@ -109,7 +109,4 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-    github:
-        clientId: XXX
-        clientSecret: XXX
+# application:

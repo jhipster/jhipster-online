@@ -32,10 +32,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.time.Instant;
 
 /**
@@ -111,8 +108,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String githubLocation = null;
 
     @JsonIgnore
+    @Column(name ="gitlab_oauth_token")
+    private String gitlabOAuthToken;
+
+    @JsonIgnore
     @Column(name ="github_oauth_token")
     private String githubOAuthToken;
+
+    @JsonIgnore
+    @Column(name ="gitlab_user")
+    private String gitlabUser;
 
     @JsonIgnore
     @Column(name ="github_user")
@@ -123,9 +128,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String githubEmail;
 
     @JsonIgnore
+    @Column(name ="gitlab_email")
+    private String gitlabEmail;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<GithubOrganization> githubOrganizations;
+    private Set<GitCompany> gitCompanies;
 
     @JsonIgnore
     @ManyToMany
@@ -242,20 +251,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
-    public String getGithubCompany() {
-        return githubCompany;
-    }
-
-    public String getGithubLocation() {
-        return githubLocation;
-    }
-
     public void setGithubLocation(String githubLocation) {
         this.githubLocation = githubLocation;
     }
 
     public void setGithubCompany(String githubCompany) {
         this.githubCompany = githubCompany;
+    }
+
+    public String getGitlabOAuthToken() {
+        return gitlabOAuthToken;
+    }
+
+    public void setGitlabOAuthToken(String gitlabOAuthToken) {
+        this.gitlabOAuthToken = gitlabOAuthToken;
     }
 
     public String getGithubOAuthToken() {
@@ -265,6 +274,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setGithubOAuthToken(String githubOAuthToken) {
         this.githubOAuthToken = githubOAuthToken;
     }
+
+    public String getGitlabUser() { return gitlabUser; }
+
+    public void setGitlabUser(String gitlabUser) { this.gitlabUser = gitlabUser; }
 
     public String getGithubUser() {
         return githubUser;
@@ -282,12 +295,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.githubEmail = githubEmail;
     }
 
-    public Set<GithubOrganization> getGithubOrganizations() {
-        return githubOrganizations;
+    public String getGitlabEmail() {
+        return gitlabEmail;
     }
 
-    public void setGithubOrganizations(Set<GithubOrganization> githubOrganizations) {
-        this.githubOrganizations = githubOrganizations;
+    public void setGitlabEmail(String gitlabEmail) {
+        this.gitlabEmail = gitlabEmail;
+    }
+
+    public Set<GitCompany> getGitCompanies() {
+        return gitCompanies;
+    }
+
+    public void setGitCompanies(Set<GitCompany> gitCompanies) {
+        this.gitCompanies = gitCompanies;
     }
 
     @Override

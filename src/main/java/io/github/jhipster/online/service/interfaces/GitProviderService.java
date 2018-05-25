@@ -16,23 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { GithubService } from './github.service';
+package io.github.jhipster.online.service.interfaces;
 
-@Component({
-    selector: 'jhi-github',
-    templateUrl: './github.component.html',
-    styleUrls: ['github.scss']
-})
-export class GithubComponent implements OnInit {
-    clientId;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 
-    gitHubConfigured = false;
+public interface GitProviderService {
 
-    constructor(private githubService: GithubService) {}
+    void syncUserFromGitProvider() throws Exception;
 
-    ngOnInit(): void {
-        this.clientId = this.githubService.clientId().subscribe(data => (this.clientId = data));
-        this.githubService.getOrganizations().subscribe(() => (this.gitHubConfigured = true));
-    }
+    User getSyncedUserFromGitProvider(User user) throws Exception;
+
+    void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
+        organization, String applicationName);
+
+    int createPullRequest(User user, String organization, String applicationName,
+                          String title, String branchName, String body) throws Exception;
+
+    boolean isAvailable();
 }

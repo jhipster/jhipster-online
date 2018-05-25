@@ -19,12 +19,12 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { GithubComponent } from './github/github.component';
+import { GithubComponent } from './git/github.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { GeneratorService } from './generator/generator.service';
-import { GithubService } from './github/github.service';
-import { CallbackComponent } from './github/callback/callback.component';
-import { GithubCallbackService } from './github/callback/callback.service';
+import { GitProviderService } from './git/github.service';
+import { CallbackComponent } from './git/callback/callback.component';
+import { GithubCallbackService } from './git/callback/callback.service';
 import { GeneratorOutputDialogComponent } from './generator/generator.output.component';
 import { JdlMetadataComponent } from './jdl-metadata/jdl-metadata.component';
 import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-metadata/jdl-studio.component';
@@ -55,7 +55,7 @@ import { GeneratorComponent } from 'app/home/generator/generator.component';
         CiCdOutputDialogComponent
     ],
     entryComponents: [GeneratorOutputDialogComponent, JdlOutputDialogComponent, CiCdOutputDialogComponent],
-    providers: [GeneratorService, GithubService, GithubCallbackService, JdlMetadataService, JdlService, CiCdService],
+    providers: [GeneratorService, GitProviderService, GithubCallbackService, JdlMetadataService, JdlService, CiCdService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineHomeModule {}

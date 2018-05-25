@@ -21,9 +21,9 @@ import { Route } from '@angular/router';
 import { HomeComponent } from './';
 import { UserRouteAccessService } from 'app/core/';
 import { GENERATOR_ROUTE } from './generator/generator.route';
-import { GITHUB_ROUTE } from './github/github.route';
+import { GITHUB_ROUTE } from './git/github.route';
 import { WELCOME_ROUTE } from './welcome/welcome.route';
-import { GITHUB_CALLBACK_ROUTE } from './github/callback/callback.route';
+import { GITHUB_CALLBACK_ROUTE } from './git/callback/callback.route';
 import { jdlMetadataRoute } from './jdl-metadata/jdl-metadata.route';
 import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from './ci-cd/ci-cd.route';
 

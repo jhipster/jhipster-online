@@ -21,6 +21,7 @@ package io.github.jhipster.online.service;
 import java.io.*;
 import java.util.Optional;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class JdlService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void applyJdl(User user, String organizationName, String projectName, JdlMetadata jdlMetadata, String applyJdlId) {
+    public void applyJdl(User user, String organizationName, String projectName, JdlMetadata jdlMetadata, String applyJdlId, GitProvider gitProvider) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
@@ -74,7 +75,7 @@ public class JdlService {
             File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
                 applyJdlId);
             FileUtils.forceMkdir(workingDir);
-            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName);
+            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
             String branchName = "jhipster-entities-" + applyJdlId;
             this.logsService.addLog(applyJdlId, "Creating branch `" + branchName + "`");
@@ -94,7 +95,7 @@ public class JdlService {
             this.gitService.commit(git, workingDir, "Generate entities from JDL Model `" + jdlMetadata.getName() + "`\n\n" +
                 "See https://start.jhipster.tech/jdl-studio/#!/view/" + jdlMetadata.getId());
             this.logsService.addLog(applyJdlId, "Pushing the application to the Git remote repository");
-            this.gitService.push(git, workingDir, user, organizationName, projectName);
+            this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(applyJdlId, "Application successfully pushed!");
             this.logsService.addLog(applyJdlId, "Creating Pull Request");
 

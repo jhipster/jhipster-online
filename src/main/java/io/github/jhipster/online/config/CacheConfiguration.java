@@ -20,6 +20,7 @@ package io.github.jhipster.online.config;
 
 import java.time.Duration;
 
+import io.github.jhipster.online.domain.GitCompany;
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
 
@@ -56,13 +57,13 @@ public class CacheConfiguration {
             cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.User.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.User.class.getName() + ".githubOrganizations", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.User.class.getName() + ".gitCompanies", jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.Jdl.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.JdlMetadata.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.GithubOrganization.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.GithubOrganization.class.getName() + ".githubProjects", jcacheConfiguration);
+            cm.createCache(GitCompany.class.getName(), jcacheConfiguration);
+            cm.createCache(GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

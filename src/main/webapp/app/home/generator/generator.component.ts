@@ -19,10 +19,10 @@
 import { Component, OnInit } from '@angular/core';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
-import { GithubService } from '../github/github.service';
+import { GitProviderService } from '../git/github.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
-import { GithubOrganizationModel } from './github.organization.model';
+import { GitCompanyModel } from 'app/home/generator/git.company.model';
 
 @Component({
     selector: 'jhi-generator',
@@ -36,11 +36,19 @@ export class GeneratorComponent implements OnInit {
 
     languageOptions;
 
-    githubConfigured = true;
+    isGithubConfigured = false;
 
-    organizations: GithubOrganizationModel[];
+    isGitlabConfigured = false;
 
-    githubRefresh = false;
+    gitCompanies: GitCompanyModel[];
+
+    gitProviderRefresh = false;
+
+    selectedGitProvider = 'none';
+
+    selectedGitCompany = '';
+
+    availableGitProvider = [];
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -85,35 +93,45 @@ export class GeneratorComponent implements OnInit {
         ];
     }
 
-    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private githubService: GithubService) {
+    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private gitService: GitProviderService) {
         this.newGenerator();
     }
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
-        this.githubRefresh = true;
-        this.githubService.getOrganizations().subscribe(
-            orgs => {
-                this.organizations = orgs;
-                this.model.gitHubOrganization = orgs[0].name;
-                this.githubConfigured = true;
-                this.githubRefresh = false;
+        this.gitProviderRefresh = true;
+        this.gitService.getAvailableProviders().subscribe(result => {
+            this.availableGitProvider = result;
+            this.availableGitProvider.forEach(provider => {
+                if (provider === 'gitlab') {
+                    this.refreshGitCompaniesListByGitProvider('gitlab', success => (this.isGitlabConfigured = success));
+                } else if (provider === 'github') {
+                    this.refreshGitCompaniesListByGitProvider('github', success => (this.isGithubConfigured = success));
+                }
+            });
+        });
+    }
+
+    refreshGitCompaniesListByGitProvider(gitProvider: string, callback: Function) {
+        // TODO remove that ugly callback :'(
+        this.gitService.getCompanies(gitProvider).subscribe(
+            companies => {
+                this.selectedGitCompany = companies[0].name;
+                this.gitCompanies = companies;
+                callback(true);
             },
-            () => {
-                this.githubConfigured = false;
-                this.githubRefresh = false;
-            }
+            () => callback(false)
         );
     }
 
-    refreshGithub() {
-        this.githubRefresh = true;
-        this.githubService.refreshGithub().subscribe(
+    refreshGitProjectList() {
+        this.gitProviderRefresh = true;
+        this.gitService.refreshGithub(this.selectedGitProvider).subscribe(
             () => {
-                this.githubRefresh = false;
+                this.gitProviderRefresh = false;
             },
             () => {
-                this.githubRefresh = false;
+                this.gitProviderRefresh = false;
             }
         );
     }
@@ -149,7 +167,7 @@ export class GeneratorComponent implements OnInit {
 
     onSubmit() {
         this.checkModelBeforeSubmit();
-        this.generatorService.generateOnGitHub(this.model).subscribe(
+        this.generatorService.generateOnGitHub(this.model, this.selectedGitProvider, this.selectedGitCompany).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -177,7 +195,9 @@ export class GeneratorComponent implements OnInit {
         const modalRef = this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applicationId = applicationId;
-        modalRef.gitHubOrganization = this.model.gitHubOrganization;
+        modalRef.selectedGitCompany = this.selectedGitCompany;
+        modalRef.isGitlabConfigured = this.isGitlabConfigured;
+        modalRef.isGithubConfigured = this.isGithubConfigured;
         modalRef.baseName = this.model.baseName;
     }
 
@@ -196,7 +216,6 @@ export class GeneratorComponent implements OnInit {
     newGenerator() {
         this.model = new JHipsterConfigurationModel(
             'monolith',
-            '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
             8080,

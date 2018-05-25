@@ -53,14 +53,14 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
         <createIndex indexName="idx_user_login"
-            tableName="jhi_user"
-            unique="true">
+                     tableName="jhi_user"
+                     unique="true">
             <column name="login" type="varchar(50)"/>
         </createIndex>
 
         <createIndex indexName="idx_user_email"
-            tableName="jhi_user"
-            unique="true">
+                     tableName="jhi_user"
+                     unique="true">
             <column name="email" type="varchar(100)"/>
         </createIndex>
         <createTable tableName="jhi_authority">

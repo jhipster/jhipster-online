@@ -27,6 +27,7 @@ import { GithubCallbackService } from './callback.service';
 })
 export class CallbackComponent implements OnInit {
     token: string;
+    provider: string;
 
     message: string;
 
@@ -36,7 +37,8 @@ export class CallbackComponent implements OnInit {
         this.message = 'JHipster is not linked to your GitHub repository.';
         this.route.params.subscribe(params => {
             this.token = params['token'];
-            this.callbackService.saveToken(this.token).subscribe(() => {
+            this.provider = params['provider'];
+            this.callbackService.saveToken(this.provider, this.token).subscribe(() => {
                 this.message = 'JHipster is successfully linked to your GitHub repository.';
             });
         });

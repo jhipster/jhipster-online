@@ -20,6 +20,7 @@ package io.github.jhipster.online.service;
 
 import java.io.*;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
@@ -60,7 +61,7 @@ public class CiCdService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId) {
+    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId, GitProvider gitProvider) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
@@ -70,7 +71,7 @@ public class CiCdService {
             File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
                 ciCdId);
             FileUtils.forceMkdir(workingDir);
-            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName);
+            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
             String branchName = "jhipster-" + ciCdTool + "-" + ciCdId;
             this.logsService.addLog(ciCdId, "Creating branch `" + branchName + "`");
@@ -86,7 +87,7 @@ public class CiCdService {
                 " Continuous Integration");
 
             this.logsService.addLog(ciCdId, "Pushing the application to the Git remote repository");
-            this.gitService.push(git, workingDir, user, organizationName, projectName);
+            this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating Pull Request");
 

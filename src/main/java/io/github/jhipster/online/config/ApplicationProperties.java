@@ -30,6 +30,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
     private final Github github = new Github();
 
+    private final Gitlab gitlab = new Gitlab();
+
     private String tmpFolder = "/tmp";
 
     public String getTmpFolder() {
@@ -42,6 +44,10 @@ public class ApplicationProperties {
 
     public Github getGithub() {
         return github;
+    }
+
+    public Gitlab getGitlab() {
+        return gitlab;
     }
 
     public static class Github {
@@ -63,6 +69,54 @@ public class ApplicationProperties {
 
         public void setClientSecret(String clientSecret) {
             this.clientSecret = clientSecret;
+        }
+
+        public String getJhipsterBotOauthToken() {
+            return jhipsterBotOauthToken;
+        }
+
+        public void setJhipsterBotOauthToken(String jhipsterBotOauthToken) {
+            this.jhipsterBotOauthToken = jhipsterBotOauthToken;
+        }
+    }
+
+    public static class Gitlab {
+        private String clientId;
+        private String clientSecret;
+        private String host;
+        private String redirectUri;
+        private String jhipsterBotOauthToken = "";
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public void setClientId(String clientId) {
+            this.clientId = clientId;
+        }
+
+        public String getClientSecret() {
+            return clientSecret;
+        }
+
+        public void setClientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public String getRedirectUri() {
+            return redirectUri;
+        }
+
+        public void setRedirectUri(String redirectUri) {
+            this.redirectUri = redirectUri;
         }
 
         public String getJhipsterBotOauthToken() {

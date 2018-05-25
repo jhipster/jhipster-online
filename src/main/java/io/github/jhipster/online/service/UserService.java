@@ -19,10 +19,12 @@
 package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.Authority;
-import io.github.jhipster.online.domain.GithubOrganization;
+import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.repository.AuthorityRepository;
 import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.security.SecurityUtils;
@@ -61,18 +63,30 @@ public class UserService {
 
     private final GithubService githubService;
 
+    private final GitlabService gitlabService;
+
+    private final GitCompanyRepository gitCompanyRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, GithubService githubService, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       AuthorityRepository authorityRepository,
+                       GithubService githubService,
+                       CacheManager cacheManager,
+                       GitCompanyRepository gitCompanyRepository,
+                       GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.githubService = githubService;
         this.cacheManager = cacheManager;
+        this.gitCompanyRepository = gitCompanyRepository;
+        this.gitlabService = gitlabService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -114,7 +128,6 @@ public class UserService {
     }
 
     public User registerUser(UserDTO userDTO, String password) {
-
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin());
@@ -235,10 +248,18 @@ public class UserService {
     }
 
     @Transactional
-    public void saveToken(String code) throws Exception {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        user.setGithubOAuthToken(code);
-        user = this.githubService.getSyncedUserFromGitHub(user);
+    public void saveToken(String code, GitProvider gitProvider) throws Exception {
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("TODO put a suitable exception here."));
+
+        if (gitProvider.equals(GitProvider.GITHUB)) {
+            user.setGithubOAuthToken(code);
+            user = this.githubService.getSyncedUserFromGitProvider(user);
+        } else if (gitProvider.equals(GitProvider.GITLAB)) {
+            user.setGitlabOAuthToken(code);
+            System.out.println("ijjjjjjjjjjjjjjjjjjjjjjjjjjjjjj " + code);
+            user = this.gitlabService.getSyncedUserFromGitProvider(user);
+        }
+
         userRepository.save(user);
         log.debug("Updated GitHub OAuth token for User: {}", user);
     }
@@ -274,23 +295,32 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<GithubOrganization> getOrganizations() {
-        Collection<GithubOrganization> orgs = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getGithubOrganizations();
-        Hibernate.initialize(orgs);
-        return orgs;
+    public Collection<GitCompany> getOrganizations(GitProvider gitProvider) {
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElse(null);
+        Set<GitCompany> gitCompanies = gitCompanyRepository.findAllByUserAndGitProvider(user, gitProvider.getValue());
+
+        Hibernate.initialize(gitCompanies);
+        return gitCompanies;
     }
 
     @Transactional(readOnly = true)
-    public List getProjects(String organizationName) {
-        Collection<GithubOrganization> organizations = this.getOrganizations();
+    public Collection<GitCompany> getGroups() throws Exception {
+        Collection<GitCompany> groups = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("TODO put suitable exception here")).getGitCompanies();
+        Hibernate.initialize(groups);
+        return groups;
+    }
+
+    @Transactional(readOnly = true)
+    public List getProjects(String organizationName, GitProvider gitProvider) {
+        Collection<GitCompany> organizations = this.getOrganizations(gitProvider);
         if (organizations.size() == 0) {
             return EMPTY_LIST;
         }
-        Optional<GithubOrganization> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
+        Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
         if (!organization.isPresent()) {
             return EMPTY_LIST;
         } else {
-            List<String> projects = organization.get().getGithubProjects();
+            List<String> projects = organization.get().getGitProjects();
             Hibernate.initialize(projects);
             return projects;
         }
