@@ -48,4 +48,8 @@ export class GitProviderService {
     getAvailableProviders(): Observable<string[]> {
         return this.http.get<string[]>('api/git/providers').map((res: string[]) => res);
     }
+
+    getGitlabConfig(): Observable<any> {
+        return this.http.get<any>('api/gitlab/config');
+    }
 }

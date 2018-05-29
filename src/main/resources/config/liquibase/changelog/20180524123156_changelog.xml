@@ -1,0 +1,57 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="ippon (generated)" id="1527165120726-1">
+        <createTable tableName="git_project">
+            <column name="git_company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="git_projects" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-2">
+        <addColumn tableName="jhi_user">
+            <column name="gitlab_email" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-3">
+        <addColumn tableName="jhi_user">
+            <column name="gitlab_oauth_token" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-4">
+        <addColumn tableName="jhi_user">
+            <column name="gitlab_user" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-5">
+        <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-6">
+        <addForeignKeyConstraint baseColumnNames="git_company_id" baseTableName="git_project" constraintName="FK90ir4u1amk4w3dhy7sxdv63x6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="git_company"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="git_company" constraintName="FKrwcmar7keuxrohh69romyiown" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-8">
+        <dropForeignKeyConstraint baseTableName="github_organization" constraintName="fk_github_organization_user_id"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-9">
+        <dropForeignKeyConstraint baseTableName="github_project" constraintName="fk_github_project_github_organization_id"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-10">
+        <dropTable tableName="github_organization"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-11">
+        <dropTable tableName="github_project"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-12">
+        <dropColumn columnName="git_company_id" tableName="git_company"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-13">
+        <dropColumn columnName="git_projects" tableName="git_company"/>
+    </changeSet>
+    <changeSet author="ippon (generated)" id="1527165120726-14">
+        <dropUniqueConstraint constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+        <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+    </changeSet>
+</databaseChangeLog>

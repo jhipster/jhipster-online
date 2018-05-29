@@ -34,20 +34,42 @@ export class GithubComponent implements OnInit {
     isGithubEnabled = false;
     isGitlabEnabled = false;
 
+    gitlabHost: string;
+    gitlabRedirectUri: string;
+
+    isAuthorizingGithub = false;
+    isAuthorizingGitlab = false;
+
     constructor(private githubService: GitProviderService) {}
 
     ngOnInit(): void {
         this.githubService.getAvailableProviders().subscribe(providers => {
             if (providers.includes('gitlab')) {
-                this.gitlabClientId = this.githubService.clientId('gitlab').subscribe(data => (this.gitlabClientId = data));
-                this.githubService.getCompanies('gitlab').subscribe(() => {
-                    this.isGitlabConfigured = true;
+                this.gitlabClientId = this.githubService.clientId('gitlab').subscribe(clientId => (this.gitlabClientId = clientId));
+                this.isAuthorizingGitlab = true;
+                this.githubService.refreshGithub('gitlab').subscribe(
+                    () => (this.isGitlabConfigured = true),
+                    () => {
+                        this.isAuthorizingGitlab = false;
+                        this.isGitlabConfigured = false;
+                    }
+                );
+                this.githubService.getGitlabConfig().subscribe(config => {
+                    this.gitlabHost = config.host;
+                    this.gitlabRedirectUri = config.redirectUri;
                 });
                 this.isGitlabEnabled = true;
             }
             if (providers.includes('github')) {
-                this.githubClientId = this.githubService.clientId('github').subscribe(data => (this.githubClientId = data));
-                this.githubService.getCompanies('github').subscribe(() => (this.isGithubConfigured = true));
+                this.githubClientId = this.githubService.clientId('github').subscribe(clientId => (this.githubClientId = clientId));
+                this.isAuthorizingGithub = true;
+                this.githubService.refreshGithub('github').subscribe(
+                    () => (this.isGithubConfigured = true),
+                    () => {
+                        this.isAuthorizingGithub = false;
+                        this.isGithubConfigured = false;
+                    }
+                );
                 this.isGithubEnabled = true;
             }
         });

@@ -256,7 +256,6 @@ public class UserService {
             user = this.githubService.getSyncedUserFromGitProvider(user);
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
             user.setGitlabOAuthToken(code);
-            System.out.println("ijjjjjjjjjjjjjjjjjjjjjjjjjjjjjj " + code);
             user = this.gitlabService.getSyncedUserFromGitProvider(user);
         }
 

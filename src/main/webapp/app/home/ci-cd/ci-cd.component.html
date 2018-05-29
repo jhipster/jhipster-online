@@ -3,16 +3,13 @@
     <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured || !isGitlabConfigured">
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
         <p>
             <span class="fas fa-exclamation-triangle"></span>&nbsp;
             <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub/GitLab project, you must authorize JHipster Online to access your GitHub/GitLab account.</span>
         </p>
         <p class="text-center">
-            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub account</a>
-        </p>
-        <p class="text-center">
-            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitLab account</a>
+            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
         </p>
     </ngb-alert>
     <div *ngIf="isGithubConfigured || isGitlabConfigured">
@@ -57,7 +54,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="form-group">
-                        <select id="gitProviders" [(ngModel)]="selectedGitProvider" name="selectedGitProvider" class="form-control">
+                        <select (ngModelChange)="refreshGitCompaniesListByGitProvider($event)" id="gitProviders" [(ngModel)]="selectedGitProvider" name="selectedGitProvider" class="form-control">
                             <option *ngFor="let provider of availableGitProvider">{{provider}}</option>
                         </select>
                     </div>
@@ -73,7 +70,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
                         <label for="gitCompany">Git company</label>
-                        <select id="gitCompany" [(ngModel)]="gitCompany" name="gitHubOrganization"
+                        <select id="gitCompany" [(ngModel)]="selectedGitCompany" name="gitHubOrganization"
                                 class="form-control"
                                 #ctrl="ngModel"
                                 (ngModelChange)="updateGitProjects($event)">

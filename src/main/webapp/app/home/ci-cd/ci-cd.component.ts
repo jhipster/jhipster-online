@@ -33,17 +33,15 @@ export class CiCdComponent implements OnInit {
 
     ciCdId = '';
 
-    isGithubConfigured = true;
+    isGithubConfigured = false;
 
-    isGitlabConfigured = true;
+    isGitlabConfigured = false;
 
     selectedGitCompany: string;
 
     availableGitProvider = [];
 
     gitCompanies: GitCompanyModel[];
-
-    gitCompany: string;
 
     projects: string[];
 
@@ -55,7 +53,7 @@ export class CiCdComponent implements OnInit {
 
     ciCdTool = 'travis';
 
-    selectedGitProvider: string = '';
+    selectedGitProvider: string;
 
     constructor(private modalService: NgbModal, private gitService: GitProviderService, private ciCdService: CiCdService) {}
 
@@ -63,22 +61,16 @@ export class CiCdComponent implements OnInit {
         this.gitProviderRefresh = true;
         this.gitService.getAvailableProviders().subscribe(result => {
             this.availableGitProvider = result;
-            this.availableGitProvider.forEach(provider => {
-                if (provider === 'gitlab') {
-                    this.refreshGitCompaniesListByGitProvider('gitlab', success => (this.isGitlabConfigured = success));
-                } else if (provider === 'github') {
-                    this.refreshGitCompaniesListByGitProvider('github', success => (this.isGithubConfigured = success));
-                }
-            });
             this.selectedGitProvider = result[0];
+            this.refreshGitCompaniesListByGitProvider(this.selectedGitProvider);
         });
     }
 
     refreshGitProjectList() {
         this.gitProviderRefresh = true;
-        console.log(this.selectedGitProvider);
         this.gitService.refreshGithub(this.selectedGitProvider).subscribe(
             () => {
+                this.updateGitProjects(this.selectedGitCompany);
                 this.gitProviderRefresh = false;
             },
             () => {
@@ -87,29 +79,25 @@ export class CiCdComponent implements OnInit {
         );
     }
 
-    refreshGitCompaniesListByGitProvider(gitProvider: string, callback: Function) {
-        this.gitProviderRefresh = false;
-        this.gitService.getCompanies(gitProvider).subscribe(
-            companies => {
-                this.selectedGitCompany = companies[0].name;
-                this.gitCompanies = companies;
-                this.updateGitProjects(this.selectedGitCompany);
-                callback(true);
-            },
-            () => callback(false)
-        );
+    refreshGitCompaniesListByGitProvider(gitProvider: string) {
+        this.gitService.getCompanies(gitProvider).subscribe(companies => {
+            this.gitCompanies = companies.filter(company => company.gitProvider === gitProvider);
+            this.selectedGitCompany = companies[0].name;
+            if (gitProvider === 'github') {
+                this.isGithubConfigured = true;
+            } else if (gitProvider === 'gitlab') {
+                this.isGitlabConfigured = true;
+            }
+            this.refreshGitProjectList();
+        });
     }
 
     updateGitProjects(companyName: string) {
+        this.projects = null;
         this.gitService.getProjects(this.selectedGitProvider, companyName).subscribe(
             projects => {
                 this.projects = projects;
                 this.gitProject = projects[0];
-                if (this.selectedGitProvider === 'gitlab') {
-                    this.isGitlabConfigured = true;
-                } else if (this.selectedGitProvider === 'github') {
-                    this.isGithubConfigured = true;
-                }
             },
             () => {
                 // TODO
@@ -118,7 +106,7 @@ export class CiCdComponent implements OnInit {
     }
 
     applyCiCd() {
-        this.ciCdService.addCiCd(this.gitCompany, this.gitProject, this.ciCdTool).subscribe(
+        this.ciCdService.addCiCd(this.selectedGitProvider, this.selectedGitCompany, this.gitProject, this.ciCdTool).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -132,7 +120,10 @@ export class CiCdComponent implements OnInit {
 
         modalRef.ciCdId = ciCdId;
         modalRef.ciCdTool = this.ciCdTool;
-        modalRef.gitCompany = this.gitCompany;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
+        modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.gitProject = this.gitProject;
+        modalRef.isGitlabConfigured = this.isGitlabConfigured;
+        modalRef.isGithubConfigured = this.isGithubConfigured;
     }
 }

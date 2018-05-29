@@ -12,8 +12,7 @@
                 <span>You will only be able to download your application as a Zip file</span>
             </p>
             <p class="text-center">
-                <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub
-                    account</a>
+                <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
             </p>
         </ngb-alert>
         <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
@@ -25,22 +24,22 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
             <div class="col-md-5">
                 <div class="form-group">
-                    <select id="gitProviders" [(ngModel)]="selectedGitProvider" name="gitProvider" class="form-control">
-                        <option selected>none</option>
+                    <select (change)="refreshGitCompaniesListByGitProvider(selectedGitProvider)" id="gitProviders" [(ngModel)]="selectedGitProvider" name="gitProvider" class="form-control">
+                        <!--<option selected>none</option>-->
                         <option *ngFor="let provider of availableGitProvider">{{provider}}</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div class="row" *ngIf="availableGitProvider.length > 0 && selectedGitProvider !== 'none'">
+        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="gitCompanies">GitLab groups</label>
-                    <button class="btn btn-info btn-sm" (click)="refreshGitProjectList()">
+                    <label for="gitCompanies">Git organizations</label>
+                    <button class="btn btn-info btn-sm" (click)="refresh()">
                         <span *ngIf="gitProviderRefresh">
                             <i class="fas fa-sync fa-spin"></i>
                         </span>
@@ -59,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
+        <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="baseName">Application name</label>

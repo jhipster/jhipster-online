@@ -31,16 +31,31 @@ export class CallbackComponent implements OnInit {
 
     message: string;
 
+    isLoading = false;
+
+    alertType = 'warning';
+
     constructor(private route: ActivatedRoute, private callbackService: GithubCallbackService) {}
 
     ngOnInit(): void {
-        this.message = 'JHipster is not linked to your GitHub repository.';
         this.route.params.subscribe(params => {
-            this.token = params['token'];
             this.provider = params['provider'];
-            this.callbackService.saveToken(this.provider, this.token).subscribe(() => {
-                this.message = 'JHipster is successfully linked to your GitHub repository.';
-            });
+            this.token = params['token'];
+            this.isLoading = true;
+            const capitalizedProvider = this.provider.charAt(0).toUpperCase() + this.provider.slice(1);
+            this.message = `JHipster is trying to link your ${capitalizedProvider} repositories...`;
+            this.callbackService.saveToken(this.provider, this.token).subscribe(
+                () => {
+                    this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
+                    this.isLoading = false;
+                    this.alertType = 'success';
+                },
+                () => {
+                    this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;
+                    this.isLoading = false;
+                    this.alertType = 'danger';
+                }
+            );
         });
     }
 }

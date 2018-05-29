@@ -18,10 +18,7 @@
  */
 package io.github.jhipster.online.web.rest;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.enums.GitProvider;
@@ -126,7 +123,7 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 case "gitlab":
-                    url = applicationProperties.getGitlab().getHost() + "/oauth/token";
+                    url = applicationProperties.getGitlab().getHost() + "oauth/token";
                     gitProviderEnum = GitProvider.GITLAB;
                     request.setClient_id(applicationProperties.getGitlab().getClientId());
                     request.setClient_secret(applicationProperties.getGitlab().getClientSecret());
@@ -140,7 +137,6 @@ public class GitResource {
 
             ResponseEntity<GitAccessTokenResponse> response =
                 restTemplate.postForEntity(url, request, GitAccessTokenResponse.class);
-            System.out.println("New Auth token: " + response.getBody().getAccess_token());
             this.userService.saveToken(response.getBody().getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
             log.error("OAuth2 token could not saved: {}", e);
@@ -245,7 +241,7 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return null; // pour l instant
+                    return null; // TODO pour l instant
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -302,5 +298,16 @@ public class GitResource {
             result.add(GitProvider.GITLAB.getValue());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/gitlab/config")
+    @Timed
+    @Secured(AuthoritiesConstants.USER)
+    public @ResponseBody
+    ResponseEntity getGitlabConfig() {
+        Map<String, String> config = new HashMap<>();
+        config.put("host", gitlabService.getHost());
+        config.put("redirectUri", gitlabService.getRedirectUri());
+        return new ResponseEntity<>(config, HttpStatus.OK);
     }
 }

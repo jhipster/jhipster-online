@@ -27,13 +27,13 @@ import { CiCdService } from './ci-cd.service';
 export class CiCdOutputDialogComponent implements OnInit {
     logs = '';
 
-    ciCdId: String;
+    ciCdId: string;
 
-    ciCdTool: String;
+    ciCdTool: string;
 
-    gitHubOrganization: String;
+    gitHubOrganization: string;
 
-    gitHubProject: String;
+    gitHubProject: string;
 
     displayApplicationUrl = false;
 

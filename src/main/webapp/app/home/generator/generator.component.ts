@@ -44,7 +44,7 @@ export class GeneratorComponent implements OnInit {
 
     gitProviderRefresh = false;
 
-    selectedGitProvider = 'none';
+    selectedGitProvider = '';
 
     selectedGitCompany = '';
 
@@ -101,30 +101,11 @@ export class GeneratorComponent implements OnInit {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
         this.gitProviderRefresh = true;
         this.gitService.getAvailableProviders().subscribe(result => {
-            this.availableGitProvider = result;
-            this.availableGitProvider.forEach(provider => {
-                if (provider === 'gitlab') {
-                    this.refreshGitCompaniesListByGitProvider('gitlab', success => (this.isGitlabConfigured = success));
-                } else if (provider === 'github') {
-                    this.refreshGitCompaniesListByGitProvider('github', success => (this.isGithubConfigured = success));
-                }
-            });
+            result.forEach(provider => this.refreshGitCompaniesListByGitProvider(provider));
         });
     }
 
-    refreshGitCompaniesListByGitProvider(gitProvider: string, callback: Function) {
-        // TODO remove that ugly callback :'(
-        this.gitService.getCompanies(gitProvider).subscribe(
-            companies => {
-                this.selectedGitCompany = companies[0].name;
-                this.gitCompanies = companies;
-                callback(true);
-            },
-            () => callback(false)
-        );
-    }
-
-    refreshGitProjectList() {
+    refresh() {
         this.gitProviderRefresh = true;
         this.gitService.refreshGithub(this.selectedGitProvider).subscribe(
             () => {
@@ -134,6 +115,21 @@ export class GeneratorComponent implements OnInit {
                 this.gitProviderRefresh = false;
             }
         );
+    }
+
+    refreshGitCompaniesListByGitProvider(gitProvider: string) {
+        this.gitService.getCompanies(gitProvider).subscribe(companies => {
+            this.gitCompanies = companies.filter(company => company.gitProvider === gitProvider);
+            this.selectedGitProvider = gitProvider;
+            this.selectedGitCompany = companies[0].name;
+            if (gitProvider === 'github') {
+                this.isGithubConfigured = true;
+            } else if (gitProvider === 'gitlab') {
+                this.isGitlabConfigured = true;
+            }
+            this.addToAvailableProviders(gitProvider);
+            this.gitProviderRefresh = false;
+        });
     }
 
     checkModelBeforeSubmit() {
@@ -195,6 +191,7 @@ export class GeneratorComponent implements OnInit {
         const modalRef = this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applicationId = applicationId;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.isGitlabConfigured = this.isGitlabConfigured;
         modalRef.isGithubConfigured = this.isGithubConfigured;
@@ -339,6 +336,12 @@ export class GeneratorComponent implements OnInit {
             this.model.devDatabaseType = 'no';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
+        }
+    }
+
+    private addToAvailableProviders(gitProvider: string) {
+        if (!this.availableGitProvider.includes(gitProvider)) {
+            this.availableGitProvider.push(gitProvider);
         }
     }
 }

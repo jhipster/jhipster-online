@@ -90,31 +90,36 @@ public class GitlabService implements GitProviderService {
         // user.setGitCompany(myself.getUsername());
         // user.setGitLocation("");
         Set<GitCompany> groups = user.getGitCompanies();
-        groups.forEach(gitCompanyRepository::delete);
-        groups.clear();
+
         // Sync the current user's projects
-        GitCompany myGroup = new GitCompany();
-        myGroup.setName(myself.getUsername());
-        myGroup.setUser(user);
-        myGroup.setGitProvider(GitProvider.GITLAB.getValue());
-        myGroup.setGitProjects(new  ArrayList<>());
-        gitCompanyRepository.save(myGroup);
-        try {
-            List<GitlabProject> projectList = gitlab.getProjects();
-            List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
-            myGroup.setGitProjects(projects);
-        } catch (IOException e) {
-            log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+        if (groups.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
+            GitCompany myGroup = new GitCompany();
+            myGroup.setName(myself.getUsername());
+            myGroup.setUser(user);
+            myGroup.setGitProvider(GitProvider.GITLAB.getValue());
+            myGroup.setGitProjects(new  ArrayList<>());
+            gitCompanyRepository.save(myGroup);
+            try {
+                List<GitlabProject> projectList = gitlab.getProjects();
+                List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
+                myGroup.setGitProjects(projects);
+            } catch (IOException e) {
+                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+            }
+            groups.add(myGroup);
         }
-        groups.add(myGroup);
+
         // Sync the projects from the user's groups
         gitlab.getGroups().forEach(group -> {
             GitCompany company = new GitCompany();
             company.setName(group.getName());
             company.setUser(user);
             company.setGitProvider(GitProvider.GITLAB.getValue());
-            gitCompanyRepository.save(company);
-            groups.add(company);
+            if (groups.stream().noneMatch(g -> g.getName().equals(company.getName()))) {
+                gitCompanyRepository.save(company);
+                groups.add(company);
+            }
+
             try {
                 List<GitlabProject> projectList = gitlab.getGroup(group.getName()).getSharedProjects();
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
@@ -123,6 +128,9 @@ public class GitlabService implements GitProviderService {
                 log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
             }
         });
+        System.out.println("GROOOOOOPS " + groups.size());
+        groups.forEach(System.out::println);
+
         user.setGitCompanies(groups);
         return user;
     }
@@ -165,26 +173,28 @@ public class GitlabService implements GitProviderService {
     @Override
     public int createPullRequest(User user, String group, String applicationName,
                                  String title, String branchName, String body) throws Exception {
-        log.info("Creating Pull Request on repository {} / {}", group, applicationName);
-
+        log.info("Creating Merge Request on repository {} / {}", group, applicationName);
         GitlabAPI gitlab = getConnection(user);
-        int number = gitlab
-            .getGroupProjects(gitlab.getGroup(group))
-            .stream()
-            .filter(g -> g.getName().equals(applicationName))
-            .findFirst()
-            .orElseThrow(() -> new Exception("Unknown project " + applicationName))
-            .getId();
-
-        gitlab.createMergeRequest(number, branchName, "master", 0, title);
-        log.info("Pull Request created!");
+        int number = gitlab.getProject(group, applicationName).getId();
+        gitlab.createMergeRequest(number, branchName, "master", null, title);
+        log.info("Merge Request created!");
         return number;
     }
 
     @Override
     public boolean isAvailable() {
         return applicationProperties.getGitlab().getClientId() != null &&
-            applicationProperties.getGitlab().getClientSecret() != null;
+            applicationProperties.getGitlab().getClientSecret() != null &&
+            applicationProperties.getGitlab().getHost() != null &&
+            applicationProperties.getGitlab().getRedirectUri() != null;
+    }
+
+    public String getHost() {
+        return applicationProperties.getGitlab().getHost();
+    }
+
+    public String getRedirectUri() {
+        return applicationProperties.getGitlab().getRedirectUri();
     }
 
     /**

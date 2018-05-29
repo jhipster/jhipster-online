@@ -22,25 +22,45 @@
 <ng-container *ngIf="isGithubEnabled">
     <p class="text-center" *ngIf="!isGithubConfigured">
         <a class="btn btn-primary"
-           href="https://github.com/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button"><i class="fab fa-github"></i>
-            Authorize Github</a>
+           href="https://github.com/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
+            <span *ngIf="!isAuthorizingGithub">
+                <i class="fab fa-github"></i>
+                Authorize GitHub
+            </span>
+            <span *ngIf="isAuthorizingGithub">
+                <i class="fab fa-github fa-spin"></i>
+                Checking GitHub link...
+            </span>
+        </a>
     </p>
     <p class="text-center" *ngIf="isGithubConfigured">
         <a class="btn btn-warning"
-           href="https://github.com/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button"><i class="fab fa-github"></i> JHipster
-            is already authorized, click here to re-synchronize your Github account</a>
+           href="https://github.com/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
+            <i class="fab fa-github"></i> JHipster
+            is already authorized, click here to re-synchronize your Github account
+        </a>
     </p>
 </ng-container>
 
 <ng-container *ngIf="isGitlabEnabled">
     <p class="text-center" *ngIf="!isGitlabConfigured">
-        <a class="btn btn-primary"
-           href="https://gitlab.ippon.fr/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri=http://localhost:9000/api/callback/gitlab&response_type=code&state=YOUR_UNIQUE_STATE_HASH" role="button"><i class="fab fa-gitlab"></i>
-            Authorize Gitlab</a>
+        <a (disabled)="isAuthorizingGitlab" class="btn btn-primary"
+           href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
+            <span *ngIf="!isAuthorizingGitlab">
+                <i class="fab fa-gitlab"></i>
+                Authorize GitLab
+            </span>
+            <span *ngIf="isAuthorizingGitlab">
+                <i class="fab fa-gitlab fa-spin"></i>
+                Checking GitLab link...
+            </span>
+        </a>
     </p>
     <p class="text-center" *ngIf="isGitlabConfigured">
         <a class="btn btn-warning"
-           href="https://gitlab.ippon.fr/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri=http://localhost:9000/api/callback/gitlab&response_type=code&state=YOUR_UNIQUE_STATE_HASH" role="button"><i class="fab fa-gitlab"></i> JHipster
-            is already authorized, click here to re-synchronize your Gitlab account</a>
+           href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
+            <i class="fab fa-gitlab"></i> JHipster
+            is already authorized, click here to re-synchronize your Gitlab account
+        </a>
     </p>
 </ng-container>

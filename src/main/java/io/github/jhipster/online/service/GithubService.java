@@ -20,6 +20,7 @@ package io.github.jhipster.online.service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.GitCompany;
@@ -93,39 +94,46 @@ public class GithubService implements GitProviderService {
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
         Set<GitCompany> organizations = user.getGitCompanies();
-        organizations.forEach(gitCompanyRepository::delete);
-        organizations.clear();
+
         // Sync the current user's projects
-        GitCompany myOrganization = new GitCompany();
-        myOrganization.setName(ghMyself.getLogin());
-        myOrganization.setUser(user);
-        gitCompanyRepository.save(myOrganization);
-        try {
-            List<String> projects = new ArrayList<>();
-            Map<String, GHRepository> projectMap = gitHub.getMyself().getAllRepositories();
-            projects.addAll(projectMap.keySet());
-            myOrganization.setGitProjects(projects);
-        } catch (IOException e) {
-            log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+        if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
+            GitCompany myOrganization = new GitCompany();
+            myOrganization.setName(ghMyself.getLogin());
+            myOrganization.setUser(user);
+            myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
+            gitCompanyRepository.save(myOrganization);
+            try {
+                Map<String, GHRepository> projectMap = gitHub.getMyself().getAllRepositories();
+                List<String> projects = new ArrayList<>(projectMap.keySet());
+                myOrganization.setGitProjects(projects);
+            } catch (IOException e) {
+                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+            }
+            organizations.add(myOrganization);
         }
-        organizations.add(myOrganization);
+
         // Sync the projects from the user's organizations
-        gitHub.getMyOrganizations().keySet().forEach(organizationName -> {
+        for (String organizationName: gitHub.getMyOrganizations().keySet()) {
             GitCompany organization = new GitCompany();
             organization.setName(organizationName);
             organization.setUser(user);
             organization.setGitProvider(GitProvider.GITHUB.getValue());
-            gitCompanyRepository.save(organization);
-            organizations.add(organization);
+            if (organizations.stream().noneMatch(g -> g.getName().equals(organization.getName()))) {
+                gitCompanyRepository.save(organization);
+                organizations.add(organization);
+            }
             try {
-                List<String> projects = new ArrayList<>();
                 Map<String, GHRepository> projectMap = gitHub.getOrganization(organizationName).getRepositories();
-                projects.addAll(projectMap.keySet());
+                List<String> projects = new ArrayList<>(projectMap.keySet());
                 organization.setGitProjects(projects);
             } catch (IOException e) {
                 log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
             }
-        });
+        }
+
+        System.out.println("ORGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA : ");
+        organizations.forEach(System.out::println);
+
         user.setGitCompanies(organizations);
         return user;
     }
@@ -143,7 +151,7 @@ public class GithubService implements GitProviderService {
             log.info("Beginning to create repository {} / {}", organization, applicationName);
             this.logsService.addLog(applicationId, "Creating GitHub repository");
             GitHub gitHub = this.getConnection(user);
-            GHCreateRepositoryBuilder builder = null;
+            GHCreateRepositoryBuilder builder;
             if (user.getGithubUser().equals(organization)) {
                 log.debug("Repository {} belongs to user {}", applicationName, organization);
                 builder = gitHub.createRepository(applicationName);
