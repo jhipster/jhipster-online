@@ -109,6 +109,7 @@
     "test": "yarn run lint && jest --coverage --logHeapUsage -w=2",
     "test:coverage": "yarn run lint && jest --coverage",
     "test:watch": "yarn test -- --watch --clearCache",
+    "webpack:test": "yarn run test",
     "webpack:dev": "yarn run webpack-dev-server -- --config webpack/webpack.dev.js --progress --inline --hot --profile --port=9060 --watch-content-base",
     "webpack:build:main": "yarn run webpack -- --config webpack/webpack.dev.js --progress --profile",
     "webpack:build": "yarn run cleanup && yarn run webpack:build:main",

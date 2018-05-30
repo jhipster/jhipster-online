@@ -35,7 +35,7 @@ import locale from '@angular/common/locales/en';
         DatePipe
     ]
 })
-export class IziCoreModule {
+export class JhonlineCoreModule {
     constructor() {
         registerLocaleData(locale);
     }
