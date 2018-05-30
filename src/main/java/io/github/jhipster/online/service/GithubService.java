@@ -131,9 +131,6 @@ public class GithubService implements GitProviderService {
             }
         }
 
-        System.out.println("ORGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA : ");
-        organizations.forEach(System.out::println);
-
         user.setGitCompanies(organizations);
         return user;
     }

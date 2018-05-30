@@ -249,7 +249,7 @@ public class UserService {
 
     @Transactional
     public void saveToken(String code, GitProvider gitProvider) throws Exception {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("TODO put a suitable exception here."));
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("No authenticated user can be found."));
 
         if (gitProvider.equals(GitProvider.GITHUB)) {
             user.setGithubOAuthToken(code);
@@ -304,7 +304,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Collection<GitCompany> getGroups() throws Exception {
-        Collection<GitCompany> groups = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("TODO put suitable exception here")).getGitCompanies();
+        Collection<GitCompany> groups = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null))
+            .orElseThrow(() -> new Exception("No authenticated user can be found."))
+            .getGitCompanies();
         Hibernate.initialize(groups);
         return groups;
     }

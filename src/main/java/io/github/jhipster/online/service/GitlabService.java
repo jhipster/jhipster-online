@@ -128,8 +128,6 @@ public class GitlabService implements GitProviderService {
                 log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
             }
         });
-        System.out.println("GROOOOOOPS " + groups.size());
-        groups.forEach(System.out::println);
 
         user.setGitCompanies(groups);
         return user;

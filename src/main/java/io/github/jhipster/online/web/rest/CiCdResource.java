@@ -70,7 +70,6 @@ public class CiCdResource {
             organizationName + "/" + projectName);
 
         try {
-            System.out.println(organizationName+ " "+projectName+ " "+ciCdId);
             this.ciCdService.configureCiCd(user, organizationName, projectName, ciCdTool,
                 ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
         } catch (Exception e) {

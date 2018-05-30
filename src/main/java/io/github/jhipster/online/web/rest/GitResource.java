@@ -241,7 +241,7 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return null; // TODO pour l instant
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " + gitProvider);
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
