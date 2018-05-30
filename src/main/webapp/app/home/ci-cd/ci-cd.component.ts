@@ -32,28 +32,23 @@ export class CiCdComponent implements OnInit {
     submitted = false;
 
     ciCdId = '';
+    ciCdTool = 'travis';
 
     isGithubConfigured = false;
-
     isGitlabConfigured = false;
 
     selectedGitCompany: string;
-
-    availableGitProvider = [];
-
     gitCompanies: GitCompanyModel[];
 
-    projects: string[];
+    selectedGitProvider: string;
+    availableGitProvider = [];
 
+    projects: string[];
     gitProject: string;
 
     baseName: string;
 
     gitProviderRefresh = false;
-
-    ciCdTool = 'travis';
-
-    selectedGitProvider: string;
 
     constructor(private modalService: NgbModal, private gitService: GitProviderService, private ciCdService: CiCdService) {}
 
@@ -94,15 +89,10 @@ export class CiCdComponent implements OnInit {
 
     updateGitProjects(companyName: string) {
         this.projects = null;
-        this.gitService.getProjects(this.selectedGitProvider, companyName).subscribe(
-            projects => {
-                this.projects = projects;
-                this.gitProject = projects[0];
-            },
-            () => {
-                // TODO
-            }
-        );
+        this.gitService.getProjects(this.selectedGitProvider, companyName).subscribe(projects => {
+            this.projects = projects;
+            this.gitProject = projects[0];
+        });
     }
 
     applyCiCd() {

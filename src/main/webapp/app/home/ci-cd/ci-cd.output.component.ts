@@ -33,9 +33,13 @@ export class CiCdOutputDialogComponent implements OnInit {
 
     gitHubOrganization: string;
 
-    gitHubProject: string;
+    gitProject: string;
 
     displayApplicationUrl = false;
+
+    selectedGitCompany: string;
+
+    selectedGitProvider: string;
 
     constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
 

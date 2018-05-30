@@ -195,6 +195,7 @@ export class GeneratorComponent implements OnInit {
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.isGitlabConfigured = this.isGitlabConfigured;
         modalRef.isGithubConfigured = this.isGithubConfigured;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.baseName = this.model.baseName;
     }
 
