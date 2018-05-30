@@ -123,7 +123,5 @@ export class CiCdComponent implements OnInit {
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.gitProject = this.gitProject;
-        modalRef.isGitlabConfigured = this.isGitlabConfigured;
-        modalRef.isGithubConfigured = this.isGithubConfigured;
     }
 }

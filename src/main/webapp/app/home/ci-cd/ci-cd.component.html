@@ -81,7 +81,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
                         <label for="gitProject">Git repository</label>
-                        <select id="gitProject" [(ngModel)]="gitHubProject" name="gitHubProject"
+                        <select id="gitProject" [(ngModel)]="gitProject" name="gitProject"
                                 class="form-control"
                                 #ctrl="ngModel">
                             <option *ngFor="let project of projects">{{project}}</option>
