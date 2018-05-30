@@ -137,9 +137,12 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-    gitlab:
-        host: https://gitlab.ippon.fr
-        clientId: XXX
-        clientSecret: XXX
-        redirectUri: http://localhost:9000/api/callback/gitlab
+# application:
+#    github:
+#        clientId: XXX
+#        clientSecret: XXX
+#    gitlab:
+#        clientId: XXX
+#        clientSecret: XXX
+#        host: XXX
+#        redirectUri: XXX
