@@ -18,7 +18,7 @@
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { PasswordComponent } from 'app/account/password/password.component';
@@ -69,7 +69,7 @@ describe('Component Tests', () => {
                 newPassword: 'myPassword'
             };
 
-            spyOn(service, 'save').and.returnValue(Observable.of(new HttpResponse({ body: true })));
+            spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
             comp.currentPassword = passwordValues.currentPassword;
             comp.newPassword = comp.confirmPassword = passwordValues.newPassword;
 
@@ -82,7 +82,7 @@ describe('Component Tests', () => {
 
         it('should set success to OK upon success', function() {
             // GIVEN
-            spyOn(service, 'save').and.returnValue(Observable.of(new HttpResponse({ body: true })));
+            spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
             comp.newPassword = comp.confirmPassword = 'myPassword';
 
             // WHEN
@@ -96,7 +96,7 @@ describe('Component Tests', () => {
 
         it('should notify of error if change password fails', function() {
             // GIVEN
-            spyOn(service, 'save').and.returnValue(Observable.throw('ERROR'));
+            spyOn(service, 'save').and.returnValue(throwError('ERROR'));
             comp.newPassword = comp.confirmPassword = 'myPassword';
 
             // WHEN

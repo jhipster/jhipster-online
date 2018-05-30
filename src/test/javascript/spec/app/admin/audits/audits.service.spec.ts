@@ -30,8 +30,7 @@ describe('Service Tests', () => {
 
         beforeEach(() => {
             TestBed.configureTestingModule({
-                imports: [HttpClientTestingModule],
-                providers: [AuditsService]
+                imports: [HttpClientTestingModule]
             });
 
             service = TestBed.get(AuditsService);

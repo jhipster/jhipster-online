@@ -18,7 +18,7 @@
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { UserMgmtDetailComponent } from 'app/admin/user-management/user-management-detail.component';

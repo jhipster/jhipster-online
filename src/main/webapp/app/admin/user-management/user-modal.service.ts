@@ -22,7 +22,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { User, UserService } from 'app/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserModalService {
     private isOpen = false;
     constructor(private modalService: NgbModal, private router: Router, private userService: UserService) {}
