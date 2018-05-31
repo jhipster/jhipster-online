@@ -20,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
 import { CiCdService } from './ci-cd.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
-import { GitProviderService } from '../git/github.service';
+import { GitProviderService } from '../git/git.service';
 import { GitCompanyModel } from 'app/home/generator/git.company.model';
 
 @Component({
@@ -63,7 +63,7 @@ export class CiCdComponent implements OnInit {
 
     refreshGitProjectList() {
         this.gitProviderRefresh = true;
-        this.gitService.refreshGithub(this.selectedGitProvider).subscribe(
+        this.gitService.refreshGitProvider(this.selectedGitProvider).subscribe(
             () => {
                 this.updateGitProjects(this.selectedGitCompany);
                 this.gitProviderRefresh = false;

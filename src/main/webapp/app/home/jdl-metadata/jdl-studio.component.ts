@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
-import { GitProviderService } from '../git/github.service';
+import { GitProviderService } from '../git/git.service';
 import { GitCompanyModel } from 'app/home/generator/git.company.model';
 import { JdlOutputDialogComponent } from './jdl.output.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -80,90 +80,101 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     submitted = false;
 
-    gitHubConfigured = true;
+    isGithubConfigured = false;
 
-    organizations: GitCompanyModel[];
+    isGitlabConfigured = false;
 
-    gitHubOrganization: string;
+    availableGitProviders: any = [];
+
+    companies: GitCompanyModel[];
+
+    selectedGitCompany: string;
 
     projects: string[];
 
-    gitHubProject: string;
+    gitProject: string;
 
     baseName: string;
 
-    githubRefresh = false;
+    gitRefresh = false;
 
-    selectedGitProvider = 'none';
+    selectedGitProvider: string;
 
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
         private route: ActivatedRoute,
-        private githubService: GitProviderService,
+        private gitService: GitProviderService,
         private jdlService: JdlService
     ) {}
 
     ngOnInit() {
         this.subscription = this.route.params.subscribe(params => {
+            this.gitService.getAvailableProviders().subscribe(result => {
+                result.forEach(provider => this.refreshGitCompaniesListByGitProvider(provider));
+            });
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
                     this.jdlId = jdlMetadata.id;
                     this.jdlModelName = jdlMetadata.name;
-                    this.updateGitHubOrganizations();
                 },
                 (res: any) => console.log(res)
             );
         });
     }
 
-    refreshGithub() {
-        this.githubRefresh = true;
-        this.githubService.refreshGithub(this.selectedGitProvider).subscribe(
+    refreshGitProvider() {
+        this.gitRefresh = true;
+        this.gitService.refreshGitProvider(this.selectedGitProvider).subscribe(
             () => {
-                this.githubRefresh = false;
-                this.updateGitHubOrganizations();
+                this.gitRefresh = false;
+                this.updateGitProjects(this.selectedGitCompany);
             },
             () => {
-                this.githubRefresh = false;
+                this.gitRefresh = false;
             }
         );
     }
 
-    updateGitHubOrganizations() {
-        this.githubService.getCompanies(this.selectedGitProvider).subscribe(
-            orgs => {
-                this.organizations = orgs;
-                this.gitHubOrganization = orgs[0].name;
-                this.gitHubConfigured = true;
-                this.updateGitHubProjects(this.gitHubOrganization);
+    refreshGitCompaniesListByGitProvider(gitProvider: string) {
+        this.gitService.getCompanies(gitProvider).subscribe(
+            companies => {
+                this.setGitProviderConfigurationStatus(gitProvider, true);
+                this.selectedGitProvider = gitProvider;
+                this.companies = companies;
+                this.selectedGitCompany = companies[0].name;
+                this.addToAvailableProviders(gitProvider);
+                this.updateGitProjects(this.selectedGitCompany);
             },
             () => {
-                this.gitHubConfigured = false;
+                this.setGitProviderConfigurationStatus(gitProvider, false);
             }
         );
     }
 
-    updateGitHubProjects(organizationName: string) {
-        this.githubService.getProjects(this.selectedGitProvider, organizationName).subscribe(
+    updateGitProjects(organizationName: string) {
+        this.gitService.getProjects(this.selectedGitProvider, organizationName).subscribe(
             projects => {
+                this.setGitProviderConfigurationStatus(this.selectedGitProvider, true);
                 this.projects = projects;
-                this.gitHubProject = projects[0];
-                this.gitHubConfigured = true;
+                this.gitProject = projects[0];
             },
             () => {
-                this.gitHubConfigured = false;
+                this.setGitProviderConfigurationStatus(this.selectedGitProvider, false);
             }
         );
     }
 
     applyJdl() {
-        this.jdlService.doApplyJdl(this.gitHubOrganization, this.gitHubProject, this.jdlId).subscribe(
+        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.gitProject, this.jdlId).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
             },
-            () => console.log('Error applying the JDL Model.')
+            err => {
+                console.log('Error applying the JDL Model.');
+                console.log(err);
+            }
         );
     }
 
@@ -171,11 +182,27 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
-        modalRef.gitHubOrganization = this.gitHubOrganization;
-        modalRef.gitHubProject = this.gitHubProject;
+        // FIXME
+        modalRef.gitHubOrganization = this.selectedGitCompany;
+        // FIXME
+        modalRef.gitHubProject = this.gitProject;
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    private setGitProviderConfigurationStatus(gitProvider: string, status: boolean) {
+        if (gitProvider === 'github') {
+            this.isGithubConfigured = status;
+        } else if (gitProvider === 'gitlab') {
+            this.isGitlabConfigured = status;
+        }
+    }
+
+    private addToAvailableProviders(gitProvider: string) {
+        if (!this.availableGitProviders.includes(gitProvider)) {
+            this.availableGitProviders.push(gitProvider);
+        }
     }
 }

@@ -21,7 +21,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class GeneratorService {
     constructor(private http: HttpClient) {}
 

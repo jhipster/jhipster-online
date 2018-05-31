@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { GitCompanyModel } from 'app/home/generator/git.company.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class GitProviderService {
     constructor(private http: HttpClient) {}
 
@@ -29,11 +29,11 @@ export class GitProviderService {
         return this.http.get(`api/${string.valueOf()}/client-id`, { responseType: 'text' });
     }
 
-    saveGithubOAuthToken(provider: string, token: string): Observable<any> {
+    saveGitOAuthToken(provider: string, token: string): Observable<any> {
         return this.http.post<any>(`api/${provider}/save-token`, token);
     }
 
-    refreshGithub(provider: string): Observable<any> {
+    refreshGitProvider(provider: string): Observable<any> {
         return this.http.post<any>(`api/${provider}/refresh`, '');
     }
 

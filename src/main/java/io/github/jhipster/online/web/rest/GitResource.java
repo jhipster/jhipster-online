@@ -251,7 +251,7 @@ public class GitResource {
     }
 
     /**
-     * Get the current user's GitHub organizations.
+     * Get the current user's GitHub companies.
      */
     @GetMapping("/{gitProvider}/companies")
     @Timed

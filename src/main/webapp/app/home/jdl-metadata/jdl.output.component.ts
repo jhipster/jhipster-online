@@ -27,11 +27,11 @@ import { JdlService } from './jdl.service';
 export class JdlOutputDialogComponent implements OnInit {
     logs = '';
 
-    applyJdlId: String;
+    applyJdlId: string;
 
-    gitHubOrganization: String;
+    gitHubOrganization: string;
 
-    gitHubProject: String;
+    gitHubProject: string;
 
     displayBranchUrl = false;
 

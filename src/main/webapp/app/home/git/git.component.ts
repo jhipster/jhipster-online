@@ -17,22 +17,22 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { GitProviderService } from './github.service';
+import { GitProviderService } from './git.service';
 
 @Component({
     selector: 'jhi-github',
-    templateUrl: './github.component.html',
-    styleUrls: ['github.scss']
+    templateUrl: './git.component.html',
+    styleUrls: ['git.scss']
 })
-export class GithubComponent implements OnInit {
+export class GitComponent implements OnInit {
     githubClientId;
     gitlabClientId;
 
     isGithubConfigured = false;
     isGitlabConfigured = false;
 
-    isGithubEnabled = false;
-    isGitlabEnabled = false;
+    isGithubAvailable = false;
+    isGitlabAvailable = false;
 
     gitlabHost: string;
     gitlabRedirectUri: string;
@@ -40,37 +40,37 @@ export class GithubComponent implements OnInit {
     isAuthorizingGithub = false;
     isAuthorizingGitlab = false;
 
-    constructor(private githubService: GitProviderService) {}
+    constructor(private gitService: GitProviderService) {}
 
     ngOnInit(): void {
-        this.githubService.getAvailableProviders().subscribe(providers => {
+        this.gitService.getAvailableProviders().subscribe(providers => {
             if (providers.includes('gitlab')) {
-                this.gitlabClientId = this.githubService.clientId('gitlab').subscribe(clientId => (this.gitlabClientId = clientId));
+                this.gitlabClientId = this.gitService.clientId('gitlab').subscribe(clientId => (this.gitlabClientId = clientId));
                 this.isAuthorizingGitlab = true;
-                this.githubService.refreshGithub('gitlab').subscribe(
+                this.gitService.refreshGitProvider('gitlab').subscribe(
                     () => (this.isGitlabConfigured = true),
                     () => {
                         this.isAuthorizingGitlab = false;
                         this.isGitlabConfigured = false;
                     }
                 );
-                this.githubService.getGitlabConfig().subscribe(config => {
+                this.gitService.getGitlabConfig().subscribe(config => {
                     this.gitlabHost = config.host;
                     this.gitlabRedirectUri = config.redirectUri;
                 });
-                this.isGitlabEnabled = true;
+                this.isGitlabAvailable = true;
             }
             if (providers.includes('github')) {
-                this.githubClientId = this.githubService.clientId('github').subscribe(clientId => (this.githubClientId = clientId));
+                this.githubClientId = this.gitService.clientId('github').subscribe(clientId => (this.githubClientId = clientId));
                 this.isAuthorizingGithub = true;
-                this.githubService.refreshGithub('github').subscribe(
+                this.gitService.refreshGitProvider('github').subscribe(
                     () => (this.isGithubConfigured = true),
                     () => {
                         this.isAuthorizingGithub = false;
                         this.isGithubConfigured = false;
                     }
                 );
-                this.isGithubEnabled = true;
+                this.isGithubAvailable = true;
             }
         });
     }
