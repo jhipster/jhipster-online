@@ -139,7 +139,7 @@ jhipster:
 
 application:
     mail:
-        enable: false
+        enable: true
 #    github:
 #        clientId: XXX
 #        clientSecret: XXX

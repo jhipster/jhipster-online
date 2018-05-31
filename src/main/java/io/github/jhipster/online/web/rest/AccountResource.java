@@ -33,6 +33,7 @@ import io.github.jhipster.online.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +59,7 @@ public class AccountResource {
 
     private final boolean areEmailEnabled;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, @Autowired(required = false) MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
