@@ -16,23 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { GithubService } from './github.service';
+package io.github.jhipster.online.repository;
 
-@Component({
-    selector: 'jhi-github',
-    templateUrl: './github.component.html',
-    styleUrls: ['github.scss']
-})
-export class GithubComponent implements OnInit {
-    clientId;
+import io.github.jhipster.online.domain.GitCompany;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    gitHubConfigured = false;
+import java.util.Set;
 
-    constructor(private githubService: GithubService) {}
+/**
+ * Spring Data JPA repository for the GitCompany entity.
+ */
+@Repository
+public interface GitCompanyRepository extends JpaRepository<GitCompany, Long> {
 
-    ngOnInit(): void {
-        this.clientId = this.githubService.clientId().subscribe(data => (this.clientId = data));
-        this.githubService.getOrganizations().subscribe(() => (this.gitHubConfigured = true));
-    }
+    Set<GitCompany> findAllByUserAndGitProvider(User user, String gitProvider);
 }

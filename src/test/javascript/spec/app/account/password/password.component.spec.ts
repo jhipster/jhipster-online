@@ -1,6 +1,24 @@
+/**
+ * Copyright 2017-2018 the original author or authors from the JHipster Online project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { PasswordComponent } from 'app/account/password/password.component';
@@ -51,7 +69,7 @@ describe('Component Tests', () => {
                 newPassword: 'myPassword'
             };
 
-            spyOn(service, 'save').and.returnValue(Observable.of(new HttpResponse({ body: true })));
+            spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
             comp.currentPassword = passwordValues.currentPassword;
             comp.newPassword = comp.confirmPassword = passwordValues.newPassword;
 
@@ -64,7 +82,7 @@ describe('Component Tests', () => {
 
         it('should set success to OK upon success', function() {
             // GIVEN
-            spyOn(service, 'save').and.returnValue(Observable.of(new HttpResponse({ body: true })));
+            spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
             comp.newPassword = comp.confirmPassword = 'myPassword';
 
             // WHEN
@@ -78,7 +96,7 @@ describe('Component Tests', () => {
 
         it('should notify of error if change password fails', function() {
             // GIVEN
-            spyOn(service, 'save').and.returnValue(Observable.throw('ERROR'));
+            spyOn(service, 'save').and.returnValue(throwError('ERROR'));
             comp.newPassword = comp.confirmPassword = 'myPassword';
 
             // WHEN

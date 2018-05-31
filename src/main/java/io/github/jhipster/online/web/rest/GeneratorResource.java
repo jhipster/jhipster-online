@@ -21,6 +21,7 @@ package io.github.jhipster.online.web.rest;
 import java.io.*;
 import java.util.UUID;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,14 +47,17 @@ public class GeneratorResource {
 
     private final GithubService githubService;
 
+    private final GitlabService gitlabService;
+
     private final UserService userService;
 
     private final LogsService logsService;
 
-    public GeneratorResource(GeneratorService generatorService, GithubService githubService, UserService userService,
-        LogsService logsService) {
+    public GeneratorResource(GeneratorService generatorService, GithubService githubService, GitlabService gitlabService, UserService userService,
+                             LogsService logsService) {
         this.generatorService = generatorService;
         this.githubService = githubService;
+        this.gitlabService = gitlabService;
         this.userService = userService;
         this.logsService = logsService;
     }
@@ -61,22 +65,29 @@ public class GeneratorResource {
     @PostMapping("/generate-application")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity generateApplicationOnGitHub(@RequestBody String applicationConfiguration) {
+    public ResponseEntity generateApplicationOnGitHub(@RequestBody String applicationConfiguration) throws Exception {
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
         User user = userService.getUser();
         log.debug("Reading application configuration");
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
-        String githubOrganization = JsonPath.read(document, "$.generator-jhipster.gitHubOrganization");
+        GitProvider provider = GitProvider.getGitProviderByValue(JsonPath.read(document, "$.git-provider"))
+            .orElseThrow(() -> new Exception("No git provider"));
+        String gitCompany = JsonPath.read(document, "$.git-company");
         String applicationName = JsonPath.read(document, "$.generator-jhipster.baseName");
         String applicationId = UUID.randomUUID().toString();
 
-        log.debug("Generating application id={} - {} / {}", applicationId, githubOrganization, applicationName);
-        this.logsService.addLog(applicationId,"Generating application " + githubOrganization + "/" +
+        log.debug("Using provider: {} ({})", provider, JsonPath.read(document, "$.git-provider"));
+        log.debug("Generating application id={} - {} / {}", applicationId, gitCompany, applicationName);
+        this.logsService.addLog(applicationId,"Generating application " + gitCompany + "/" +
             applicationName);
 
         try {
-            this.githubService.createGitHubRepository(user, applicationId, applicationConfiguration, githubOrganization,
-                applicationName);
+            if (provider.equals(GitProvider.GITHUB)) {
+                this.githubService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+            } else if (provider.equals(GitProvider.GITLAB)) {
+                this.gitlabService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+            }
+
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(applicationId,"An error has occurred: " + e.getMessage());

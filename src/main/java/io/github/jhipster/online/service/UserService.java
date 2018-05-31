@@ -1,11 +1,31 @@
+/**
+ * Copyright 2017-2018 the original author or authors from the JHipster Online project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.service;
 
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.domain.Authority;
-import io.github.jhipster.online.domain.GithubOrganization;
+import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.repository.AuthorityRepository;
 import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.security.SecurityUtils;
@@ -44,6 +64,10 @@ public class UserService {
 
     private final GithubService githubService;
 
+    private final GitlabService gitlabService;
+
+    private final GitCompanyRepository gitCompanyRepository;
+  
     private final MailService mailService;
 
     private final JHipsterProperties jHipsterProperties;
@@ -54,13 +78,23 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, GithubService githubService, MailService mailService, JHipsterProperties jHipsterProperties, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       AuthorityRepository authorityRepository,
+                       GithubService githubService,
+                       CacheManager cacheManager,
+                       MailService mailService,
+                       JHipsterProperties jHipsterProperties,
+                       GitCompanyRepository gitCompanyRepository,
+                       GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.githubService = githubService;
         this.mailService = mailService;
         this.cacheManager = cacheManager;
+        this.gitCompanyRepository = gitCompanyRepository;
+        this.gitlabService = gitlabService;
         this.jHipsterProperties = jHipsterProperties;
     }
 
@@ -108,7 +142,6 @@ public class UserService {
     }
 
     public User registerUser(UserDTO userDTO, String password) {
-
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin());
@@ -231,10 +264,17 @@ public class UserService {
     }
 
     @Transactional
-    public void saveToken(String code) throws Exception {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
-        user.setGithubOAuthToken(code);
-        user = this.githubService.getSyncedUserFromGitHub(user);
+    public void saveToken(String code, GitProvider gitProvider) throws Exception {
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("No authenticated user can be found."));
+
+        if (gitProvider.equals(GitProvider.GITHUB)) {
+            user.setGithubOAuthToken(code);
+            user = this.githubService.getSyncedUserFromGitProvider(user);
+        } else if (gitProvider.equals(GitProvider.GITLAB)) {
+            user.setGitlabOAuthToken(code);
+            user = this.gitlabService.getSyncedUserFromGitProvider(user);
+        }
+
         userRepository.save(user);
         log.debug("Updated GitHub OAuth token for User: {}", user);
     }
@@ -270,23 +310,35 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<GithubOrganization> getOrganizations() {
-        Collection<GithubOrganization> orgs = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getGithubOrganizations();
-        Hibernate.initialize(orgs);
-        return orgs;
+    public Collection<GitCompany> getOrganizations(GitProvider gitProvider) {
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElse(null);
+        Set<GitCompany> gitCompanies = gitCompanyRepository.findAllByUserAndGitProvider(user, gitProvider.getValue());
+
+        Hibernate.initialize(gitCompanies);
+        return gitCompanies;
     }
 
     @Transactional(readOnly = true)
-    public List getProjects(String organizationName) {
-        Collection<GithubOrganization> organizations = this.getOrganizations();
+    public Collection<GitCompany> getGroups() throws Exception {
+        Collection<GitCompany> groups = userRepository
+            .findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null))
+            .orElseThrow(() -> new Exception("No authenticated user can be found."))
+            .getGitCompanies();
+        Hibernate.initialize(groups);
+        return groups;
+    }
+
+    @Transactional(readOnly = true)
+    public List getProjects(String organizationName, GitProvider gitProvider) {
+        Collection<GitCompany> organizations = this.getOrganizations(gitProvider);
         if (organizations.size() == 0) {
             return EMPTY_LIST;
         }
-        Optional<GithubOrganization> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
+        Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
         if (!organization.isPresent()) {
             return EMPTY_LIST;
         } else {
-            List<String> projects = organization.get().getGithubProjects();
+            List<String> projects = organization.get().getGitProjects();
             Hibernate.initialize(projects);
             return projects;
         }

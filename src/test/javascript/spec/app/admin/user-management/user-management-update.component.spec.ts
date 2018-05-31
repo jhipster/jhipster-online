@@ -1,8 +1,25 @@
+/**
+ * Copyright 2017-2018 the original author or authors from the JHipster Online project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { UserMgmtUpdateComponent } from 'app/admin/user-management/user-management-update.component';
@@ -48,7 +65,7 @@ describe('Component Tests', () => {
                     [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'authorities').and.returnValue(Observable.of(['USER']));
+                        spyOn(service, 'authorities').and.returnValue(of(['USER']));
 
                         // WHEN
                         comp.ngOnInit();
@@ -70,7 +87,7 @@ describe('Component Tests', () => {
                         // GIVEN
                         const entity = new User(123);
                         spyOn(service, 'update').and.returnValue(
-                            Observable.of(
+                            of(
                                 new HttpResponse({
                                     body: entity
                                 })
@@ -95,7 +112,7 @@ describe('Component Tests', () => {
                     fakeAsync(() => {
                         // GIVEN
                         const entity = new User();
-                        spyOn(service, 'create').and.returnValue(Observable.of(new HttpResponse({ body: entity })));
+                        spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
                         comp.user = entity;
                         // WHEN
                         comp.save();

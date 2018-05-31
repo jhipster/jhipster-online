@@ -27,11 +27,17 @@ import { GeneratorService } from './generator.service';
 export class GeneratorOutputDialogComponent implements OnInit {
     logs = '';
 
-    applicationId: String;
+    applicationId: string;
 
-    gitHubOrganization: String;
+    selectedGitProvider: string;
 
-    baseName: String;
+    isGithubConfigured: boolean;
+
+    isGitlabConfigured: boolean;
+
+    selectedGitCompany: string;
+
+    baseName: string;
 
     displayApplicationUrl = false;
 

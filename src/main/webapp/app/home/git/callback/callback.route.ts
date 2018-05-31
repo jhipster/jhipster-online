@@ -16,15 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Route } from '@angular/router';
 
-@Injectable()
-export class GithubCallbackService {
-    constructor(private http: HttpClient) {}
+import { CallbackComponent } from './callback.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
-    saveToken(token: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>('api/github/save-token', token, { observe: 'response' });
-    }
-}
+export const GITHUB_CALLBACK_ROUTE: Route = {
+    path: 'callback/:provider/:token',
+    component: CallbackComponent,
+    data: {
+        authorities: ['ROLE_USER'],
+        pageTitle: 'Git provider configuration'
+    },
+    canActivate: [UserRouteAccessService]
+};

@@ -5,61 +5,64 @@
     <div class="container">
         <h4>Project configuration</h4>
         <hr>
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!githubConfigured">
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
             <p>
                 <span class="fas fa-exclamation-triangle"></span>&nbsp;
-                <span><strong>Warning!</strong> To generate your application on GitHub, you must authorize JHipster Online to access your GitHub account.</span>
+                <span><strong>Warning!</strong> To generate your application on Gitlab or GitHub, you must authorize JHipster Online to access your Gitlab or GitHub account.</span>
                 <span>You will only be able to download your application as a Zip file</span>
             </p>
             <p class="text-center">
-                <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub
-                    account</a>
+                <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
             </p>
         </ngb-alert>
-        <div class="row" *ngIf="githubConfigured">
+        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
             <div class="col-md-12">
                 <p>
                     <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
-                    GitHub repository, and will push the generated project in that repository.</i>
+                    Git repository, and will push the generated project in that repository.</i>
                 </p>
             </div>
         </div>
-        <div class="row" *ngIf="githubConfigured">
+
+        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="gitHubOrganization">GitHub organization</label>
-                    <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                        <span *ngIf="githubRefresh">
+                    <select (change)="refreshGitCompaniesListByGitProvider(selectedGitProvider)" id="gitProviders" [(ngModel)]="selectedGitProvider" name="gitProvider" class="form-control">
+                        <!--<option selected>none</option>-->
+                        <option *ngFor="let provider of availableGitProvider">{{provider}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="gitCompanies">Git organizations</label>
+                    <button class="btn btn-info btn-sm" (click)="refresh()">
+                        <span *ngIf="gitProviderRefresh">
                             <i class="fas fa-sync fa-spin"></i>
                         </span>
-                        <span *ngIf="!githubRefresh">
+                        <span *ngIf="!gitProviderRefresh">
                             <i class="fas fa-sync"></i>
                         </span>
                         <span>
                         Refresh
                         </span>
                     </button>
-                    <select id="gitHubOrganization" [(ngModel)]="model.gitHubOrganization" name="gitHubOrganization"
+                    <select id="gitCompanies" [(ngModel)]="selectedGitCompany" name="gitCompany"
                             class="form-control"
-                            #gitHubOrganization="ngModel">
-                        <option *ngFor="let organization of organizations">{{organization.name}}</option>
+                            #gitCompany="ngModel">
+                        <option *ngFor="let company of gitCompanies">{{company.name}}</option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="baseName">Application name</label>
-                    <input type="text" class="form-control" id="baseName" [(ngModel)]="model.baseName" name="baseName"
-                           #baseName="ngModel" required pattern="^([a-zA-Z0-9]*)$">
-                    <div *ngIf="baseName.errors" class="alert alert-danger">Your application name cannot contain special characters or a blank space.</div>
-                </div>
-            </div>
         </div>
-        <div class="row" *ngIf="!githubConfigured">
+        <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="baseName">Application name</label>
-                    <input type="text" class="form-control" id="baseNameZip" [(ngModel)]="model.baseName" name="baseName"
+                    <input type="text" class="form-control" id="baseName" [(ngModel)]="model.baseName" name="baseName"
                            #baseName="ngModel" required pattern="^([a-zA-Z0-9]*)$">
                     <div *ngIf="baseName.errors" class="alert alert-danger">Your application name cannot contain special characters or a blank space.</div>
                 </div>
@@ -336,8 +339,8 @@
                     <p></p>
                     <div [ngSwitch]="!submitted">
                         <div *ngSwitchCase="true">
-                            <button type="submit" class="btn btn-primary" [disabled]="!generatorForm.form.valid" (click)="onSubmit()" *ngIf="githubConfigured">
-                                Generate on GitHub
+                            <button type="submit" class="btn btn-primary" [disabled]="!generatorForm.form.valid" (click)="onSubmit()" *ngIf="selectedGitProvider !== 'none'">
+                                Generate on Git
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="!generatorForm.form.valid" (click)="onSubmitDownload()">
                                 Download as Zip file
@@ -347,8 +350,8 @@
                         <div *ngSwitchCase="false">
                             <span
                                 class="fas fa-sync fa-spin"></span>
-                            <button type="submit" class="btn btn-primary" [disabled]="true" *ngIf="githubConfigured">
-                                Generate on GitHub
+                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="selectedGitProvider !== 'none'">
+                                Generate on Git
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="true">
                                 Download as Zip file

@@ -18,6 +18,7 @@
  */
 package io.github.jhipster.online.web.rest;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,10 +51,10 @@ public class CiCdResource {
         this.logsService = logsService;
     }
 
-    @PostMapping("/ci-cd/{organizationName}/{projectName}/{ciCdTool}")
+    @PostMapping("/ci-cd/{gitProvider}/{organizationName}/{projectName}/{ciCdTool}")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity configureCiCd(@PathVariable String organizationName, @PathVariable String projectName, @PathVariable String ciCdTool) {
+    public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName, @PathVariable String ciCdTool) {
         log.info("Configuring CI: {} on GitHub project {}/{}", ciCdTool, organizationName, projectName);
         User user = userService.getUser();
         String ciCdId = "ci-" +
@@ -70,7 +71,7 @@ public class CiCdResource {
 
         try {
             this.ciCdService.configureCiCd(user, organizationName, projectName, ciCdTool,
-                ciCdId);
+                ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(ciCdId, "An error has occurred: " + e.getMessage());

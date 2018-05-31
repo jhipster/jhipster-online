@@ -8,17 +8,17 @@
     "node_modules"
   ],
   "dependencies": {
-    "@angular/common": "5.2.8",
-    "@angular/compiler": "5.2.8",
-    "@angular/core": "5.2.8",
-    "@angular/forms": "5.2.8",
-    "@angular/platform-browser": "5.2.8",
-    "@angular/platform-browser-dynamic": "5.2.8",
-    "@angular/router": "5.2.8",
+    "@angular/common": "6.0.0",
+    "@angular/compiler": "6.0.0",
+    "@angular/core": "6.0.0",
+    "@angular/forms": "6.0.0",
+    "@angular/platform-browser": "6.0.0",
+    "@angular/platform-browser-dynamic": "6.0.0",
+    "@angular/router": "6.0.0",
     "@fortawesome/fontawesome": "1.1.5",
-    "@fortawesome/fontawesome-free-brands": "^5.0.12",
+    "@fortawesome/fontawesome-free-brands": "5.0.12",
     "@fortawesome/fontawesome-free-solid": "5.0.10",
-    "@ng-bootstrap/ng-bootstrap": "1.0.1",
+    "@ng-bootstrap/ng-bootstrap": "2.0.0",
     "bootstrap": "4.0.0",
     "core-js": "2.5.3",
     "jquery": "3.3.1",
@@ -29,16 +29,17 @@
     "ngx-infinite-scroll": "0.5.1",
     "ngx-webstorage": "2.0.1",
     "reflect-metadata": "0.1.12",
-    "rxjs": "5.5.6",
+    "rxjs": "6.1.0",
+    "rxjs-compat": "6.1.0",
     "swagger-ui": "2.2.10",
     "tslib": "1.9.0",
-    "zone.js": "0.8.20"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.3",
-    "@angular/compiler-cli": "5.2.8",
+    "@angular/cli": "6.0.0",
+    "@angular/compiler-cli": "6.0.0",
     "@ngtools/webpack": "6.0.0-beta.4",
-    "@types/jasmine": "2.8.6",
+    "@types/jest": "22.2.3",
     "@types/node": "9.4.7",
     "angular-router-loader": "0.8.2",
     "angular2-template-loader": "0.6.2",
@@ -56,26 +57,16 @@
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.0.6",
     "husky": "0.14.3",
-    "jasmine-core": "2.7.0",
-    "karma": "1.7.1",
-    "karma-chrome-launcher": "2.2.0",
-    "karma-coverage": "1.1.1",
-    "karma-intl-shim": "1.0.3",
-    "karma-jasmine": "1.1.0",
-    "karma-junit-reporter": "1.2.0",
-    "karma-notify-reporter": "1.0.1",
-    "karma-remap-istanbul": "0.6.0",
-    "karma-sourcemap-loader": "0.3.7",
-    "karma-webpack": "2.0.13",
+    "jest": "22.4.3",
+    "jest-preset-angular": "5.2.2",
     "lint-staged": "7.0.0",
     "node-sass": "4.7.2",
     "postcss-loader": "2.1.1",
     "prettier": "1.11.1",
     "proxy-middleware": "0.15.0",
-    "puppeteer": "1.1.1",
+    "raw-loader": "0.5.1",
     "rimraf": "2.6.1",
     "sass-loader": "6.0.7",
-    "sourcemap-istanbul-instrumenter-loader": "0.2.0",
     "style-loader": "0.20.3",
     "tapable": "1.0.0",
     "thread-loader": "1.1.5",
@@ -116,15 +107,36 @@
     "start": "yarn run webpack:dev",
     "serve": "yarn run start",
     "build": "yarn run webpack:prod",
-    "test": "yarn run lint && karma start src/test/javascript/karma.conf.js",
-    "test:watch": "yarn test -- --watch",
+    "test": "yarn run lint && jest --coverage --logHeapUsage -w=2",
+    "test:coverage": "yarn run lint && jest --coverage",
+    "test:watch": "yarn test -- --watch --clearCache",
+    "webpack:test": "yarn run test",
     "webpack:dev": "yarn run webpack-dev-server -- --config webpack/webpack.dev.js --progress --inline --hot --profile --port=9060 --watch-content-base",
     "webpack:build:main": "yarn run webpack -- --config webpack/webpack.dev.js --progress --profile",
     "webpack:build": "yarn run cleanup && yarn run webpack:build:main",
     "webpack:prod:main": "yarn run webpack -- --config webpack/webpack.prod.js --profile",
     "webpack:prod": "yarn run cleanup && yarn run webpack:prod:main && yarn run clean-www",
-    "webpack:test": "yarn run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "<rootDir>/src/test/javascript/jest.ts",
+    "coverageDirectory": "<rootDir>/build/test-results/",
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      },
+      "__TRANSFORM_HTML__": true
+    },
+    "moduleNameMapper": {
+      "app/(.*)": "<rootDir>/src/main/webapp/app/$1"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@angular/common/locales)"
+    ],
+    "testMatch": [
+      "<rootDir>/src/test/javascript/spec/**/+(*.)+(spec.ts)"
+    ]
   }
 }

@@ -130,3 +130,11 @@ jhipster:
 # ===================================================================
 
 # application:
+#    github:
+#        clientId: XXX
+#        clientSecret: XXX
+#    gitlab:
+#        clientId: XXX
+#        clientSecret: XXX
+#        host: XXX
+#        redirectUri: XXX

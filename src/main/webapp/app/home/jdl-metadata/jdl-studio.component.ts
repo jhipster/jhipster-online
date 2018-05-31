@@ -21,8 +21,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
-import { GithubService } from '../github/github.service';
-import { GithubOrganizationModel } from '../generator/github.organization.model';
+import { GitProviderService } from '../git/github.service';
+import { GitCompanyModel } from 'app/home/generator/git.company.model';
 import { JdlOutputDialogComponent } from './jdl.output.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { JdlService } from './jdl.service';
@@ -82,23 +82,25 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     gitHubConfigured = true;
 
-    organizations: GithubOrganizationModel[];
+    organizations: GitCompanyModel[];
 
-    gitHubOrganization: String;
+    gitHubOrganization: string;
 
-    projects: String[];
+    projects: string[];
 
-    gitHubProject: String;
+    gitHubProject: string;
 
-    baseName: String;
+    baseName: string;
 
     githubRefresh = false;
+
+    selectedGitProvider = 'none';
 
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
         private route: ActivatedRoute,
-        private githubService: GithubService,
+        private githubService: GitProviderService,
         private jdlService: JdlService
     ) {}
 
@@ -117,7 +119,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     refreshGithub() {
         this.githubRefresh = true;
-        this.githubService.refreshGithub().subscribe(
+        this.githubService.refreshGithub(this.selectedGitProvider).subscribe(
             () => {
                 this.githubRefresh = false;
                 this.updateGitHubOrganizations();
@@ -129,7 +131,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     }
 
     updateGitHubOrganizations() {
-        this.githubService.getOrganizations().subscribe(
+        this.githubService.getCompanies(this.selectedGitProvider).subscribe(
             orgs => {
                 this.organizations = orgs;
                 this.gitHubOrganization = orgs[0].name;
@@ -142,8 +144,8 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         );
     }
 
-    updateGitHubProjects(organizationName: String) {
-        this.githubService.getProjects(organizationName).subscribe(
+    updateGitHubProjects(organizationName: string) {
+        this.githubService.getProjects(this.selectedGitProvider, organizationName).subscribe(
             projects => {
                 this.projects = projects;
                 this.gitHubProject = projects[0];

@@ -22,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -135,10 +136,10 @@ public class JdlResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/apply-jdl/{organizationName}/{projectName}/{jdlId}")
+    @PostMapping("/apply-jdl/{gitProvider}/{organizationName}/{projectName}/{jdlId}")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity applyJdl(@PathVariable String organizationName, @PathVariable String projectName,
+    public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName,
         @PathVariable String jdlId) {
         log.info("Applying JDL `{}` on GitHub project {}/{}", jdlId, organizationName, projectName);
         User user = userService.getUser();
@@ -150,7 +151,7 @@ public class JdlResource {
 
         try {
             this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
-                applyJdlId);
+                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(jdlId, "An error has occurred: " + e.getMessage());

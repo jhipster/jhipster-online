@@ -16,10 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class GithubOrganizationModel {
+package io.github.jhipster.online.domain.enums;
 
-    constructor(
-        public id: number,
-        public name: String
-    ) { }
+import java.util.Arrays;
+import java.util.Optional;
+
+public enum GitProvider {
+    GITHUB("github"), GITLAB("gitlab");
+
+    private String value;
+
+    GitProvider(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static Optional<GitProvider> getGitProviderByValue(String value) {
+        return Arrays.stream(GitProvider.values())
+            .filter(e -> e.value.equals(value.toLowerCase()))
+            .findFirst();
+    }
 }

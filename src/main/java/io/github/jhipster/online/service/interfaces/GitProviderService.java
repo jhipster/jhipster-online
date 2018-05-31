@@ -16,13 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { platformBrowser } from '@angular/platform-browser';
-// import { ProdConfig } from './blocks/config/prod.config';
-// import { JhonlineAppModuleNgFactory } from '../../../../target/aot/src/main/webapp/app/app.module.ngfactory';
-//
-// ProdConfig();
-//
-// platformBrowser()
-//     .bootstrapModuleFactory(JhonlineAppModuleNgFactory)
-//     .then(() => console.log(`Application started`))
-//     .catch(err => console.error(err));
+package io.github.jhipster.online.service.interfaces;
+
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+
+public interface GitProviderService {
+
+    void syncUserFromGitProvider() throws Exception;
+
+    User getSyncedUserFromGitProvider(User user) throws Exception;
+
+    void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
+        organization, String applicationName);
+
+    int createPullRequest(User user, String organization, String applicationName,
+                          String title, String branchName, String body) throws Exception;
+
+    boolean isAvailable();
+}

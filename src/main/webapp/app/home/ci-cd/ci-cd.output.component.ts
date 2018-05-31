@@ -27,15 +27,19 @@ import { CiCdService } from './ci-cd.service';
 export class CiCdOutputDialogComponent implements OnInit {
     logs = '';
 
-    ciCdId: String;
+    ciCdId: string;
 
-    ciCdTool: String;
+    ciCdTool: string;
 
-    gitHubOrganization: String;
+    gitHubOrganization: string;
 
-    gitHubProject: String;
+    gitProject: string;
 
     displayApplicationUrl = false;
+
+    selectedGitCompany: string;
+
+    selectedGitProvider: string;
 
     constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
 

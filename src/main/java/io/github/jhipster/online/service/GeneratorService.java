@@ -21,6 +21,7 @@ package io.github.jhipster.online.service;
 import java.io.*;
 import java.net.URISyntaxException;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -64,14 +65,12 @@ public class GeneratorService {
         return workingDir + ".zip";
     }
 
-    public void generateGitApplication(User user,
-        String applicationId,
-        String applicationConfiguration, String githubOrganization, String
-        applicationName) throws IOException, GitAPIException, URISyntaxException {
-
+    public void generateGitApplication(User user, String applicationId,
+                                       String applicationConfiguration, String githubOrganization, String applicationName,
+                                       GitProvider gitProvider) throws IOException, GitAPIException, URISyntaxException {
         File workingDir = generateApplication(applicationId, applicationConfiguration);
         this.logsService.addLog(applicationId, "Pushing the application to the Git remote repository");
-        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, applicationName);
+        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, applicationName, gitProvider);
         this.logsService.addLog(applicationId, "Application successfully pushed!");
         this.gitService.cleanUpDirectory(workingDir);
     }

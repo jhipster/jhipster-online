@@ -20,6 +20,7 @@ package io.github.jhipster.online.service;
 
 import java.io.*;
 
+import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
@@ -43,15 +44,18 @@ public class CiCdService {
 
     private final GithubService githubService;
 
+    private final GitlabService gitlabService;
+
     private final JHipsterService jHipsterService;
 
     private final ApplicationProperties applicationProperties;
 
     public CiCdService(LogsService logsService, GitService gitService,
-        GithubService githubService, JHipsterService jHipsterService, ApplicationProperties applicationProperties) {
+                       GithubService githubService, GitlabService gitlabService, JHipsterService jHipsterService, ApplicationProperties applicationProperties) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.githubService = githubService;
+        this.gitlabService = gitlabService;
         this.jHipsterService = jHipsterService;
         this.applicationProperties = applicationProperties;
     }
@@ -60,7 +64,7 @@ public class CiCdService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId) {
+    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId, GitProvider gitProvider) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
@@ -70,7 +74,7 @@ public class CiCdService {
             File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
                 ciCdId);
             FileUtils.forceMkdir(workingDir);
-            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName);
+            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
             String branchName = "jhipster-" + ciCdTool + "-" + ciCdId;
             this.logsService.addLog(ciCdId, "Creating branch `" + branchName + "`");
@@ -86,24 +90,37 @@ public class CiCdService {
                 " Continuous Integration");
 
             this.logsService.addLog(ciCdId, "Pushing the application to the Git remote repository");
-            this.gitService.push(git, workingDir, user, organizationName, projectName);
+            this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating Pull Request");
 
             String pullRequestTitle = "Configure Continuous Integration with " + StringUtils.capitalize(ciCdTool);
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
-            int pullRequestNumber =
-                this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
-                    branchName, pullRequestBody);
-
-            this.logsService.addLog(ciCdId, "Pull Request created at https://github.com/" +
-                organizationName +
-                "/" +
-                projectName +
-                "/pull/" +
-                pullRequestNumber
-             );
+            int pullRequestNumber = -1;
+            if (gitProvider.equals(GitProvider.GITHUB)) {
+                pullRequestNumber =
+                    this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
+                        branchName, pullRequestBody);
+                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab().getHost() +
+                    organizationName +
+                    "/" +
+                    projectName +
+                    "/pull/" +
+                    pullRequestNumber
+                );
+            } else if (gitProvider.equals(GitProvider.GITLAB)) {
+                pullRequestNumber =
+                    this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
+                        branchName, pullRequestBody);
+                this.logsService.addLog(ciCdId, "Pull Request created at https://github.com/" +
+                    organizationName +
+                    "/" +
+                    projectName +
+                    "/pull/" +
+                    pullRequestNumber
+                );
+            }
 
             this.gitService.cleanUpDirectory(workingDir);
 

@@ -33,9 +33,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "github_organization")
+@Table(name = "git_company")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class GithubOrganization implements Serializable {
+public class GitCompany implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,11 +52,14 @@ public class GithubOrganization implements Serializable {
     @ManyToOne
     private User user;
 
+    @NotNull
+    private String gitProvider;
+
     @JsonIgnore
     @ElementCollection
-    @CollectionTable(name = "github_project")
+    @CollectionTable(name = "git_project")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<String> githubProjects;
+    private List<String> gitProjects;
 
     public Long getId() {
         return id;
@@ -82,12 +85,20 @@ public class GithubOrganization implements Serializable {
         this.user = user;
     }
 
-    public List<String> getGithubProjects() {
-        return githubProjects;
+    public String getGitProvider() {
+        return gitProvider;
     }
 
-    public void setGithubProjects(List<String> githubProjects) {
-        this.githubProjects = githubProjects;
+    public void setGitProvider(String gitProvider) {
+        this.gitProvider = gitProvider;
+    }
+
+    public List<String> getGitProjects() {
+        return gitProjects;
+    }
+
+    public void setGitProjects(List<String> gitProjects) {
+        this.gitProjects = gitProjects;
     }
 
     @Override
@@ -99,7 +110,7 @@ public class GithubOrganization implements Serializable {
             return false;
         }
 
-        GithubOrganization authority = (GithubOrganization) o;
+        GitCompany authority = (GitCompany) o;
 
         return !(id != null ? !id.equals(authority.id) : authority.id != null);
     }
@@ -111,9 +122,12 @@ public class GithubOrganization implements Serializable {
 
     @Override
     public String toString() {
-        return "GithubOrganization{" +
+        return "GitCompany{" +
             "id=" + id +
             ", name='" + name + '\'' +
+            ", user=" + user.getLogin() +
+            ", gitProvider='" + gitProvider + '\'' +
+            ", gitProjects=" + gitProjects.size() +
             '}';
     }
 }
