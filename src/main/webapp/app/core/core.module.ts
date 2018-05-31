@@ -32,7 +32,6 @@ import locale from '@angular/common/locales/en';
             provide: LOCALE_ID,
             useValue: 'en'
         },
-
         DatePipe
     ]
 })
