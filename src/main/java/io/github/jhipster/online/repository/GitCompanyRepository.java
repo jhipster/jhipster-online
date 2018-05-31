@@ -20,7 +20,6 @@ package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -33,4 +32,6 @@ import java.util.Set;
 public interface GitCompanyRepository extends JpaRepository<GitCompany, Long> {
 
     Set<GitCompany> findAllByUserAndGitProvider(User user, String gitProvider);
+
+    void deleteAllByUserLoginAndGitProvider(String user, String gitProvider);
 }

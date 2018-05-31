@@ -312,6 +312,11 @@ public class UserService {
         return groups;
     }
 
+    @Transactional
+    public void deleteOrganizations(String login) {
+        githubService.deleteAllOrganizationsForCurrentUser(login);
+    }
+
     @Transactional(readOnly = true)
     public List getProjects(String organizationName, GitProvider gitProvider) {
         Collection<GitCompany> organizations = this.getOrganizations(gitProvider);

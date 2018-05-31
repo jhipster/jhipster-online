@@ -214,4 +214,14 @@ public class GithubService implements GitProviderService {
         }
         return GitHub.connectUsingOAuth(user.getGithubOAuthToken());
     }
+
+    /**
+     *  Delete all the github organizations.
+     *
+     */
+    @Transactional
+    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
+        log.debug("Request to delete all github organizations for current user");
+        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(userLogin, GitProvider.GITHUB.getValue());
+    }
 }

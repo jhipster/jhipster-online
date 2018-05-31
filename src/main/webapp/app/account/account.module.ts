@@ -29,6 +29,7 @@ import {
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
+    DeleteAccountDialogComponent,
     accountState
 } from './';
 
@@ -41,8 +42,10 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SettingsComponent
+        SettingsComponent,
+        DeleteAccountDialogComponent
     ],
+    entryComponents: [DeleteAccountDialogComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAccountModule {}

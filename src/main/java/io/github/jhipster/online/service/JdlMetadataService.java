@@ -146,4 +146,14 @@ public class JdlMetadataService {
         this.jdlRepository.delete(jdl.get());
         jdlMetadataRepository.deleteById(id);
     }
+
+    /**
+     *  Delete all the jdlMetadata.
+     *
+     */
+    @Transactional
+    public void deleteAllForCurrentUser(String userLogin) {
+        log.debug("Request to delete all JdlMetadata for current user");
+        jdlMetadataRepository.deleteAllByUserLogin(userLogin);
+    }
 }

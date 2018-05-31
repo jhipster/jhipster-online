@@ -30,6 +30,10 @@ export class AccountService {
         return this.http.get<Account>(SERVER_API_URL + 'api/account', { observe: 'response' });
     }
 
+    delete(): Observable<any> {
+        return this.http.delete(SERVER_API_URL + 'api/account');
+    }
+
     save(account: any): Observable<HttpResponse<any>> {
         return this.http.post(SERVER_API_URL + 'api/account', account, { observe: 'response' });
     }

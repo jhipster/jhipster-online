@@ -206,4 +206,14 @@ public class GitlabService implements GitProviderService {
         }
         return GitlabAPI.connect(applicationProperties.getGitlab().getHost(), user.getGitlabOAuthToken(), TokenType.ACCESS_TOKEN);
     }
+
+    /**
+     *  Delete all the gitlab groups.
+     *
+     */
+    @Transactional
+    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
+        log.debug("Request to delete all gitlab groups for current user");
+        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(userLogin, GitProvider.GITLAB.getValue());
+    }
 }

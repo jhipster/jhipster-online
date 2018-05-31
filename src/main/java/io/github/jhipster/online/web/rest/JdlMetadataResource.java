@@ -83,7 +83,7 @@ public class JdlMetadataResource {
     public List<JdlMetadata> getAllJdlMetadata() {
         log.debug("REST request to get all JdlMetadata");
         return jdlMetadataService.findAllForCurrentUser();
-        }
+    }
 
     /**
      * GET  /jdl-metadata/:id : get the "id" jdlMetadata.

@@ -19,7 +19,6 @@
 package io.github.jhipster.online.service.interfaces;
 
 import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
 
 public interface GitProviderService {
 
