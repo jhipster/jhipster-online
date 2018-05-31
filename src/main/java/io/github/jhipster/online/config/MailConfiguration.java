@@ -14,7 +14,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 public class MailConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = "application.mail.enable", havingValue = "true")
+    @ConditionalOnProperty("application.mail.enable")
     public MailService getMailService(JHipsterProperties jHipsterProperties,
                                       JavaMailSender javaMailSender,
                                       MessageSource messageSource,
