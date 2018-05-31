@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 package io.github.jhipster.online.service;
+import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.config.Constants;
 
 import io.github.jhipster.online.JhonlineApp;
@@ -55,6 +56,9 @@ public class MailServiceIntTest {
     private JHipsterProperties jHipsterProperties;
 
     @Autowired
+    private ApplicationProperties applicationProperties;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Autowired
@@ -72,7 +76,7 @@ public class MailServiceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
-        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
+        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine, applicationProperties);
     }
 
     @Test

@@ -63,6 +63,8 @@ fontawesome.library.add(solid.faCalendarAlt);
 fontawesome.library.add(solid.faSearch);
 fontawesome.library.add(solid.faTrashAlt);
 fontawesome.library.add(solid.faAsterisk);
+fontawesome.library.add(solid.faUndo);
+fontawesome.library.add(solid.faCopy);
 fontawesome.library.add(brand.faTwitter);
 fontawesome.library.add(brand.faGithub);
 fontawesome.library.add(brand.faGitlab);

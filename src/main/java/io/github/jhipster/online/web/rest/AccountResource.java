@@ -99,7 +99,9 @@ public class AccountResource {
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        if (mailService.isServiceEnabled()) {
+            mailService.sendActivationEmail(user);
+        }
     }
 
     /**
@@ -220,6 +222,13 @@ public class AccountResource {
            userService.requestPasswordReset(mail)
                .orElseThrow(EmailNotFoundException::new)
        );
+    }
+
+    @PostMapping(path = "/account/reset-password/link")
+    @Timed
+    public String requestPasswordResetAndReturnLink(@RequestBody String mail) {
+        User user  = userService.requestPasswordReset(mail).orElseThrow(EmailNotFoundException::new);
+        return userService.generatePasswordResetLink(user.getResetKey());
     }
 
     /**
