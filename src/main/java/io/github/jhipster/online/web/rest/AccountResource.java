@@ -20,11 +20,11 @@ package io.github.jhipster.online.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
+import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.MailService;
-import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.UserDTO;
 import io.github.jhipster.online.web.rest.errors.*;
 import io.github.jhipster.online.web.rest.vm.KeyAndPasswordVM;
@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
+
 import java.util.*;
 
 /**
@@ -57,15 +58,29 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    private final boolean areEmailEnabled;
+    private final JdlMetadataService jdlMetadataService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, @Autowired(required = false) MailService mailService) {
+    private final JdlService jdlService;
 
+    private final GithubService githubService;
+  
+    private final GitlabService gitlabService;
+
+    public AccountResource(UserRepository userRepository,
+                           UserService userService,
+                           @Autowired(required = false) MailService mailService,
+                           JdlMetadataService jdlMetadataService,
+                           JdlService jdlService,
+                           GithubService githubService,
+                           GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.areEmailEnabled = mailService != null;
-    }
+        this.jdlMetadataService = jdlMetadataService;
+        this.jdlService = jdlService;
+        this.githubService = githubService;
+        this.gitlabService = gitlabService;
 
     /**
      * POST  /register : register the user.
@@ -130,6 +145,31 @@ public class AccountResource {
         return userService.getUserWithAuthorities()
             .map(UserDTO::new)
             .orElseThrow(() -> new InternalServerErrorException("User could not be found"));
+    }
+
+    /**
+     * DELETE  /account : delete the current user.
+     *
+     * @throws RuntimeException 500 (Internal Server Error) if the user couldn't be returned
+     */
+    @DeleteMapping("/account")
+    @Timed
+    public void deleteAccount() {
+        final String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new InternalServerErrorException("Current user login not found"));
+
+        // Checks if user exists
+        Optional<User> user = userRepository.findOneByLogin(userLogin);
+        if (!user.isPresent()) {
+            throw new InternalServerErrorException("User could not be found");
+        }
+
+        for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForCurrentUser()) {
+            jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
+        }
+        jdlMetadataService.deleteAllForCurrentUser(userLogin);
+        githubService.deleteAllOrganizationsForCurrentUser(userLogin);
+        gitlabService.deleteAllOrganizationsForCurrentUser(userLogin);
+        userService.deleteUser(userLogin);
     }
 
     /**

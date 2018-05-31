@@ -18,15 +18,15 @@
  */
 import { Route } from '@angular/router';
 
-import { GithubComponent } from './github.component';
+import { GitComponent } from './git.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
-export const GITHUB_ROUTE: Route = {
-    path: 'github',
-    component: GithubComponent,
+export const GIT_ROUTE: Route = {
+    path: 'git',
+    component: GitComponent,
     data: {
         authorities: ['ROLE_USER'],
-        pageTitle: 'GitHub configuration'
+        pageTitle: 'Git configuration'
     },
     canActivate: [UserRouteAccessService]
 };

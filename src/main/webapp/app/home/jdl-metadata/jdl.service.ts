@@ -20,15 +20,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class JdlService {
     constructor(private http: HttpClient) {}
 
-    doApplyJdl(organizationName: String, projectName: String, jdlId: String): Observable<string> {
-        return this.http.post('api/apply-jdl/' + organizationName + '/' + projectName + '/' + jdlId, '', { responseType: 'text' });
+    doApplyJdl(gitProvider: string, organizationName: string, projectName: string, jdlId: string): Observable<string> {
+        return this.http.post(`api/apply-jdl/${gitProvider}/${organizationName}/${projectName}/${jdlId}`, '', { responseType: 'text' });
     }
 
-    getApplyJdlLogs(applyJdlId: String): Observable<string> {
+    getApplyJdlLogs(applyJdlId: string): Observable<string> {
         return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
     }
 }

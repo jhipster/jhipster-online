@@ -19,7 +19,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
-import { GitProviderService } from '../git/github.service';
+import { GitProviderService } from '../git/git.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
 import { GitCompanyModel } from 'app/home/generator/git.company.model';
@@ -107,7 +107,7 @@ export class GeneratorComponent implements OnInit {
 
     refresh() {
         this.gitProviderRefresh = true;
-        this.gitService.refreshGithub(this.selectedGitProvider).subscribe(
+        this.gitService.refreshGitProvider(this.selectedGitProvider).subscribe(
             () => {
                 this.gitProviderRefresh = false;
             },

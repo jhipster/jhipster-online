@@ -23,7 +23,7 @@ import { Observable } from 'rxjs/Rx';
 import { JdlMetadata } from './jdl-metadata.model';
 import { createRequestOption } from '../../shared';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class JdlMetadataService {
     private metadataUrl = 'api/jdl-metadata';
 

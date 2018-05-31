@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { Principal, AccountService } from 'app/core';

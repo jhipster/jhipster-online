@@ -19,7 +19,7 @@
     settings</a>.
 </div>
 
-<ng-container *ngIf="isGithubEnabled">
+<ng-container *ngIf="isGithubAvailable">
     <p class="text-center" *ngIf="!isGithubConfigured">
         <a class="btn btn-primary"
            href="https://github.com/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
@@ -42,7 +42,7 @@
     </p>
 </ng-container>
 
-<ng-container *ngIf="isGitlabEnabled">
+<ng-container *ngIf="isGitlabAvailable">
     <p class="text-center" *ngIf="!isGitlabConfigured">
         <a (disabled)="isAuthorizingGitlab" class="btn btn-primary"
            href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
