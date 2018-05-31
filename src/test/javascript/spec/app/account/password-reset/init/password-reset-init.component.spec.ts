@@ -38,7 +38,6 @@ describe('Component Tests', () => {
                 providers: [
                     PasswordResetInitService,
                     PasswordResetService,
-
                     {
                         provide: Renderer,
                         useValue: {
