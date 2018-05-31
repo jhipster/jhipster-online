@@ -63,8 +63,10 @@ public class AccountResource {
     private final JdlService jdlService;
 
     private final GithubService githubService;
-  
+
     private final GitlabService gitlabService;
+
+    private final boolean areEmailEnabled;
 
     public AccountResource(UserRepository userRepository,
                            UserService userService,
@@ -81,6 +83,7 @@ public class AccountResource {
         this.jdlService = jdlService;
         this.githubService = githubService;
         this.gitlabService = gitlabService;
+    }
 
     /**
      * POST  /register : register the user.
