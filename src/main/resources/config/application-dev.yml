@@ -55,8 +55,8 @@ spring:
     liquibase:
         contexts: dev
     mail:
-        host:
-        port:
+        host: localhost
+        port: 25
         username:
         password:
     messages:
@@ -137,7 +137,9 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    mail:
+        enable: false
 #    github:
 #        clientId: XXX
 #        clientSecret: XXX

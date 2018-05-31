@@ -129,7 +129,9 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    mail:
+        enable: false
 #    github:
 #        clientId: XXX
 #        clientSecret: XXX

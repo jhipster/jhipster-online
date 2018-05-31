@@ -18,7 +18,6 @@
  */
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -33,7 +32,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -42,7 +40,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  * <p>
  * We use the @Async annotation to send emails asynchronously.
  */
-@Service
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
@@ -59,19 +56,13 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    private final ApplicationProperties applicationProperties;
-
-    private final boolean amIEnabled;
-
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine, ApplicationProperties applicationProperties) {
+            MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
-        this.applicationProperties = applicationProperties;
-        this.amIEnabled = isMailServerSetup();
     }
 
     @Async
@@ -128,11 +119,4 @@ public class MailService {
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
     }
 
-    public boolean isServiceEnabled() {
-        return amIEnabled;
-    }
-
-    private boolean isMailServerSetup() {
-        return !applicationProperties.getMailServerHost().equals("");
-    }
 }

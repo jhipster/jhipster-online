@@ -101,6 +101,7 @@ public class AccountResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
+
         AccountResource accountResource =
             new AccountResource(userRepository, userService, mockMailService);
 
