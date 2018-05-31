@@ -49,8 +49,8 @@ spring:
     liquibase:
         contexts: prod
     mail:
-        host: localhost
-        port: 25
+        host:
+        port:
         username:
         password:
     thymeleaf:

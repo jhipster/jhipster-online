@@ -23,6 +23,7 @@ import { JhonlineTestModule } from '../../../test.module';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
 import { Register } from 'app/account/register/register.service';
 import { RegisterComponent } from 'app/account/register/register.component';
+import { PasswordResetService } from 'app/core';
 
 describe('Component Tests', () => {
     describe('RegisterComponent', () => {
@@ -34,7 +35,7 @@ describe('Component Tests', () => {
                 TestBed.configureTestingModule({
                     imports: [JhonlineTestModule],
                     declarations: [RegisterComponent],
-                    providers: [Register]
+                    providers: [Register, PasswordResetService]
                 })
                     .overrideTemplate(RegisterComponent, '')
                     .compileComponents();

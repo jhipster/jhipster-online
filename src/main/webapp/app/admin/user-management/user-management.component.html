@@ -56,6 +56,12 @@
                             <span class="fas fa-pencil-alt"></span>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
+                        <button type="submit" (click)="resetPassword(user)"
+                                class="btn btn-secondary btn-sm"
+                                *ngIf="!areMailsEnabled">
+                            <i class="fas fa-undo"></i>
+                            <span class="d-none d-md-inline">Reset password</span>
+                        </button>
                         <button type="button" (click)="deleteUser(user)"
                                 class="btn btn-danger btn-sm" [disabled]="currentAccount.login === user.login">
                             <span class="fas fa-times"></span>
