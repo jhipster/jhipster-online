@@ -30,21 +30,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    @Value("${spring.mail.host}")
-    private String mailServerHost;
-
     private final Github github = new Github();
 
     private final Gitlab gitlab = new Gitlab();
+
+    private final Mail mail = new Mail();
 
     private String tmpFolder = "/tmp";
 
     public String getTmpFolder() {
         return tmpFolder;
-    }
-
-    public String getMailServerHost() {
-        return mailServerHost;
     }
 
     public void setTmpFolder(String tmpFolder) {
@@ -57,6 +52,10 @@ public class ApplicationProperties {
 
     public Gitlab getGitlab() {
         return gitlab;
+    }
+
+    public Mail getMail() {
+        return mail;
     }
 
     public static class Github {
@@ -136,4 +135,18 @@ public class ApplicationProperties {
             this.jhipsterBotOauthToken = jhipsterBotOauthToken;
         }
     }
+
+    public static class Mail {
+
+        public boolean enable;
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
+
+        public boolean isEnable() {
+            return enable;
+        }
+    }
+
 }

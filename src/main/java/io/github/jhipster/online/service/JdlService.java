@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,8 +53,12 @@ public class JdlService {
 
     private final ApplicationProperties applicationProperties;
 
-    public JdlService(LogsService logsService, GitService gitService,
-        JHipsterService jHipsterService, GithubService githubService, JdlRepository jdlRepository, ApplicationProperties applicationProperties) {
+    public JdlService(LogsService logsService,
+                      GitService gitService,
+                      JHipsterService jHipsterService,
+                      @Autowired(required = false) GithubService githubService,
+                      JdlRepository jdlRepository,
+                      ApplicationProperties applicationProperties) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.jHipsterService = jHipsterService;

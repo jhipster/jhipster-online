@@ -35,6 +35,7 @@ import io.github.jhipster.online.service.dto.UserDTO;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,7 +68,7 @@ public class UserService {
     private final GitlabService gitlabService;
 
     private final GitCompanyRepository gitCompanyRepository;
-  
+
     private final MailService mailService;
 
     private final JHipsterProperties jHipsterProperties;
@@ -78,15 +79,17 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final boolean areEmailsEnabled;
+
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        AuthorityRepository authorityRepository,
-                       GithubService githubService,
+                       @Autowired(required = false) GithubService githubService,
                        CacheManager cacheManager,
-                       MailService mailService,
+                       @Autowired(required = false) MailService mailService,
                        JHipsterProperties jHipsterProperties,
                        GitCompanyRepository gitCompanyRepository,
-                       GitlabService gitlabService) {
+                       @Autowired(required = false) GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
@@ -96,6 +99,7 @@ public class UserService {
         this.gitCompanyRepository = gitCompanyRepository;
         this.gitlabService = gitlabService;
         this.jHipsterProperties = jHipsterProperties;
+        this.areEmailsEnabled = mailService != null;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -154,7 +158,7 @@ public class UserService {
         newUser.setLangKey(userDTO.getLangKey());
 
         // new user is active if mails are disabled
-        newUser.setActivated(!mailService.isServiceEnabled());
+        newUser.setActivated(!areEmailsEnabled);
 
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());

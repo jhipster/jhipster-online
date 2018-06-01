@@ -25,6 +25,7 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.service.GitlabService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -54,8 +55,10 @@ public class GitResource {
 
     private final GitlabService gitlabService;
 
-    public GitResource(ApplicationProperties applicationProperties, UserService userService, GithubService
-        githubService, GitlabService gitlabService) {
+    public GitResource(ApplicationProperties applicationProperties,
+                       UserService userService,
+                       @Autowired(required = false) GithubService githubService,
+                       @Autowired(required = false) GitlabService gitlabService) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;
@@ -292,9 +295,9 @@ public class GitResource {
     public @ResponseBody
     ResponseEntity getAvailableProviders() {
         Set<String> result = new HashSet<>();
-        if (githubService.isAvailable())
+        if (githubService != null)
             result.add(GitProvider.GITHUB.getValue());
-        if (gitlabService.isAvailable())
+        if (gitlabService != null)
             result.add(GitProvider.GITLAB.getValue());
 
         return new ResponseEntity<>(result, HttpStatus.OK);

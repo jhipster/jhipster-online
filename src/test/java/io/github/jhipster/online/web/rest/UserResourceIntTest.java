@@ -90,7 +90,7 @@ public class UserResourceIntTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private MailService mailService;
 
     @Autowired
