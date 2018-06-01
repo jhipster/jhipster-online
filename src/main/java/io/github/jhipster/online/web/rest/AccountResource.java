@@ -73,8 +73,8 @@ public class AccountResource {
                            @Autowired(required = false) MailService mailService,
                            JdlMetadataService jdlMetadataService,
                            JdlService jdlService,
-                           GithubService githubService,
-                           GitlabService gitlabService) {
+                           @Autowired(required = false) GithubService githubService,
+                           @Autowired(required = false) GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;

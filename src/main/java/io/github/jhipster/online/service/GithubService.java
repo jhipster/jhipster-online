@@ -38,7 +38,6 @@ import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 
-@Service
 public class GithubService implements GitProviderService {
 
     private final Logger log = LoggerFactory.getLogger(GithubService.class);
@@ -195,12 +194,6 @@ public class GithubService implements GitProviderService {
 
         log.info("Pull Request created!");
         return number;
-    }
-
-    @Override
-    public boolean isAvailable() {
-        return applicationProperties.getGithub().getClientId() != null &&
-            applicationProperties.getGithub().getClientSecret() != null;
     }
 
     /**

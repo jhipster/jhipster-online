@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
 public class GitlabService implements GitProviderService {
 
     private final Logger log = LoggerFactory.getLogger(GitlabService.class);
@@ -177,14 +176,6 @@ public class GitlabService implements GitProviderService {
         gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
         return number;
-    }
-
-    @Override
-    public boolean isAvailable() {
-        return applicationProperties.getGitlab().getClientId() != null &&
-            applicationProperties.getGitlab().getClientSecret() != null &&
-            applicationProperties.getGitlab().getHost() != null &&
-            applicationProperties.getGitlab().getRedirectUri() != null;
     }
 
     public String getHost() {

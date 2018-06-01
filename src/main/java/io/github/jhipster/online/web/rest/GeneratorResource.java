@@ -25,6 +25,7 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +54,10 @@ public class GeneratorResource {
 
     private final LogsService logsService;
 
-    public GeneratorResource(GeneratorService generatorService, GithubService githubService, GitlabService gitlabService, UserService userService,
+    public GeneratorResource(GeneratorService generatorService,
+                             @Autowired(required = false) GithubService githubService,
+                             @Autowired(required = false) GitlabService gitlabService,
+                             UserService userService,
                              LogsService logsService) {
         this.generatorService = generatorService;
         this.githubService = githubService;

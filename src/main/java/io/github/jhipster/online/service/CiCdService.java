@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -50,8 +51,12 @@ public class CiCdService {
 
     private final ApplicationProperties applicationProperties;
 
-    public CiCdService(LogsService logsService, GitService gitService,
-                       GithubService githubService, GitlabService gitlabService, JHipsterService jHipsterService, ApplicationProperties applicationProperties) {
+    public CiCdService(LogsService logsService,
+                       GitService gitService,
+                       @Autowired(required = false) GithubService githubService,
+                       @Autowired(required = false) GitlabService gitlabService,
+                       JHipsterService jHipsterService,
+                       ApplicationProperties applicationProperties) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.githubService = githubService;
