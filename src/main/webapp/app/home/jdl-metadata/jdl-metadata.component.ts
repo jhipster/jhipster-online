@@ -56,6 +56,7 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
             }
         );
     }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then(account => {

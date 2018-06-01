@@ -23,6 +23,7 @@ export * from './alert/alert.component';
 export * from './alert/alert-error.component';
 export * from './auth/has-any-authority.directive';
 export * from './login/login.component';
+export * from './git-provider/git-provider.component';
 export * from './util/request-util';
 export * from './shared-libs.module';
 export * from './shared-common.module';

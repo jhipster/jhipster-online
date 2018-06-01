@@ -18,7 +18,8 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
+
 import { GitCompanyModel } from 'app/home/generator/git.company.model';
 
 @Injectable({ providedIn: 'root' })

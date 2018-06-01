@@ -18,6 +18,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { GeneratorService } from './generator.service';
 
 @Component({
@@ -29,17 +30,16 @@ export class GeneratorOutputDialogComponent implements OnInit {
 
     applicationId: string;
 
-    selectedGitProvider: string;
-
-    isGithubConfigured: boolean;
-
-    isGitlabConfigured: boolean;
-
-    selectedGitCompany: string;
-
     baseName: string;
 
     displayApplicationUrl = false;
+
+    selectedGitProvider: string;
+    selectedGitCompany: string;
+    selectedGitProject: string;
+
+    isGithubConfigured: boolean;
+    isGitlabConfigured: boolean;
 
     constructor(private activeModal: NgbActiveModal, private generatorService: GeneratorService) {}
 

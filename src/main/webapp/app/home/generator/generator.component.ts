@@ -17,12 +17,12 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
 import { GitProviderService } from '../git/git.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
-import { GitCompanyModel } from 'app/home/generator/git.company.model';
 
 @Component({
     selector: 'jhi-generator',
@@ -36,19 +36,12 @@ export class GeneratorComponent implements OnInit {
 
     languageOptions;
 
-    isGithubConfigured = false;
+    selectedGitProvider: string;
+    selectedGitCompany: string;
+    selectedGitProject: string;
 
-    isGitlabConfigured = false;
-
-    gitCompanies: GitCompanyModel[];
-
-    gitProviderRefresh = false;
-
-    selectedGitProvider = '';
-
-    selectedGitCompany = '';
-
-    availableGitProvider = [];
+    isGithubConfigured: boolean;
+    isGitlabConfigured: boolean;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -99,37 +92,14 @@ export class GeneratorComponent implements OnInit {
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
-        this.gitProviderRefresh = true;
-        this.gitService.getAvailableProviders().subscribe(result => {
-            result.forEach(provider => this.refreshGitCompaniesListByGitProvider(provider));
-        });
     }
 
-    refresh() {
-        this.gitProviderRefresh = true;
-        this.gitService.refreshGitProvider(this.selectedGitProvider).subscribe(
-            () => {
-                this.gitProviderRefresh = false;
-            },
-            () => {
-                this.gitProviderRefresh = false;
-            }
-        );
-    }
-
-    refreshGitCompaniesListByGitProvider(gitProvider: string) {
-        this.gitService.getCompanies(gitProvider).subscribe(companies => {
-            this.gitCompanies = companies.filter(company => company.gitProvider === gitProvider);
-            this.selectedGitProvider = gitProvider;
-            this.selectedGitCompany = companies[0].name;
-            if (gitProvider === 'github') {
-                this.isGithubConfigured = true;
-            } else if (gitProvider === 'gitlab') {
-                this.isGitlabConfigured = true;
-            }
-            this.addToAvailableProviders(gitProvider);
-            this.gitProviderRefresh = false;
-        });
+    updateSharedData(data: any) {
+        this.selectedGitProvider = data.selectedGitProvider;
+        this.selectedGitCompany = data.selectedGitCompany;
+        this.selectedGitProject = data.selectedGitProject;
+        this.isGithubConfigured = data.isGithubConfigured;
+        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     checkModelBeforeSubmit() {
@@ -193,9 +163,8 @@ export class GeneratorComponent implements OnInit {
         modalRef.applicationId = applicationId;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.isGitlabConfigured = this.isGitlabConfigured;
         modalRef.isGithubConfigured = this.isGithubConfigured;
-        modalRef.selectedGitProvider = this.selectedGitProvider;
+        modalRef.isGitlabConfigured = this.isGitlabConfigured;
         modalRef.baseName = this.model.baseName;
     }
 
@@ -337,12 +306,6 @@ export class GeneratorComponent implements OnInit {
             this.model.devDatabaseType = 'no';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
-        }
-    }
-
-    private addToAvailableProviders(gitProvider: string) {
-        if (!this.availableGitProvider.includes(gitProvider)) {
-            this.availableGitProvider.push(gitProvider);
         }
     }
 }
