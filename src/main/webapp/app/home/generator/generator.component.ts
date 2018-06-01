@@ -38,7 +38,6 @@ export class GeneratorComponent implements OnInit {
 
     selectedGitProvider: string;
     selectedGitCompany: string;
-    selectedGitProject: string;
 
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
@@ -97,7 +96,6 @@ export class GeneratorComponent implements OnInit {
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
-        this.selectedGitProject = data.selectedGitProject;
         this.isGithubConfigured = data.isGithubConfigured;
         this.isGitlabConfigured = data.isGitlabConfigured;
     }
