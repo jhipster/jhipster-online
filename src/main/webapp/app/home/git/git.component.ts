@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+
 import { GitProviderService } from './git.service';
 
 @Component({
@@ -28,17 +29,17 @@ export class GitComponent implements OnInit {
     githubClientId;
     gitlabClientId;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
-
     isGithubAvailable = false;
     isGitlabAvailable = false;
 
-    gitlabHost: string;
-    gitlabRedirectUri: string;
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     isAuthorizingGithub = false;
     isAuthorizingGitlab = false;
+
+    gitlabHost: string;
+    gitlabRedirectUri: string;
 
     constructor(private gitService: GitProviderService) {}
 

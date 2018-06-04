@@ -15,7 +15,7 @@
     </ngb-alert>
     <p *ngIf="isGithubConfigured || isGitlabConfigured">
         <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
-        Git repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
+        GitHub repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
         master branch.</i>
     </p>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
@@ -25,7 +25,7 @@
                 Yes, apply this JDL model
             </span>
         </button>&nbsp;
-        <button class="btn btn-dark" [routerLink]="['/ci-cd']">
+        <button class="btn btn-dark" [routerLink]="['/design-entities']">
             <span>
                 No, cancel this action
             </span>
