@@ -305,8 +305,8 @@
                     <p></p>
                     <div [ngSwitch]="!submitted">
                         <div *ngSwitchCase="true">
-                            <button type="submit" class="btn btn-primary" [disabled]="!generatorForm.form.valid" (click)="onSubmit()" *ngIf="selectedGitProvider !== 'none'">
-                                Generate on Git
+                            <button type="submit" class="btn btn-primary" [disabled]="!generatorForm.form.valid" (click)="onSubmit()" *ngIf="selectedGitProvider">
+                                Generate on {{selectedGitProvider}}
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="!generatorForm.form.valid" (click)="onSubmitDownload()">
                                 Download as Zip file
@@ -316,8 +316,8 @@
                         <div *ngSwitchCase="false">
                             <span
                                 class="fas fa-sync fa-spin"></span>
-                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="selectedGitProvider !== 'none'">
-                                Generate on Git
+                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="!selectedGitProvider">
+                                Generate on {{selectedGitProvider}}
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="true">
                                 Download as Zip file
