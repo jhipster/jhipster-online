@@ -1,0 +1,121 @@
+{
+    "fields": [
+        {
+            "fieldName": "jhipsterVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "serverPort",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "authenticationType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cacheProvider",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableHibernateCache",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "websocket",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "databaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "devDatabaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "prodDatabaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "searchEngine",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "messageBroker",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "serviceDiscoveryType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "buildTool",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableSwaggerCodegen",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "clientFramework",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "useSass",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "clientPackageManager",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "applicationType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "testFrameworks",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jhiPrefix",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableTranslation",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nativeLanguage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "gitProvider",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "yorcs",
+            "relationshipName": "languages",
+            "otherEntityName": "language",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20180605143030",
+    "entityTableName": "yo_rc",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
