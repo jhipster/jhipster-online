@@ -316,7 +316,7 @@
                         <div *ngSwitchCase="false">
                             <span
                                 class="fas fa-sync fa-spin"></span>
-                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="!selectedGitProvider">
+                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="selectedGitProvider">
                                 Generate on {{selectedGitProvider}}
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="true">
