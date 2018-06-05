@@ -64,6 +64,10 @@ public class CacheConfiguration {
             cm.createCache(io.github.jhipster.online.domain.JdlMetadata.class.getName(), jcacheConfiguration);
             cm.createCache(GitCompany.class.getName(), jcacheConfiguration);
             cm.createCache(GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.Language.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.Language.class.getName() + ".yorcs", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".languages", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

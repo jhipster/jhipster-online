@@ -1,0 +1,29 @@
+{
+    "fields": [
+        {
+            "fieldName": "langKey",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "yorcs",
+            "otherEntityName": "yoRC",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "languages"
+        }
+    ],
+    "changelogDate": "20180605143031",
+    "entityTableName": "language",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
