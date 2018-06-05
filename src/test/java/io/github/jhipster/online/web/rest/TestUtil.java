@@ -45,7 +45,12 @@ public class TestUtil {
             MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
-    /**
+    /** MediaType for TEXT/PLAIN UTF8 */
+    public static final MediaType TEXT_PLAIN = new MediaType(
+        MediaType.TEXT_PLAIN.getType(),
+        MediaType.TEXT_PLAIN.getSubtype(), StandardCharsets.UTF_8);
+
+     /**
      * Convert an object to JSON byte array.
      *
      * @param object

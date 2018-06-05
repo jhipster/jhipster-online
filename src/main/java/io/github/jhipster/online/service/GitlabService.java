@@ -71,7 +71,7 @@ public class GitlabService implements GitProviderService {
     @Transactional
     @Override
     public void syncUserFromGitProvider() throws Exception {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
         if (user.isPresent()) {
             this.getSyncedUserFromGitProvider(user.get());
         } else {

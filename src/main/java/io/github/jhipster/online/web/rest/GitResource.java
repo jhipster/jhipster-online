@@ -75,9 +75,9 @@ public class GitResource {
     ResponseEntity getClientId(@PathVariable String gitProvider) {
         switch(gitProvider.toLowerCase()) {
             case "github":
-                return new ResponseEntity<>(this.applicationProperties.getGithub().getClientId(), HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(this.applicationProperties.getGithub().getClientId(), HttpStatus.OK);
             case "gitlab":
-                return new ResponseEntity<>(this.applicationProperties.getGitlab().getClientId(), HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(this.applicationProperties.getGitlab().getClientId(), HttpStatus.OK);
             default:
                 log.error("Unknown git provider : {}", gitProvider);
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -135,7 +135,7 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 default:
-                    throw new Exception("Unknown git provider: " + gitProvider);
+                    return new ResponseEntity<>("Unknown git provider: " + gitProvider, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             ResponseEntity<GitAccessTokenResponse> response =

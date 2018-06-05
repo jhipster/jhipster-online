@@ -521,6 +521,26 @@ public class AccountResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("jane-doe")
+    public void testDeleteAccount() throws Exception {
+        User user = new User();
+        user.setLogin("jane-doe");
+        user.setEmail("jane-doe@example.com");
+        user.setPassword(RandomStringUtils.random(60));
+        user.setActivated(true);
+
+        userRepository.saveAndFlush(user);
+
+        restMvc.perform(
+            delete("/api/account")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        assertThat(userRepository.findOneByLogin(user.getLogin())).isNotPresent();
+    }
+
+    @Test
+    @Transactional
     @WithMockUser("save-invalid-email")
     public void testSaveInvalidEmail() throws Exception {
         User user = new User();
