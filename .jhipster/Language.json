@@ -1,27 +1,23 @@
 {
     "fields": [
         {
-            "fieldName": "langKey",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "isoCode",
+            "fieldType": "String"
         }
     ],
     "relationships": [
         {
-            "relationshipType": "many-to-many",
-            "relationshipName": "yorcs",
+            "relationshipName": "yoRC",
             "otherEntityName": "yoRC",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "languages"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180605143031",
+    "changelogDate": "20180606155213",
     "entityTableName": "language",
     "dto": "no",
     "pagination": "no",
-    "service": "no",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
     "clientRootFolder": "",

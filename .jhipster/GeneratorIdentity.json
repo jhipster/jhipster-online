@@ -1,0 +1,33 @@
+{
+    "fields": [
+        {
+            "fieldName": "host",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userAgent",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "guid",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "generator",
+            "otherEntityName": "ownerIdentity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180606155215",
+    "entityTableName": "generator_identity",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

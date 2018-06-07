@@ -85,20 +85,14 @@ public class YoRCResource {
      * GET  /yo-rcs : get all the yoRCS.
      *
      * @param pageable the pagination information
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of yoRCS in body
      */
     @GetMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<List<YoRC>> getAllYoRCS(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<YoRC>> getAllYoRCS(Pageable pageable) {
         log.debug("REST request to get a page of YoRCS");
-        Page<YoRC> page;
-        if (eagerload) {
-            page = yoRCService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = yoRCService.findAll(pageable);
-        }
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/yo-rcs?eagerload=%b", eagerload));
+        Page<YoRC> page = yoRCService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/yo-rcs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

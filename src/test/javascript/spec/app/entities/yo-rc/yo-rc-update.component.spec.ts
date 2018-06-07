@@ -8,8 +8,7 @@ import { YoRCUpdateComponent } from 'app/entities/yo-rc/yo-rc-update.component';
 import { YoRCService } from 'app/entities/yo-rc/yo-rc.service';
 import { YoRC } from 'app/shared/model/yo-rc.model';
 
-import { UserService } from 'app/core';
-import { LanguageService } from 'app/entities/language';
+import { OwnerIdentityService } from 'app/entities/owner-identity';
 
 describe('Component Tests', () => {
     describe('YoRC Management Update Component', () => {
@@ -21,7 +20,7 @@ describe('Component Tests', () => {
             TestBed.configureTestingModule({
                 imports: [JhonlineTestModule],
                 declarations: [YoRCUpdateComponent],
-                providers: [UserService, LanguageService, YoRCService]
+                providers: [OwnerIdentityService, YoRCService]
             })
                 .overrideTemplate(YoRCUpdateComponent, '')
                 .compileComponents();

@@ -1,6 +1,8 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -17,6 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "yo_rc")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonDeserialize(using = YoRCDeserializer.class)
 public class YoRC implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,10 +41,10 @@ public class YoRC implements Serializable {
     private String cacheProvider;
 
     @Column(name = "enable_hibernate_cache")
-    private String enableHibernateCache;
+    private Boolean enableHibernateCache;
 
     @Column(name = "websocket")
-    private String websocket;
+    private Boolean websocket;
 
     @Column(name = "database_type")
     private String databaseType;
@@ -53,25 +56,25 @@ public class YoRC implements Serializable {
     private String prodDatabaseType;
 
     @Column(name = "search_engine")
-    private String searchEngine;
+    private Boolean searchEngine;
 
     @Column(name = "message_broker")
-    private String messageBroker;
+    private Boolean messageBroker;
 
     @Column(name = "service_discovery_type")
-    private String serviceDiscoveryType;
+    private Boolean serviceDiscoveryType;
 
     @Column(name = "build_tool")
     private String buildTool;
 
     @Column(name = "enable_swagger_codegen")
-    private String enableSwaggerCodegen;
+    private Boolean enableSwaggerCodegen;
 
     @Column(name = "client_framework")
     private String clientFramework;
 
     @Column(name = "use_sass")
-    private String useSass;
+    private Boolean useSass;
 
     @Column(name = "client_package_manager")
     private String clientPackageManager;
@@ -79,14 +82,11 @@ public class YoRC implements Serializable {
     @Column(name = "application_type")
     private String applicationType;
 
-    @Column(name = "test_frameworks")
-    private String testFrameworks;
-
     @Column(name = "jhi_prefix")
     private String jhiPrefix;
 
     @Column(name = "enable_translation")
-    private String enableTranslation;
+    private Boolean enableTranslation;
 
     @Column(name = "native_language")
     private String nativeLanguage;
@@ -94,16 +94,22 @@ public class YoRC implements Serializable {
     @Column(name = "git_provider")
     private String gitProvider;
 
+    @Column(name = "has_protractor")
+    private Boolean hasProtractor;
+
+    @Column(name = "has_gatling")
+    private Boolean hasGatling;
+
+    @Column(name = "has_cucumber")
+    private Boolean hasCucumber;
+
+    @OneToMany(mappedBy = "yoRC")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Language> selectedLanguages = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties("")
-    private User owner;
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "yorc_languages",
-               joinColumns = @JoinColumn(name = "yorcs_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "languages_id", referencedColumnName = "id"))
-    private Set<Language> languages = new HashSet<>();
+    private OwnerIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -166,29 +172,29 @@ public class YoRC implements Serializable {
         this.cacheProvider = cacheProvider;
     }
 
-    public String getEnableHibernateCache() {
+    public Boolean isEnableHibernateCache() {
         return enableHibernateCache;
     }
 
-    public YoRC enableHibernateCache(String enableHibernateCache) {
+    public YoRC enableHibernateCache(Boolean enableHibernateCache) {
         this.enableHibernateCache = enableHibernateCache;
         return this;
     }
 
-    public void setEnableHibernateCache(String enableHibernateCache) {
+    public void setEnableHibernateCache(Boolean enableHibernateCache) {
         this.enableHibernateCache = enableHibernateCache;
     }
 
-    public String getWebsocket() {
+    public Boolean isWebsocket() {
         return websocket;
     }
 
-    public YoRC websocket(String websocket) {
+    public YoRC websocket(Boolean websocket) {
         this.websocket = websocket;
         return this;
     }
 
-    public void setWebsocket(String websocket) {
+    public void setWebsocket(Boolean websocket) {
         this.websocket = websocket;
     }
 
@@ -231,42 +237,42 @@ public class YoRC implements Serializable {
         this.prodDatabaseType = prodDatabaseType;
     }
 
-    public String getSearchEngine() {
+    public Boolean isSearchEngine() {
         return searchEngine;
     }
 
-    public YoRC searchEngine(String searchEngine) {
+    public YoRC searchEngine(Boolean searchEngine) {
         this.searchEngine = searchEngine;
         return this;
     }
 
-    public void setSearchEngine(String searchEngine) {
+    public void setSearchEngine(Boolean searchEngine) {
         this.searchEngine = searchEngine;
     }
 
-    public String getMessageBroker() {
+    public Boolean isMessageBroker() {
         return messageBroker;
     }
 
-    public YoRC messageBroker(String messageBroker) {
+    public YoRC messageBroker(Boolean messageBroker) {
         this.messageBroker = messageBroker;
         return this;
     }
 
-    public void setMessageBroker(String messageBroker) {
+    public void setMessageBroker(Boolean messageBroker) {
         this.messageBroker = messageBroker;
     }
 
-    public String getServiceDiscoveryType() {
+    public Boolean isServiceDiscoveryType() {
         return serviceDiscoveryType;
     }
 
-    public YoRC serviceDiscoveryType(String serviceDiscoveryType) {
+    public YoRC serviceDiscoveryType(Boolean serviceDiscoveryType) {
         this.serviceDiscoveryType = serviceDiscoveryType;
         return this;
     }
 
-    public void setServiceDiscoveryType(String serviceDiscoveryType) {
+    public void setServiceDiscoveryType(Boolean serviceDiscoveryType) {
         this.serviceDiscoveryType = serviceDiscoveryType;
     }
 
@@ -283,16 +289,16 @@ public class YoRC implements Serializable {
         this.buildTool = buildTool;
     }
 
-    public String getEnableSwaggerCodegen() {
+    public Boolean isEnableSwaggerCodegen() {
         return enableSwaggerCodegen;
     }
 
-    public YoRC enableSwaggerCodegen(String enableSwaggerCodegen) {
+    public YoRC enableSwaggerCodegen(Boolean enableSwaggerCodegen) {
         this.enableSwaggerCodegen = enableSwaggerCodegen;
         return this;
     }
 
-    public void setEnableSwaggerCodegen(String enableSwaggerCodegen) {
+    public void setEnableSwaggerCodegen(Boolean enableSwaggerCodegen) {
         this.enableSwaggerCodegen = enableSwaggerCodegen;
     }
 
@@ -309,16 +315,16 @@ public class YoRC implements Serializable {
         this.clientFramework = clientFramework;
     }
 
-    public String getUseSass() {
+    public Boolean isUseSass() {
         return useSass;
     }
 
-    public YoRC useSass(String useSass) {
+    public YoRC useSass(Boolean useSass) {
         this.useSass = useSass;
         return this;
     }
 
-    public void setUseSass(String useSass) {
+    public void setUseSass(Boolean useSass) {
         this.useSass = useSass;
     }
 
@@ -348,19 +354,6 @@ public class YoRC implements Serializable {
         this.applicationType = applicationType;
     }
 
-    public String getTestFrameworks() {
-        return testFrameworks;
-    }
-
-    public YoRC testFrameworks(String testFrameworks) {
-        this.testFrameworks = testFrameworks;
-        return this;
-    }
-
-    public void setTestFrameworks(String testFrameworks) {
-        this.testFrameworks = testFrameworks;
-    }
-
     public String getJhiPrefix() {
         return jhiPrefix;
     }
@@ -374,16 +367,16 @@ public class YoRC implements Serializable {
         this.jhiPrefix = jhiPrefix;
     }
 
-    public String getEnableTranslation() {
+    public Boolean isEnableTranslation() {
         return enableTranslation;
     }
 
-    public YoRC enableTranslation(String enableTranslation) {
+    public YoRC enableTranslation(Boolean enableTranslation) {
         this.enableTranslation = enableTranslation;
         return this;
     }
 
-    public void setEnableTranslation(String enableTranslation) {
+    public void setEnableTranslation(Boolean enableTranslation) {
         this.enableTranslation = enableTranslation;
     }
 
@@ -413,42 +406,81 @@ public class YoRC implements Serializable {
         this.gitProvider = gitProvider;
     }
 
-    public User getOwner() {
+    public Boolean isHasProtractor() {
+        return hasProtractor;
+    }
+
+    public YoRC hasProtractor(Boolean hasProtractor) {
+        this.hasProtractor = hasProtractor;
+        return this;
+    }
+
+    public void setHasProtractor(Boolean hasProtractor) {
+        this.hasProtractor = hasProtractor;
+    }
+
+    public Boolean isHasGatling() {
+        return hasGatling;
+    }
+
+    public YoRC hasGatling(Boolean hasGatling) {
+        this.hasGatling = hasGatling;
+        return this;
+    }
+
+    public void setHasGatling(Boolean hasGatling) {
+        this.hasGatling = hasGatling;
+    }
+
+    public Boolean isHasCucumber() {
+        return hasCucumber;
+    }
+
+    public YoRC hasCucumber(Boolean hasCucumber) {
+        this.hasCucumber = hasCucumber;
+        return this;
+    }
+
+    public void setHasCucumber(Boolean hasCucumber) {
+        this.hasCucumber = hasCucumber;
+    }
+
+    public Set<Language> getSelectedLanguages() {
+        return selectedLanguages;
+    }
+
+    public YoRC selectedLanguages(Set<Language> languages) {
+        this.selectedLanguages = languages;
+        return this;
+    }
+
+    public YoRC addSelectedLanguages(Language language) {
+        this.selectedLanguages.add(language);
+        language.setYoRC(this);
+        return this;
+    }
+
+    public YoRC removeSelectedLanguages(Language language) {
+        this.selectedLanguages.remove(language);
+        language.setYoRC(null);
+        return this;
+    }
+
+    public void setSelectedLanguages(Set<Language> languages) {
+        this.selectedLanguages = languages;
+    }
+
+    public OwnerIdentity getOwner() {
         return owner;
     }
 
-    public YoRC owner(User user) {
-        this.owner = user;
+    public YoRC owner(OwnerIdentity ownerIdentity) {
+        this.owner = ownerIdentity;
         return this;
     }
 
-    public void setOwner(User user) {
-        this.owner = user;
-    }
-
-    public Set<Language> getLanguages() {
-        return languages;
-    }
-
-    public YoRC languages(Set<Language> languages) {
-        this.languages = languages;
-        return this;
-    }
-
-    public YoRC addLanguages(Language language) {
-        this.languages.add(language);
-        language.getYorcs().add(this);
-        return this;
-    }
-
-    public YoRC removeLanguages(Language language) {
-        this.languages.remove(language);
-        language.getYorcs().remove(this);
-        return this;
-    }
-
-    public void setLanguages(Set<Language> languages) {
-        this.languages = languages;
+    public void setOwner(OwnerIdentity ownerIdentity) {
+        this.owner = ownerIdentity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -480,25 +512,27 @@ public class YoRC implements Serializable {
             ", serverPort='" + getServerPort() + "'" +
             ", authenticationType='" + getAuthenticationType() + "'" +
             ", cacheProvider='" + getCacheProvider() + "'" +
-            ", enableHibernateCache='" + getEnableHibernateCache() + "'" +
-            ", websocket='" + getWebsocket() + "'" +
+            ", enableHibernateCache='" + isEnableHibernateCache() + "'" +
+            ", websocket='" + isWebsocket() + "'" +
             ", databaseType='" + getDatabaseType() + "'" +
             ", devDatabaseType='" + getDevDatabaseType() + "'" +
             ", prodDatabaseType='" + getProdDatabaseType() + "'" +
-            ", searchEngine='" + getSearchEngine() + "'" +
-            ", messageBroker='" + getMessageBroker() + "'" +
-            ", serviceDiscoveryType='" + getServiceDiscoveryType() + "'" +
+            ", searchEngine='" + isSearchEngine() + "'" +
+            ", messageBroker='" + isMessageBroker() + "'" +
+            ", serviceDiscoveryType='" + isServiceDiscoveryType() + "'" +
             ", buildTool='" + getBuildTool() + "'" +
-            ", enableSwaggerCodegen='" + getEnableSwaggerCodegen() + "'" +
+            ", enableSwaggerCodegen='" + isEnableSwaggerCodegen() + "'" +
             ", clientFramework='" + getClientFramework() + "'" +
-            ", useSass='" + getUseSass() + "'" +
+            ", useSass='" + isUseSass() + "'" +
             ", clientPackageManager='" + getClientPackageManager() + "'" +
             ", applicationType='" + getApplicationType() + "'" +
-            ", testFrameworks='" + getTestFrameworks() + "'" +
             ", jhiPrefix='" + getJhiPrefix() + "'" +
-            ", enableTranslation='" + getEnableTranslation() + "'" +
+            ", enableTranslation='" + isEnableTranslation() + "'" +
             ", nativeLanguage='" + getNativeLanguage() + "'" +
             ", gitProvider='" + getGitProvider() + "'" +
+            ", hasProtractor='" + isHasProtractor() + "'" +
+            ", hasGatling='" + isHasGatling() + "'" +
+            ", hasCucumber='" + isHasCucumber() + "'" +
             "}";
     }
 }

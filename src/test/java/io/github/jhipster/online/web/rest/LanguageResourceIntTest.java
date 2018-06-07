@@ -4,6 +4,7 @@ import io.github.jhipster.online.JhonlineApp;
 
 import io.github.jhipster.online.domain.Language;
 import io.github.jhipster.online.repository.LanguageRepository;
+import io.github.jhipster.online.service.LanguageService;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -40,12 +41,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = JhonlineApp.class)
 public class LanguageResourceIntTest {
 
-    private static final String DEFAULT_LANG_KEY = "AAAAAAAAAA";
-    private static final String UPDATED_LANG_KEY = "BBBBBBBBBB";
+    private static final String DEFAULT_ISO_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_ISO_CODE = "BBBBBBBBBB";
 
     @Autowired
     private LanguageRepository languageRepository;
 
+    
+
+    @Autowired
+    private LanguageService languageService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -66,7 +71,7 @@ public class LanguageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LanguageResource languageResource = new LanguageResource(languageRepository);
+        final LanguageResource languageResource = new LanguageResource(languageService);
         this.restLanguageMockMvc = MockMvcBuilders.standaloneSetup(languageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -82,7 +87,7 @@ public class LanguageResourceIntTest {
      */
     public static Language createEntity(EntityManager em) {
         Language language = new Language()
-            .langKey(DEFAULT_LANG_KEY);
+            .isoCode(DEFAULT_ISO_CODE);
         return language;
     }
 
@@ -106,7 +111,7 @@ public class LanguageResourceIntTest {
         List<Language> languageList = languageRepository.findAll();
         assertThat(languageList).hasSize(databaseSizeBeforeCreate + 1);
         Language testLanguage = languageList.get(languageList.size() - 1);
-        assertThat(testLanguage.getLangKey()).isEqualTo(DEFAULT_LANG_KEY);
+        assertThat(testLanguage.getIsoCode()).isEqualTo(DEFAULT_ISO_CODE);
     }
 
     @Test
@@ -130,24 +135,6 @@ public class LanguageResourceIntTest {
 
     @Test
     @Transactional
-    public void checkLangKeyIsRequired() throws Exception {
-        int databaseSizeBeforeTest = languageRepository.findAll().size();
-        // set the field null
-        language.setLangKey(null);
-
-        // Create the Language, which fails.
-
-        restLanguageMockMvc.perform(post("/api/languages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(language)))
-            .andExpect(status().isBadRequest());
-
-        List<Language> languageList = languageRepository.findAll();
-        assertThat(languageList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllLanguages() throws Exception {
         // Initialize the database
         languageRepository.saveAndFlush(language);
@@ -157,7 +144,7 @@ public class LanguageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(language.getId().intValue())))
-            .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANG_KEY.toString())));
+            .andExpect(jsonPath("$.[*].isoCode").value(hasItem(DEFAULT_ISO_CODE.toString())));
     }
     
 
@@ -172,7 +159,7 @@ public class LanguageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(language.getId().intValue()))
-            .andExpect(jsonPath("$.langKey").value(DEFAULT_LANG_KEY.toString()));
+            .andExpect(jsonPath("$.isoCode").value(DEFAULT_ISO_CODE.toString()));
     }
     @Test
     @Transactional
@@ -186,7 +173,7 @@ public class LanguageResourceIntTest {
     @Transactional
     public void updateLanguage() throws Exception {
         // Initialize the database
-        languageRepository.saveAndFlush(language);
+        languageService.save(language);
 
         int databaseSizeBeforeUpdate = languageRepository.findAll().size();
 
@@ -195,7 +182,7 @@ public class LanguageResourceIntTest {
         // Disconnect from session so that the updates on updatedLanguage are not directly saved in db
         em.detach(updatedLanguage);
         updatedLanguage
-            .langKey(UPDATED_LANG_KEY);
+            .isoCode(UPDATED_ISO_CODE);
 
         restLanguageMockMvc.perform(put("/api/languages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -206,7 +193,7 @@ public class LanguageResourceIntTest {
         List<Language> languageList = languageRepository.findAll();
         assertThat(languageList).hasSize(databaseSizeBeforeUpdate);
         Language testLanguage = languageList.get(languageList.size() - 1);
-        assertThat(testLanguage.getLangKey()).isEqualTo(UPDATED_LANG_KEY);
+        assertThat(testLanguage.getIsoCode()).isEqualTo(UPDATED_ISO_CODE);
     }
 
     @Test
@@ -231,7 +218,7 @@ public class LanguageResourceIntTest {
     @Transactional
     public void deleteLanguage() throws Exception {
         // Initialize the database
-        languageRepository.saveAndFlush(language);
+        languageService.save(language);
 
         int databaseSizeBeforeDelete = languageRepository.findAll().size();
 

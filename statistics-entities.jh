@@ -1,41 +1,60 @@
 entity YoRC {
-    jhipsterVersion String
-    serverPort String
-    authenticationType String
-    cacheProvider String
-    enableHibernateCache String
-    websocket String
-    databaseType String
-    devDatabaseType String
-    prodDatabaseType String
-    searchEngine String
-    messageBroker String
-    serviceDiscoveryType String
-    buildTool String
-    enableSwaggerCodegen String
-    clientFramework String
-    useSass String
-    clientPackageManager String
-    applicationType String
-    testFrameworks String
-    jhiPrefix String
-    enableTranslation String
-    nativeLanguage String
-    gitProvider String
+    jhipsterVersion String,
+    serverPort String,
+    authenticationType String,
+    cacheProvider String,
+    enableHibernateCache Boolean,
+    websocket Boolean,
+    databaseType String,
+    devDatabaseType String,
+    prodDatabaseType String,
+    searchEngine Boolean,
+    messageBroker Boolean,
+    serviceDiscoveryType Boolean,
+    buildTool String,
+    enableSwaggerCodegen Boolean,
+    clientFramework String,
+    useSass Boolean,
+    clientPackageManager String,
+    applicationType String,
+    jhiPrefix String,
+    enableTranslation Boolean,
+    nativeLanguage String,
+    gitProvider String,
+    hasProtractor Boolean,
+    hasGatling Boolean,
+    hasCucumber Boolean
 }
 
 entity Language {
-    langKey String required
+    isoCode String
 }
 
-relationship ManyToMany {
-	YoRC{languages} to Language{yorcs}
+entity OwnerIdentity {
+
+}
+
+entity GeneratorIdentity {
+    host String,
+    userAgent String,
+    guid String
 }
 
 relationship ManyToOne {
-	YoRC{owner} to User
+	YoRC{owner} to OwnerIdentity,
+	GeneratorIdentity{generator} to OwnerIdentity
+}
+
+relationship OneToOne {
+    OwnerIdentity{owner} to User
+}
+
+relationship OneToMany {
+    YoRC{selectedLanguages} to Language
 }
 
 paginate YoRC with pagination
-
 service YoRC with serviceClass
+service OwnerIdentity with serviceClass
+service Language with serviceClass
+service GeneratorIdentity with serviceClass

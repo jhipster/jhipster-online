@@ -50,15 +50,6 @@ public class YoRCService {
         return yoRCRepository.findAll(pageable);
     }
 
-    /**
-     * Get all the YoRC with eager load of many-to-many relationships.
-     *
-     * @return the list of entities
-     */
-    public Page<YoRC> findAllWithEagerRelationships(Pageable pageable) {
-        return yoRCRepository.findAllWithEagerRelationships(pageable);
-    }
-    
 
     /**
      * Get one yoRC by id.
@@ -69,7 +60,7 @@ public class YoRCService {
     @Transactional(readOnly = true)
     public Optional<YoRC> findOne(Long id) {
         log.debug("Request to get YoRC : {}", id);
-        return yoRCRepository.findOneWithEagerRelationships(id);
+        return yoRCRepository.findById(id);
     }
 
     /**

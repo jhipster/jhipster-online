@@ -12,8 +12,9 @@ public class StatisticsService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private final YoRCService yoRCService;
     private final YoRCRepository yoRCRepository;
+
+    private final YoRCService yoRCService;
 
     public StatisticsService(YoRCService yoRCService, YoRCRepository yoRCRepository) {
         this.yoRCService = yoRCService;
@@ -27,6 +28,4 @@ public class StatisticsService {
     public List<Long> getYoRCCountForEachUser() {
         return yoRCRepository.findYoRCCountForEachUser();
     }
-
 }
-

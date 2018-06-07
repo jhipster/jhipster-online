@@ -1,15 +1,12 @@
 package io.github.jhipster.online.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -26,14 +23,12 @@ public class Language implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "lang_key", nullable = false)
-    private String langKey;
+    @Column(name = "iso_code")
+    private String isoCode;
 
-    @ManyToMany(mappedBy = "languages")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<YoRC> yorcs = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties("selectedLanguages")
+    private YoRC yoRC;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -44,42 +39,30 @@ public class Language implements Serializable {
         this.id = id;
     }
 
-    public String getLangKey() {
-        return langKey;
+    public String getIsoCode() {
+        return isoCode;
     }
 
-    public Language langKey(String langKey) {
-        this.langKey = langKey;
+    public Language isoCode(String isoCode) {
+        this.isoCode = isoCode;
         return this;
     }
 
-    public void setLangKey(String langKey) {
-        this.langKey = langKey;
+    public void setIsoCode(String isoCode) {
+        this.isoCode = isoCode;
     }
 
-    public Set<YoRC> getYorcs() {
-        return yorcs;
+    public YoRC getYoRC() {
+        return yoRC;
     }
 
-    public Language yorcs(Set<YoRC> yoRCS) {
-        this.yorcs = yoRCS;
+    public Language yoRC(YoRC yoRC) {
+        this.yoRC = yoRC;
         return this;
     }
 
-    public Language addYorcs(YoRC yoRC) {
-        this.yorcs.add(yoRC);
-        yoRC.getLanguages().add(this);
-        return this;
-    }
-
-    public Language removeYorcs(YoRC yoRC) {
-        this.yorcs.remove(yoRC);
-        yoRC.getLanguages().remove(this);
-        return this;
-    }
-
-    public void setYorcs(Set<YoRC> yoRCS) {
-        this.yorcs = yoRCS;
+    public void setYoRC(YoRC yoRC) {
+        this.yoRC = yoRC;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -107,7 +90,7 @@ public class Language implements Serializable {
     public String toString() {
         return "Language{" +
             "id=" + getId() +
-            ", langKey='" + getLangKey() + "'" +
+            ", isoCode='" + getIsoCode() + "'" +
             "}";
     }
 }

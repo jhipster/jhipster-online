@@ -18,11 +18,11 @@
         },
         {
             "fieldName": "enableHibernateCache",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "websocket",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "databaseType",
@@ -38,15 +38,15 @@
         },
         {
             "fieldName": "searchEngine",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "messageBroker",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "serviceDiscoveryType",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "buildTool",
@@ -54,7 +54,7 @@
         },
         {
             "fieldName": "enableSwaggerCodegen",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "clientFramework",
@@ -62,7 +62,7 @@
         },
         {
             "fieldName": "useSass",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "clientPackageManager",
@@ -73,16 +73,12 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "testFrameworks",
-            "fieldType": "String"
-        },
-        {
             "fieldName": "jhiPrefix",
             "fieldType": "String"
         },
         {
             "fieldName": "enableTranslation",
-            "fieldType": "String"
+            "fieldType": "Boolean"
         },
         {
             "fieldName": "nativeLanguage",
@@ -91,25 +87,35 @@
         {
             "fieldName": "gitProvider",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "hasProtractor",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasGatling",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasCucumber",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "owner",
-            "otherEntityName": "user",
-            "otherEntityField": "id"
+            "relationshipType": "one-to-many",
+            "relationshipName": "selectedLanguages",
+            "otherEntityName": "language",
+            "otherEntityRelationshipName": "yoRC"
         },
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "yorcs",
-            "relationshipName": "languages",
-            "otherEntityName": "language",
-            "otherEntityField": "id",
-            "ownerSide": true
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "ownerIdentity",
+            "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180605143030",
+    "changelogDate": "20180606155212",
     "entityTableName": "yo_rc",
     "dto": "no",
     "pagination": "pagination",
