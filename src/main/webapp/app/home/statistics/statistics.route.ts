@@ -1,4 +1,4 @@
-/**</span>
+/**
  * Copyright 2017-2018 the original author or authors from the JHipster Online project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
@@ -16,4 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const DATE_TIME_FORMAT = 'YYYY-MM-DDThh:mm';
+import { Route } from '@angular/router';
+
+import { StatisticsComponent } from './statistics.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+
+export const STATISTICS_ROUTE: Route = {
+    path: 'statistics',
+    component: StatisticsComponent,
+    data: {
+        authorities: ['ROLE_USER'],
+        pageTitle: 'Statistics'
+    },
+    canActivate: [UserRouteAccessService]
+};

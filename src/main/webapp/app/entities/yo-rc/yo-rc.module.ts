@@ -11,8 +11,7 @@ import {
     YoRCDeleteDialogComponent,
     yoRCRoute,
     yoRCPopupRoute,
-    YoRCResolve,
-    YoRCResolvePagingParams
+    YoRCResolve
 } from './';
 
 const ENTITY_STATES = [...yoRCRoute, ...yoRCPopupRoute];
@@ -21,7 +20,7 @@ const ENTITY_STATES = [...yoRCRoute, ...yoRCPopupRoute];
     imports: [JhonlineSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [YoRCComponent, YoRCDetailComponent, YoRCUpdateComponent, YoRCDeleteDialogComponent, YoRCDeletePopupComponent],
     entryComponents: [YoRCComponent, YoRCUpdateComponent, YoRCDeleteDialogComponent, YoRCDeletePopupComponent],
-    providers: [YoRCService, YoRCResolve, YoRCResolvePagingParams],
+    providers: [YoRCService, YoRCResolve],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineYoRCModule {}

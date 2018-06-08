@@ -26,8 +26,8 @@ import { GitCompanyModel } from 'app/home/generator/git.company.model';
 export class GitProviderService {
     constructor(private http: HttpClient) {}
 
-    clientId(string: string): Observable<string> {
-        return this.http.get(`api/${string.valueOf()}/client-id`, { responseType: 'text' });
+    clientId(provider: string): Observable<string> {
+        return this.http.get(`api/${provider}/client-id`, { responseType: 'text' });
     }
 
     saveGitOAuthToken(provider: string, token: string): Observable<any> {

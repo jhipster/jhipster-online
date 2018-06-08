@@ -24,6 +24,22 @@
             </div>
         </div>
         <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
+        <div class="alert alert-info">
+            <div class="row">
+                <div class="col-md-1">
+                    <input type="checkbox" class="form-control" id="isStatsEnabled"
+                           [(ngModel)]="isStatsEnabled" name="isStatsEnabled"
+                           #enableSwaggerCodegen="ngModel">
+                </div>
+                <div class="col-md-11">
+                    <label for="isStatsEnabled">
+                        By checking this checkbox, you will allow JHipster Online to retrieve your yo-rc.json and send them to FBI (you will be fiché S)
+                        <span class="fas fa-smile"></span>.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -237,7 +253,7 @@
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular 5</option>
+                        <option value="angularX">Angular 6</option>
                         <option value="react">React</option>
                     </select>
                 </div>
@@ -245,7 +261,7 @@
                     <label for="useSass">Would you like to use the LibSass stylesheet preprocessor for your CSS?</label>
                     <select id="useSass" [(ngModel)]="model.useSass" name="useSass" class="form-control"
                             #useSass="ngModel">
-                        <option [ngValue]="false">No</option>
+                         <option [ngValue]="false">No</option>
                         <option [ngValue]="true">Yes</option>
                     </select>
                 </div>

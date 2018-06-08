@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiAlertService } from 'ng-jhipster';
 
 import { IYoRC } from 'app/shared/model/yo-rc.model';
@@ -18,6 +20,7 @@ export class YoRCUpdateComponent implements OnInit {
     isSaving: boolean;
 
     owneridentities: IOwnerIdentity[];
+    createdDate: string;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -45,6 +48,7 @@ export class YoRCUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.yoRC.createdDate = moment(this.createdDate, DATE_TIME_FORMAT);
         if (this.yoRC.id !== undefined) {
             this.subscribeToSaveResponse(this.yoRCService.update(this.yoRC));
         } else {
@@ -78,5 +82,6 @@ export class YoRCUpdateComponent implements OnInit {
 
     set yoRC(yoRC: IYoRC) {
         this._yoRC = yoRC;
+        this.createdDate = moment(yoRC.createdDate).format();
     }
 }

@@ -1,5 +1,6 @@
 package io.github.jhipster.online.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
@@ -7,8 +8,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -102,6 +105,10 @@ public class YoRC implements Serializable {
 
     @Column(name = "has_cucumber")
     private Boolean hasCucumber;
+
+    @NotNull
+    @Column(name = "created_date", nullable = false)
+    private Instant createdDate;
 
     @OneToMany(mappedBy = "yoRC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -445,6 +452,19 @@ public class YoRC implements Serializable {
         this.hasCucumber = hasCucumber;
     }
 
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public YoRC createdDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public Set<Language> getSelectedLanguages() {
         return selectedLanguages;
     }
@@ -533,6 +553,7 @@ public class YoRC implements Serializable {
             ", hasProtractor='" + isHasProtractor() + "'" +
             ", hasGatling='" + isHasGatling() + "'" +
             ", hasCucumber='" + isHasCucumber() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

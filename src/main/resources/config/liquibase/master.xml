@@ -9,7 +9,8 @@
     <include file="config/liquibase/changelog/20180606155213_added_entity_Language.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155214_added_entity_OwnerIdentity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155215_added_entity_GeneratorIdentity.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180606155212_added_entity_YoRC.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180607130524_added_entity_YoRC.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180607153723_added_entity_YoRC.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20171116094805_added_entity_constraints_JdlMetadata.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328000000_added_entity_Jdl.xml" relativeToChangelogFile="false"/>
@@ -18,6 +19,7 @@
     <include file="config/liquibase/changelog/20180606155213_added_entity_constraints_Language.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155214_added_entity_constraints_OwnerIdentity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155215_added_entity_constraints_GeneratorIdentity.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180606155212_added_entity_constraints_YoRC.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180607130524_added_entity_constraints_YoRC.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180607153723_added_entity_constraints_YoRC.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

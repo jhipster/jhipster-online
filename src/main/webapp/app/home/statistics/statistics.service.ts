@@ -1,4 +1,4 @@
-/**</span>
+/**
  * Copyright 2017-2018 the original author or authors from the JHipster Online project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
@@ -16,4 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const DATE_TIME_FORMAT = 'YYYY-MM-DDThh:mm';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class StatisticsService {
+    constructor(private http: HttpClient) {}
+
+    countYoRC(): Observable<string> {
+        return this.http.get(`/api/statistics/count`, { responseType: 'text' });
+    }
+
+    getYoRCs(): Observable<any> {
+        return this.http.get(`/api/yo-rcs`);
+    }
+}

@@ -28,9 +28,9 @@ public class StatisticsResource {
         return statisticsService.getYoRCCount();
     }
 
-    @GetMapping("/distribution")
-    @Timed
-    public List<Long> getCountForEachUser() {
-        return statisticsService.getYoRCCountForEachUser();
-    }
+//    @GetMapping("/distribution")
+//    @Timed
+//    public List<Long> getCountForEachUser() {
+//        return statisticsService.getYoRCCountForEachUser();
+//    }
 }

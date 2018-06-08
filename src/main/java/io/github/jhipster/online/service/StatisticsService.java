@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class StatisticsService {
 
@@ -22,10 +20,11 @@ public class StatisticsService {
     }
 
     public long getYoRCCount() {
+        // yoRCService.addFakeData();
         return yoRCRepository.count();
     }
 
-    public List<Long> getYoRCCountForEachUser() {
-        return yoRCRepository.findYoRCCountForEachUser();
-    }
+//    public List<Long> getYoRCCountForEachUser() {
+//        return yoRCRepository.findYoRCCountForEachUser();
+//    }
 }

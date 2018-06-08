@@ -23,7 +23,8 @@ entity YoRC {
     gitProvider String,
     hasProtractor Boolean,
     hasGatling Boolean,
-    hasCucumber Boolean
+    hasCucumber Boolean,
+    createdDate Instant required
 }
 
 entity Language {
@@ -53,7 +54,6 @@ relationship OneToMany {
     YoRC{selectedLanguages} to Language
 }
 
-paginate YoRC with pagination
 service YoRC with serviceClass
 service OwnerIdentity with serviceClass
 service Language with serviceClass

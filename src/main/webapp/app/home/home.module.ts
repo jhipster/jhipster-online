@@ -27,6 +27,7 @@ import { JdlMetadataComponent } from './jdl-metadata/jdl-metadata.component';
 import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-metadata/jdl-studio.component';
 import { JdlOutputDialogComponent } from './jdl-metadata/jdl.output.component';
 import { CiCdComponent } from './ci-cd/ci-cd.component';
+import { StatisticsComponent } from 'app/home/statistics/statistics.component';
 import { CiCdOutputDialogComponent } from './ci-cd/ci-cd.output.component';
 import { JhonlineSharedModule } from 'app/shared';
 import { HOME_ROUTE, HomeComponent } from './';
@@ -46,6 +47,7 @@ import { GeneratorComponent } from 'app/home/generator/generator.component';
         ApplyJdlStudioComponent,
         JdlOutputDialogComponent,
         CiCdComponent,
+        StatisticsComponent,
         CiCdOutputDialogComponent
     ],
     entryComponents: [GeneratorOutputDialogComponent, JdlOutputDialogComponent, CiCdOutputDialogComponent],
