@@ -22,6 +22,8 @@ import io.github.jhipster.online.domain.User;
 
 public interface GitProviderService {
 
+    boolean isEnabled();
+
     void syncUserFromGitProvider() throws Exception;
 
     User getSyncedUserFromGitProvider(User user) throws Exception;

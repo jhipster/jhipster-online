@@ -130,8 +130,6 @@ jhipster:
 # ===================================================================
 
 application:
-    mail:
-        enable: false
 #    github:
 #        clientId: XXX
 #        clientSecret: XXX

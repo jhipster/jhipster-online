@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class GitlabService implements GitProviderService {
 
     private final Logger log = LoggerFactory.getLogger(GitlabService.class);
@@ -66,6 +67,15 @@ public class GitlabService implements GitProviderService {
         this.logsService = logsService;
         this.userRepository = userRepository;
         this.gitCompanyRepository = gitCompanyRepository;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return
+            this.applicationProperties.getGitlab().getClientId() != null &&
+            this.applicationProperties.getGitlab().getClientSecret() != null &&
+            this.applicationProperties.getGitlab().getHost() != null &&
+            this.applicationProperties.getGitlab().getRedirectUri() != null;
     }
 
     @Transactional

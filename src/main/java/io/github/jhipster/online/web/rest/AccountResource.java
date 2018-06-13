@@ -71,8 +71,8 @@ public class AccountResource {
                            MailService mailService,
                            JdlMetadataService jdlMetadataService,
                            JdlService jdlService,
-                           @Autowired(required = false) GithubService githubService,
-                           @Autowired(required = false) GitlabService gitlabService) {
+                           GithubService githubService,
+                           GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
@@ -166,10 +166,10 @@ public class AccountResource {
             jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
         }
         jdlMetadataService.deleteAllForCurrentUser(userLogin);
-        if (githubService != null) {
+        if (githubService.isEnabled()) {
             githubService.deleteAllOrganizationsForCurrentUser(userLogin);
         }
-        if (gitlabService != null) {
+        if (gitlabService.isEnabled()) {
             gitlabService.deleteAllOrganizationsForCurrentUser(userLogin);
         }
         userService.deleteUser(userLogin);

@@ -38,6 +38,7 @@ import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 
+@Service
 public class GithubService implements GitProviderService {
 
     private final Logger log = LoggerFactory.getLogger(GithubService.class);
@@ -62,6 +63,13 @@ public class GithubService implements GitProviderService {
         this.logsService = logsService;
         this.gitCompanyRepository = gitCompanyRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return
+            this.applicationProperties.getGithub().getClientId() != null &&
+            this.applicationProperties.getGithub().getClientSecret() != null;
     }
 
     /**
