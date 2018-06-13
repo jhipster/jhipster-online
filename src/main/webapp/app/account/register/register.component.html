@@ -10,7 +10,7 @@
             <h1>Registration</h1>
 
             <div class="alert alert-success" *ngIf="success">
-                <strong>Registration saved!</strong> <ng-container *ngIf="areMailsEnabled">Please check your email for confirmation.</ng-container><ng-container *ngIf="!areMailsEnabled">You can now login.</ng-container>
+                <strong>Registration saved!</strong> <ng-container *ngIf="isMailEnabled">Please check your email for confirmation.</ng-container><ng-container *ngIf="!isMailEnabled">You can now login.</ng-container>
             </div>
 
             <div class="alert alert-danger" *ngIf="error">

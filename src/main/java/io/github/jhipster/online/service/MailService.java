@@ -32,6 +32,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -40,6 +41,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  * <p>
  * We use the @Async annotation to send emails asynchronously.
  */
+@Service
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
@@ -63,6 +65,10 @@ public class MailService {
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+    }
+
+    public boolean isEnabled() {
+        return this.jHipsterProperties.getMail().isEnabled();
     }
 
     @Async

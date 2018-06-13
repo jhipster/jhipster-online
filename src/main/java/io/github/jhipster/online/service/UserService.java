@@ -79,14 +79,12 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    private final boolean areEmailsEnabled;
-
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        AuthorityRepository authorityRepository,
                        @Autowired(required = false) GithubService githubService,
                        CacheManager cacheManager,
-                       @Autowired(required = false) MailService mailService,
+                       MailService mailService,
                        JHipsterProperties jHipsterProperties,
                        GitCompanyRepository gitCompanyRepository,
                        @Autowired(required = false) GitlabService gitlabService) {
@@ -99,7 +97,6 @@ public class UserService {
         this.gitCompanyRepository = gitCompanyRepository;
         this.gitlabService = gitlabService;
         this.jHipsterProperties = jHipsterProperties;
-        this.areEmailsEnabled = mailService != null;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -158,7 +155,7 @@ public class UserService {
         newUser.setLangKey(userDTO.getLangKey());
 
         // new user is active if mails are disabled
-        newUser.setActivated(!areEmailsEnabled);
+        newUser.setActivated(!mailService.isEnabled());
 
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());

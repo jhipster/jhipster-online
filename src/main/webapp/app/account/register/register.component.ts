@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     registerAccount: any;
     success: boolean;
     modalRef: NgbModalRef;
-    areMailsEnabled: boolean;
+    isMailEnabled: boolean;
 
     constructor(
         private loginModalService: LoginModalService,
@@ -48,10 +48,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit() {
-        this.areMailsEnabled = true;
+        this.isMailEnabled = true;
         this.success = false;
         this.registerAccount = {};
-        this.passwordResetService.areMailsEnabled().subscribe(result => (this.areMailsEnabled = result === 'true'));
+        this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
     }
 
     ngAfterViewInit() {

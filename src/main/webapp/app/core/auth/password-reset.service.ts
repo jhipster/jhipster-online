@@ -12,7 +12,7 @@ export class PasswordResetService {
         return this.http.post(SERVER_API_URL + 'api/account/reset-password/link', mail, { responseType: 'text' });
     }
 
-    areMailsEnabled(): Observable<string> {
-        return this.http.get(SERVER_API_URL + 'api/mail/enabled', { responseType: 'text' });
+    getMailStatus(): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'management/info');
     }
 }

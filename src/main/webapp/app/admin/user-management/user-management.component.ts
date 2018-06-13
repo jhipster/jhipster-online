@@ -44,7 +44,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
-    areMailsEnabled: boolean;
+    isMailEnabled: boolean;
 
     constructor(
         private userService: UserService,
@@ -74,8 +74,8 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         });
 
         this.passwordResetService
-            .areMailsEnabled()
-            .subscribe(result => (this.areMailsEnabled = result === 'true'), () => (this.areMailsEnabled = false));
+            .getMailStatus()
+            .subscribe(result => (this.isMailEnabled = result['mailEnabled']), () => (this.isMailEnabled = false));
     }
 
     ngOnDestroy() {

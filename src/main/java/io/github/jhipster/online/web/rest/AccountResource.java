@@ -66,11 +66,9 @@ public class AccountResource {
 
     private final GitlabService gitlabService;
 
-    private final boolean areEmailEnabled;
-
     public AccountResource(UserRepository userRepository,
                            UserService userService,
-                           @Autowired(required = false) MailService mailService,
+                           MailService mailService,
                            JdlMetadataService jdlMetadataService,
                            JdlService jdlService,
                            @Autowired(required = false) GithubService githubService,
@@ -78,7 +76,6 @@ public class AccountResource {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.areEmailEnabled = mailService != null;
         this.jdlMetadataService = jdlMetadataService;
         this.jdlService = jdlService;
         this.githubService = githubService;
@@ -103,7 +100,7 @@ public class AccountResource {
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        if (areEmailEnabled) {
+        if (mailService.isEnabled()) {
             mailService.sendActivationEmail(user);
         }
     }
@@ -225,9 +222,11 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/init")
     @Timed
     public void requestPasswordReset(@RequestBody String mail) {
-       if (areEmailEnabled) {
+       if (mailService.isEnabled()) {
            mailService.sendPasswordResetMail(
-               userService.requestPasswordReset(mail).orElseThrow(EmailNotFoundException::new)
+               userService
+                   .requestPasswordReset(mail)
+                   .orElseThrow(EmailNotFoundException::new)
            );
        }
     }

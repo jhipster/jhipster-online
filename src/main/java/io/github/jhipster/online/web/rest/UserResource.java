@@ -35,7 +35,6 @@ import io.github.jhipster.web.util.ResponseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -85,14 +84,10 @@ public class UserResource {
 
     private final MailService mailService;
 
-    private final boolean areEmailsEnabled;
-
-    public UserResource(UserService userService, UserRepository userRepository, @Autowired(required = false) MailService mailService) {
-
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
-        this.areEmailsEnabled = mailService != null;
     }
 
     /**
@@ -122,7 +117,7 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            if (areEmailsEnabled) {
+            if (mailService.isEnabled()) {
                 mailService.sendCreationEmail(newUser);
             }
 
