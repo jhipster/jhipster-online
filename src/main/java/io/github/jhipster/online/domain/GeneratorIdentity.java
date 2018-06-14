@@ -34,7 +34,7 @@ public class GeneratorIdentity implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("")
-    private OwnerIdentity generator;
+    private OwnerIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,17 +84,17 @@ public class GeneratorIdentity implements Serializable {
         this.guid = guid;
     }
 
-    public OwnerIdentity getGenerator() {
-        return generator;
+    public OwnerIdentity getOwner() {
+        return owner;
     }
 
-    public GeneratorIdentity generator(OwnerIdentity ownerIdentity) {
-        this.generator = ownerIdentity;
+    public GeneratorIdentity owner(OwnerIdentity ownerIdentity) {
+        this.owner = ownerIdentity;
         return this;
     }
 
-    public void setGenerator(OwnerIdentity ownerIdentity) {
-        this.generator = ownerIdentity;
+    public void setOwner(OwnerIdentity ownerIdentity) {
+        this.owner = ownerIdentity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -15,6 +15,7 @@
     <include file="config/liquibase/changelog/20180328000000_added_entity_Jdl.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180504000000_remove_jdlmetadata_key.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180530075500_changelog.xml" relativeToChangelogFile="false" />
+    <include file="config/liquibase/changelog/20180614092326_changelog.xml" relativeToChangelogFile="false" />
     <include file="config/liquibase/changelog/20180606155213_added_entity_constraints_Language.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155214_added_entity_constraints_OwnerIdentity.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180606155215_added_entity_constraints_GeneratorIdentity.xml" relativeToChangelogFile="false"/>

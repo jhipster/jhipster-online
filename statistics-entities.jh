@@ -1,5 +1,13 @@
 entity YoRC {
+    // Other
     jhipsterVersion String,
+    creationDate ZonedDateTime,
+    gitProvider String,
+    nodeVersion String,
+    os String,
+    userLanguage String,
+
+    // Pure YoRc
     serverPort String,
     authenticationType String,
     cacheProvider String,
@@ -20,7 +28,6 @@ entity YoRC {
     jhiPrefix String,
     enableTranslation Boolean,
     nativeLanguage String,
-    gitProvider String,
     hasProtractor Boolean,
     hasGatling Boolean,
     hasCucumber Boolean

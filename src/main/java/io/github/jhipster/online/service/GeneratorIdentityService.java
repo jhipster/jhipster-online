@@ -1,6 +1,7 @@
 package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.OwnerIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,13 @@ public class GeneratorIdentityService {
 
     private final GeneratorIdentityRepository generatorIdentityRepository;
 
-    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository) {
+    private final OwnerIdentityService ownerIdentityService;
+    private final UserService userService;
+
+    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository, OwnerIdentityService ownerIdentityService, UserService userService) {
         this.generatorIdentityRepository = generatorIdentityRepository;
+        this.ownerIdentityService = ownerIdentityService;
+        this.userService = userService;
     }
 
     /**
@@ -69,5 +75,28 @@ public class GeneratorIdentityService {
     public void delete(Long id) {
         log.debug("Request to delete GeneratorIdentity : {}", id);
         generatorIdentityRepository.deleteById(id);
+    }
+
+    /**
+     * Find a GeneratorIdentity. Create one if can't be found.
+     *
+     * @param guid Generator you're looking for.
+     */
+    public GeneratorIdentity findOrCreateOneByGuid(String guid) {
+        GeneratorIdentity result = generatorIdentityRepository.findFirstByGuidIs(guid).orElseGet(() -> generatorIdentityRepository.save(new GeneratorIdentity().guid(guid)));
+        OwnerIdentity owner = result.getOwner();
+        if (owner == null) {
+            owner = new OwnerIdentity();
+            ownerIdentityService.save(owner);
+            result.setOwner(owner);
+            save(result);
+        }
+        return result;
+    }
+
+    public void bindCurrentUserToGenerator(String guid) {
+        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(userService.getUser());
+
+        save(findOrCreateOneByGuid(guid).owner(ownerIdentity));
     }
 }
