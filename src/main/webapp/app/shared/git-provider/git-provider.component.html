@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="selectedGitProvider">Select the Git provider you want:</label>
+                    <label for="selectedGitProvider">Select the Git provider:</label>
                     <select id="selectedGitProvider" (ngModelChange)="refreshGitCompanyListByGitProvider($event)"
                             [(ngModel)]="data.selectedGitProvider" name="data.selectedGitProvider" class="form-control">
                         <option *ngFor="let provider of data.availableGitProviders">{{provider}}</option>
@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group">
-                    <label for="gitCompany">Git company</label>
+                    <label for="gitCompany">Select the company:</label>
                     <select id="gitCompany" [(ngModel)]="data.selectedGitCompany" name="gitCompany"
                             class="form-control"
                             #ctrl="ngModel"
@@ -44,8 +44,8 @@
             <ng-container *ngIf="router.url !== '/generate-application'">
                 <div class="col-md-5">
                     <div class="form-group">
-                        <label for="gitProject">Git repository</label>
-                        <select id="gitProject" (ngModelChange)="updateSelectedGitProject($event)" [(ngModel)]="data.selectedGitProject" name="gitProject"
+                        <label for="gitRepository">Git repository</label>
+                        <select id="gitRepository" (ngModelChange)="updateSelectedGitRepository($event)" [(ngModel)]="data.selectedGitRepository" name="gitRepository"
                                 class="form-control"
                                 #ctrl="ngModel">
                             <option *ngFor="let project of data.gitProjects">{{project}}</option>

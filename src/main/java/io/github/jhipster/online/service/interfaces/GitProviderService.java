@@ -29,7 +29,7 @@ public interface GitProviderService {
     User getSyncedUserFromGitProvider(User user) throws Exception;
 
     void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
-        organization, String applicationName);
+        organization, String repositoryName);
 
     int createPullRequest(User user, String organization, String applicationName,
                           String title, String branchName, String body) throws Exception;

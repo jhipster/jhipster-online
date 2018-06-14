@@ -31,7 +31,7 @@ export class JhiGitProviderComponent implements OnInit {
     data: any = {
         selectedGitProvider: null,
         selectedGitCompany: null,
-        selectedGitProject: null,
+        selectedGitRepository: null,
         availableGitProviders: [],
         gitCompanies: [],
         gitProjects: [],
@@ -96,19 +96,19 @@ export class JhiGitProviderComponent implements OnInit {
         this.data.gitProjects = null;
         this.gitService.getProjects(this.data.selectedGitProvider, companyName).subscribe(projects => {
             this.data.gitProjects = projects;
-            this.data.selectedGitProject = projects[0];
+            this.data.selectedGitRepository = projects[0];
             this.data = {
                 ...this.data,
                 selectedGitProvider: this.data.selectedGitProvider,
                 selectedGitCompany: this.data.selectedGitCompany,
-                selectedGitProject: this.data.selectedGitProject
+                selectedGitRepository: this.data.selectedGitRepository
             };
             this.sharedData.emit(this.data);
         });
     }
 
-    updateSelectedGitProject(gitProject: string) {
-        this.sharedData.emit({ ...this.data, selectedGitProject: gitProject });
+    updateSelectedGitRepository(gitRepository: string) {
+        this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
     }
 
     private setGitProviderConfigurationStatus(gitProvider: string, status: boolean) {

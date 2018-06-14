@@ -82,10 +82,12 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     selectedGitProvider: string;
     selectedGitCompany: string;
-    selectedGitProject: string;
+    selectedGitRepository: string;
 
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
+
+    gitlabHost: string;
 
     constructor(
         private modalService: NgbModal,
@@ -105,18 +107,21 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
                 (res: any) => console.log(res)
             );
         });
+        this.gitService.getGitlabConfig().subscribe(config => {
+            this.gitlabHost = config.host;
+        });
     }
 
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
-        this.selectedGitProject = data.selectedGitProject;
+        this.selectedGitRepository = data.selectedGitRepository;
         this.isGithubConfigured = data.isGithubConfigured;
         this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     applyJdl() {
-        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitProject, this.jdlId).subscribe(
+        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.jdlId).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -132,8 +137,10 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
+        modalRef.gitlabHost = this.gitlabHost;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.selectedGitProject = this.selectedGitProject;
+        modalRef.selectedGitRepository = this.selectedGitRepository;
     }
 
     ngOnDestroy() {

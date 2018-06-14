@@ -33,13 +33,19 @@ export class GeneratorService {
         );
     }
 
-    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel, gitProvider: string, gitCompany: string): Observable<string> {
+    generateOnGit(
+        jhipsterConfigurationModel: JHipsterConfigurationModel,
+        gitProvider: string,
+        gitCompany: string,
+        repositoryName: string
+    ): Observable<string> {
         return this.http.post(
             'api/generate-application',
             {
+                'generator-jhipster': jhipsterConfigurationModel,
                 'git-provider': gitProvider,
                 'git-company': gitCompany,
-                'generator-jhipster': jhipsterConfigurationModel
+                'repository-name': repositoryName
             },
             { responseType: 'text' }
         );

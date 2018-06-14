@@ -22,23 +22,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.utils.URIUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
-import org.springframework.web.util.UriUtils;
 
 @Service
 public class GitService {

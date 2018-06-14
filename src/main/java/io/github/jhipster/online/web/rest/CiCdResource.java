@@ -55,10 +55,10 @@ public class CiCdResource {
     @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName, @PathVariable String ciCdTool) {
-        log.info("Configuring CI: {} on GitHub project {}/{}", ciCdTool, organizationName, projectName);
+        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        log.info("Configuring CI: {} on " + (isGitHub ? "GitHub" : "GitLab") + " {}/{}", ciCdTool, organizationName, projectName);
         User user = userService.getUser();
-        String ciCdId = "ci-" +
-            System.nanoTime();
+        String ciCdId = "ci-" + System.nanoTime();
 
         if (ciCdTool == null || (!ciCdTool.equals("travis") && !ciCdTool.equals("jenkins"))) {
             this.logsService.addLog(ciCdId, "Continuous Integration with `" + ciCdTool + "` is not supported.");
@@ -71,7 +71,7 @@ public class CiCdResource {
 
         try {
             this.ciCdService.configureCiCd(user, organizationName, projectName, ciCdTool,
-                ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
+                ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(ciCdId, "An error has occurred: " + e.getMessage());

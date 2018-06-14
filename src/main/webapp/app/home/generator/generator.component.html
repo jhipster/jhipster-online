@@ -34,6 +34,15 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="repositoryName">Repository name</label>
+                    <input type="text" class="form-control" id="repositoryName" [(ngModel)]="repositoryName" name="repositoryName"
+                           required pattern="^([a-zA-Z0-9]*)$">
+                </div>
+            </div>
+        </div>
         <hr>
         <h4>Application type</h4>
         <hr>
@@ -237,7 +246,7 @@
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular 5</option>
+                        <option value="angularX">Angular 6</option>
                         <option value="react">React</option>
                     </select>
                 </div>

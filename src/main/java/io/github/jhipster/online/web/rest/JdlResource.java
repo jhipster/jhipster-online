@@ -141,8 +141,10 @@ public class JdlResource {
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName,
         @PathVariable String jdlId) {
-        log.info("Applying JDL `{}` on GitHub project {}/{}", jdlId, organizationName, projectName);
+        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId, organizationName, projectName);
         User user = userService.getUser();
+
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
         String applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" +
             System.nanoTime();
@@ -151,7 +153,7 @@ public class JdlResource {
 
         try {
             this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
-                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
+                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(jdlId, "An error has occurred: " + e.getMessage());

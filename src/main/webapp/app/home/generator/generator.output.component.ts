@@ -30,7 +30,7 @@ export class GeneratorOutputDialogComponent implements OnInit {
 
     applicationId: string;
 
-    baseName: string;
+    repositoryName: string;
 
     displayApplicationUrl = false;
 

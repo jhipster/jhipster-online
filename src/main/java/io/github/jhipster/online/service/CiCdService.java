@@ -53,8 +53,8 @@ public class CiCdService {
 
     public CiCdService(LogsService logsService,
                        GitService gitService,
-                       @Autowired(required = false) GithubService githubService,
-                       @Autowired(required = false) GitlabService gitlabService,
+                       GithubService githubService,
+                       GitlabService gitlabService,
                        JHipsterService jHipsterService,
                        ApplicationProperties applicationProperties) {
         this.logsService = logsService;
@@ -74,8 +74,10 @@ public class CiCdService {
         watch.start();
         try {
             log.info("Beginning to configure CI with {} to {} / {}", ciCdTool, organizationName, projectName);
-            this.logsService.addLog(ciCdId, "Cloning GitHub repository `" + organizationName +
-                "/" + projectName + "`");
+            boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
+            this.logsService.addLog(ciCdId, "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" +
+                organizationName + "/" + projectName + "`");
+
             File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
                 ciCdId);
             FileUtils.forceMkdir(workingDir);
@@ -94,17 +96,16 @@ public class CiCdService {
                 StringUtils.capitalize(ciCdTool) +
                 " Continuous Integration");
 
-            this.logsService.addLog(ciCdId, "Pushing the application to the Git remote repository");
+            this.logsService.addLog(ciCdId, "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " remote repository");
             this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
-            this.logsService.addLog(ciCdId, "Creating Pull Request");
+            this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
             String pullRequestTitle = "Configure Continuous Integration with " + StringUtils.capitalize(ciCdTool);
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
-            int pullRequestNumber = -1;
-            if (gitProvider.equals(GitProvider.GITHUB)) {
-                pullRequestNumber =
+            if (isGitHub) {
+                int pullRequestNumber =
                     this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
                 this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab().getHost() +
@@ -115,7 +116,7 @@ public class CiCdService {
                     pullRequestNumber
                 );
             } else if (gitProvider.equals(GitProvider.GITLAB)) {
-                pullRequestNumber =
+                int pullRequestNumber =
                     this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
                 this.logsService.addLog(ciCdId, "Pull Request created at https://github.com/" +

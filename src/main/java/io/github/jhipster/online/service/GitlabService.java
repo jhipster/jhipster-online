@@ -147,27 +147,28 @@ public class GitlabService implements GitProviderService {
      */
     @Async
     @Override
-    public void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String group, String applicationName) {
+    public void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String group,
+                                            String repositoryName) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
-            log.info("Beginning to create repository {} / {}", group, applicationName);
+            log.info("Beginning to create repository {} / {}", group, repositoryName);
             this.logsService.addLog(applicationId, "Creating GitLab repository");
             GitlabAPI gitlab = getConnection(user);
             if (user.getGitlabUser().equals(group)) {
-                log.debug("Repository {} belongs to user {}", applicationName, group);
-                log.info("Creating repository {} / {}", group, applicationName);
-                gitlab.createProject(applicationName);
+                log.debug("Repository {} belongs to user {}", repositoryName, group);
+                log.info("Creating repository {} / {}", group, repositoryName);
+                gitlab.createProject(repositoryName);
                 this.logsService.addLog(applicationId, "GitLab repository created!");
             } else {
-                log.debug("Repository {} belongs to organization {}", applicationName, group);
-                log.info("Creating repository {} / {}", group, applicationName);
-                gitlab.createProjectForGroup(applicationName, gitlab.getGroup(group));
+                log.debug("Repository {} belongs to organization {}", repositoryName, group);
+                log.info("Creating repository {} / {}", group, repositoryName);
+                gitlab.createProjectForGroup(repositoryName, gitlab.getGroup(group));
                 this.logsService.addLog(applicationId, "GitLab repository created!");
             }
 
             this.generatorService.generateGitApplication(user, applicationId, applicationConfiguration, group,
-                applicationName, GitProvider.GITLAB);
+                repositoryName, GitProvider.GITLAB);
 
             this.logsService.addLog(applicationId, "Generation finished");
         } catch (Exception e) {
@@ -178,11 +179,11 @@ public class GitlabService implements GitProviderService {
     }
 
     @Override
-    public int createPullRequest(User user, String group, String applicationName,
+    public int createPullRequest(User user, String group, String repositoryName,
                                  String title, String branchName, String body) throws Exception {
-        log.info("Creating Merge Request on repository {} / {}", group, applicationName);
+        log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
-        int number = gitlab.getProject(group, applicationName).getId();
+        int number = gitlab.getProject(group, repositoryName).getId();
         gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
         return number;

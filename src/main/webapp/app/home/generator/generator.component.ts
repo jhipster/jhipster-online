@@ -42,6 +42,8 @@ export class GeneratorComponent implements OnInit {
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
 
+    repositoryName: string;
+
     /**
      * get all the languages options supported by JHipster - copied from the generator.
      */
@@ -131,7 +133,7 @@ export class GeneratorComponent implements OnInit {
 
     onSubmit() {
         this.checkModelBeforeSubmit();
-        this.generatorService.generateOnGitHub(this.model, this.selectedGitProvider, this.selectedGitCompany).subscribe(
+        this.generatorService.generateOnGit(this.model, this.selectedGitProvider, this.selectedGitCompany, this.repositoryName).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -163,7 +165,7 @@ export class GeneratorComponent implements OnInit {
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.isGithubConfigured = this.isGithubConfigured;
         modalRef.isGitlabConfigured = this.isGitlabConfigured;
-        modalRef.baseName = this.model.baseName;
+        modalRef.repositoryName = this.repositoryName;
     }
 
     downloadFile(blob: Blob) {

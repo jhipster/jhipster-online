@@ -78,6 +78,7 @@ public class GeneratorResource {
             .orElseThrow(() -> new Exception("No git provider"));
         String gitCompany = JsonPath.read(document, "$.git-company");
         String applicationName = JsonPath.read(document, "$.generator-jhipster.baseName");
+        String repositoryName = JsonPath.read(document, "$.repository-name");
         String applicationId = UUID.randomUUID().toString();
 
         log.debug("Using provider: {} ({})", provider, JsonPath.read(document, "$.git-provider"));
@@ -87,9 +88,11 @@ public class GeneratorResource {
 
         try {
             if (provider.equals(GitProvider.GITHUB)) {
-                this.githubService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+                this.githubService.createGitProviderRepository(
+                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             } else if (provider.equals(GitProvider.GITLAB)) {
-                this.gitlabService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+                this.gitlabService.createGitProviderRepository(
+                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             }
 
         } catch (Exception e) {

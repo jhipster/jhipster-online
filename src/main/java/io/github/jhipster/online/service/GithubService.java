@@ -159,27 +159,27 @@ public class GithubService implements GitProviderService {
     @Async
     @Override
     public void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
-        organization, String applicationName) {
+        organization, String repositoryName) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
-            log.info("Beginning to create repository {} / {}", organization, applicationName);
+            log.info("Beginning to create repository {} / {}", organization, repositoryName);
             this.logsService.addLog(applicationId, "Creating GitHub repository");
             GitHub gitHub = this.getConnection(user);
             GHCreateRepositoryBuilder builder;
             if (user.getGithubUser().equals(organization)) {
-                log.debug("Repository {} belongs to user {}", applicationName, organization);
-                builder = gitHub.createRepository(applicationName);
+                log.debug("Repository {} belongs to user {}", repositoryName, organization);
+                builder = gitHub.createRepository(repositoryName);
             } else {
-                log.debug("Repository {} belongs to organization {}", applicationName, organization);
-                builder = gitHub.getOrganization(organization).createRepository(applicationName);
+                log.debug("Repository {} belongs to organization {}", repositoryName, organization);
+                builder = gitHub.getOrganization(organization).createRepository(repositoryName);
             }
-            log.info("Creating repository {} / {}", organization, applicationName);
+            log.info("Creating repository {} / {}", organization, repositoryName);
             builder.create();
             this.logsService.addLog(applicationId, "GitHub repository created!");
 
             this.generatorService.generateGitApplication(user, applicationId, applicationConfiguration, organization,
-                applicationName, GitProvider.GITHUB);
+                repositoryName, GitProvider.GITHUB);
 
             this.logsService.addLog(applicationId, "Generation finished");
         } catch (Exception e) {
@@ -189,14 +189,14 @@ public class GithubService implements GitProviderService {
         watch.stop();
     }
 
-    public int createPullRequest(User user, String organization, String applicationName,
+    public int createPullRequest(User user, String organization, String repositoryName,
         String title, String branchName, String body) throws Exception {
 
-        log.info("Creating Pull Request on repository {} / {}", organization, applicationName);
+        log.info("Creating Pull Request on repository {} / {}", organization, repositoryName);
 
         GitHub gitHub = this.getConnection(user);
         int number = gitHub
-            .getRepository(organization + "/" + applicationName)
+            .getRepository(organization + "/" + repositoryName)
             .createPullRequest(title, branchName, "master", body)
             .getNumber();
 

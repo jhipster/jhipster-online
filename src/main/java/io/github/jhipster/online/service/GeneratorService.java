@@ -66,11 +66,11 @@ public class GeneratorService {
     }
 
     public void generateGitApplication(User user, String applicationId,
-                                       String applicationConfiguration, String githubOrganization, String applicationName,
+                                       String applicationConfiguration, String githubOrganization, String repositoryName,
                                        GitProvider gitProvider) throws IOException, GitAPIException, URISyntaxException {
         File workingDir = generateApplication(applicationId, applicationConfiguration);
         this.logsService.addLog(applicationId, "Pushing the application to the Git remote repository");
-        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, applicationName, gitProvider);
+        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, repositoryName, gitProvider);
         this.logsService.addLog(applicationId, "Application successfully pushed!");
         this.gitService.cleanUpDirectory(workingDir);
     }
