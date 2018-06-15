@@ -15,6 +15,53 @@
                         [(ngModel)]="yoRC.jhipsterVersion" />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_creationDate">Creation Date</label>
+                    <div class="d-flex">
+                        <input id="field_creationDate" type="datetime-local" class="form-control" name="creationDate" [(ngModel)]="creationDate"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_gitProvider">Git Provider</label>
+                    <input type="text" class="form-control" name="gitProvider" id="field_gitProvider"
+                        [(ngModel)]="yoRC.gitProvider" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_nodeVersion">Node Version</label>
+                    <input type="text" class="form-control" name="nodeVersion" id="field_nodeVersion"
+                        [(ngModel)]="yoRC.nodeVersion" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_os">Os</label>
+                    <input type="text" class="form-control" name="os" id="field_os"
+                        [(ngModel)]="yoRC.os" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_arch">Arch</label>
+                    <input type="text" class="form-control" name="arch" id="field_arch"
+                        [(ngModel)]="yoRC.arch" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cpu">Cpu</label>
+                    <input type="text" class="form-control" name="cpu" id="field_cpu"
+                        [(ngModel)]="yoRC.cpu" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cores">Cores</label>
+                    <input type="text" class="form-control" name="cores" id="field_cores"
+                        [(ngModel)]="yoRC.cores" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_memory">Memory</label>
+                    <input type="text" class="form-control" name="memory" id="field_memory"
+                        [(ngModel)]="yoRC.memory" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_userLanguage">User Language</label>
+                    <input type="text" class="form-control" name="userLanguage" id="field_userLanguage"
+                        [(ngModel)]="yoRC.userLanguage" />
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" for="field_serverPort">Server Port</label>
                     <input type="text" class="form-control" name="serverPort" id="field_serverPort"
                         [(ngModel)]="yoRC.serverPort" />
@@ -115,11 +162,6 @@
                         [(ngModel)]="yoRC.nativeLanguage" />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_gitProvider">Git Provider</label>
-                    <input type="text" class="form-control" name="gitProvider" id="field_gitProvider"
-                        [(ngModel)]="yoRC.gitProvider" />
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" for="field_hasProtractor">Has Protractor</label>
                     <input type="checkbox" class="form-control" name="hasProtractor" id="field_hasProtractor"
                         [(ngModel)]="yoRC.hasProtractor" />
@@ -133,23 +175,6 @@
                     <label class="form-control-label" for="field_hasCucumber">Has Cucumber</label>
                     <input type="checkbox" class="form-control" name="hasCucumber" id="field_hasCucumber"
                         [(ngModel)]="yoRC.hasCucumber" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_createdDate">Created Date</label>
-                    <div class="d-flex">
-                        <input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" [(ngModel)]="createdDate"
-                        required/>
-                    </div>
-                    <div [hidden]="!(editForm.controls.createdDate?.dirty && editForm.controls.createdDate?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.createdDate?.errors?.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.controls.createdDate?.errors?.ZonedDateTimelocal">
-                            This field should be a date and time.
-                        </small>
-                    </div>
                 </div>
 
                 <div class="form-group">

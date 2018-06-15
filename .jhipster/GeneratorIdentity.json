@@ -1,5 +1,4 @@
 {
-    "name": "GeneratorIdentity",
     "fields": [
         {
             "fieldName": "host",
@@ -18,7 +17,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180606155215",
+    "changelogDate": "20180615143404",
     "entityTableName": "generator_identity",
     "dto": "no",
     "pagination": "no",

@@ -1,5 +1,4 @@
 {
-    "name": "SubGenEvent",
     "fields": [
         {
             "fieldName": "source",
@@ -15,7 +14,7 @@
         },
         {
             "fieldName": "date",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "Instant"
         }
     ],
     "relationships": [
@@ -26,7 +25,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180614153126",
+    "changelogDate": "20180615143400",
     "entityTableName": "sub_gen_event",
     "dto": "no",
     "pagination": "no",

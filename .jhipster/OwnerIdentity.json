@@ -10,7 +10,7 @@
             "otherEntityRelationshipName": "ownerIdentity"
         }
     ],
-    "changelogDate": "20180606155214",
+    "changelogDate": "20180615143403",
     "entityTableName": "owner_identity",
     "dto": "no",
     "pagination": "no",

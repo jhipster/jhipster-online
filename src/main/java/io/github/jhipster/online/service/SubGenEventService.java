@@ -33,7 +33,8 @@ public class SubGenEventService {
      * @return the persisted entity
      */
     public SubGenEvent save(SubGenEvent subGenEvent) {
-        log.debug("Request to save SubGenEvent : {}", subGenEvent);        return subGenEventRepository.save(subGenEvent);
+        log.debug("Request to save SubGenEvent : {}", subGenEvent);
+        return subGenEventRepository.save(subGenEvent);
     }
 
     /**

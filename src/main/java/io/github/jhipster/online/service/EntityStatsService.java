@@ -33,7 +33,8 @@ public class EntityStatsService {
      * @return the persisted entity
      */
     public EntityStats save(EntityStats entityStats) {
-        log.debug("Request to save EntityStats : {}", entityStats);        return entityStatsRepository.save(entityStats);
+        log.debug("Request to save EntityStats : {}", entityStats);
+        return entityStatsRepository.save(entityStats);
     }
 
     /**

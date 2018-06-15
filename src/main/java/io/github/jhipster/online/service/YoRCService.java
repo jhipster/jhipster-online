@@ -1,6 +1,8 @@
 package io.github.jhipster.online.service;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
 import io.github.jhipster.online.repository.YoRCRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import java.util.Optional;
  */
 @Service
 @Transactional
+@JsonDeserialize(using = YoRCDeserializer.class)
 public class YoRCService {
 
     private final Logger log = LoggerFactory.getLogger(YoRCService.class);
@@ -32,6 +35,7 @@ public class YoRCService {
         this.yoRCRepository = yoRCRepository;
         this.ownerIdentityService = ownerIdentityService;
         this.userService = userService;
+        // this.addFakeData();
     }
 
     /**
@@ -80,7 +84,17 @@ public class YoRCService {
 
     public void addFakeData() {
         Instant now = Instant.now();
-        Instant start = now.minus(Duration.ofDays(31));
+        Instant start = now.minus(Duration.ofDays(365));
+
+        String jhipsterVersion = "5.0.2";
+        String gitProvider = "";
+        String nodeVersion = "";
+        String os = "";
+        String arch = "";
+        String cpu = "";
+        String cores = "";
+        String memory = "16";
+        String userLanguage = "";
 
         String applicationType = "";
         String authenticationType = "";
@@ -105,11 +119,32 @@ public class YoRCService {
         boolean hasGatling;
         boolean hasCucumber;
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 3000; i++) {
             YoRC yorc = new YoRC();
 
             Duration between = Duration.between(start, now);
             Instant createdDate = now.minus(Duration.ofSeconds((int)(Math.random() * between.getSeconds())));
+
+            int randomUserLang = (int)(Math.random() * 3);
+            if (randomUserLang == 0) {
+                userLanguage = "en-gb";
+            } else if (randomUserLang == 1) {
+                userLanguage = "fr-fr";
+            } else if (randomUserLang == 2) {
+                userLanguage = "pt-pt";
+            }
+
+            int randomVersionJhip = (int)(Math.random() * 3);
+            if (randomVersionJhip == 0) {
+                jhipsterVersion = "beta-5.0.2";
+            } else if (randomVersionJhip == 1) {
+                jhipsterVersion = "beta-5.0.1";
+            } else if (randomVersionJhip == 2) {
+                jhipsterVersion = "4.14.4";
+            }
+
+            int randomArch = (int) (Math.random() * 2);
+            arch = randomArch == 0 ? "x64" : "x86";
 
             int randomApplicationType = (int) (Math.random() * 3);
             if (randomApplicationType == 0) {
@@ -251,9 +286,19 @@ public class YoRCService {
                 .hasProtractor(hasProtractor)
                 .hasGatling(hasGatling)
                 .hasCucumber(hasCucumber)
-                .createdDate(createdDate);
+                .creationDate(createdDate)
+                .arch(arch)
+                .gitProvider(gitProvider)
+                .nodeVersion(nodeVersion)
+                .os(os)
+                .arch(arch)
+                .cpu(cpu)
+                .cores(cores)
+                .memory(memory)
+                .userLanguage(userLanguage)
+                .jhipsterVersion(jhipsterVersion);
 
-            yorc.setOwner(ownerIdentityService.findOrCreateUser(userService.getUser()));
+            yorc.setOwner(ownerIdentityService.findOrCreateUser(userService.getUserWithAuthoritiesByLogin("admin").get()));
             yoRCRepository.save(yorc);
         }
     }

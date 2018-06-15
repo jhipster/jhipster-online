@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-entity-stats-heading">Create or edit a Entity Stats</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!entityStats.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="entityStats.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fields">Fields</label>
+                    <input type="number" class="form-control" name="fields" id="field_fields"
+                        [(ngModel)]="entityStats.fields" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_relationships">Relationships</label>
+                    <input type="number" class="form-control" name="relationships" id="field_relationships"
+                        [(ngModel)]="entityStats.relationships" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pagination">Pagination</label>
+                    <input type="text" class="form-control" name="pagination" id="field_pagination"
+                        [(ngModel)]="entityStats.pagination" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_dto">Dto</label>
+                    <input type="checkbox" class="form-control" name="dto" id="field_dto"
+                        [(ngModel)]="entityStats.dto" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_service">Service</label>
+                    <input type="checkbox" class="form-control" name="service" id="field_service"
+                        [(ngModel)]="entityStats.service" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fluentMethods">Fluent Methods</label>
+                    <input type="checkbox" class="form-control" name="fluentMethods" id="field_fluentMethods"
+                        [(ngModel)]="entityStats.fluentMethods" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_date">Date</label>
+                    <div class="d-flex">
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" [(ngModel)]="date"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_owner">Owner</label>
+                    <select class="form-control" id="field_owner" name="owner" [(ngModel)]="entityStats.owner" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ownerIdentityOption.id === entityStats.owner?.id ? entityStats.owner : ownerIdentityOption" *ngFor="let ownerIdentityOption of owneridentities; trackBy: trackOwnerIdentityById">{{ownerIdentityOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <span class="fas fa-ban"></span>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <span class="fas fa-save"></span>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

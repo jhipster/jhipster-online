@@ -1,7 +1,7 @@
 entity YoRC {
     // Other
     jhipsterVersion String,
-    creationDate ZonedDateTime,
+    creationDate Instant,
     gitProvider String,
     nodeVersion String,
     os String,
@@ -34,15 +34,14 @@ entity YoRC {
     nativeLanguage String,
     hasProtractor Boolean,
     hasGatling Boolean,
-    hasCucumber Boolean,
-    createdDate Instant required
+    hasCucumber Boolean
 }
 
 entity SubGenEvent {
     source String,
     type String,
     event String,
-    date ZonedDateTime
+    date Instant
 }
 
 entity EntityStats {
@@ -52,7 +51,7 @@ entity EntityStats {
     dto Boolean,
     service Boolean,
     fluentMethods Boolean,
-    date ZonedDateTime
+    date Instant
 }
 
 entity Language {

@@ -10,6 +10,7 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +26,8 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.ArrayList;
 
-
-import static io.github.jhipster.online.web.rest.TestUtil.sameInstant;
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -46,8 +46,8 @@ public class YoRCResourceIntTest {
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
     private static final String UPDATED_JHIPSTER_VERSION = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_CREATION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_GIT_PROVIDER = "AAAAAAAAAA";
     private static final String UPDATED_GIT_PROVIDER = "BBBBBBBBBB";
@@ -142,13 +142,10 @@ public class YoRCResourceIntTest {
     private static final Boolean DEFAULT_HAS_CUCUMBER = false;
     private static final Boolean UPDATED_HAS_CUCUMBER = true;
 
-    private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     @Autowired
     private YoRCRepository yoRCRepository;
 
-
+    
 
     @Autowired
     private YoRCService yoRCService;
@@ -220,8 +217,7 @@ public class YoRCResourceIntTest {
             .nativeLanguage(DEFAULT_NATIVE_LANGUAGE)
             .hasProtractor(DEFAULT_HAS_PROTRACTOR)
             .hasGatling(DEFAULT_HAS_GATLING)
-            .hasCucumber(DEFAULT_HAS_CUCUMBER)
-            .createdDate(DEFAULT_CREATED_DATE);
+            .hasCucumber(DEFAULT_HAS_CUCUMBER);
         return yoRC;
     }
 
@@ -278,7 +274,6 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
         assertThat(testYoRC.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
         assertThat(testYoRC.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
-        assertThat(testYoRC.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
     }
 
     @Test
@@ -302,24 +297,6 @@ public class YoRCResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = yoRCRepository.findAll().size();
-        // set the field null
-        yoRC.setCreatedDate(null);
-
-        // Create the YoRC, which fails.
-
-        restYoRCMockMvc.perform(post("/api/yo-rcs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
-            .andExpect(status().isBadRequest());
-
-        List<YoRC> yoRCList = yoRCRepository.findAll();
-        assertThat(yoRCList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllYoRCS() throws Exception {
         // Initialize the database
         yoRCRepository.saveAndFlush(yoRC);
@@ -330,7 +307,7 @@ public class YoRCResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(yoRC.getId().intValue())))
             .andExpect(jsonPath("$.[*].jhipsterVersion").value(hasItem(DEFAULT_JHIPSTER_VERSION.toString())))
-            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(sameInstant(DEFAULT_CREATION_DATE))))
+            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].gitProvider").value(hasItem(DEFAULT_GIT_PROVIDER.toString())))
             .andExpect(jsonPath("$.[*].nodeVersion").value(hasItem(DEFAULT_NODE_VERSION.toString())))
             .andExpect(jsonPath("$.[*].os").value(hasItem(DEFAULT_OS.toString())))
@@ -361,10 +338,9 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].nativeLanguage").value(hasItem(DEFAULT_NATIVE_LANGUAGE.toString())))
             .andExpect(jsonPath("$.[*].hasProtractor").value(hasItem(DEFAULT_HAS_PROTRACTOR.booleanValue())))
             .andExpect(jsonPath("$.[*].hasGatling").value(hasItem(DEFAULT_HAS_GATLING.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER.booleanValue())))
-            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER.booleanValue())));
     }
-
+    
 
     @Test
     @Transactional
@@ -378,7 +354,7 @@ public class YoRCResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(yoRC.getId().intValue()))
             .andExpect(jsonPath("$.jhipsterVersion").value(DEFAULT_JHIPSTER_VERSION.toString()))
-            .andExpect(jsonPath("$.creationDate").value(sameInstant(DEFAULT_CREATION_DATE)))
+            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.gitProvider").value(DEFAULT_GIT_PROVIDER.toString()))
             .andExpect(jsonPath("$.nodeVersion").value(DEFAULT_NODE_VERSION.toString()))
             .andExpect(jsonPath("$.os").value(DEFAULT_OS.toString()))
@@ -409,8 +385,7 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.nativeLanguage").value(DEFAULT_NATIVE_LANGUAGE.toString()))
             .andExpect(jsonPath("$.hasProtractor").value(DEFAULT_HAS_PROTRACTOR.booleanValue()))
             .andExpect(jsonPath("$.hasGatling").value(DEFAULT_HAS_GATLING.booleanValue()))
-            .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER.booleanValue()))
-            .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()));
+            .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER.booleanValue()));
     }
     @Test
     @Transactional
@@ -465,8 +440,7 @@ public class YoRCResourceIntTest {
             .nativeLanguage(UPDATED_NATIVE_LANGUAGE)
             .hasProtractor(UPDATED_HAS_PROTRACTOR)
             .hasGatling(UPDATED_HAS_GATLING)
-            .hasCucumber(UPDATED_HAS_CUCUMBER)
-            .createdDate(UPDATED_CREATED_DATE);
+            .hasCucumber(UPDATED_HAS_CUCUMBER);
 
         restYoRCMockMvc.perform(put("/api/yo-rcs")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -510,7 +484,6 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.isHasProtractor()).isEqualTo(UPDATED_HAS_PROTRACTOR);
         assertThat(testYoRC.isHasGatling()).isEqualTo(UPDATED_HAS_GATLING);
         assertThat(testYoRC.isHasCucumber()).isEqualTo(UPDATED_HAS_CUCUMBER);
-        assertThat(testYoRC.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
     }
 
     @Test

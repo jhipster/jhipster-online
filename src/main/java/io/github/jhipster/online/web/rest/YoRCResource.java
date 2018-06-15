@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -44,11 +43,11 @@ public class YoRCResource {
      */
     @PostMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<YoRC> createYoRC(@Valid @RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRC> createYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
         log.debug("REST request to save YoRC : {}", yoRC);
         if (yoRC.getId() != null) {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+        }        
         YoRC result = yoRCService.save(yoRC);
         return ResponseEntity.created(new URI("/api/yo-rcs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -66,11 +65,11 @@ public class YoRCResource {
      */
     @PutMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<YoRC> updateYoRC(@Valid @RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
+        }        
         YoRC result = yoRCService.save(yoRC);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, yoRC.getId().toString()))

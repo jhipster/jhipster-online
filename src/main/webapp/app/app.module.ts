@@ -22,6 +22,7 @@ import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
@@ -46,7 +47,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
         JhonlineCoreModule,
         JhonlineHomeModule,
         JhonlineAccountModule,
-        JhonlineEntityModule
+        JhonlineEntityModule,
+        NgxEchartsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],

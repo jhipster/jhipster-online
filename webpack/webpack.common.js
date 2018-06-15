@@ -70,7 +70,8 @@ module.exports = (options) => ({
         ]),
         new webpack.ProvidePlugin({
             $: "jquery",
-            jQuery: "jquery"
+            jQuery: "jquery",
+            echarts: "echarts"
         }),
         new HtmlWebpackPlugin({
             template: './src/main/webapp/index.html',

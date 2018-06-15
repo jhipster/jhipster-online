@@ -10,6 +10,7 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,13 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.ArrayList;
 
-
-import static io.github.jhipster.online.web.rest.TestUtil.sameInstant;
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -63,8 +61,8 @@ public class EntityStatsResourceIntTest {
     private static final Boolean DEFAULT_FLUENT_METHODS = false;
     private static final Boolean UPDATED_FLUENT_METHODS = true;
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private EntityStatsRepository entityStatsRepository;
@@ -184,7 +182,7 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO.booleanValue())))
             .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE.booleanValue())))
             .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))));
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
     
 
@@ -205,7 +203,7 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.dto").value(DEFAULT_DTO.booleanValue()))
             .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE.booleanValue()))
             .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)));
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
     @Test
     @Transactional

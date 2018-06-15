@@ -10,6 +10,7 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,13 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.ArrayList;
 
-
-import static io.github.jhipster.online.web.rest.TestUtil.sameInstant;
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -54,8 +52,8 @@ public class SubGenEventResourceIntTest {
     private static final String DEFAULT_EVENT = "AAAAAAAAAA";
     private static final String UPDATED_EVENT = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private SubGenEventRepository subGenEventRepository;
@@ -166,7 +164,7 @@ public class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT.toString())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))));
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
     
 
@@ -184,7 +182,7 @@ public class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.event").value(DEFAULT_EVENT.toString()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)));
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
     @Test
     @Transactional

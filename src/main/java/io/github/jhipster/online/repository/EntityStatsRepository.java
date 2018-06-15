@@ -1,12 +1,11 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.EntityStats;
-import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.jpa.repository.*;
 
 /**
- * Spring Data  repository for the EntityStats entity.
+ * Spring Data JPA repository for the EntityStats entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -20,7 +20,7 @@ export class YoRCUpdateComponent implements OnInit {
     isSaving: boolean;
 
     owneridentities: IOwnerIdentity[];
-    createdDate: string;
+    creationDate: string;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -48,7 +48,7 @@ export class YoRCUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        this.yoRC.createdDate = moment(this.createdDate, DATE_TIME_FORMAT);
+        this.yoRC.creationDate = moment(this.creationDate, DATE_TIME_FORMAT);
         if (this.yoRC.id !== undefined) {
             this.subscribeToSaveResponse(this.yoRCService.update(this.yoRC));
         } else {
@@ -82,6 +82,6 @@ export class YoRCUpdateComponent implements OnInit {
 
     set yoRC(yoRC: IYoRC) {
         this._yoRC = yoRC;
-        this.createdDate = moment(yoRC.createdDate).format();
+        this.creationDate = moment(yoRC.creationDate).format();
     }
 }

@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -43,7 +43,7 @@ public class EntityStats implements Serializable {
     private Boolean fluentMethods;
 
     @Column(name = "jhi_date")
-    private ZonedDateTime date;
+    private Instant date;
 
     @ManyToOne
     @JsonIgnoreProperties("")
@@ -136,16 +136,16 @@ public class EntityStats implements Serializable {
         this.fluentMethods = fluentMethods;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public EntityStats date(ZonedDateTime date) {
+    public EntityStats date(Instant date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

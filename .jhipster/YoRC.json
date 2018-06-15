@@ -1,5 +1,4 @@
 {
-    "name": "YoRC",
     "fields": [
         {
             "fieldName": "jhipsterVersion",
@@ -7,7 +6,7 @@
         },
         {
             "fieldName": "creationDate",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "Instant"
         },
         {
             "fieldName": "gitProvider",
@@ -132,13 +131,6 @@
         {
             "fieldName": "hasCucumber",
             "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "createdDate",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
         }
     ],
     "relationships": [
@@ -155,7 +147,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180607153723",
+    "changelogDate": "20180615143359",
     "entityTableName": "yo_rc",
     "dto": "no",
     "pagination": "no",

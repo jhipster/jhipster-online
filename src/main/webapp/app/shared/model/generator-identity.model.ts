@@ -1,4 +1,4 @@
-import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
+import { IOwnerIdentity } from './owner-identity.model';
 
 export interface IGeneratorIdentity {
     id?: number;

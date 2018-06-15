@@ -40,12 +40,8 @@ public class StatisticsService {
     }
 
     public long getYoRCCount() {
-        // yoRCService.addFakeData();
+        yoRCService.addFakeData();
         return yoRCRepository.count();
-    }
-
-    public List<Long> getYoRCCountForEachUser() {
-        return yoRCRepository.findYoRCCountForEachUser();
     }
 
     public void addEntry(String entry, String host) throws IOException {

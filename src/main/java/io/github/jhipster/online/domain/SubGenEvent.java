@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -34,7 +34,7 @@ public class SubGenEvent implements Serializable {
     private String event;
 
     @Column(name = "jhi_date")
-    private ZonedDateTime date;
+    private Instant date;
 
     @ManyToOne
     @JsonIgnoreProperties("")
@@ -88,16 +88,16 @@ public class SubGenEvent implements Serializable {
         this.event = event;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public SubGenEvent date(ZonedDateTime date) {
+    public SubGenEvent date(Instant date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

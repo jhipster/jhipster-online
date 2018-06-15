@@ -18,6 +18,7 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 import { GitComponent } from './git/git.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -34,7 +35,7 @@ import { HOME_ROUTE, HomeComponent } from './';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
 
 @NgModule({
-    imports: [JhonlineSharedModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
+    imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
     declarations: [
         HomeComponent,
         GeneratorComponent,

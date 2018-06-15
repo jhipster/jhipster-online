@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="alexandregc (generated)" id="1529056123914-1">
+    <changeSet author="ippon (generated)" id="1529074657780-1">
         <createTable tableName="entity_stats">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
@@ -15,7 +15,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-2">
+    <changeSet author="ippon (generated)" id="1529074657780-2">
         <createTable tableName="generator_identity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="generator_identityPK"/>
@@ -25,7 +25,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-3">
+    <changeSet author="ippon (generated)" id="1529074657780-3">
         <createTable tableName="git_company">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="git_companyPK"/>
@@ -35,7 +35,7 @@
             <column name="user_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-4">
+    <changeSet author="ippon (generated)" id="1529074657780-4">
         <createTable tableName="git_project">
             <column name="git_company_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -43,7 +43,7 @@
             <column name="git_projects" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-5">
+    <changeSet author="ippon (generated)" id="1529074657780-5">
         <createTable tableName="jdl">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="jdlPK"/>
@@ -54,7 +54,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-6">
+    <changeSet author="ippon (generated)" id="1529074657780-6">
         <createTable tableName="jdl_metadata">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
@@ -72,7 +72,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-7">
+    <changeSet author="ippon (generated)" id="1529074657780-7">
         <createTable tableName="language">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="languagePK"/>
@@ -81,7 +81,7 @@
             <column name="yorc_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-8">
+    <changeSet author="ippon (generated)" id="1529074657780-8">
         <createTable tableName="owner_identity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="owner_identityPK"/>
@@ -89,7 +89,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-9">
+    <changeSet author="ippon (generated)" id="1529074657780-9">
         <createTable tableName="sub_gen_event">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
@@ -101,7 +101,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-10">
+    <changeSet author="ippon (generated)" id="1529074657780-10">
         <createTable tableName="yo_rc">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="yo_rcPK"/>
@@ -115,7 +115,7 @@
             <column name="client_package_manager" type="VARCHAR(255)"/>
             <column name="cores" type="VARCHAR(255)"/>
             <column name="cpu" type="VARCHAR(255)"/>
-            <column name="creation_date" type="TINYBLOB"/>
+            <column name="creation_date" type="timestamp"/>
             <column name="database_type" type="VARCHAR(255)"/>
             <column name="dev_database_type" type="VARCHAR(255)"/>
             <column name="enable_hibernate_cache" type="BIT"/>
@@ -142,61 +142,61 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-11">
+    <changeSet author="ippon (generated)" id="1529074657780-11">
         <addColumn tableName="jhi_user">
             <column name="gitlab_email" type="varchar(255)"/>
         </addColumn>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-12">
+    <changeSet author="ippon (generated)" id="1529074657780-12">
         <addColumn tableName="jhi_user">
             <column name="gitlab_oauth_token" type="varchar(255)"/>
         </addColumn>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-13">
+    <changeSet author="ippon (generated)" id="1529074657780-13">
         <addColumn tableName="jhi_user">
             <column name="gitlab_user" type="varchar(255)"/>
         </addColumn>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-14">
+    <changeSet author="ippon (generated)" id="1529074657780-14">
         <addPrimaryKey columnNames="id" constraintName="jdl_metadataPK" tableName="jdl_metadata"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-15">
+    <changeSet author="ippon (generated)" id="1529074657780-15">
         <addUniqueConstraint columnNames="owner_id" constraintName="UC_OWNER_IDENTITYOWNER_ID_COL" tableName="owner_identity"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-16">
+    <changeSet author="ippon (generated)" id="1529074657780-16">
         <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-17">
+    <changeSet author="ippon (generated)" id="1529074657780-17">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="owner_identity" constraintName="FK2jhvj3o1gxdap3j7j6fbub33n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-18">
+    <changeSet author="ippon (generated)" id="1529074657780-18">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FK2s3ro4k55fj08yf02eb7giag" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-19">
+    <changeSet author="ippon (generated)" id="1529074657780-19">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FK6jdlrp17gudamkl05dkotw1i5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-20">
+    <changeSet author="ippon (generated)" id="1529074657780-20">
         <addForeignKeyConstraint baseColumnNames="yorc_id" baseTableName="language" constraintName="FK6o445s9yvlyfor8xnkt9ww3kc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="yo_rc"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-21">
+    <changeSet author="ippon (generated)" id="1529074657780-21">
         <addForeignKeyConstraint baseColumnNames="jdl_metadata_id" baseTableName="jdl" constraintName="FK86wll5ofwvl54k2titdjbdsci" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jdl_metadata"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-22">
+    <changeSet author="ippon (generated)" id="1529074657780-22">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jdl_metadata" constraintName="FK8aj2x577nb0yee854mmojh9hk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-23">
+    <changeSet author="ippon (generated)" id="1529074657780-23">
         <addForeignKeyConstraint baseColumnNames="git_company_id" baseTableName="git_project" constraintName="FK90ir4u1amk4w3dhy7sxdv63x6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="git_company"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-24">
+    <changeSet author="ippon (generated)" id="1529074657780-24">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKfjjqne1y380ehskbaiuat3qdc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-25">
+    <changeSet author="ippon (generated)" id="1529074657780-25">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKndhe4ndo6wp3xlfmew7ma6dg6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-26">
+    <changeSet author="ippon (generated)" id="1529074657780-26">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="git_company" constraintName="FKrwcmar7keuxrohh69romyiown" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
-    <changeSet author="alexandregc (generated)" id="1529056123914-27">
+    <changeSet author="ippon (generated)" id="1529074657780-27">
         <dropTable tableName="github_organization"/>
     </changeSet>
 </databaseChangeLog>

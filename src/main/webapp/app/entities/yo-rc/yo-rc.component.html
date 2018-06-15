@@ -16,6 +16,15 @@
             <tr>
             <th><span>ID</span></th>
             <th><span>Jhipster Version</span></th>
+            <th><span>Creation Date</span></th>
+            <th><span>Git Provider</span></th>
+            <th><span>Node Version</span></th>
+            <th><span>Os</span></th>
+            <th><span>Arch</span></th>
+            <th><span>Cpu</span></th>
+            <th><span>Cores</span></th>
+            <th><span>Memory</span></th>
+            <th><span>User Language</span></th>
             <th><span>Server Port</span></th>
             <th><span>Authentication Type</span></th>
             <th><span>Cache Provider</span></th>
@@ -36,11 +45,9 @@
             <th><span>Jhi Prefix</span></th>
             <th><span>Enable Translation</span></th>
             <th><span>Native Language</span></th>
-            <th><span>Git Provider</span></th>
             <th><span>Has Protractor</span></th>
             <th><span>Has Gatling</span></th>
             <th><span>Has Cucumber</span></th>
-            <th><span>Created Date</span></th>
             <th><span>Owner</span></th>
             <th></th>
             </tr>
@@ -49,6 +56,15 @@
             <tr *ngFor="let yoRC of yoRCS ;trackBy: trackId">
                 <td><a [routerLink]="['/yo-rc', yoRC.id, 'view' ]">{{yoRC.id}}</a></td>
                 <td>{{yoRC.jhipsterVersion}}</td>
+                <td>{{yoRC.creationDate | date:'medium'}}</td>
+                <td>{{yoRC.gitProvider}}</td>
+                <td>{{yoRC.nodeVersion}}</td>
+                <td>{{yoRC.os}}</td>
+                <td>{{yoRC.arch}}</td>
+                <td>{{yoRC.cpu}}</td>
+                <td>{{yoRC.cores}}</td>
+                <td>{{yoRC.memory}}</td>
+                <td>{{yoRC.userLanguage}}</td>
                 <td>{{yoRC.serverPort}}</td>
                 <td>{{yoRC.authenticationType}}</td>
                 <td>{{yoRC.cacheProvider}}</td>
@@ -69,11 +85,9 @@
                 <td>{{yoRC.jhiPrefix}}</td>
                 <td>{{yoRC.enableTranslation}}</td>
                 <td>{{yoRC.nativeLanguage}}</td>
-                <td>{{yoRC.gitProvider}}</td>
                 <td>{{yoRC.hasProtractor}}</td>
                 <td>{{yoRC.hasGatling}}</td>
                 <td>{{yoRC.hasCucumber}}</td>
-                <td>{{yoRC.createdDate | date:'medium'}}</td>
                 <td>
                     <div *ngIf="yoRC.owner">
                         <a [routerLink]="['../owner-identity', yoRC.owner?.id, 'view' ]" >{{yoRC.owner?.id}}</a>

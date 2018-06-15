@@ -46,44 +46,6 @@ export class StatisticsComponent implements AfterViewInit, OnInit {
             data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
         }
 
-        this.options = {
-            legend: {
-                data: ['bar', 'bar2'],
-                align: 'left'
-            },
-            tooltip: {},
-            xAxis: {
-                data: xAxisData,
-                silent: false,
-                splitLine: {
-                    show: false
-                }
-            },
-            yAxis: {},
-            series: [
-                {
-                    name: 'bar',
-                    type: 'bar',
-                    data: data1,
-                    animationDelay: function(idx) {
-                        return idx * 10;
-                    }
-                },
-                {
-                    name: 'bar2',
-                    type: 'bar',
-                    data: data2,
-                    animationDelay: function(idx) {
-                        return idx * 10 + 100;
-                    }
-                }
-            ],
-            animationEasing: 'elasticOut',
-            animationDelayUpdate: function(idx) {
-                return idx * 5;
-            }
-        };
-
         var ctx = document.getElementById('myChart');
 
         let clientFrameworkData,
@@ -136,6 +98,45 @@ export class StatisticsComponent implements AfterViewInit, OnInit {
             // this.generateCountChart('clientPackageManager', 'doughnut', clientPackageManagerData, 'izi monnay 3');
             //     this.generateBasicCounterChart('devDatabaseType', 'line', devDatabaseTypeData,
             //          ['red', 'purple', 'blue', 'green', 'yellow']);
+
+            console.log(arr);
+            this.options = {
+                legend: {
+                    data: ['bar', 'bar2'],
+                    align: 'left'
+                },
+                tooltip: {},
+                xAxis: {
+                    data: Object.keys(arr),
+                    silent: false,
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {},
+                series: [
+                    {
+                        name: 'bar',
+                        type: 'bar',
+                        data: Object.keys(arr).map(elem => arr[elem]),
+                        animationDelay: function(idx) {
+                            return idx * 10;
+                        }
+                    },
+                    {
+                        name: 'bar2',
+                        type: 'bar',
+                        data: Object.keys(arr2).map(elem => arr2[elem]),
+                        animationDelay: function(idx) {
+                            return idx * 10 + 100;
+                        }
+                    }
+                ],
+                animationEasing: 'elasticOut',
+                animationDelayUpdate: function(idx) {
+                    return idx * 5;
+                }
+            };
         });
     }
 

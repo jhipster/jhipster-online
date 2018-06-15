@@ -13,7 +13,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180606155213",
+    "changelogDate": "20180615143402",
     "entityTableName": "language",
     "dto": "no",
     "pagination": "no",

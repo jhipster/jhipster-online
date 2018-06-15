@@ -1,0 +1,72 @@
+<div>
+    <h2 id="page-heading">
+        <span>Entity Stats</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-entity-stats" [routerLink]="['/entity-stats/new']">
+            <span class="fas fa-plus"></span>
+            <span >
+            Create new Entity Stats
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="entityStats">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Fields</span></th>
+            <th><span>Relationships</span></th>
+            <th><span>Pagination</span></th>
+            <th><span>Dto</span></th>
+            <th><span>Service</span></th>
+            <th><span>Fluent Methods</span></th>
+            <th><span>Date</span></th>
+            <th><span>Owner</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let entityStats of entityStats ;trackBy: trackId">
+                <td><a [routerLink]="['/entity-stats', entityStats.id, 'view' ]">{{entityStats.id}}</a></td>
+                <td>{{entityStats.fields}}</td>
+                <td>{{entityStats.relationships}}</td>
+                <td>{{entityStats.pagination}}</td>
+                <td>{{entityStats.dto}}</td>
+                <td>{{entityStats.service}}</td>
+                <td>{{entityStats.fluentMethods}}</td>
+                <td>{{entityStats.date | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="entityStats.owner">
+                        <a [routerLink]="['../owner-identity', entityStats.owner?.id, 'view' ]" >{{entityStats.owner?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/entity-stats', entityStats.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fas fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/entity-stats', entityStats.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <span class="fas fa-pencil-alt"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'entity-stats/'+ entityStats.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fas fa-times"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,5 +1,4 @@
 {
-    "name": "EntityStats",
     "fields": [
         {
             "fieldName": "fields",
@@ -27,7 +26,7 @@
         },
         {
             "fieldName": "date",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "Instant"
         }
     ],
     "relationships": [
@@ -38,7 +37,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180614161034",
+    "changelogDate": "20180615143401",
     "entityTableName": "entity_stats",
     "dto": "no",
     "pagination": "no",

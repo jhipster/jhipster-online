@@ -47,7 +47,7 @@ public class EntityStatsResource {
         log.debug("REST request to save EntityStats : {}", entityStats);
         if (entityStats.getId() != null) {
             throw new BadRequestAlertException("A new entityStats cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+        }        
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.created(new URI("/api/entity-stats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -69,7 +69,7 @@ public class EntityStatsResource {
         log.debug("REST request to update EntityStats : {}", entityStats);
         if (entityStats.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
+        }        
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, entityStats.getId().toString()))

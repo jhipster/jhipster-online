@@ -49,19 +49,19 @@ export class YoRCService {
 
     private convertDateFromClient(yoRC: IYoRC): IYoRC {
         const copy: IYoRC = Object.assign({}, yoRC, {
-            createdDate: yoRC.createdDate != null && yoRC.createdDate.isValid() ? yoRC.createdDate.toJSON() : null
+            creationDate: yoRC.creationDate != null && yoRC.creationDate.isValid() ? yoRC.creationDate.toJSON() : null
         });
         return copy;
     }
 
     private convertDateFromServer(res: EntityResponseType): EntityResponseType {
-        res.body.createdDate = res.body.createdDate != null ? moment(res.body.createdDate) : null;
+        res.body.creationDate = res.body.creationDate != null ? moment(res.body.creationDate) : null;
         return res;
     }
 
     private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
         res.body.forEach((yoRC: IYoRC) => {
-            yoRC.createdDate = yoRC.createdDate != null ? moment(yoRC.createdDate) : null;
+            yoRC.creationDate = yoRC.creationDate != null ? moment(yoRC.creationDate) : null;
         });
         return res;
     }
