@@ -20,11 +20,9 @@ package io.github.jhipster.online.service;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jhipster.online.domain.Language;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;

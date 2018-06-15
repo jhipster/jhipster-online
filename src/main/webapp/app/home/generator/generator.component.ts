@@ -42,6 +42,8 @@ export class GeneratorComponent implements OnInit {
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
 
+    isStatsEnabled = false;
+
     /**
      * get all the languages options supported by JHipster - copied from the generator.
      */

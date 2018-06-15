@@ -8,9 +8,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class YoRC implements Serializable {
     private String jhipsterVersion;
 
     @Column(name = "creation_date")
-    private ZonedDateTime creationDate;
+    private Instant creationDate;
 
     @Column(name = "git_provider")
     private String gitProvider;
@@ -129,6 +130,10 @@ public class YoRC implements Serializable {
     @Column(name = "has_cucumber")
     private Boolean hasCucumber;
 
+    @NotNull
+    @Column(name = "created_date", nullable = false)
+    private Instant createdDate;
+
     @OneToMany(mappedBy = "yoRC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Language> selectedLanguages = new HashSet<>();
@@ -159,16 +164,16 @@ public class YoRC implements Serializable {
         this.jhipsterVersion = jhipsterVersion;
     }
 
-    public ZonedDateTime getCreationDate() {
+    public Instant getCreationDate() {
         return creationDate;
     }
 
-    public YoRC creationDate(ZonedDateTime creationDate) {
+    public YoRC creationDate(Instant creationDate) {
         this.creationDate = creationDate;
         return this;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -575,6 +580,19 @@ public class YoRC implements Serializable {
         this.hasCucumber = hasCucumber;
     }
 
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public YoRC createdDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public Set<Language> getSelectedLanguages() {
         return selectedLanguages;
     }
@@ -671,6 +689,7 @@ public class YoRC implements Serializable {
             ", hasProtractor='" + isHasProtractor() + "'" +
             ", hasGatling='" + isHasGatling() + "'" +
             ", hasCucumber='" + isHasCucumber() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

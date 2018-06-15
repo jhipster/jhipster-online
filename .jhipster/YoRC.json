@@ -132,6 +132,13 @@
         {
             "fieldName": "hasCucumber",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [
@@ -148,10 +155,10 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180606155212",
+    "changelogDate": "20180607153723",
     "entityTableName": "yo_rc",
     "dto": "no",
-    "pagination": "pagination",
+    "pagination": "no",
     "service": "serviceClass",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

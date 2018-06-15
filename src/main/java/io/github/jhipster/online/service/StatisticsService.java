@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -40,6 +40,7 @@ public class StatisticsService {
     }
 
     public long getYoRCCount() {
+        // yoRCService.addFakeData();
         return yoRCRepository.count();
     }
 
@@ -78,18 +79,18 @@ public class StatisticsService {
             .memory(memory)
             .userLanguage(userLanguage)
             .owner(owner)
-            .creationDate(ZonedDateTime.now());
+            .creationDate(Instant.now());
         yoRCService.save(yorc);
         yorc.getSelectedLanguages().forEach(languageService::save);
     }
 
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorId)  {
-        subGenEvent.date(ZonedDateTime.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+        subGenEvent.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         subGenEventService.save(subGenEvent);
     }
 
     public void addEntityStats(EntityStats entityStats, String generatorId)  {
-        entityStats.date(ZonedDateTime.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+        entityStats.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         entityStatsService.save(entityStats);
     }
 }

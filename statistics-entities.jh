@@ -34,7 +34,8 @@ entity YoRC {
     nativeLanguage String,
     hasProtractor Boolean,
     hasGatling Boolean,
-    hasCucumber Boolean
+    hasCucumber Boolean,
+    createdDate Instant required
 }
 
 entity SubGenEvent {
@@ -82,7 +83,6 @@ relationship OneToMany {
     YoRC{selectedLanguages} to Language
 }
 
-paginate YoRC with pagination
 service YoRC with serviceClass
 service OwnerIdentity with serviceClass
 service Language with serviceClass
