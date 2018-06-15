@@ -10,7 +10,6 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.ArrayList;
+
 
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,9 +42,6 @@ public class GeneratorIdentityResourceIntTest {
 
     private static final String DEFAULT_HOST = "AAAAAAAAAA";
     private static final String UPDATED_HOST = "BBBBBBBBBB";
-
-    private static final String DEFAULT_USER_AGENT = "AAAAAAAAAA";
-    private static final String UPDATED_USER_AGENT = "BBBBBBBBBB";
 
     private static final String DEFAULT_GUID = "AAAAAAAAAA";
     private static final String UPDATED_GUID = "BBBBBBBBBB";
@@ -94,7 +90,6 @@ public class GeneratorIdentityResourceIntTest {
     public static GeneratorIdentity createEntity(EntityManager em) {
         GeneratorIdentity generatorIdentity = new GeneratorIdentity()
             .host(DEFAULT_HOST)
-            .userAgent(DEFAULT_USER_AGENT)
             .guid(DEFAULT_GUID);
         return generatorIdentity;
     }
@@ -120,7 +115,6 @@ public class GeneratorIdentityResourceIntTest {
         assertThat(generatorIdentityList).hasSize(databaseSizeBeforeCreate + 1);
         GeneratorIdentity testGeneratorIdentity = generatorIdentityList.get(generatorIdentityList.size() - 1);
         assertThat(testGeneratorIdentity.getHost()).isEqualTo(DEFAULT_HOST);
-        assertThat(testGeneratorIdentity.getUserAgent()).isEqualTo(DEFAULT_USER_AGENT);
         assertThat(testGeneratorIdentity.getGuid()).isEqualTo(DEFAULT_GUID);
     }
 
@@ -155,7 +149,6 @@ public class GeneratorIdentityResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generatorIdentity.getId().intValue())))
             .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
-            .andExpect(jsonPath("$.[*].userAgent").value(hasItem(DEFAULT_USER_AGENT.toString())))
             .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
     }
     
@@ -172,7 +165,6 @@ public class GeneratorIdentityResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(generatorIdentity.getId().intValue()))
             .andExpect(jsonPath("$.host").value(DEFAULT_HOST.toString()))
-            .andExpect(jsonPath("$.userAgent").value(DEFAULT_USER_AGENT.toString()))
             .andExpect(jsonPath("$.guid").value(DEFAULT_GUID.toString()));
     }
     @Test
@@ -197,7 +189,6 @@ public class GeneratorIdentityResourceIntTest {
         em.detach(updatedGeneratorIdentity);
         updatedGeneratorIdentity
             .host(UPDATED_HOST)
-            .userAgent(UPDATED_USER_AGENT)
             .guid(UPDATED_GUID);
 
         restGeneratorIdentityMockMvc.perform(put("/api/generator-identities")
@@ -210,7 +201,6 @@ public class GeneratorIdentityResourceIntTest {
         assertThat(generatorIdentityList).hasSize(databaseSizeBeforeUpdate);
         GeneratorIdentity testGeneratorIdentity = generatorIdentityList.get(generatorIdentityList.size() - 1);
         assertThat(testGeneratorIdentity.getHost()).isEqualTo(UPDATED_HOST);
-        assertThat(testGeneratorIdentity.getUserAgent()).isEqualTo(UPDATED_USER_AGENT);
         assertThat(testGeneratorIdentity.getGuid()).isEqualTo(UPDATED_GUID);
     }
 

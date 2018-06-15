@@ -1,5 +1,6 @@
 package io.github.jhipster.online.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -30,6 +32,33 @@ public class YoRC implements Serializable {
 
     @Column(name = "jhipster_version")
     private String jhipsterVersion;
+
+    @Column(name = "creation_date")
+    private ZonedDateTime creationDate;
+
+    @Column(name = "git_provider")
+    private String gitProvider;
+
+    @Column(name = "node_version")
+    private String nodeVersion;
+
+    @Column(name = "os")
+    private String os;
+
+    @Column(name = "arch")
+    private String arch;
+
+    @Column(name = "cpu")
+    private String cpu;
+
+    @Column(name = "cores")
+    private String cores;
+
+    @Column(name = "memory")
+    private String memory;
+
+    @Column(name = "user_language")
+    private String userLanguage;
 
     @Column(name = "server_port")
     private String serverPort;
@@ -91,9 +120,6 @@ public class YoRC implements Serializable {
     @Column(name = "native_language")
     private String nativeLanguage;
 
-    @Column(name = "git_provider")
-    private String gitProvider;
-
     @Column(name = "has_protractor")
     private Boolean hasProtractor;
 
@@ -131,6 +157,123 @@ public class YoRC implements Serializable {
 
     public void setJhipsterVersion(String jhipsterVersion) {
         this.jhipsterVersion = jhipsterVersion;
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public YoRC creationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    public void setCreationDate(ZonedDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getGitProvider() {
+        return gitProvider;
+    }
+
+    public YoRC gitProvider(String gitProvider) {
+        this.gitProvider = gitProvider;
+        return this;
+    }
+
+    public void setGitProvider(String gitProvider) {
+        this.gitProvider = gitProvider;
+    }
+
+    public String getNodeVersion() {
+        return nodeVersion;
+    }
+
+    public YoRC nodeVersion(String nodeVersion) {
+        this.nodeVersion = nodeVersion;
+        return this;
+    }
+
+    public void setNodeVersion(String nodeVersion) {
+        this.nodeVersion = nodeVersion;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public YoRC os(String os) {
+        this.os = os;
+        return this;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
+
+    public String getArch() {
+        return arch;
+    }
+
+    public YoRC arch(String arch) {
+        this.arch = arch;
+        return this;
+    }
+
+    public void setArch(String arch) {
+        this.arch = arch;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public YoRC cpu(String cpu) {
+        this.cpu = cpu;
+        return this;
+    }
+
+    public void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    public String getCores() {
+        return cores;
+    }
+
+    public YoRC cores(String cores) {
+        this.cores = cores;
+        return this;
+    }
+
+    public void setCores(String cores) {
+        this.cores = cores;
+    }
+
+    public String getMemory() {
+        return memory;
+    }
+
+    public YoRC memory(String memory) {
+        this.memory = memory;
+        return this;
+    }
+
+    public void setMemory(String memory) {
+        this.memory = memory;
+    }
+
+    public String getUserLanguage() {
+        return userLanguage;
+    }
+
+    public YoRC userLanguage(String userLanguage) {
+        this.userLanguage = userLanguage;
+        return this;
+    }
+
+    public void setUserLanguage(String userLanguage) {
+        this.userLanguage = userLanguage;
     }
 
     public String getServerPort() {
@@ -393,19 +536,6 @@ public class YoRC implements Serializable {
         this.nativeLanguage = nativeLanguage;
     }
 
-    public String getGitProvider() {
-        return gitProvider;
-    }
-
-    public YoRC gitProvider(String gitProvider) {
-        this.gitProvider = gitProvider;
-        return this;
-    }
-
-    public void setGitProvider(String gitProvider) {
-        this.gitProvider = gitProvider;
-    }
-
     public Boolean isHasProtractor() {
         return hasProtractor;
     }
@@ -509,6 +639,15 @@ public class YoRC implements Serializable {
         return "YoRC{" +
             "id=" + getId() +
             ", jhipsterVersion='" + getJhipsterVersion() + "'" +
+            ", creationDate='" + getCreationDate() + "'" +
+            ", gitProvider='" + getGitProvider() + "'" +
+            ", nodeVersion='" + getNodeVersion() + "'" +
+            ", os='" + getOs() + "'" +
+            ", arch='" + getArch() + "'" +
+            ", cpu='" + getCpu() + "'" +
+            ", cores='" + getCores() + "'" +
+            ", memory='" + getMemory() + "'" +
+            ", userLanguage='" + getUserLanguage() + "'" +
             ", serverPort='" + getServerPort() + "'" +
             ", authenticationType='" + getAuthenticationType() + "'" +
             ", cacheProvider='" + getCacheProvider() + "'" +
@@ -529,7 +668,6 @@ public class YoRC implements Serializable {
             ", jhiPrefix='" + getJhiPrefix() + "'" +
             ", enableTranslation='" + isEnableTranslation() + "'" +
             ", nativeLanguage='" + getNativeLanguage() + "'" +
-            ", gitProvider='" + getGitProvider() + "'" +
             ", hasProtractor='" + isHasProtractor() + "'" +
             ", hasGatling='" + isHasGatling() + "'" +
             ", hasCucumber='" + isHasCucumber() + "'" +

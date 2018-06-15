@@ -83,7 +83,8 @@ public class GeneratorIdentityService {
      * @param guid Generator you're looking for.
      */
     public GeneratorIdentity findOrCreateOneByGuid(String guid) {
-        GeneratorIdentity result = generatorIdentityRepository.findFirstByGuidIs(guid).orElseGet(() -> generatorIdentityRepository.save(new GeneratorIdentity().guid(guid)));
+        GeneratorIdentity result = generatorIdentityRepository.findFirstByGuidIs(guid)
+            .orElseGet(() -> generatorIdentityRepository.save(new GeneratorIdentity().guid(guid)));
         OwnerIdentity owner = result.getOwner();
         if (owner == null) {
             owner = new OwnerIdentity();

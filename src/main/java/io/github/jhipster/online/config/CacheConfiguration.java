@@ -71,6 +71,8 @@ public class CacheConfiguration {
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".testFrameworks", jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.Language.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".selectedLanguages", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.SubGenEvent.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.EntityStats.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

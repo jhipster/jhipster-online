@@ -26,9 +26,6 @@ public class GeneratorIdentity implements Serializable {
     @Column(name = "host")
     private String host;
 
-    @Column(name = "user_agent")
-    private String userAgent;
-
     @Column(name = "guid")
     private String guid;
 
@@ -56,19 +53,6 @@ public class GeneratorIdentity implements Serializable {
 
     public void setHost(String host) {
         this.host = host;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public GeneratorIdentity userAgent(String userAgent) {
-        this.userAgent = userAgent;
-        return this;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
     }
 
     public String getGuid() {
@@ -123,7 +107,6 @@ public class GeneratorIdentity implements Serializable {
         return "GeneratorIdentity{" +
             "id=" + getId() +
             ", host='" + getHost() + "'" +
-            ", userAgent='" + getUserAgent() + "'" +
             ", guid='" + getGuid() + "'" +
             "}";
     }

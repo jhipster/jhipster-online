@@ -5,6 +5,10 @@ entity YoRC {
     gitProvider String,
     nodeVersion String,
     os String,
+    arch String,
+    cpu String,
+    cores String,
+    memory String,
     userLanguage String,
 
     // Pure YoRc
@@ -33,6 +37,23 @@ entity YoRC {
     hasCucumber Boolean
 }
 
+entity SubGenEvent {
+    source String,
+    type String,
+    event String,
+    date ZonedDateTime
+}
+
+entity EntityStats {
+    fields Integer,
+    relationships Integer,
+    pagination String,
+    dto Boolean,
+    service Boolean,
+    fluentMethods Boolean,
+    date ZonedDateTime
+}
+
 entity Language {
     isoCode String
 }
@@ -43,13 +64,14 @@ entity OwnerIdentity {
 
 entity GeneratorIdentity {
     host String,
-    userAgent String,
     guid String
 }
 
 relationship ManyToOne {
 	YoRC{owner} to OwnerIdentity,
-	GeneratorIdentity{generator} to OwnerIdentity
+	SubGenEvent{owner} to OwnerIdentity,
+	EntityStats{owner} to OwnerIdentity,
+	GeneratorIdentity{owner} to OwnerIdentity
 }
 
 relationship OneToOne {
@@ -65,3 +87,5 @@ service YoRC with serviceClass
 service OwnerIdentity with serviceClass
 service Language with serviceClass
 service GeneratorIdentity with serviceClass
+service SubGenEvent with serviceClass
+service EntityStats with serviceClass

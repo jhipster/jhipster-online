@@ -34,8 +34,7 @@ public class YoRCService {
      * @return the persisted entity
      */
     public YoRC save(YoRC yoRC) {
-        log.debug("Request to save YoRC : {}", yoRC);
-        return yoRCRepository.save(yoRC);
+        log.debug("Request to save YoRC : {}", yoRC);        return yoRCRepository.save(yoRC);
     }
 
     /**

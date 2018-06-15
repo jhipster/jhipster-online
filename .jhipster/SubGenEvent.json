@@ -1,13 +1,21 @@
 {
-    "name": "GeneratorIdentity",
+    "name": "SubGenEvent",
     "fields": [
         {
-            "fieldName": "host",
+            "fieldName": "source",
             "fieldType": "String"
         },
         {
-            "fieldName": "guid",
+            "fieldName": "type",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "event",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "relationships": [
@@ -18,8 +26,8 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20180606155215",
-    "entityTableName": "generator_identity",
+    "changelogDate": "20180614153126",
+    "entityTableName": "sub_gen_event",
     "dto": "no",
     "pagination": "no",
     "service": "serviceClass",

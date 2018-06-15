@@ -1,7 +1,44 @@
 {
+    "name": "YoRC",
     "fields": [
         {
             "fieldName": "jhipsterVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "creationDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "gitProvider",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nodeVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "os",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "arch",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpu",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cores",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "memory",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userLanguage",
             "fieldType": "String"
         },
         {
@@ -82,10 +119,6 @@
         },
         {
             "fieldName": "nativeLanguage",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "gitProvider",
             "fieldType": "String"
         },
         {

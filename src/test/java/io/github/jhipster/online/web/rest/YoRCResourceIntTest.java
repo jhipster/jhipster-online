@@ -10,7 +10,6 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +22,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.ArrayList;
 
+
+import static io.github.jhipster.online.web.rest.TestUtil.sameInstant;
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -43,6 +47,33 @@ public class YoRCResourceIntTest {
 
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
     private static final String UPDATED_JHIPSTER_VERSION = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_CREATION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final String DEFAULT_GIT_PROVIDER = "AAAAAAAAAA";
+    private static final String UPDATED_GIT_PROVIDER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NODE_VERSION = "AAAAAAAAAA";
+    private static final String UPDATED_NODE_VERSION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_OS = "AAAAAAAAAA";
+    private static final String UPDATED_OS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ARCH = "AAAAAAAAAA";
+    private static final String UPDATED_ARCH = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CPU = "AAAAAAAAAA";
+    private static final String UPDATED_CPU = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CORES = "AAAAAAAAAA";
+    private static final String UPDATED_CORES = "BBBBBBBBBB";
+
+    private static final String DEFAULT_MEMORY = "AAAAAAAAAA";
+    private static final String UPDATED_MEMORY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_USER_LANGUAGE = "AAAAAAAAAA";
+    private static final String UPDATED_USER_LANGUAGE = "BBBBBBBBBB";
 
     private static final String DEFAULT_SERVER_PORT = "AAAAAAAAAA";
     private static final String UPDATED_SERVER_PORT = "BBBBBBBBBB";
@@ -104,9 +135,6 @@ public class YoRCResourceIntTest {
     private static final String DEFAULT_NATIVE_LANGUAGE = "AAAAAAAAAA";
     private static final String UPDATED_NATIVE_LANGUAGE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_GIT_PROVIDER = "AAAAAAAAAA";
-    private static final String UPDATED_GIT_PROVIDER = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_HAS_PROTRACTOR = false;
     private static final Boolean UPDATED_HAS_PROTRACTOR = true;
 
@@ -160,6 +188,15 @@ public class YoRCResourceIntTest {
     public static YoRC createEntity(EntityManager em) {
         YoRC yoRC = new YoRC()
             .jhipsterVersion(DEFAULT_JHIPSTER_VERSION)
+            .creationDate(DEFAULT_CREATION_DATE)
+            .gitProvider(DEFAULT_GIT_PROVIDER)
+            .nodeVersion(DEFAULT_NODE_VERSION)
+            .os(DEFAULT_OS)
+            .arch(DEFAULT_ARCH)
+            .cpu(DEFAULT_CPU)
+            .cores(DEFAULT_CORES)
+            .memory(DEFAULT_MEMORY)
+            .userLanguage(DEFAULT_USER_LANGUAGE)
             .serverPort(DEFAULT_SERVER_PORT)
             .authenticationType(DEFAULT_AUTHENTICATION_TYPE)
             .cacheProvider(DEFAULT_CACHE_PROVIDER)
@@ -180,7 +217,6 @@ public class YoRCResourceIntTest {
             .jhiPrefix(DEFAULT_JHI_PREFIX)
             .enableTranslation(DEFAULT_ENABLE_TRANSLATION)
             .nativeLanguage(DEFAULT_NATIVE_LANGUAGE)
-            .gitProvider(DEFAULT_GIT_PROVIDER)
             .hasProtractor(DEFAULT_HAS_PROTRACTOR)
             .hasGatling(DEFAULT_HAS_GATLING)
             .hasCucumber(DEFAULT_HAS_CUCUMBER);
@@ -208,6 +244,15 @@ public class YoRCResourceIntTest {
         assertThat(yoRCList).hasSize(databaseSizeBeforeCreate + 1);
         YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
         assertThat(testYoRC.getJhipsterVersion()).isEqualTo(DEFAULT_JHIPSTER_VERSION);
+        assertThat(testYoRC.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+        assertThat(testYoRC.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
+        assertThat(testYoRC.getNodeVersion()).isEqualTo(DEFAULT_NODE_VERSION);
+        assertThat(testYoRC.getOs()).isEqualTo(DEFAULT_OS);
+        assertThat(testYoRC.getArch()).isEqualTo(DEFAULT_ARCH);
+        assertThat(testYoRC.getCpu()).isEqualTo(DEFAULT_CPU);
+        assertThat(testYoRC.getCores()).isEqualTo(DEFAULT_CORES);
+        assertThat(testYoRC.getMemory()).isEqualTo(DEFAULT_MEMORY);
+        assertThat(testYoRC.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
         assertThat(testYoRC.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
         assertThat(testYoRC.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
         assertThat(testYoRC.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
@@ -228,7 +273,6 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.getJhiPrefix()).isEqualTo(DEFAULT_JHI_PREFIX);
         assertThat(testYoRC.isEnableTranslation()).isEqualTo(DEFAULT_ENABLE_TRANSLATION);
         assertThat(testYoRC.getNativeLanguage()).isEqualTo(DEFAULT_NATIVE_LANGUAGE);
-        assertThat(testYoRC.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
         assertThat(testYoRC.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
         assertThat(testYoRC.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
         assertThat(testYoRC.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
@@ -265,6 +309,15 @@ public class YoRCResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(yoRC.getId().intValue())))
             .andExpect(jsonPath("$.[*].jhipsterVersion").value(hasItem(DEFAULT_JHIPSTER_VERSION.toString())))
+            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(sameInstant(DEFAULT_CREATION_DATE))))
+            .andExpect(jsonPath("$.[*].gitProvider").value(hasItem(DEFAULT_GIT_PROVIDER.toString())))
+            .andExpect(jsonPath("$.[*].nodeVersion").value(hasItem(DEFAULT_NODE_VERSION.toString())))
+            .andExpect(jsonPath("$.[*].os").value(hasItem(DEFAULT_OS.toString())))
+            .andExpect(jsonPath("$.[*].arch").value(hasItem(DEFAULT_ARCH.toString())))
+            .andExpect(jsonPath("$.[*].cpu").value(hasItem(DEFAULT_CPU.toString())))
+            .andExpect(jsonPath("$.[*].cores").value(hasItem(DEFAULT_CORES.toString())))
+            .andExpect(jsonPath("$.[*].memory").value(hasItem(DEFAULT_MEMORY.toString())))
+            .andExpect(jsonPath("$.[*].userLanguage").value(hasItem(DEFAULT_USER_LANGUAGE.toString())))
             .andExpect(jsonPath("$.[*].serverPort").value(hasItem(DEFAULT_SERVER_PORT.toString())))
             .andExpect(jsonPath("$.[*].authenticationType").value(hasItem(DEFAULT_AUTHENTICATION_TYPE.toString())))
             .andExpect(jsonPath("$.[*].cacheProvider").value(hasItem(DEFAULT_CACHE_PROVIDER.toString())))
@@ -285,7 +338,6 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].jhiPrefix").value(hasItem(DEFAULT_JHI_PREFIX.toString())))
             .andExpect(jsonPath("$.[*].enableTranslation").value(hasItem(DEFAULT_ENABLE_TRANSLATION.booleanValue())))
             .andExpect(jsonPath("$.[*].nativeLanguage").value(hasItem(DEFAULT_NATIVE_LANGUAGE.toString())))
-            .andExpect(jsonPath("$.[*].gitProvider").value(hasItem(DEFAULT_GIT_PROVIDER.toString())))
             .andExpect(jsonPath("$.[*].hasProtractor").value(hasItem(DEFAULT_HAS_PROTRACTOR.booleanValue())))
             .andExpect(jsonPath("$.[*].hasGatling").value(hasItem(DEFAULT_HAS_GATLING.booleanValue())))
             .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER.booleanValue())));
@@ -304,6 +356,15 @@ public class YoRCResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(yoRC.getId().intValue()))
             .andExpect(jsonPath("$.jhipsterVersion").value(DEFAULT_JHIPSTER_VERSION.toString()))
+            .andExpect(jsonPath("$.creationDate").value(sameInstant(DEFAULT_CREATION_DATE)))
+            .andExpect(jsonPath("$.gitProvider").value(DEFAULT_GIT_PROVIDER.toString()))
+            .andExpect(jsonPath("$.nodeVersion").value(DEFAULT_NODE_VERSION.toString()))
+            .andExpect(jsonPath("$.os").value(DEFAULT_OS.toString()))
+            .andExpect(jsonPath("$.arch").value(DEFAULT_ARCH.toString()))
+            .andExpect(jsonPath("$.cpu").value(DEFAULT_CPU.toString()))
+            .andExpect(jsonPath("$.cores").value(DEFAULT_CORES.toString()))
+            .andExpect(jsonPath("$.memory").value(DEFAULT_MEMORY.toString()))
+            .andExpect(jsonPath("$.userLanguage").value(DEFAULT_USER_LANGUAGE.toString()))
             .andExpect(jsonPath("$.serverPort").value(DEFAULT_SERVER_PORT.toString()))
             .andExpect(jsonPath("$.authenticationType").value(DEFAULT_AUTHENTICATION_TYPE.toString()))
             .andExpect(jsonPath("$.cacheProvider").value(DEFAULT_CACHE_PROVIDER.toString()))
@@ -324,7 +385,6 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.jhiPrefix").value(DEFAULT_JHI_PREFIX.toString()))
             .andExpect(jsonPath("$.enableTranslation").value(DEFAULT_ENABLE_TRANSLATION.booleanValue()))
             .andExpect(jsonPath("$.nativeLanguage").value(DEFAULT_NATIVE_LANGUAGE.toString()))
-            .andExpect(jsonPath("$.gitProvider").value(DEFAULT_GIT_PROVIDER.toString()))
             .andExpect(jsonPath("$.hasProtractor").value(DEFAULT_HAS_PROTRACTOR.booleanValue()))
             .andExpect(jsonPath("$.hasGatling").value(DEFAULT_HAS_GATLING.booleanValue()))
             .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER.booleanValue()));
@@ -351,6 +411,15 @@ public class YoRCResourceIntTest {
         em.detach(updatedYoRC);
         updatedYoRC
             .jhipsterVersion(UPDATED_JHIPSTER_VERSION)
+            .creationDate(UPDATED_CREATION_DATE)
+            .gitProvider(UPDATED_GIT_PROVIDER)
+            .nodeVersion(UPDATED_NODE_VERSION)
+            .os(UPDATED_OS)
+            .arch(UPDATED_ARCH)
+            .cpu(UPDATED_CPU)
+            .cores(UPDATED_CORES)
+            .memory(UPDATED_MEMORY)
+            .userLanguage(UPDATED_USER_LANGUAGE)
             .serverPort(UPDATED_SERVER_PORT)
             .authenticationType(UPDATED_AUTHENTICATION_TYPE)
             .cacheProvider(UPDATED_CACHE_PROVIDER)
@@ -371,7 +440,6 @@ public class YoRCResourceIntTest {
             .jhiPrefix(UPDATED_JHI_PREFIX)
             .enableTranslation(UPDATED_ENABLE_TRANSLATION)
             .nativeLanguage(UPDATED_NATIVE_LANGUAGE)
-            .gitProvider(UPDATED_GIT_PROVIDER)
             .hasProtractor(UPDATED_HAS_PROTRACTOR)
             .hasGatling(UPDATED_HAS_GATLING)
             .hasCucumber(UPDATED_HAS_CUCUMBER);
@@ -386,6 +454,15 @@ public class YoRCResourceIntTest {
         assertThat(yoRCList).hasSize(databaseSizeBeforeUpdate);
         YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
         assertThat(testYoRC.getJhipsterVersion()).isEqualTo(UPDATED_JHIPSTER_VERSION);
+        assertThat(testYoRC.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
+        assertThat(testYoRC.getGitProvider()).isEqualTo(UPDATED_GIT_PROVIDER);
+        assertThat(testYoRC.getNodeVersion()).isEqualTo(UPDATED_NODE_VERSION);
+        assertThat(testYoRC.getOs()).isEqualTo(UPDATED_OS);
+        assertThat(testYoRC.getArch()).isEqualTo(UPDATED_ARCH);
+        assertThat(testYoRC.getCpu()).isEqualTo(UPDATED_CPU);
+        assertThat(testYoRC.getCores()).isEqualTo(UPDATED_CORES);
+        assertThat(testYoRC.getMemory()).isEqualTo(UPDATED_MEMORY);
+        assertThat(testYoRC.getUserLanguage()).isEqualTo(UPDATED_USER_LANGUAGE);
         assertThat(testYoRC.getServerPort()).isEqualTo(UPDATED_SERVER_PORT);
         assertThat(testYoRC.getAuthenticationType()).isEqualTo(UPDATED_AUTHENTICATION_TYPE);
         assertThat(testYoRC.getCacheProvider()).isEqualTo(UPDATED_CACHE_PROVIDER);
@@ -406,7 +483,6 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.getJhiPrefix()).isEqualTo(UPDATED_JHI_PREFIX);
         assertThat(testYoRC.isEnableTranslation()).isEqualTo(UPDATED_ENABLE_TRANSLATION);
         assertThat(testYoRC.getNativeLanguage()).isEqualTo(UPDATED_NATIVE_LANGUAGE);
-        assertThat(testYoRC.getGitProvider()).isEqualTo(UPDATED_GIT_PROVIDER);
         assertThat(testYoRC.isHasProtractor()).isEqualTo(UPDATED_HAS_PROTRACTOR);
         assertThat(testYoRC.isHasGatling()).isEqualTo(UPDATED_HAS_GATLING);
         assertThat(testYoRC.isHasCucumber()).isEqualTo(UPDATED_HAS_CUCUMBER);

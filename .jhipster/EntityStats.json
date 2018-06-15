@@ -1,0 +1,50 @@
+{
+    "name": "EntityStats",
+    "fields": [
+        {
+            "fieldName": "fields",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "relationships",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "pagination",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dto",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "service",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "fluentMethods",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "ownerIdentity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180614161034",
+    "entityTableName": "entity_stats",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -24,7 +24,6 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         YoRC result = new YoRC();
         JsonNode node = jp.getCodec().readTree(jp);
 
-        // TODO String jhipsterVersion = node.get("jhipsterVersion").asText();
         String serverPort = node.get("serverPort").asText();
         String authenticationType = node.get("authenticationType").asText();
         String cacheProvider = node.get("cacheProvider").asText();
@@ -38,8 +37,8 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         boolean serviceDiscoveryType = node.get("serviceDiscoveryType").asBoolean();
         String buildTool = node.get("buildTool").asText();
         boolean enableSwaggerCodegen = node.get("enableSwaggerCodegen").asBoolean();
-        String clientFramework = node.get("clientFramework").asText();
-        boolean useSass = node.get("useSass").asBoolean();
+        String clientFramework = getDefaultIfNull(node.get("clientFramework"), "none");
+        boolean useSass = getDefaultIfNull(node.get("useSass"), false);
         String clientPackageManager = node.get("clientPackageManager").asText();
         String applicationType = node.get("applicationType").asText();
         boolean enableTranslation = node.get("enableTranslation").asBoolean();
@@ -65,7 +64,6 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         Set<Language> languages =  getLanguagesFromArrayNode(result, (ArrayNode)node.get("languages"));
 
         return result
-            //.jhipsterVersion(jhipsterVersion)
             .serverPort(serverPort)
             .authenticationType(authenticationType)
             .cacheProvider(cacheProvider)
@@ -91,6 +89,13 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
             .selectedLanguages(languages);
     }
 
+    private String getDefaultIfNull(JsonNode node, String defaultValue) {
+        return node == null ? defaultValue : node.asText();
+    }
+
+    private boolean getDefaultIfNull(JsonNode node, boolean defaultValue) {
+        return node == null ? defaultValue : node.asBoolean();
+    }
 
     private Set<Language> getLanguagesFromArrayNode(YoRC yorc, ArrayNode languagesNode) {
         Set<Language> result = new HashSet<>();

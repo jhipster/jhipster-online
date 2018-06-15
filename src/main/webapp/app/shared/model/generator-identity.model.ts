@@ -1,19 +1,12 @@
-import { IOwnerIdentity } from './owner-identity.model';
+import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
 
 export interface IGeneratorIdentity {
     id?: number;
     host?: string;
-    userAgent?: string;
     guid?: string;
-    generator?: IOwnerIdentity;
+    owner?: IOwnerIdentity;
 }
 
 export class GeneratorIdentity implements IGeneratorIdentity {
-    constructor(
-        public id?: number,
-        public host?: string,
-        public userAgent?: string,
-        public guid?: string,
-        public generator?: IOwnerIdentity
-    ) {}
+    constructor(public id?: number, public host?: string, public guid?: string, public owner?: IOwnerIdentity) {}
 }

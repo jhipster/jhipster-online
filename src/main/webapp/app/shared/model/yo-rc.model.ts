@@ -1,9 +1,19 @@
-import { ILanguage } from './language.model';
-import { IOwnerIdentity } from './owner-identity.model';
+import { Moment } from 'moment';
+import { ILanguage } from 'app/shared/model//language.model';
+import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
 
 export interface IYoRC {
     id?: number;
     jhipsterVersion?: string;
+    creationDate?: Moment;
+    gitProvider?: string;
+    nodeVersion?: string;
+    os?: string;
+    arch?: string;
+    cpu?: string;
+    cores?: string;
+    memory?: string;
+    userLanguage?: string;
     serverPort?: string;
     authenticationType?: string;
     cacheProvider?: string;
@@ -24,7 +34,6 @@ export interface IYoRC {
     jhiPrefix?: string;
     enableTranslation?: boolean;
     nativeLanguage?: string;
-    gitProvider?: string;
     hasProtractor?: boolean;
     hasGatling?: boolean;
     hasCucumber?: boolean;
@@ -36,6 +45,15 @@ export class YoRC implements IYoRC {
     constructor(
         public id?: number,
         public jhipsterVersion?: string,
+        public creationDate?: Moment,
+        public gitProvider?: string,
+        public nodeVersion?: string,
+        public os?: string,
+        public arch?: string,
+        public cpu?: string,
+        public cores?: string,
+        public memory?: string,
+        public userLanguage?: string,
         public serverPort?: string,
         public authenticationType?: string,
         public cacheProvider?: string,
@@ -56,7 +74,6 @@ export class YoRC implements IYoRC {
         public jhiPrefix?: string,
         public enableTranslation?: boolean,
         public nativeLanguage?: string,
-        public gitProvider?: string,
         public hasProtractor?: boolean,
         public hasGatling?: boolean,
         public hasCucumber?: boolean,
