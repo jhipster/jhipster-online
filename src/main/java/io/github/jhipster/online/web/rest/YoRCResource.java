@@ -5,17 +5,13 @@ import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.online.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -48,7 +44,7 @@ public class YoRCResource {
      */
     @PostMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<YoRC> createYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRC> createYoRC(@Valid @RequestBody YoRC yoRC) throws URISyntaxException {
         log.debug("REST request to save YoRC : {}", yoRC);
         if (yoRC.getId() != null) {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
@@ -70,7 +66,7 @@ public class YoRCResource {
      */
     @PutMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRC> updateYoRC(@Valid @RequestBody YoRC yoRC) throws URISyntaxException {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -84,16 +80,13 @@ public class YoRCResource {
     /**
      * GET  /yo-rcs : get all the yoRCS.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of yoRCS in body
      */
     @GetMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<List<YoRC>> getAllYoRCS(Pageable pageable) {
-        log.debug("REST request to get a page of YoRCS");
-        Page<YoRC> page = yoRCService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/yo-rcs");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<YoRC> getAllYoRCS() {
+        log.debug("REST request to get all YoRCS");
+        return yoRCService.findAll();
     }
 
     /**
