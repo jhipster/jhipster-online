@@ -57,8 +57,8 @@ public class GitResource {
 
     public GitResource(ApplicationProperties applicationProperties,
                        UserService userService,
-                       @Autowired(required = false) GithubService githubService,
-                       @Autowired(required = false) GitlabService gitlabService) {
+                       GithubService githubService,
+                       GitlabService gitlabService) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;

@@ -16,201 +16,166 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+import _ from 'lodash';
+import * as moment from 'moment';
 
 import { StatisticsService } from './statistics.service';
-import { DataSet } from 'app/home/statistics/statistics.model';
+import { Chart, ChartTitle, ChartSeries } from 'app/home/statistics/statistics.model';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'jhi-statistics',
-    templateUrl: './statistics.component.html',
-    styleUrls: ['statistics.scss']
+    templateUrl: './statistics.component.html'
 })
-export class StatisticsComponent implements AfterViewInit, OnInit {
-    ngAfterViewInit(): void {}
+export class StatisticsComponent implements AfterViewInit {
+    dataFromDb = [];
 
-    chartData = [];
+    countJdl: Observable<string>;
+    countYoRc: Observable<string>;
 
-    options: any;
+    charts = [];
+
+    options: Chart;
+    options2: Chart;
+    options3: Chart;
+
+    static names: any = {
+        react: 'React',
+        angularX: 'Angular 2+',
+
+        oracle: 'Oracle',
+        mysql: 'MySQL',
+        postgresql: 'PostgreSQL',
+        mariadb: 'MariaDB'
+    };
 
     constructor(private statisticsService: StatisticsService) {}
 
-    ngOnInit() {
-        const xAxisData = [];
-        const data1 = [];
-        const data2 = [];
+    ngAfterViewInit() {
+        this.countJdl = this.statisticsService.countJdl();
+        this.countYoRc = this.statisticsService.countYoRC();
 
-        for (let i = 0; i < 100; i++) {
-            xAxisData.push('category' + i);
-            data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-            data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-        }
+        let clientFrameworkData, devDatabaseData;
 
-        var ctx = document.getElementById('myChart');
-
-        let clientFrameworkData,
-            buildToolData,
-            clientPackageManagerData,
-            devDatabaseTypeData = {};
-        // this.statisticsService.countYoRC().subscribe(count => console.log(count));
         this.statisticsService.getYoRCs().subscribe(yoRcs => {
-            yoRcs.forEach(yoRc => this.chartData.push(yoRc));
-            clientFrameworkData = this.groupDataBy(this.chartData, 'clientFramework');
-            let test = this.groupDataBy(this.chartData, 'createdDate');
+            yoRcs.forEach(yoRc => this.dataFromDb.push(yoRc));
+            clientFrameworkData = this.groupDataBy(this.dataFromDb, 'clientFramework');
+            devDatabaseData = this.groupDataBy(this.dataFromDb, 'devDatabaseType');
+            let test = this.groupDataBy(this.dataFromDb, 'creationDate');
             let react = this.filterDataBy(test, 'clientFramework', 'react');
             let angular = this.filterDataBy(test, 'clientFramework', 'angularX');
             let arr = [];
             let arr2 = [];
             for (const elem in react) {
-                arr.push({ t: new Date(elem), y: react[elem].length });
+                arr.push({ x: new Date(elem), y: react[elem].length });
             }
             for (const elem in angular) {
-                arr2.push({ t: new Date(elem), y: angular[elem].length });
+                arr2.push({ x: new Date(elem), y: angular[elem].length });
             }
-            arr = arr.sort((a: any, b: any) => a.t.toISOString().localeCompare(b.t.toISOString()));
-            arr2 = arr2.sort((a: any, b: any) => a.t.toISOString().localeCompare(b.t.toISOString()));
 
-            // this.generateTimeLineChart('clientFramework',
-            //     [new DataSet(
-            //         'react',
-            //         arr,
-            //         'rgba(47, 214, 255, 0.9)',
-            //         'rgba(47, 214, 255, 0.9)',
-            //         'rgba(0, 0, 0, 0)',
-            //         'rgba(0, 0, 0, 0)'),
-            //     new DataSet(
-            //         'angular',
-            //         arr2,
-            //         'rgba(221, 0, 49, 0.9)',
-            //         'rgba(221, 0, 49, 0.9)',
-            //         'rgba(0, 0, 0, 0)',
-            //         'rgba(0, 0, 0, 0)',
-            //         '-1')]
-            // );
-
-            // buildToolData = this.simplifyData(this.groupDataBy(this.chartData, 'buildTool'));
-            // clientPackageManagerData = this.simplifyData(this.groupDataBy(this.chartData, 'clientPackageManager'));
-            devDatabaseTypeData = this.groupDataBy(this.chartData, 'devDatabaseType');
-            // this.generateBasicCounterChart(
-            //     'clientPackageManager', 'bar', clientFrameworkData,
-            //     ['rgba(47, 214, 255, 0.7)', 'rgba(221, 0, 49, 0.7)']);
-            // this.generateCountChart('buildTool', 'line', buildToolData, 'izi monnay 2');
-            // this.generateCountChart('clientPackageManager', 'doughnut', clientPackageManagerData, 'izi monnay 3');
-            //     this.generateBasicCounterChart('devDatabaseType', 'line', devDatabaseTypeData,
-            //          ['red', 'purple', 'blue', 'green', 'yellow']);
-
+            arr = arr.sort((a, b) => b.x.toISOString().localeCompare(a.x.toISOString())).reverse();
+            arr2 = arr2.sort((a, b) => a.x.toISOString().localeCompare(b.x.toISOString())).reverse();
             console.log(arr);
+
             this.options = {
-                legend: {
-                    data: ['bar', 'bar2'],
-                    align: 'left'
+                title: { text: 'React/Angular distribution' },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
                 },
-                tooltip: {},
-                xAxis: {
-                    data: Object.keys(arr),
-                    silent: false,
-                    splitLine: {
-                        show: false
-                    }
-                },
-                yAxis: {},
                 series: [
                     {
-                        name: 'bar',
-                        type: 'bar',
-                        data: Object.keys(arr).map(elem => arr[elem]),
-                        animationDelay: function(idx) {
-                            return idx * 10;
-                        }
-                    },
+                        type: 'pie',
+                        name: 'lol',
+                        radius: '65%',
+                        center: ['50%', '50%'],
+                        selectedMode: 'single',
+                        data: Object.keys(clientFrameworkData).map(item => {
+                            return {
+                                name: StatisticsComponent.prettifyName(item),
+                                value: clientFrameworkData[item].length
+                            };
+                        })
+                    }
+                ]
+            };
+
+            this.options3 = {
+                title: { text: 'Dev databases' },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                series: [
                     {
-                        name: 'bar2',
-                        type: 'bar',
-                        data: Object.keys(arr2).map(elem => arr2[elem]),
-                        animationDelay: function(idx) {
-                            return idx * 10 + 100;
-                        }
+                        type: 'pie',
+                        name: 'lol',
+                        radius: '65%',
+                        center: ['50%', '50%'],
+                        selectedMode: 'single',
+                        data: Object.keys(devDatabaseData).map(item => {
+                            return {
+                                name: StatisticsComponent.prettifyName(item),
+                                value: devDatabaseData[item].length
+                            };
+                        })
+                    }
+                ]
+            };
+
+            this.options2 = {
+                title: { text: '' },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: { backgroundColor: '#6a7985' }
+                    }
+                },
+                toolbox: {
+                    feature: { saveAsImage: {} }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: arr.map((e: any) => moment(e.x).format('L'))
                     }
                 ],
-                animationEasing: 'elasticOut',
-                animationDelayUpdate: function(idx) {
-                    return idx * 5;
-                }
+                yAxis: [{ type: 'value' }],
+                dataZoom: [{ type: 'inside' }],
+                series: [
+                    {
+                        name: 'REACT',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: { normal: {} },
+                        data: arr.map((e: any) => e.y)
+                    },
+                    {
+                        name: 'ANGULAR',
+                        type: 'line',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: { normal: {} },
+                        data: arr2.map((e: any) => e.y)
+                    }
+                ]
             };
         });
     }
-
-    // generateTimeLineChart(canvas: string, datasets: DataSet[], options?: any) {
-    //     return new Chart(document.getElementById(canvas), {
-    //         type: 'line',
-    //         data: {
-    //             labels: datasets[0].data.map((e: any) => e.t),
-    //             datasets
-    //         },
-    //         options: {
-    //             pan: {
-    //                 enabled: true,
-    //                 mode: 'x',
-    //             },
-    //             zoom: {
-    //                 enabled: true,
-    //                 mode: 'x',
-    //             },
-    //             responsive: true,
-    //             title:{
-    //                 display:true,
-    //                 text:"Chart.js Time Point Data"
-    //             },
-    //             scales: {
-    //                 xAxes: [{
-    //                     type: "time",
-    //                     unit: 'day',
-    //                     unitStepSize: 1,
-    //                     time: {
-    //                         displayFormats: {
-    //                         }
-    //                     }
-    //                 }],
-    //                 yAxes: [{
-    //                     ticks: {
-    //                         beginAtZero: true
-    //                     },
-    //                     stacked: true
-    //                 }],
-    //             },
-    //             elements: {
-    //                 line: {
-    //                     tension: 0.0000000001
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
-    // generateBasicCounterChart(canvas: string, type: string, data: any, backgroundColor: string[], options?: any) {
-    //     return new Chart(document.getElementById(canvas), {
-    //         type: 'bar',
-    //         data: {
-    //             labels: Object.keys(data),
-    //             datasets: [
-    //                 {
-    //                     data: Object.keys(data).map(item => data[item].length),
-    //                     backgroundColor
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             pan: {
-    //                 enabled: true,
-    //                 mode: 'x',
-    //             },
-    //             zoom: {
-    //                 enabled: true,
-    //                 mode: 'x',
-    //             }
-    //         }
-    //     });
-    // }
 
     private groupDataBy(data: any, property: string) {
         return data.reduce((acc, current) => {
@@ -231,5 +196,9 @@ export class StatisticsComponent implements AfterViewInit, OnInit {
             }
         }
         return filteredData;
+    }
+
+    private static prettifyName(rawName: string) {
+        return StatisticsComponent.names[rawName] || rawName;
     }
 }

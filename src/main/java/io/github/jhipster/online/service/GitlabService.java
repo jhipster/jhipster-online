@@ -30,8 +30,6 @@ import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -43,6 +41,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class GitlabService implements GitProviderService {
 
     private final Logger log = LoggerFactory.getLogger(GitlabService.class);

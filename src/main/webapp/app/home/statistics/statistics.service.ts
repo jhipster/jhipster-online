@@ -25,7 +25,11 @@ export class StatisticsService {
     constructor(private http: HttpClient) {}
 
     countYoRC(): Observable<string> {
-        return this.http.get(`/api/statistics/count`, { responseType: 'text' });
+        return this.http.get(`/api/s/count-yorc`, { responseType: 'text' });
+    }
+
+    countJdl(): Observable<string> {
+        return this.http.get(`/api/s/count-jdl`, { responseType: 'text' });
     }
 
     getYoRCs(): Observable<any> {

@@ -3,45 +3,38 @@ package io.github.jhipster.online.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.repository.YoRCRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
 
 @Service
 public class StatisticsService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private final YoRCRepository yoRCRepository;
-
     private final YoRCService yoRCService;
-    private LanguageService languageService;
-    private GeneratorIdentityService generatorIdentityService;
-    private SubGenEventService subGenEventService;
-    private EntityStatsService entityStatsService;
+
+    private final LanguageService languageService;
+
+    private final GeneratorIdentityService generatorIdentityService;
+
+    private final SubGenEventService subGenEventService;
+
+    private final EntityStatsService entityStatsService;
 
     public StatisticsService(YoRCService yoRCService,
-                             YoRCRepository yoRCRepository,
                              LanguageService languageService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
                              EntityStatsService entityStatsService) {
         this.yoRCService = yoRCService;
-        this.yoRCRepository = yoRCRepository;
         this.languageService = languageService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
-    }
-
-    public long getYoRCCount() {
-        yoRCService.addFakeData();
-        return yoRCRepository.count();
     }
 
     public void addEntry(String entry, String host) throws IOException {

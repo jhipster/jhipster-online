@@ -153,6 +153,10 @@ public class JdlService {
         return jdlMetadata.getName().toLowerCase().replace(" ", "-");
     }
 
+    public long countAll() {
+        return jdlRepository.count();
+    }
+
     /**
      *  Delete all the jdlMetadata.
      *

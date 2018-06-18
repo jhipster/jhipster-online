@@ -5,7 +5,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
             </column>
-            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="jhi_date" type="DATE"/>
             <column name="dto" type="BIT"/>
             <column name="fields" type="INT"/>
             <column name="fluent_methods" type="BIT"/>
@@ -59,12 +59,12 @@
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="TINYBLOB">
+            <column name="created_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="is_public" type="BIT"/>
             <column name="name" type="VARCHAR(255)"/>
-            <column name="updated_date" type="TINYBLOB">
+            <column name="updated_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="BIGINT">
@@ -94,7 +94,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
             </column>
-            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="jhi_date" type="DATE"/>
             <column name="event" type="VARCHAR(255)"/>
             <column name="source" type="VARCHAR(255)"/>
             <column name="jhi_type" type="VARCHAR(255)"/>

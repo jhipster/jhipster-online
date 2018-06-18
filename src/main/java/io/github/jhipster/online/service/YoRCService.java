@@ -1,18 +1,23 @@
 package io.github.jhipster.online.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
+import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
+import io.github.jhipster.online.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -27,15 +32,24 @@ public class YoRCService {
 
     private final YoRCRepository yoRCRepository;
 
+    private final UserRepository userRepository;
+
     private final OwnerIdentityService ownerIdentityService;
 
-    private final UserService userService;
+    private final LanguageService languageService;
 
-    public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserService userService) {
+//    private final OwnerIdentityService ownerIdentityService;
+
+//    private final UserService userService;
+
+    public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserRepository userRepository, LanguageService languageService) {
         this.yoRCRepository = yoRCRepository;
-        this.ownerIdentityService = ownerIdentityService;
-        this.userService = userService;
+//        this.ownerIdentityService = ownerIdentityService;
+//        this.userService = userService;
         // this.addFakeData();
+        this.ownerIdentityService = ownerIdentityService;
+        this.userRepository = userRepository;
+        this.languageService = languageService;
     }
 
     /**
@@ -45,7 +59,8 @@ public class YoRCService {
      * @return the persisted entity
      */
     public YoRC save(YoRC yoRC) {
-        log.debug("Request to save YoRC : {}", yoRC);        return yoRCRepository.save(yoRC);
+        log.debug("Request to save YoRC : {}", yoRC);
+        return yoRCRepository.save(yoRC);
     }
 
     /**
@@ -58,7 +73,6 @@ public class YoRCService {
         log.debug("Request to get all YoRCS");
         return yoRCRepository.findAll();
     }
-
 
     /**
      * Get one yoRC by id.
@@ -80,6 +94,27 @@ public class YoRCService {
     public void delete(Long id) {
         log.debug("Request to delete YoRC : {}", id);
         yoRCRepository.deleteById(id);
+    }
+
+    public long countAll() {
+        return yoRCRepository.count();
+    }
+
+    public void save(String applicationConfiguration) {
+        ObjectMapper mapper = new ObjectMapper();
+        log.debug("Application configuration:\n{}", applicationConfiguration);
+        try {
+            JsonNode jsonNodeRoot = mapper.readTree(applicationConfiguration);
+            JsonNode jsonNodeGeneratorJHipster = jsonNodeRoot.get("generator-jhipster");
+            YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
+            yorc.setOwner(ownerIdentityService.findOrCreateUser(
+                userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElse(null)));
+            save(yorc);
+            yorc.getSelectedLanguages().forEach(languageService::save);
+            log.debug("Parsed json:\n{}", yorc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addFakeData() {
@@ -123,7 +158,7 @@ public class YoRCService {
             YoRC yorc = new YoRC();
 
             Duration between = Duration.between(start, now);
-            Instant createdDate = now.minus(Duration.ofSeconds((int)(Math.random() * between.getSeconds())));
+            Instant createdDate = now.minus(Duration.ofSeconds((int)(Math.random() * between.getSeconds()))).truncatedTo(ChronoUnit.DAYS);
 
             int randomUserLang = (int)(Math.random() * 3);
             if (randomUserLang == 0) {
@@ -298,7 +333,7 @@ public class YoRCService {
                 .userLanguage(userLanguage)
                 .jhipsterVersion(jhipsterVersion);
 
-            yorc.setOwner(ownerIdentityService.findOrCreateUser(userService.getUserWithAuthoritiesByLogin("admin").get()));
+//            yorc.setOwner(ownerIdentityService.findOrCreateUser(userService.getUserWithAuthoritiesByLogin("admin").get()));
             yoRCRepository.save(yorc);
         }
     }

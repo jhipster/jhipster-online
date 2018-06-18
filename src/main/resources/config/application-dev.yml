@@ -140,9 +140,9 @@ jhipster:
 application:
     mail:
         enable: false
-#    github:
-#        clientId: XXX
-#        clientSecret: XXX
+    github:
+        clientId: 936cfb872bf4fb46c65e
+        clientSecret: 8f431d66ea07284bc250873f5a991e356330f197
 #    gitlab:
 #        clientId: XXX
 #        clientSecret: XXX
