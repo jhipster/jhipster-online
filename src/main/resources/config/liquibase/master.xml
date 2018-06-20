@@ -10,6 +10,8 @@
     <include file="config/liquibase/changelog/20171116094805_added_entity_constraints_JdlMetadata.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328000000_added_entity_Jdl.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180504000000_remove_jdlmetadata_key.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180530075500_changelog.xml" relativeToChangelogFile="false" />
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+
+    <include file="config/liquibase/changelog/20180620133843_gitlab.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>
