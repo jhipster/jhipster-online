@@ -82,12 +82,12 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        AuthorityRepository authorityRepository,
-                       @Autowired(required = false) GithubService githubService,
+                       GithubService githubService,
                        CacheManager cacheManager,
                        MailService mailService,
                        JHipsterProperties jHipsterProperties,
                        GitCompanyRepository gitCompanyRepository,
-                       @Autowired(required = false) GitlabService gitlabService) {
+                       GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;

@@ -55,8 +55,8 @@ public class GeneratorResource {
     private final LogsService logsService;
 
     public GeneratorResource(GeneratorService generatorService,
-                             @Autowired(required = false) GithubService githubService,
-                             @Autowired(required = false) GitlabService gitlabService,
+                             GithubService githubService,
+                             GitlabService gitlabService,
                              UserService userService,
                              LogsService logsService) {
         this.generatorService = generatorService;

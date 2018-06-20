@@ -96,27 +96,30 @@ public class GitlabService implements GitProviderService {
         GitlabUser myself = gitlab.getUser();
         user.setGitlabUser(myself.getUsername());
         user.setGitlabEmail(myself.getEmail());
-        // user.setGitCompany(myself.getUsername());
-        // user.setGitLocation("");
         Set<GitCompany> groups = user.getGitCompanies();
+        GitCompany myGroup;
 
         // Sync the current user's projects
         if (groups.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
-            GitCompany myGroup = new GitCompany();
+            myGroup = new GitCompany();
             myGroup.setName(myself.getUsername());
             myGroup.setUser(user);
             myGroup.setGitProvider(GitProvider.GITLAB.getValue());
             myGroup.setGitProjects(new  ArrayList<>());
             gitCompanyRepository.save(myGroup);
-            try {
-                List<GitlabProject> projectList = gitlab.getProjects();
-                List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
-                myGroup.setGitProjects(projects);
-            } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
-            }
-            groups.add(myGroup);
+
+        } else {
+            myGroup = groups.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(() -> new Exception("Should not happen."));
         }
+
+        try {
+            List<GitlabProject> projectList = gitlab.getProjects();
+            List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
+            myGroup.setGitProjects(projects);
+        } catch (IOException e) {
+            log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+        }
+        groups.add(myGroup);
 
         // Sync the projects from the user's groups
         gitlab.getGroups().forEach(group -> {

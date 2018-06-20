@@ -61,7 +61,7 @@ public class GitService {
         if (gitProvider.equals(GitProvider.GITHUB)) {
             urIish = new URIish("https://github.com/" + organization + "/" + applicationName + ".git");
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
-            urIish = new URIish("https://gitlab.ippon.fr/"+ organization + "/" + applicationName + ".git").setPass(user.getGitlabOAuthToken());
+            urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git").setPass(user.getGitlabOAuthToken());
         }
         RemoteAddCommand remoteAddCommand = git.remoteAdd();
         remoteAddCommand.setName("origin");

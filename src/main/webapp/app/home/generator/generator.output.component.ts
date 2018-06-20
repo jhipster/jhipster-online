@@ -41,6 +41,8 @@ export class GeneratorOutputDialogComponent implements OnInit {
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
 
+    gitlabHost: string;
+
     constructor(private activeModal: NgbActiveModal, private generatorService: GeneratorService) {}
 
     ngOnInit() {

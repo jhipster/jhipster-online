@@ -100,30 +100,25 @@ public class GithubService implements GitProviderService {
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
         Set<GitCompany> organizations = user.getGitCompanies();
-
+        GitCompany myOrganization;
         // Sync the current user's projects
         if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
-            GitCompany myOrganization = new GitCompany();
+            myOrganization = new GitCompany();
             myOrganization.setName(ghMyself.getLogin());
             myOrganization.setUser(user);
             myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
             gitCompanyRepository.save(myOrganization);
-            try {
-                syncCompanyGitProjects(gitHub, myOrganization);
-            } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
-            }
-            organizations.add(myOrganization);
         } else {
-            GitCompany myCompany = organizations.stream()
+            myOrganization = organizations.stream()
                 .filter(g -> g.getName().equals(ghMyself.getLogin()))
                 .findFirst()
                 .orElseThrow(Exception::new);
-            try {
-                syncCompanyGitProjects(gitHub, myCompany);
-            } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
-            }
+        }
+
+        try {
+            syncCompanyGitProjects(gitHub, myOrganization);
+        } catch (IOException e) {
+            log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
 
         // Sync the projects from the user's companies

@@ -44,6 +44,8 @@ export class GeneratorComponent implements OnInit {
 
     repositoryName: string;
 
+    gitlabHost: string;
+
     /**
      * get all the languages options supported by JHipster - copied from the generator.
      */
@@ -93,6 +95,9 @@ export class GeneratorComponent implements OnInit {
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
+        this.gitService.getGitlabConfig().subscribe(config => {
+            this.gitlabHost = config.host;
+        });
     }
 
     updateSharedData(data: any) {
@@ -166,6 +171,7 @@ export class GeneratorComponent implements OnInit {
         modalRef.isGithubConfigured = this.isGithubConfigured;
         modalRef.isGitlabConfigured = this.isGitlabConfigured;
         modalRef.repositoryName = this.repositoryName;
+        modalRef.gitlabHost = this.gitlabHost;
     }
 
     downloadFile(blob: Blob) {
