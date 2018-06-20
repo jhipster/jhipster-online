@@ -67,6 +67,15 @@ entity GeneratorIdentity {
     guid String
 }
 
+entity CrashReport {
+    date Instant,
+    source String,
+    env String,
+    stack String,
+    yorc String,
+    jdl String
+}
+
 relationship ManyToOne {
 	YoRC{owner} to OwnerIdentity,
 	SubGenEvent{owner} to OwnerIdentity,

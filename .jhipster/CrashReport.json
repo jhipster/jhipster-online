@@ -1,0 +1,39 @@
+{
+    "name": "CrashReport",
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "source",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "env",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "stack",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "yorc",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jdl",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180620094721",
+    "entityTableName": "crash_report",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
