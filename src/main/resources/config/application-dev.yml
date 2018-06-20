@@ -137,12 +137,12 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-    github:
-        clientId: 151bffa46160f7109fd1
-        clientSecret: 9adad7bf97ce3003b6ca1133b28128740e1c0d30
-    gitlab:
-        clientId: 2631a18715a672caa4b90e394431f0c1a79429e87d22d12909df350611c1423e
-        clientSecret: 0ff0134c24e1509cbdf12328d91c53e744db8df7ec2939a11e07b83437c7e174
-        host: https://gitlab.ippon.fr/
-        redirectUri: http://localhost:8080/api/callback/gitlab
+#application:
+#    github:
+#        clientId: XXX
+#        clientSecret: XXX
+#    gitlab:
+#        clientId: XXX
+#        clientSecret: XXX
+#        host: XXX
+#        redirectUri: XXX
