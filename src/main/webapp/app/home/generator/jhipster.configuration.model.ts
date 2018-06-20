@@ -24,6 +24,7 @@ export class JHipsterConfigurationModel {
         public gitHubOrganization: String,
         public baseName: String,
         public packageName: String,
+        public packageFolder: String,
         public serverPort: Number,
         public serviceDiscoveryType: any,
         public authenticationType: String,

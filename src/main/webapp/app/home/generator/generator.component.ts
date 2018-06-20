@@ -198,6 +198,7 @@ export class GeneratorComponent implements OnInit {
             '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
+            'io/github/jhipster/application',
             8080,
             false,
             'jwt',
@@ -249,6 +250,10 @@ export class GeneratorComponent implements OnInit {
             this.model.cacheProvider = 'hazelcast';
             this.model.enableHibernateCache = true;
         }
+    }
+
+    changePackageName() {
+        this.model.packageFolder = this.model.packageName.replace(/\./g, '/');
     }
 
     changeServiceDiscoveryType() {
