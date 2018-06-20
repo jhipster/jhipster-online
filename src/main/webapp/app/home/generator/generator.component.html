@@ -142,8 +142,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">[BETA] Couchbase</option>
                         <option value="no"
-                                [hidden]="model.applicationType !== 'microservice' &&
-                                          !((model.authenticationType === 'uaa' || model.authenticationType === 'oauth2') && model.applicationType === 'gateway')">No database</option>
+                                [hidden]="model.applicationType !== 'microservice'">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -219,7 +218,7 @@
                                        #enableSwaggerCodegen="ngModel">
                             </div>
                             <div class="col-md-5">
-                                <label for="enableSwaggerCodegen">API first development using swagger-codegen</label>
+                                <label for="enableSwaggerCodegen">API first development using OpenAPI-generator</label>
                             </div>
                             <div class="col-md-1">
                                 <input type="checkbox" class="form-control" id="searchEngine"
@@ -251,23 +250,6 @@
                                 <label for="messageBroker">Asynchronous messages using Apache Kafka</label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-1">
-                                <input type="checkbox" class="form-control" id="enableSocialSignIn"
-                                       [(ngModel)]="model.enableSocialSignIn" name="enableSocialSignIn"
-                                       #clusteredHttpSession="ngModel"
-                                       [hidden]="model.databaseType === 'cassandra' || model.databaseType === 'couchbase' || model.applicationType !== 'monolith'
-                                       || (model.authenticationType !== 'session' && model.authenticationType !== 'jwt')">
-                            </div>
-                            <div class="col-md-5">
-                                <label for="enableSocialSignIn"
-                                       [hidden]="model.databaseType === 'cassandra' || model.databaseType === 'couchbase' || model.applicationType !== 'monolith'
-                                       || (model.authenticationType !== 'session' && model.authenticationType !== 'jwt')">
-                                    Social login (Google, Facebook, Twitter)</label>
-                            </div>
-                            <div class="col-md-6">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -281,8 +263,8 @@
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular 5</option>
-                        <option value="angular1" [hidden]="model.authenticationType === 'oauth2'">AngularJS 1.x</option>
+                        <option value="angularX">Angular 6</option>
+                        <option value="react">React</option>
                     </select>
                 </div>
                 <div class="form-group">

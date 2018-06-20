@@ -38,7 +38,6 @@ export class JHipsterConfigurationModel {
         public enableSwaggerCodegen: any,
         public messageBroker: any,
         public buildTool: String,
-        public enableSocialSignIn: Boolean,
         public useSass: Boolean,
         public clientPackageManager: String,
         public testFrameworks: String[],
