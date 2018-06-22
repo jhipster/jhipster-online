@@ -74,6 +74,12 @@ public class YoRCService {
         return yoRCRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<YoRC> findAllByCreationDateAsc() {
+        log.debug("Request to get all YoRCS by CreationDate asc");
+        return yoRCRepository.findAllByOrderByCreationDateAsc();
+    }
+
     /**
      * Get one yoRC by id.
      *
@@ -94,6 +100,10 @@ public class YoRCService {
     public void delete(Long id) {
         log.debug("Request to delete YoRC : {}", id);
         yoRCRepository.deleteById(id);
+    }
+
+    public long countAllByCreationDate(Instant date) {
+        return yoRCRepository.countAllByCreationDate(date);
     }
 
     public long countAll() {

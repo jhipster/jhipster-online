@@ -47,7 +47,7 @@ public class YoRCResource {
         log.debug("REST request to save YoRC : {}", yoRC);
         if (yoRC.getId() != null) {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
         YoRC result = yoRCService.save(yoRC);
         return ResponseEntity.created(new URI("/api/yo-rcs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -69,7 +69,7 @@ public class YoRCResource {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
         YoRC result = yoRCService.save(yoRC);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, yoRC.getId().toString()))
@@ -85,7 +85,7 @@ public class YoRCResource {
     @Timed
     public List<YoRC> getAllYoRCS() {
         log.debug("REST request to get all YoRCS");
-        return yoRCService.findAll();
+        return yoRCService.findAllByCreationDateAsc();
     }
 
     /**

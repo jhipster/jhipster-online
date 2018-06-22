@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit } from '@angular/core';
-import _ from 'lodash';
-import * as moment from 'moment';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Observable } from 'rxjs';
+import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
-import { Chart, ChartTitle, ChartSeries } from 'app/home/statistics/statistics.model';
-import { Observable } from 'rxjs';
+import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
+import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
 
 @Component({
     selector: 'jhi-statistics',
@@ -30,151 +30,79 @@ import { Observable } from 'rxjs';
 })
 export class StatisticsComponent implements AfterViewInit {
     dataFromDb = [];
+    charts = [];
+
+    @ViewChild('chart1') chart1: ElementRef;
+    @ViewChild('chart2') chart2: ElementRef;
+    @ViewChild('chart3') chart3: ElementRef;
 
     countJdl: Observable<string>;
     countYoRc: Observable<string>;
+    countUser: Observable<string>; // user/owner ?
+    countYoRcByDate: Observable<string>;
 
-    charts = [];
-
-    options: Chart;
-    options2: Chart;
-    options3: Chart;
-
-    static names: any = {
-        react: 'React',
-        angularX: 'Angular 2+',
-
-        oracle: 'Oracle',
-        mysql: 'MySQL',
-        postgresql: 'PostgreSQL',
-        mariadb: 'MariaDB'
-    };
-
-    constructor(private statisticsService: StatisticsService) {}
+    constructor(private statisticsService: StatisticsService, private echartsService: NgxEchartsService) {}
 
     ngAfterViewInit() {
         this.countJdl = this.statisticsService.countJdl();
         this.countYoRc = this.statisticsService.countYoRC();
 
-        let clientFrameworkData, devDatabaseData;
-
         this.statisticsService.getYoRCs().subscribe(yoRcs => {
             yoRcs.forEach(yoRc => this.dataFromDb.push(yoRc));
-            clientFrameworkData = this.groupDataBy(this.dataFromDb, 'clientFramework');
-            devDatabaseData = this.groupDataBy(this.dataFromDb, 'devDatabaseType');
-            let test = this.groupDataBy(this.dataFromDb, 'creationDate');
-            let react = this.filterDataBy(test, 'clientFramework', 'react');
-            let angular = this.filterDataBy(test, 'clientFramework', 'angularX');
-            let arr = [];
-            let arr2 = [];
-            for (const elem in react) {
-                arr.push({ x: new Date(elem), y: react[elem].length });
-            }
-            for (const elem in angular) {
-                arr2.push({ x: new Date(elem), y: angular[elem].length });
-            }
+            console.log(this.dataFromDb);
 
-            arr = arr.sort((a, b) => b.x.toISOString().localeCompare(a.x.toISOString())).reverse();
-            arr2 = arr2.sort((a, b) => a.x.toISOString().localeCompare(b.x.toISOString())).reverse();
-            console.log(arr);
+            const yorcByDateList = this.groupDataBy(this.dataFromDb, 'creationDate');
+            console.log(yorcByDateList);
 
-            this.options = {
-                title: { text: 'React/Angular distribution' },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                series: [
-                    {
-                        type: 'pie',
-                        name: 'lol',
-                        radius: '65%',
-                        center: ['50%', '50%'],
-                        selectedMode: 'single',
-                        data: Object.keys(clientFrameworkData).map(item => {
-                            return {
-                                name: StatisticsComponent.prettifyName(item),
-                                value: clientFrameworkData[item].length
-                            };
-                        })
-                    }
-                ]
-            };
+            const clientFrameworkData = this.groupDataBy(this.dataFromDb, 'clientFramework');
 
-            this.options3 = {
-                title: { text: 'Dev databases' },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                series: [
-                    {
-                        type: 'pie',
-                        name: 'lol',
-                        radius: '65%',
-                        center: ['50%', '50%'],
-                        selectedMode: 'single',
-                        data: Object.keys(devDatabaseData).map(item => {
-                            return {
-                                name: StatisticsComponent.prettifyName(item),
-                                value: devDatabaseData[item].length
-                            };
-                        })
-                    }
-                ]
-            };
+            const reactData = this.filterDataByArrayValue(clientFrameworkData, obj => obj.clientFramework === 'react');
+            // const angularData = this.filterDataByArrayValue(clientFrameworkData, obj => obj.clientFramework === "angularX");
 
-            this.options2 = {
-                title: { text: '' },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: { backgroundColor: '#6a7985' }
-                    }
-                },
-                toolbox: {
-                    feature: { saveAsImage: {} }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: arr.map((e: any) => moment(e.x).format('L'))
-                    }
-                ],
-                yAxis: [{ type: 'value' }],
-                dataZoom: [{ type: 'inside' }],
-                series: [
-                    {
-                        name: 'REACT',
-                        type: 'line',
-                        stack: '总量',
-                        areaStyle: { normal: {} },
-                        data: arr.map((e: any) => e.y)
-                    },
-                    {
-                        name: 'ANGULAR',
-                        type: 'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        areaStyle: { normal: {} },
-                        data: arr2.map((e: any) => e.y)
-                    }
-                ]
-            };
+            console.log(reactData);
+
+            const generatedProjectsLineChart = new LineChart(
+                this.echartsService,
+                lineChartOptions(yorcByDateList),
+                this.chart1,
+                yorcByDateList
+            ).build();
+            // const clientFrameworkStackedAreaChart = new LineChart(this.echartsService, stackedAreaChartOptions(reactData, angularData), this.chart3, reactData).build();
+            const clientFrameworkPieChart = new BasicChart(this.echartsService, pieChartOptions(clientFrameworkData), this.chart2).build();
+
+            this.charts.push({ generatedProjectsLineChart });
+            // this.charts.push({ clientFrameworkStackedAreaChart });
+            this.charts.push({ clientFrameworkPieChart });
+
+            this.updateRelatedBasicChartOf(
+                yorcByDateList,
+                clientFrameworkData,
+                generatedProjectsLineChart.chartInstance,
+                clientFrameworkPieChart
+            );
         });
+    }
+
+    private updateRelatedBasicChartOf(data: any, basicChartData: any, chartInstance: any, basicChartInstance: any) {
+        chartInstance.on('dataZoom', () => {
+            const minDate = Object.keys(data)[chartInstance.getOption().dataZoom[0].startValue];
+            const maxDate = Object.keys(data)[chartInstance.getOption().dataZoom[0].endValue];
+
+            const arr = this.filterDataByArrayValue(
+                basicChartData,
+                obj => new Date(obj.creationDate) >= new Date(minDate) && new Date(obj.creationDate) <= new Date(maxDate)
+            );
+
+            var xd = this.charts[1].clientFrameworkPieChart.chartInstance.setOption(arr);
+            console.log(xd);
+        });
+    }
+
+    private updateData(alldata: any, data1: any, data2: any, fstDate: Date, sndDate: Date) {
+        const test = Object.keys(data1).filter(date => new Date(date) >= fstDate && new Date(date) <= sndDate);
+        const test2 = Object.keys(data2).filter(date => new Date(date) >= fstDate && new Date(date) <= sndDate).length;
+        console.log(test);
+        console.log(test2);
     }
 
     private groupDataBy(data: any, property: string) {
@@ -188,17 +116,26 @@ export class StatisticsComponent implements AfterViewInit {
         }, {});
     }
 
-    private filterDataBy(data: any, filter: string, value: string) {
-        let filteredData = {};
-        for (const elem in data) {
-            if (data[elem]) {
-                filteredData[elem] = data[elem].filter(cF => cF[filter] === value);
-            }
-        }
-        return filteredData;
+    private filterDataByKey(data: any, predicate: Function) {
+        return Object.keys(data)
+            .filter(key => predicate(key))
+            .reduce((res, key) => (res[key] = data[key]), {});
     }
 
-    private static prettifyName(rawName: string) {
-        return StatisticsComponent.names[rawName] || rawName;
+    private filterDataByValue(data: any, predicate: Function) {
+        return Object.keys(data)
+            .filter(key => predicate(data[key]))
+            .reduce((res, key) => (res[key] = data[key]), {});
+    }
+
+    private filterDataByArrayValue(data: any, predicate: Function) {
+        let caca = Object.keys(data).map(key =>
+            data[key].filter(item => predicate(item)).reduce((acc, current) => {
+                acc[key] = data[key];
+                return acc;
+            }, {})
+        );
+        console.log(caca);
+        return caca;
     }
 }

@@ -28,6 +28,14 @@ export class StatisticsService {
         return this.http.get(`/api/s/count-yorc`, { responseType: 'text' });
     }
 
+    countYoRCByDate(date: Date): Observable<string> {
+        return this.http.get(`/api/s/count-yorc/${date}`, { responseType: 'text' });
+    }
+
+    countUsers(): Observable<string> {
+        return this.http.get(`/api/s/count-user`, { responseType: 'text' });
+    }
+
     countJdl(): Observable<string> {
         return this.http.get(`/api/s/count-jdl`, { responseType: 'text' });
     }
