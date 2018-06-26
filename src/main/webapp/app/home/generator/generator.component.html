@@ -92,7 +92,8 @@
                     <label for="packageName">What is your default Java package name?</label>
                     <input type="text" class="form-control" id="packageName" [(ngModel)]="model.packageName"
                            name="packageName" #packageName="ngModel"
-                           required pattern="^([a-z_]{1}[a-z0-9_]*(\.[a-z_]{1}[a-z0-9_]*)*)$">
+                           required pattern="^([a-z_]{1}[a-z0-9_]*(\.[a-z_]{1}[a-z0-9_]*)*)$"
+                           (change)="changePackageName()">
                     <div *ngIf="packageName.errors" class="alert alert-danger">The package name you have provided is not a valid Java package name.</div>
                 </div>
                 <div class="form-group">
@@ -147,7 +148,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">[BETA] Couchbase</option>
                         <option value="no"
-                                [hidden]="((model.authenticationType === 'uaa' || model.authenticationType === 'oauth2') && model.applicationType === 'gateway')">No database</option>
+                                [hidden]="model.applicationType !== 'microservice'">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -223,7 +224,7 @@
                                        #enableSwaggerCodegen="ngModel">
                             </div>
                             <div class="col-md-5">
-                                <label for="enableSwaggerCodegen">API first development using swagger-codegen</label>
+                                <label for="enableSwaggerCodegen">API first development using OpenAPI-generator</label>
                             </div>
                             <div class="col-md-1">
                                 <input type="checkbox" class="form-control" id="searchEngine"
@@ -268,7 +269,7 @@
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular 5</option>
+                        <option value="angularX">Angular 6</option>
                         <option value="react">React</option>
                     </select>
                 </div>

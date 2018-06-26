@@ -121,9 +121,6 @@ export class GeneratorComponent implements OnInit {
     checkModelBeforeSubmit() {
         this.submitted = true;
 
-        if (this.model.authenticationType === 'oauth2') {
-            this.model.clientFramework = 'angularX';
-        }
         if (this.model.cacheProvider === 'no') {
             this.model.enableHibernateCache = false;
         }
@@ -138,9 +135,6 @@ export class GeneratorComponent implements OnInit {
         }
         if (this.model.messageBroker) {
             this.model.messageBroker = 'kafka';
-        }
-        if (this.model.enableSocialSignIn) {
-            this.model.enableSocialSignIn = true;
         }
         if (this.model.enableTranslation && this.model.languages.indexOf(this.model.nativeLanguage) === -1) {
             this.model.languages.push(this.model.nativeLanguage);
@@ -199,6 +193,7 @@ export class GeneratorComponent implements OnInit {
             '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
+            'io/github/jhipster/application',
             8080,
             false,
             'jwt',
@@ -213,7 +208,6 @@ export class GeneratorComponent implements OnInit {
             false,
             false,
             'maven',
-            false,
             false,
             'yarn',
             [],
@@ -253,6 +247,10 @@ export class GeneratorComponent implements OnInit {
         }
     }
 
+    changePackageName() {
+        this.model.packageFolder = this.model.packageName.replace(/\./g, '/');
+    }
+
     changeServiceDiscoveryType() {
         if (this.model.serviceDiscoveryType === 'eureka') {
             this.model.authenticationType = 'jwt';
@@ -284,14 +282,12 @@ export class GeneratorComponent implements OnInit {
             this.model.prodDatabaseType = 'cassandra';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
-            this.model.enableSocialSignIn = false;
             this.model.searchEngine = false;
         } else if (this.model.databaseType === 'couchbase') {
             this.model.devDatabaseType = 'couchbase';
             this.model.prodDatabaseType = 'couchbase';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
-            this.model.enableSocialSignIn = false;
             this.model.searchEngine = false;
         } else if (this.model.databaseType === 'no') {
             this.model.devDatabaseType = 'no';

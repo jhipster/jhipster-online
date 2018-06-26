@@ -18,12 +18,12 @@
  */
 
 export class JHipsterConfigurationModel {
-
     constructor(
         public applicationType: String,
         public gitHubOrganization: String,
         public baseName: String,
         public packageName: String,
+        public packageFolder: String,
         public serverPort: Number,
         public serviceDiscoveryType: any,
         public authenticationType: String,
@@ -38,7 +38,6 @@ export class JHipsterConfigurationModel {
         public enableSwaggerCodegen: any,
         public messageBroker: any,
         public buildTool: String,
-        public enableSocialSignIn: Boolean,
         public useSass: Boolean,
         public clientPackageManager: String,
         public testFrameworks: String[],
@@ -46,5 +45,5 @@ export class JHipsterConfigurationModel {
         public nativeLanguage: String,
         public languages: String[],
         public clientFramework: String
-    ) { }
+    ) {}
 }
