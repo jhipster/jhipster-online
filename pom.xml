@@ -11,7 +11,7 @@
 
     <groupId>io.github.jhipster.online</groupId>
     <artifactId>jhonline</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>war</packaging>
     <name>Jhonline</name>
 
