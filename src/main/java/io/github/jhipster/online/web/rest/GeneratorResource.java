@@ -69,7 +69,7 @@ public class GeneratorResource {
     @PostMapping("/generate-application")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity generateApplicationOnGitHub(@RequestBody String applicationConfiguration) throws Exception {
+    public ResponseEntity generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
         User user = userService.getUser();
         log.debug("Reading application configuration");
