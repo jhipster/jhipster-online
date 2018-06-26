@@ -4,6 +4,7 @@ import io.github.jhipster.online.JhonlineApp;
 
 import io.github.jhipster.online.domain.CrashReport;
 import io.github.jhipster.online.repository.CrashReportRepository;
+import io.github.jhipster.online.service.CrashReportService;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -62,6 +63,10 @@ public class CrashReportResourceIntTest {
     @Autowired
     private CrashReportRepository crashReportRepository;
 
+    
+
+    @Autowired
+    private CrashReportService crashReportService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -82,7 +87,7 @@ public class CrashReportResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CrashReportResource crashReportResource = new CrashReportResource(crashReportRepository);
+        final CrashReportResource crashReportResource = new CrashReportResource(crashReportService);
         this.restCrashReportMockMvc = MockMvcBuilders.standaloneSetup(crashReportResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -204,7 +209,7 @@ public class CrashReportResourceIntTest {
     @Transactional
     public void updateCrashReport() throws Exception {
         // Initialize the database
-        crashReportRepository.saveAndFlush(crashReport);
+        crashReportService.save(crashReport);
 
         int databaseSizeBeforeUpdate = crashReportRepository.findAll().size();
 
@@ -259,7 +264,7 @@ public class CrashReportResourceIntTest {
     @Transactional
     public void deleteCrashReport() throws Exception {
         // Initialize the database
-        crashReportRepository.saveAndFlush(crashReport);
+        crashReportService.save(crashReport);
 
         int databaseSizeBeforeDelete = crashReportRepository.findAll().size();
 

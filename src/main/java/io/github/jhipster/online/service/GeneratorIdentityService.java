@@ -95,9 +95,15 @@ public class GeneratorIdentityService {
         return result;
     }
 
-    public void bindCurrentUserToGenerator(String guid) {
-        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(userService.getUser());
+    public boolean bindCurrentUserToGenerator(String guid) {
+        Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidIs(guid);
+        if(maybeGeneratorIdentity.isPresent() && maybeGeneratorIdentity.get().getOwner() != null) {
+            return false;
+        }
 
+        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(userService.getUser());
         save(findOrCreateOneByGuid(guid).owner(ownerIdentity));
+
+        return true;
     }
 }

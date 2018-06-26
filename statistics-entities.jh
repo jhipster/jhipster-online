@@ -97,3 +97,4 @@ service Language with serviceClass
 service GeneratorIdentity with serviceClass
 service SubGenEvent with serviceClass
 service EntityStats with serviceClass
+service CrashReport with serviceClass

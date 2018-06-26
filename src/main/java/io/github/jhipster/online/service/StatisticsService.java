@@ -25,16 +25,19 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
+    private final CrashReportService crashReportService;
+
     public StatisticsService(YoRCService yoRCService,
                              LanguageService languageService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService) {
+                             EntityStatsService entityStatsService, CrashReportService crashReportService) {
         this.yoRCService = yoRCService;
         this.languageService = languageService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
+        this.crashReportService = crashReportService;
     }
 
     public void addEntry(String entry, String host) throws IOException {
@@ -81,5 +84,10 @@ public class StatisticsService {
     public void addEntityStats(EntityStats entityStats, String generatorId)  {
         entityStats.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         entityStatsService.save(entityStats);
+    }
+
+    public void submitCrashReport(CrashReport report) {
+        report.date(Instant.now());
+        crashReportService.save(report);
     }
 }

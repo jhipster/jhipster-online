@@ -2,7 +2,7 @@ package io.github.jhipster.online.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.CrashReport;
-import io.github.jhipster.online.repository.CrashReportRepository;
+import io.github.jhipster.online.service.CrashReportService;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -28,10 +28,10 @@ public class CrashReportResource {
 
     private static final String ENTITY_NAME = "crashReport";
 
-    private final CrashReportRepository crashReportRepository;
+    private final CrashReportService crashReportService;
 
-    public CrashReportResource(CrashReportRepository crashReportRepository) {
-        this.crashReportRepository = crashReportRepository;
+    public CrashReportResource(CrashReportService crashReportService) {
+        this.crashReportService = crashReportService;
     }
 
     /**
@@ -48,7 +48,7 @@ public class CrashReportResource {
         if (crashReport.getId() != null) {
             throw new BadRequestAlertException("A new crashReport cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CrashReport result = crashReportRepository.save(crashReport);
+        CrashReport result = crashReportService.save(crashReport);
         return ResponseEntity.created(new URI("/api/crash-reports/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -70,7 +70,7 @@ public class CrashReportResource {
         if (crashReport.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        CrashReport result = crashReportRepository.save(crashReport);
+        CrashReport result = crashReportService.save(crashReport);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, crashReport.getId().toString()))
             .body(result);
@@ -85,7 +85,7 @@ public class CrashReportResource {
     @Timed
     public List<CrashReport> getAllCrashReports() {
         log.debug("REST request to get all CrashReports");
-        return crashReportRepository.findAll();
+        return crashReportService.findAll();
     }
 
     /**
@@ -98,7 +98,7 @@ public class CrashReportResource {
     @Timed
     public ResponseEntity<CrashReport> getCrashReport(@PathVariable Long id) {
         log.debug("REST request to get CrashReport : {}", id);
-        Optional<CrashReport> crashReport = crashReportRepository.findById(id);
+        Optional<CrashReport> crashReport = crashReportService.findOne(id);
         return ResponseUtil.wrapOrNotFound(crashReport);
     }
 
@@ -112,8 +112,7 @@ public class CrashReportResource {
     @Timed
     public ResponseEntity<Void> deleteCrashReport(@PathVariable Long id) {
         log.debug("REST request to delete CrashReport : {}", id);
-
-        crashReportRepository.deleteById(id);
+        crashReportService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
