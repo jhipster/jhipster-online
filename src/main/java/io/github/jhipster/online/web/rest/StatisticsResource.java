@@ -3,10 +3,7 @@ package io.github.jhipster.online.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.service.GeneratorIdentityService;
-import io.github.jhipster.online.service.JdlService;
-import io.github.jhipster.online.service.StatisticsService;
-import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/s")
@@ -28,13 +26,22 @@ public class StatisticsResource {
 
     private final JdlService jdlService;
 
+    private final UserService userService;
+
     private final GeneratorIdentityService generatorIdentityService;
 
-    public StatisticsResource(StatisticsService statisticsService, YoRCService yoRCService, JdlService jdlService, GeneratorIdentityService generatorIdentityService) {
+    public StatisticsResource(StatisticsService statisticsService, YoRCService yoRCService, JdlService jdlService, UserService userService, GeneratorIdentityService generatorIdentityService) {
         this.statisticsService = statisticsService;
         this.yoRCService = yoRCService;
         this.jdlService = jdlService;
+        this.userService = userService;
         this.generatorIdentityService = generatorIdentityService;
+    }
+
+    @GetMapping("/count-yorc/{date}")
+    @Timed
+    public long getYoRcCount(@PathVariable Instant date) {
+        return yoRCService.countAllByCreationDate(date);
     }
 
     @GetMapping("/count-yorc")
@@ -48,6 +55,10 @@ public class StatisticsResource {
     public long getJdlCount() {
         return jdlService.countAll();
     }
+
+    @GetMapping("/count-user")
+    @Timed
+    public long getUserCount() { return userService.countAll(); }
 
     @PostMapping("/entry")
     @Timed

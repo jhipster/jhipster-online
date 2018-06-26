@@ -1,65 +1,64 @@
 <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
 
 <div class="container">
-    <h4>Overall data</h4>
-    <hr>
+    <p>&nbsp;</p>
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-center text-white bg-success mb-3">
+            <div class="card text-center text-white bg-secondary mb-3">
                 <div class="card-body">
-                    <!--<p class="card-text">{{countYoRc | async}}</p>-->
-                    <p class="card-text">57847</p>
-                    <p>&nbsp;</p>
-                    <b>generated projects</b>
+                    <h4 class="card-text">210</h4>
+                    <strong>DAILY VISITS</strong>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-white bg-primary mb-3">
+            <div class="card text-center text-white bg-secondary mb-3">
                 <div class="card-body">
-                    <!--<p class="card-text">{{countJdl | async}}</p>-->
-                    <p class="card-text">51145</p>
-                    <p>&nbsp;</p>
-                    <b>JDLs created</b>
+                    <h4 class="card-text">{{countYoRc | async}}</h4>
+                    <strong>GENERATED PROJECTS</strong>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-white bg-warning mb-3">
+            <div class="card text-center text-white bg-secondary mb-3">
                 <div class="card-body">
-                    <p class="card-text">100007</p>
-                    <p>&nbsp;</p>
-                    <b>users</b>
+                    <h4 class="card-text">{{countJdl | async}}</h4>
+                    <strong>JDLs CREATED</strong>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center text-white bg-info mb-3">
+            <div class="card text-center text-white bg-secondary mb-3">
                 <div class="card-body">
-                    <p class="card-text">210</p>
-                    <p>&nbsp;</p>
-                    <b>generated projects today</b>
+                    <h4 class="card-text">12,867</h4>
+                    <strong>USERS</strong>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
-    <h3>Trend</h3>
-    <hr>
+    &nbsp;
+    <h4>Trend</h4>
+    <hr />
+    <div class="row">
+        <div #chart1 class="col-md-12" style="height: 300px;"></div>
+    </div>
+    &nbsp;
+    <h4>React/Angular distribution</h4>
+    <hr />
     <div class="row">
         <div class="col-md-6">
-            <div echarts [options]="options"></div>
+            <div #chart3 style="height: 300px;"></div>
         </div>
         <div class="col-md-6">
-            <div echarts [options]="options2"></div>
+            <div #chart2 style="height: 300px;"></div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div echarts [options]="options3"></div>
+            <div></div>
         </div>
         <div class="col-md-6">
-            <div echarts [options]="options4"></div>
+            <div id="chart4"></div>
         </div>
     </div>
 </div>
