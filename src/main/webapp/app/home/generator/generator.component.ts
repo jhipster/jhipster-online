@@ -122,9 +122,6 @@ export class GeneratorComponent implements OnInit {
     checkModelBeforeSubmit() {
         this.submitted = true;
 
-        if (this.model.authenticationType === 'oauth2') {
-            this.model.clientFramework = 'angularX';
-        }
         if (this.model.cacheProvider === 'no') {
             this.model.enableHibernateCache = false;
         }
