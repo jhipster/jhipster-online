@@ -23,8 +23,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
-import { Principal, UserService, User } from 'app/core';
-import { UserMgmtDeleteDialogComponent } from 'app/admin';
+import { Principal, UserService, User, PasswordResetService } from 'app/core';
+import { UserMgmtDeleteDialogComponent, UserMgmtResetDialogComponent } from 'app/admin';
 
 @Component({
     selector: 'jhi-user-mgmt',
@@ -44,6 +44,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    isMailEnabled: boolean;
 
     constructor(
         private userService: UserService,
@@ -53,7 +54,8 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private eventManager: JhiEventManager,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private passwordResetService: PasswordResetService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -70,6 +72,10 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
             this.loadAll();
             this.registerChangeInUsers();
         });
+
+        this.passwordResetService
+            .getMailStatus()
+            .subscribe(result => (this.isMailEnabled = result['mailEnabled']), () => (this.isMailEnabled = false));
     }
 
     ngOnDestroy() {
@@ -77,7 +83,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInUsers() {
-        this.eventManager.subscribe('userListModification', response => this.loadAll());
+        this.eventManager.subscribe('userListModification', () => this.loadAll());
     }
 
     setActive(user, isActivated) {
@@ -140,14 +146,11 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     deleteUser(user: User) {
         const modalRef = this.modalService.open(UserMgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.user = user;
-        modalRef.result.then(
-            () => {
-                // Left blank intentionally, nothing to do here
-            },
-            () => {
-                // Left blank intentionally, nothing to do here
-            }
-        );
+    }
+
+    resetPassword(user: User) {
+        const modalRef = this.modalService.open(UserMgmtResetDialogComponent, { size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.user = user;
     }
 
     private onSuccess(data, headers) {

@@ -21,7 +21,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
-import { LoginModalService } from 'app/core';
+import { LoginModalService, PasswordResetService } from 'app/core';
 import { Register } from './register.service';
 
 @Component({
@@ -37,17 +37,21 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     registerAccount: any;
     success: boolean;
     modalRef: NgbModalRef;
+    isMailEnabled: boolean;
 
     constructor(
         private loginModalService: LoginModalService,
         private registerService: Register,
         private elementRef: ElementRef,
-        private renderer: Renderer
+        private renderer: Renderer,
+        private passwordResetService: PasswordResetService
     ) {}
 
     ngOnInit() {
+        this.isMailEnabled = true;
         this.success = false;
         this.registerAccount = {};
+        this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
     }
 
     ngAfterViewInit() {

@@ -16,20 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service.dto;
 
-import io.github.jhipster.online.config.Constants;
-
-import io.github.jhipster.online.domain.Authority;
-import io.github.jhipster.online.domain.User;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.constraints.*;
+
+import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.domain.Authority;
+import io.github.jhipster.online.domain.User;
 
 /**
  * A DTO representing a user, with his authorities.

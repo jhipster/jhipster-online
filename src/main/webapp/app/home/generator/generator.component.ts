@@ -17,12 +17,12 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
-import { GithubService } from '../github/github.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GitProviderService } from '../git/git.service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
-import { GithubOrganizationModel } from './github.organization.model';
 
 @Component({
     selector: 'jhi-generator',
@@ -36,11 +36,15 @@ export class GeneratorComponent implements OnInit {
 
     languageOptions;
 
-    githubConfigured = true;
+    selectedGitProvider: string;
+    selectedGitCompany: string;
 
-    organizations: GithubOrganizationModel[];
+    isGithubConfigured: boolean;
+    isGitlabConfigured: boolean;
 
-    githubRefresh = false;
+    repositoryName: string;
+
+    gitlabHost: string;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -85,37 +89,22 @@ export class GeneratorComponent implements OnInit {
         ];
     }
 
-    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private githubService: GithubService) {
+    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private gitService: GitProviderService) {
         this.newGenerator();
     }
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
-        this.githubRefresh = true;
-        this.githubService.getOrganizations().subscribe(
-            orgs => {
-                this.organizations = orgs;
-                this.model.gitHubOrganization = orgs[0].name;
-                this.githubConfigured = true;
-                this.githubRefresh = false;
-            },
-            () => {
-                this.githubConfigured = false;
-                this.githubRefresh = false;
-            }
-        );
+        this.gitService.getGitlabConfig().subscribe(config => {
+            this.gitlabHost = config.host;
+        });
     }
 
-    refreshGithub() {
-        this.githubRefresh = true;
-        this.githubService.refreshGithub().subscribe(
-            () => {
-                this.githubRefresh = false;
-            },
-            () => {
-                this.githubRefresh = false;
-            }
-        );
+    updateSharedData(data: any) {
+        this.selectedGitProvider = data.selectedGitProvider;
+        this.selectedGitCompany = data.selectedGitCompany;
+        this.isGithubConfigured = data.isGithubConfigured;
+        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     checkModelBeforeSubmit() {
@@ -143,7 +132,7 @@ export class GeneratorComponent implements OnInit {
 
     onSubmit() {
         this.checkModelBeforeSubmit();
-        this.generatorService.generateOnGitHub(this.model).subscribe(
+        this.generatorService.generateOnGit(this.model, this.selectedGitProvider, this.selectedGitCompany, this.repositoryName).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -171,8 +160,12 @@ export class GeneratorComponent implements OnInit {
         const modalRef = this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applicationId = applicationId;
-        modalRef.gitHubOrganization = this.model.gitHubOrganization;
-        modalRef.baseName = this.model.baseName;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
+        modalRef.selectedGitCompany = this.selectedGitCompany;
+        modalRef.isGithubConfigured = this.isGithubConfigured;
+        modalRef.isGitlabConfigured = this.isGitlabConfigured;
+        modalRef.repositoryName = this.repositoryName;
+        modalRef.gitlabHost = this.gitlabHost;
     }
 
     downloadFile(blob: Blob) {
@@ -190,7 +183,6 @@ export class GeneratorComponent implements OnInit {
     newGenerator() {
         this.model = new JHipsterConfigurationModel(
             'monolith',
-            '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
             'io/github/jhipster/application',

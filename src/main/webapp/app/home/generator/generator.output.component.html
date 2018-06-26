@@ -14,10 +14,17 @@ Sending request to the server...
                 </pre>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl">
+        <div class="row" *ngIf="displayApplicationUrl && isGithubConfigured && selectedGitProvider === 'github'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="https://github.com/{{gitHubOrganization}}/{{baseName}}" target="_blank">https://github.com/{{gitHubOrganization}}/{{baseName}}</a>
+                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="https://github.com/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">https://github.com/{{selectedGitCompany}}/{{repositoryName}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="displayApplicationUrl && isGitlabConfigured && selectedGitProvider === 'gitlab'">
+            <div class="col-md-12">
+                <div class="lead">
+                    <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>

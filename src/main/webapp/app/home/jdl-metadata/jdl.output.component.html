@@ -14,13 +14,24 @@ Sending request to the server...
                 </pre>
             </div>
         </div>
-        <div class="row" *ngIf="displayBranchUrl">
+        <div class="row" *ngIf="displayBranchUrl && selectedGitProvider === 'github'">
             <div class="col-md-12">
                 <div class="lead">
                     <b>JDL Model applied!</b>
                     <ul>
-                        <li>Merge the Pull Request at <a href="https://github.com/{{gitHubOrganization}}/{{gitHubProject}}/pulls" target="_blank">https://github.com/{{gitHubOrganization}}/{{gitHubProject}}/pulls</a></li>
-                        <li>Open your GitHub branch at <a href="https://github.com/{{gitHubOrganization}}/{{gitHubProject}}/tree/jhipster-entities-{{applyJdlId}}" target="_blank">https://github.com/{{gitHubOrganization}}/{{gitHubProject}}/tree/jhipster-entities-{{applyJdlId}}</a></li>
+                        <li>Merge the Pull Request at <a href="https://github.com/{{selectedGitCompany}}/{{selectedGitRepository}}/pulls" target="_blank">https://github.com/{{selectedGitCompany}}/{{selectedGitRepository}}/pulls</a></li>
+                        <li>Open your GitHub branch at <a href="https://github.com/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-entities-{{applyJdlId}}" target="_blank">https://github.com/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-entities-{{applyJdlId}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="displayBranchUrl && selectedGitProvider === 'gitlab'">
+            <div class="col-md-12">
+                <div class="lead">
+                    <b>JDL Model applied!</b>
+                    <ul>
+                        <li>Merge the Merge Request at <a href="{{gitlabHost}}{{selectedGitCompany}}/{{selectedGitRepository}}/merge_requests" target="_blank">{{gitlabHost}}{{selectedGitCompany}}/{{selectedGitRepository}}/merge_requests</a></li>
+                        <li>Open your GitLab branch at <a href="{{gitlabHost}}{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-entities-{{applyJdlId}}" target="_blank">{{gitlabHost}}{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-entities-{{applyJdlId}}</a></li>
                     </ul>
                 </div>
             </div>

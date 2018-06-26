@@ -16,15 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
 
-@Injectable()
-export class GithubCallbackService {
-    constructor(private http: HttpClient) {}
+package io.github.jhipster.online.repository;
 
-    saveToken(token: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>('api/github/save-token', token, { observe: 'response' });
-    }
+import io.github.jhipster.online.domain.GitCompany;
+import io.github.jhipster.online.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Set;
+
+/**
+ * Spring Data JPA repository for the GitCompany entity.
+ */
+@Repository
+public interface GitCompanyRepository extends JpaRepository<GitCompany, Long> {
+
+    Set<GitCompany> findAllByUserAndGitProvider(User user, String gitProvider);
+
+    void deleteAllByUserLoginAndGitProvider(String user, String gitProvider);
 }

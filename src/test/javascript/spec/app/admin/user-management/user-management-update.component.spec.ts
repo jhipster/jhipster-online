@@ -19,8 +19,7 @@
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { UserMgmtUpdateComponent } from 'app/admin/user-management/user-management-update.component';
@@ -66,7 +65,7 @@ describe('Component Tests', () => {
                     [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'authorities').and.returnValue(Observable.of(['USER']));
+                        spyOn(service, 'authorities').and.returnValue(of(['USER']));
 
                         // WHEN
                         comp.ngOnInit();
@@ -88,7 +87,7 @@ describe('Component Tests', () => {
                         // GIVEN
                         const entity = new User(123);
                         spyOn(service, 'update').and.returnValue(
-                            Observable.of(
+                            of(
                                 new HttpResponse({
                                     body: entity
                                 })
@@ -113,7 +112,7 @@ describe('Component Tests', () => {
                     fakeAsync(() => {
                         // GIVEN
                         const entity = new User();
-                        spyOn(service, 'create').and.returnValue(Observable.of(new HttpResponse({ body: entity })));
+                        spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
                         comp.user = entity;
                         // WHEN
                         comp.save();

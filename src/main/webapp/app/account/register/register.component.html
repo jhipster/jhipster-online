@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="alert alert-danger" *ngIf="!success">
-                Please use your real e-mail to register: the whole idea of JHipster Online is that it generates applications on your GitHub account. Giving write access to your GitHub account
+                Please use your real e-mail to register: the whole idea of JHipster Online is that it generates applications on your GitHub/GitLab account. Giving write access to your GitHub/GitLab account
                 to a disposable e-mail provider is a bad idea.
             </div>
         </div>
@@ -10,7 +10,7 @@
             <h1>Registration</h1>
 
             <div class="alert alert-success" *ngIf="success">
-                <strong>Registration saved!</strong> Please check your email for confirmation.
+                <strong>Registration saved!</strong> <ng-container *ngIf="isMailEnabled">Please check your email for confirmation.</ng-container><ng-container *ngIf="!isMailEnabled">You can now login.</ng-container>
             </div>
 
             <div class="alert alert-danger" *ngIf="error">

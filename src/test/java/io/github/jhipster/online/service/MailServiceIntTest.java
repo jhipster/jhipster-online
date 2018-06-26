@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 package io.github.jhipster.online.service;
+import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.config.Constants;
 
 import io.github.jhipster.online.JhonlineApp;
@@ -53,6 +54,9 @@ public class MailServiceIntTest {
 
     @Autowired
     private JHipsterProperties jHipsterProperties;
+
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
     @Autowired
     private MessageSource messageSource;

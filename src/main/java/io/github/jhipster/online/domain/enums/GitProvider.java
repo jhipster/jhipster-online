@@ -16,23 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { GithubService } from './github.service';
+package io.github.jhipster.online.domain.enums;
 
-@Component({
-    selector: 'jhi-github',
-    templateUrl: './github.component.html',
-    styleUrls: ['github.scss']
-})
-export class GithubComponent implements OnInit {
-    clientId;
+import java.util.Arrays;
+import java.util.Optional;
 
-    gitHubConfigured = false;
+public enum GitProvider {
+    GITHUB("github"), GITLAB("gitlab");
 
-    constructor(private githubService: GithubService) {}
+    private String value;
 
-    ngOnInit(): void {
-        this.clientId = this.githubService.clientId().subscribe(data => (this.clientId = data));
-        this.githubService.getOrganizations().subscribe(() => (this.gitHubConfigured = true));
+    GitProvider(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static Optional<GitProvider> getGitProviderByValue(String value) {
+        return Arrays.stream(GitProvider.values())
+            .filter(e -> e.value.equals(value.toLowerCase()))
+            .findFirst();
     }
 }

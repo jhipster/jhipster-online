@@ -18,6 +18,8 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ClipboardModule } from 'ngx-clipboard';
+
 import { JhonlineSharedModule } from 'app/shared';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
@@ -28,6 +30,7 @@ import {
     UserMgmtDetailComponent,
     UserMgmtUpdateComponent,
     UserMgmtDeleteDialogComponent,
+    UserMgmtResetDialogComponent,
     LogsComponent,
     JhiMetricsMonitoringModalComponent,
     JhiMetricsMonitoringComponent,
@@ -35,22 +38,16 @@ import {
     JhiHealthCheckComponent,
     JhiConfigurationComponent,
     JhiDocsComponent,
-    AuditsService,
-    JhiConfigurationService,
-    JhiHealthService,
-    JhiMetricsService,
-    LogsService,
-    UserMgmtResolve,
     UserMgmtDialogComponent,
-    UserDialogComponent,
-    UserResolve
+    UserDialogComponent
 } from './';
 
 @NgModule({
     imports: [
         JhonlineSharedModule,
-        RouterModule.forChild(adminState)
+        RouterModule.forChild(adminState),
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
+        ClipboardModule
     ],
     declarations: [
         AuditsComponent,
@@ -60,6 +57,7 @@ import {
         UserMgmtDetailComponent,
         UserMgmtUpdateComponent,
         UserMgmtDeleteDialogComponent,
+        UserMgmtResetDialogComponent,
         LogsComponent,
         JhiConfigurationComponent,
         JhiHealthCheckComponent,
@@ -68,8 +66,12 @@ import {
         JhiMetricsMonitoringComponent,
         JhiMetricsMonitoringModalComponent
     ],
-    entryComponents: [UserMgmtDeleteDialogComponent, JhiHealthModalComponent, JhiMetricsMonitoringModalComponent],
-    providers: [AuditsService, JhiConfigurationService, JhiHealthService, JhiMetricsService, LogsService, UserResolve, UserMgmtResolve],
+    entryComponents: [
+        UserMgmtDeleteDialogComponent,
+        JhiHealthModalComponent,
+        JhiMetricsMonitoringModalComponent,
+        UserMgmtResetDialogComponent
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAdminModule {}

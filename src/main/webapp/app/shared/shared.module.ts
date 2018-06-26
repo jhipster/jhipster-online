@@ -20,14 +20,20 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbDateMomentAdapter } from './util/datepicker-adapter';
-import { JhonlineSharedLibsModule, JhonlineSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
+import {
+    JhonlineSharedLibsModule,
+    JhiGitProviderComponent,
+    JhonlineSharedCommonModule,
+    JhiLoginModalComponent,
+    HasAnyAuthorityDirective
+} from 'app/shared';
 
 @NgModule({
     imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule],
-    declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
+    declarations: [JhiLoginModalComponent, JhiGitProviderComponent, HasAnyAuthorityDirective],
     providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
     entryComponents: [JhiLoginModalComponent],
-    exports: [JhonlineSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
+    exports: [JhonlineSharedCommonModule, JhiLoginModalComponent, JhiGitProviderComponent, HasAnyAuthorityDirective],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineSharedModule {}

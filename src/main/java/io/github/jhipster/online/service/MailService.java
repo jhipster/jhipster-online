@@ -16,11 +16,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
-
-import io.github.jhipster.online.domain.User;
-
-import io.github.jhipster.config.JHipsterProperties;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -35,6 +32,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.online.domain.User;
 
 /**
  * Service for sending emails.
@@ -59,12 +59,16 @@ public class MailService {
     private final SpringTemplateEngine templateEngine;
 
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+        MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+    }
+
+    public boolean isEnabled() {
+        return this.jHipsterProperties.getMail().isEnabled();
     }
 
     @Async
@@ -120,4 +124,5 @@ public class MailService {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
     }
+
 }

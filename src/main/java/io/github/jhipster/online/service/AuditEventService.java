@@ -16,18 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.config.audit.AuditEventConverter;
-import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.Optional;
+import io.github.jhipster.online.config.audit.AuditEventConverter;
+import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
 
 /**
  * Service for managing audit events.

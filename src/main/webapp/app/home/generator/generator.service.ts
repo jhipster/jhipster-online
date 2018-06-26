@@ -21,7 +21,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class GeneratorService {
     constructor(private http: HttpClient) {}
 
@@ -33,11 +33,25 @@ export class GeneratorService {
         );
     }
 
-    generateOnGitHub(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<string> {
-        return this.http.post('api/generate-application', { 'generator-jhipster': jhipsterConfigurationModel }, { responseType: 'text' });
+    generateOnGit(
+        jhipsterConfigurationModel: JHipsterConfigurationModel,
+        gitProvider: string,
+        gitCompany: string,
+        repositoryName: string
+    ): Observable<string> {
+        return this.http.post(
+            'api/generate-application',
+            {
+                'generator-jhipster': jhipsterConfigurationModel,
+                'git-provider': gitProvider,
+                'git-company': gitCompany,
+                'repository-name': repositoryName
+            },
+            { responseType: 'text' }
+        );
     }
 
-    getGenerationData(applicationId: String): Observable<string> {
+    getGenerationData(applicationId: string): Observable<string> {
         return this.http.get('api/generate-application/' + applicationId, { responseType: 'text' });
     }
 }

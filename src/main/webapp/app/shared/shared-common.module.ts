@@ -23,7 +23,6 @@ import { JhonlineSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent } f
 @NgModule({
     imports: [JhonlineSharedLibsModule],
     declarations: [JhiAlertComponent, JhiAlertErrorComponent],
-    providers: [],
     exports: [JhonlineSharedLibsModule, JhiAlertComponent, JhiAlertErrorComponent]
 })
 export class JhonlineSharedCommonModule {}

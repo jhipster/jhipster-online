@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service.util;
 
 import org.apache.commons.lang3.RandomStringUtils;

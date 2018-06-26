@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 import { Renderer, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -36,7 +36,6 @@ describe('Component Tests', () => {
                 imports: [JhonlineTestModule],
                 declarations: [PasswordResetFinishComponent],
                 providers: [
-                    PasswordResetFinishService,
                     {
                         provide: ActivatedRoute,
                         useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
@@ -104,7 +103,7 @@ describe('Component Tests', () => {
             inject(
                 [PasswordResetFinishService],
                 fakeAsync((service: PasswordResetFinishService) => {
-                    spyOn(service, 'save').and.returnValue(Observable.of({}));
+                    spyOn(service, 'save').and.returnValue(of({}));
 
                     comp.resetAccount.password = 'password';
                     comp.confirmPassword = 'password';
@@ -126,7 +125,7 @@ describe('Component Tests', () => {
             inject(
                 [PasswordResetFinishService],
                 fakeAsync((service: PasswordResetFinishService) => {
-                    spyOn(service, 'save').and.returnValue(Observable.throw('ERROR'));
+                    spyOn(service, 'save').and.returnValue(throwError('ERROR'));
 
                     comp.resetAccount.password = 'password';
                     comp.confirmPassword = 'password';

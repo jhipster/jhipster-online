@@ -1,0 +1,20 @@
+<h2><span class="fa fa-wrench"></span>&nbsp;<span>GitHub configuration</span></h2>
+
+<div>
+    <i>
+        JHipster Online can create new repositories for you, using
+        <a routerLink="/generate-application">the online application generator</a>.
+        You can revoke this access at any time in your <a href="https://github.com/settings/applications">GitHub</a>/GitLab settings.
+    </i>
+</div>
+
+<p>
+    &nbsp;
+</p>
+
+<div class="alert alert-{{alertType}}">
+    <span *ngIf="isLoading">
+        <i class="fas fa-spin fa-sync"></i>
+    </span>
+    {{message}}
+</div>

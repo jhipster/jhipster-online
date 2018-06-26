@@ -16,13 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { platformBrowser } from '@angular/platform-browser';
-// import { ProdConfig } from './blocks/config/prod.config';
-// import { JhonlineAppModuleNgFactory } from '../../../../target/aot/src/main/webapp/app/app.module.ngfactory';
-//
-// ProdConfig();
-//
-// platformBrowser()
-//     .bootstrapModuleFactory(JhonlineAppModuleNgFactory)
-//     .then(() => console.log(`Application started`))
-//     .catch(err => console.error(err));
+import { Route } from '@angular/router';
+
+import { CallbackComponent } from './callback.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+
+export const GITHUB_CALLBACK_ROUTE: Route = {
+    path: 'callback/:provider/:token',
+    component: CallbackComponent,
+    data: {
+        authorities: ['ROLE_USER'],
+        pageTitle: 'Git provider configuration'
+    },
+    canActivate: [UserRouteAccessService]
+};

@@ -16,19 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.UserRepository;
-import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.MailService;
-import io.github.jhipster.online.service.UserService;
-import io.github.jhipster.online.service.dto.UserDTO;
-import io.github.jhipster.online.web.rest.errors.*;
-import io.github.jhipster.online.web.rest.vm.KeyAndPasswordVM;
-import io.github.jhipster.online.web.rest.vm.ManagedUserVM;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,10 +29,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.online.domain.JdlMetadata;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.UserRepository;
+import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
-import java.util.*;
+import io.github.jhipster.online.service.dto.UserDTO;
+import io.github.jhipster.online.web.rest.errors.*;
+import io.github.jhipster.online.web.rest.vm.KeyAndPasswordVM;
+import io.github.jhipster.online.web.rest.vm.ManagedUserVM;
 
 /**
  * REST controller for managing the current user's account.
@@ -56,11 +57,28 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final JdlMetadataService jdlMetadataService;
 
+    private final JdlService jdlService;
+
+    private final GithubService githubService;
+
+    private final GitlabService gitlabService;
+
+    public AccountResource(UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        JdlMetadataService jdlMetadataService,
+        JdlService jdlService,
+        GithubService githubService,
+        GitlabService gitlabService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.jdlMetadataService = jdlMetadataService;
+        this.jdlService = jdlService;
+        this.githubService = githubService;
+        this.gitlabService = gitlabService;
     }
 
     /**
@@ -78,10 +96,16 @@ public class AccountResource {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
-        userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
+        userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {
+            throw new LoginAlreadyUsedException();
+        });
+        userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {
+            throw new EmailAlreadyUsedException();
+        });
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        if (mailService.isEnabled()) {
+            mailService.sendActivationEmail(user);
+        }
     }
 
     /**
@@ -127,6 +151,35 @@ public class AccountResource {
     }
 
     /**
+     * DELETE  /account : delete the current user.
+     *
+     * @throws RuntimeException 500 (Internal Server Error) if the user couldn't be returned
+     */
+    @DeleteMapping("/account")
+    @Timed
+    public void deleteAccount() {
+        final String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new
+            InternalServerErrorException("Current user login not found"));
+        // Checks if user exists
+        Optional<User> user = userRepository.findOneByLogin(userLogin);
+        if (!user.isPresent()) {
+            throw new InternalServerErrorException("User could not be found");
+        }
+
+        for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForCurrentUser()) {
+            jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
+        }
+        jdlMetadataService.deleteAllForCurrentUser(userLogin);
+        if (githubService.isEnabled()) {
+            githubService.deleteAllOrganizationsForCurrentUser(userLogin);
+        }
+        if (gitlabService.isEnabled()) {
+            gitlabService.deleteAllOrganizationsForCurrentUser(userLogin);
+        }
+        userService.deleteUser(userLogin);
+    }
+
+    /**
      * POST  /account : update the current user information.
      *
      * @param userDTO the current user information
@@ -136,7 +189,8 @@ public class AccountResource {
     @PostMapping("/account")
     @Timed
     public void saveAccount(@Valid @RequestBody UserDTO userDTO) {
-        final String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new InternalServerErrorException("Current user login not found"));
+        final String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new
+            InternalServerErrorException("Current user login not found"));
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
@@ -147,7 +201,7 @@ public class AccountResource {
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
-   }
+    }
 
     /**
      * POST  /account/change-password : changes the current user's password
@@ -162,7 +216,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
-   }
+    }
 
     /**
      * POST   /account/reset-password/init : Send an email to reset the password of the user
@@ -173,10 +227,20 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/init")
     @Timed
     public void requestPasswordReset(@RequestBody String mail) {
-       mailService.sendPasswordResetMail(
-           userService.requestPasswordReset(mail)
-               .orElseThrow(EmailNotFoundException::new)
-       );
+        if (mailService.isEnabled()) {
+            mailService.sendPasswordResetMail(
+                userService
+                    .requestPasswordReset(mail)
+                    .orElseThrow(EmailNotFoundException::new)
+            );
+        }
+    }
+
+    @PostMapping(path = "/account/reset-password/link")
+    @Timed
+    public String requestPasswordResetAndReturnLink(@RequestBody String mail) {
+        User user = userService.requestPasswordReset(mail).orElseThrow(EmailNotFoundException::new);
+        return userService.generatePasswordResetLink(user.getResetKey());
     }
 
     /**

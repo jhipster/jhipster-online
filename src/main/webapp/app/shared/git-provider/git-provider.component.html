@@ -1,0 +1,74 @@
+<div *ngIf="data.isGithubConfigured || data.isGitlabConfigured">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="selectedGitProvider">Select the Git provider:</label>
+                    <select id="selectedGitProvider" (ngModelChange)="refreshGitCompanyListByGitProvider($event)"
+                            [(ngModel)]="data.selectedGitProvider" name="data.selectedGitProvider" class="form-control">
+                        <option *ngFor="let provider of data.availableGitProviders">{{provider}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="gitCompany">Select the company:</label>
+                    <select id="gitCompany" [(ngModel)]="data.selectedGitCompany" name="gitCompany"
+                            class="form-control"
+                            #ctrl="ngModel"
+                            (ngModelChange)="updateGitProjectList($event)">
+                        <option *ngFor="let company of data.gitCompanies">{{company.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2" *ngIf="router.url === '/generate-application'">
+                <div class="form-group">
+                    <label>&nbsp;</label><br/>
+                    <button class="btn btn-info btn-sm" (click)="refreshGitCompanyListByGitProvider(data.selectedGitProvider)">
+                        <span *ngIf="data.gitCompanyListRefresh">
+                            <i class="fas fa-sync fa-spin"></i>
+                        </span>
+                        <span *ngIf="!data.gitCompanyListRefresh">
+                            <i class="fas fa-sync"></i>
+                        </span>
+                        <span>
+                        Refresh
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngIf="router.url !== '/generate-application'">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="gitRepository">Git repository</label>
+                        <select id="gitRepository" (ngModelChange)="updateSelectedGitRepository($event)" [(ngModel)]="data.selectedGitRepository" name="gitRepository"
+                                class="form-control"
+                                #ctrl="ngModel">
+                            <option *ngFor="let project of data.gitProjects">{{project}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label><br/>
+                        <button class="btn btn-info btn-sm" (click)="refreshGitProjectList()">
+                            <span *ngIf="data.gitProjectListRefresh">
+                                <i class="fas fa-sync fa-spin"></i>
+                            </span>
+                            <span *ngIf="!data.gitProjectListRefresh">
+                                <i class="fas fa-sync"></i>
+                            </span>
+                            <span>
+                            Refresh
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

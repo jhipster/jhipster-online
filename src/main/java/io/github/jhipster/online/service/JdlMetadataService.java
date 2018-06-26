@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
 import java.time.Instant;
@@ -46,7 +47,8 @@ public class JdlMetadataService {
 
     private final UserService userService;
 
-    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository, UserService userService) {
+    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository, UserService
+        userService) {
         this.jdlMetadataRepository = jdlMetadataRepository;
         this.jdlRepository = jdlRepository;
         this.userService = userService;
@@ -145,5 +147,15 @@ public class JdlMetadataService {
         }
         this.jdlRepository.delete(jdl.get());
         jdlMetadataRepository.deleteById(id);
+    }
+
+    /**
+     *  Delete all the jdlMetadata.
+     *
+     */
+    @Transactional
+    public void deleteAllForCurrentUser(String userLogin) {
+        log.debug("Request to delete all JdlMetadata for current user");
+        jdlMetadataRepository.deleteAllByUserLogin(userLogin);
     }
 }

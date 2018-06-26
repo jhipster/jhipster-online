@@ -3,23 +3,22 @@
     <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitHubConfigured">
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
         <p>
             <span class="fas fa-exclamation-triangle"></span>&nbsp;
-            <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
+            <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub/GitLab project, you must authorize JHipster Online to access your GitHub/GitLab account.</span>
         </p>
         <p class="text-center">
-            <a routerLink="/github" class="btn btn-primary" role="button">Configure your GitHub
-                account</a>
+            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
         </p>
     </ngb-alert>
-    <div *ngIf="gitHubConfigured">
-        <p>
-            <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
-            Git repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
-            master branch.</i>
-        </p>
-        <hr/>
+    <p *ngIf="isGithubConfigured || isGitlabConfigured">
+        <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
+        GitHub/GitLab repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
+        master branch.</i>
+    </p>
+    <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
+    <div *ngIf="isGithubConfigured || isGitlabConfigured">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -42,59 +41,14 @@
                         <li>A <code>Jenkinsfile</code> will be added to your project.</li>
                         <li>Go to your Jenkins instance</li>
                         <li>Create a new job, using a `Pipeline script from SCM`</li>
-                        <li>Point the SCM configuration to your GitHub repository</li>
+                        <li>Point the SCM configuration to your GitHub/GitLab repository</li>
                     </ul>
                 </div>
             </div>
         </div>
         <hr/>
         <p>
-            Select the project on which you want to configure Continuous Integration:
-        </p>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="gitHubOrganization">GitHub organization</label>
-                        <select id="gitHubOrganization" [(ngModel)]="gitHubOrganization" name="gitHubOrganization"
-                                class="form-control"
-                                #ctrl="ngModel"
-                                (ngModelChange)="updateGitHubProjects($event)">
-                            <option *ngFor="let organization of organizations">{{organization.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="gitHubProject">GitHub repository</label>
-                        <select id="gitHubProject" [(ngModel)]="gitHubProject" name="gitHubProject"
-                                class="form-control"
-                                #ctrl="ngModel">
-                            <option *ngFor="let project of projects">{{project}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>&nbsp;</label><br/>
-                        <button class="btn btn-info btn-sm" (click)="refreshGithub()">
-                            <span *ngIf="githubRefresh">
-                                <i class="fas fa-sync fa-spin"></i>
-                            </span>
-                            <span *ngIf="!githubRefresh">
-                                <i class="fas fa-sync"></i>
-                            </span>
-                            <span>
-                            Refresh
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr/>
-        <p>
-            Choose the Continuous Integration system you which to configure:
+            Choose the Continuous Integration system you want to configure:
         </p>
         <div class="container">
             <div class="row">

@@ -16,14 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest.errors;
 
-import org.zalando.problem.AbstractThrowableProblem;
+import static org.zalando.problem.Status.BAD_REQUEST;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
+import org.zalando.problem.AbstractThrowableProblem;
 
 /**
  * Custom, parameterized exception, which can be translated on the client side.
@@ -50,7 +51,8 @@ public class CustomParameterizedException extends AbstractThrowableProblem {
     }
 
     public CustomParameterizedException(String message, Map<String, Object> paramMap) {
-        super(ErrorConstants.PARAMETERIZED_TYPE, "Parameterized Exception", BAD_REQUEST, null, null, null, toProblemParameters(message, paramMap));
+        super(ErrorConstants.PARAMETERIZED_TYPE, "Parameterized Exception", BAD_REQUEST, null, null, null,
+            toProblemParameters(message, paramMap));
     }
 
     public static Map<String, Object> toParamMap(String... params) {

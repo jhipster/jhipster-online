@@ -16,25 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import io.github.jhipster.online.domain.JdlMetadata;
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.service.JdlMetadataService;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.online.domain.JdlMetadata;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.JdlMetadataService;
+import io.github.jhipster.online.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing JdlMetadata.
@@ -83,7 +85,7 @@ public class JdlMetadataResource {
     public List<JdlMetadata> getAllJdlMetadata() {
         log.debug("REST request to get all JdlMetadata");
         return jdlMetadataService.findAllForCurrentUser();
-        }
+    }
 
     /**
      * GET  /jdl-metadata/:id : get the "id" jdlMetadata.

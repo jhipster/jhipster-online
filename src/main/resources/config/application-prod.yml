@@ -45,12 +45,12 @@ spring:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+#            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
     liquibase:
         contexts: prod
     mail:
-        host: localhost
-        port: 25
+        host:
+        port:
         username:
         password:
     thymeleaf:
@@ -129,4 +129,12 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+#    github:
+#        clientId: XXX
+#        clientSecret: XXX
+#    gitlab:
+#        clientId: XXX
+#        clientSecret: XXX
+#        host: XXX
+#        redirectUri: XXX

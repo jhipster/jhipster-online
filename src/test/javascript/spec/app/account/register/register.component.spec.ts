@@ -17,12 +17,13 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, throwError } from 'rxjs';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
 import { Register } from 'app/account/register/register.service';
 import { RegisterComponent } from 'app/account/register/register.component';
+import { PasswordResetService } from 'app/core';
 
 describe('Component Tests', () => {
     describe('RegisterComponent', () => {
@@ -34,7 +35,7 @@ describe('Component Tests', () => {
                 TestBed.configureTestingModule({
                     imports: [JhonlineTestModule],
                     declarations: [RegisterComponent],
-                    providers: [Register]
+                    providers: [Register, PasswordResetService]
                 })
                     .overrideTemplate(RegisterComponent, '')
                     .compileComponents();
@@ -61,7 +62,7 @@ describe('Component Tests', () => {
             inject(
                 [Register],
                 fakeAsync((service: Register) => {
-                    spyOn(service, 'save').and.returnValue(Observable.of({}));
+                    spyOn(service, 'save').and.returnValue(of({}));
                     comp.registerAccount.password = comp.confirmPassword = 'password';
 
                     comp.register();
@@ -86,7 +87,7 @@ describe('Component Tests', () => {
                 [Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(
-                        Observable.throw({
+                        throwError({
                             status: 400,
                             error: { type: LOGIN_ALREADY_USED_TYPE }
                         })
@@ -109,7 +110,7 @@ describe('Component Tests', () => {
                 [Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(
-                        Observable.throw({
+                        throwError({
                             status: 400,
                             error: { type: EMAIL_ALREADY_USED_TYPE }
                         })
@@ -132,7 +133,7 @@ describe('Component Tests', () => {
                 [Register],
                 fakeAsync((service: Register) => {
                     spyOn(service, 'save').and.returnValue(
-                        Observable.throw({
+                        throwError({
                             status: 503
                         })
                     );

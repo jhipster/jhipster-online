@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.repository;
 
 import java.util.Optional;
@@ -33,4 +34,6 @@ import io.github.jhipster.online.domain.Jdl;
 public interface JdlRepository extends JpaRepository<Jdl, String> {
 
     Optional<Jdl> findOneByJdlMetadataId(String id);
+
+    void deleteAllByJdlMetadataId(String id);
 }

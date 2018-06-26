@@ -16,17 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.jhipster.online.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import io.github.jhipster.online.domain.GithubOrganization;
-
-/**
- * Spring Data JPA repository for the GithubOrganization entity.
- */
-@Repository
-public interface GithubOrganizationRepository extends JpaRepository<GithubOrganization, Long> {
-
+export class GitCompanyModel {
+    constructor(public id: number, public name: string, public gitProvider: string) {}
 }

@@ -16,10 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class GithubOrganizationModel {
 
-    constructor(
-        public id: number,
-        public name: String
-    ) { }
+package io.github.jhipster.online.service.interfaces;
+
+import io.github.jhipster.online.domain.User;
+
+public interface GitProviderService {
+
+    boolean isEnabled();
+
+    void syncUserFromGitProvider() throws Exception;
+
+    User getSyncedUserFromGitProvider(User user) throws Exception;
+
+    void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
+        organization, String repositoryName);
+
+    int createPullRequest(User user, String organization, String applicationName,
+        String title, String branchName, String body) throws Exception;
+
 }

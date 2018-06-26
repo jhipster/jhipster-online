@@ -16,37 +16,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.config.Constants;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.MailService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.UserDTO;
-import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.online.web.rest.errors.EmailAlreadyUsedException;
-import io.github.jhipster.online.web.rest.errors.LoginAlreadyUsedException;
+import io.github.jhipster.online.web.rest.errors.*;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.online.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
 
 /**
  * REST controller for managing users.
@@ -85,7 +84,6 @@ public class UserResource {
     private final MailService mailService;
 
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
-
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
@@ -99,7 +97,8 @@ public class UserResource {
      * The user needs to be activated on creation.
      *
      * @param userDTO the user to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
+     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad
+     * Request) if the login or email is already in use
      * @throws URISyntaxException if the Location URI syntax is incorrect
      * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
      */
@@ -118,9 +117,13 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
+            if (mailService.isEnabled()) {
+                mailService.sendCreationEmail(newUser);
+            }
+
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("A user is created with identifier " + newUser.getLogin(), newUser
+                    .getLogin()))
                 .body(newUser);
         }
     }
@@ -203,6 +206,7 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "A user is deleted with identifier " + login, login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("A user is deleted with identifier " + login,
+            login)).build();
     }
 }

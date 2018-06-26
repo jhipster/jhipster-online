@@ -22,11 +22,6 @@ import { RouterModule } from '@angular/router';
 import { JhonlineSharedModule } from 'app/shared';
 
 import {
-    Register,
-    ActivateService,
-    PasswordService,
-    PasswordResetInitService,
-    PasswordResetFinishService,
     PasswordStrengthBarComponent,
     RegisterComponent,
     ActivateComponent,
@@ -34,6 +29,7 @@ import {
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
+    DeleteAccountDialogComponent,
     accountState
 } from './';
 
@@ -46,9 +42,10 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SettingsComponent
+        SettingsComponent,
+        DeleteAccountDialogComponent
     ],
-    providers: [Register, ActivateService, PasswordService, PasswordResetInitService, PasswordResetFinishService],
+    entryComponents: [DeleteAccountDialogComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAccountModule {}

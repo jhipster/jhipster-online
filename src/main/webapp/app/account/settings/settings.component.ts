@@ -17,8 +17,11 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Principal, AccountService } from 'app/core';
+import { DeleteAccountDialogComponent } from 'app/account/settings/delete-account-dialog.component';
 
 @Component({
     selector: 'jhi-settings',
@@ -30,12 +33,16 @@ export class SettingsComponent implements OnInit {
     settingsAccount: any;
     languages: any[];
 
-    constructor(private account: AccountService, private principal: Principal) {}
+    constructor(private account: AccountService, private principal: Principal, private modalService: NgbModal) {}
 
     ngOnInit() {
         this.principal.identity().then(account => {
             this.settingsAccount = this.copyAccount(account);
         });
+    }
+
+    deleteAccount() {
+        this.modalService.open(DeleteAccountDialogComponent, { size: 'lg', backdrop: 'static' });
     }
 
     save() {
@@ -54,7 +61,7 @@ export class SettingsComponent implements OnInit {
         );
     }
 
-    copyAccount(account) {
+    private copyAccount(account) {
         return {
             activated: account.activated,
             email: account.email,

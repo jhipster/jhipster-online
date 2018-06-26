@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
+
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
-import { GithubService } from '../github/github.service';
-import { GithubOrganizationModel } from '../generator/github.organization.model';
+import { GitProviderService } from '../git/git.service';
 import { JdlOutputDialogComponent } from './jdl.output.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { JdlService } from './jdl.service';
 
 @Component({
@@ -80,25 +80,20 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     submitted = false;
 
-    gitHubConfigured = true;
+    selectedGitProvider: string;
+    selectedGitCompany: string;
+    selectedGitRepository: string;
 
-    organizations: GithubOrganizationModel[];
+    isGithubConfigured: boolean;
+    isGitlabConfigured: boolean;
 
-    gitHubOrganization: String;
-
-    projects: String[];
-
-    gitHubProject: String;
-
-    baseName: String;
-
-    githubRefresh = false;
+    gitlabHost: string;
 
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
         private route: ActivatedRoute,
-        private githubService: GithubService,
+        private gitService: GitProviderService,
         private jdlService: JdlService
     ) {}
 
@@ -108,60 +103,33 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
                 (jdlMetadata: JdlMetadata) => {
                     this.jdlId = jdlMetadata.id;
                     this.jdlModelName = jdlMetadata.name;
-                    this.updateGitHubOrganizations();
                 },
                 (res: any) => console.log(res)
             );
         });
+        this.gitService.getGitlabConfig().subscribe(config => {
+            this.gitlabHost = config.host;
+        });
     }
 
-    refreshGithub() {
-        this.githubRefresh = true;
-        this.githubService.refreshGithub().subscribe(
-            () => {
-                this.githubRefresh = false;
-                this.updateGitHubOrganizations();
-            },
-            () => {
-                this.githubRefresh = false;
-            }
-        );
-    }
-
-    updateGitHubOrganizations() {
-        this.githubService.getOrganizations().subscribe(
-            orgs => {
-                this.organizations = orgs;
-                this.gitHubOrganization = orgs[0].name;
-                this.gitHubConfigured = true;
-                this.updateGitHubProjects(this.gitHubOrganization);
-            },
-            () => {
-                this.gitHubConfigured = false;
-            }
-        );
-    }
-
-    updateGitHubProjects(organizationName: String) {
-        this.githubService.getProjects(organizationName).subscribe(
-            projects => {
-                this.projects = projects;
-                this.gitHubProject = projects[0];
-                this.gitHubConfigured = true;
-            },
-            () => {
-                this.gitHubConfigured = false;
-            }
-        );
+    updateSharedData(data: any) {
+        this.selectedGitProvider = data.selectedGitProvider;
+        this.selectedGitCompany = data.selectedGitCompany;
+        this.selectedGitRepository = data.selectedGitRepository;
+        this.isGithubConfigured = data.isGithubConfigured;
+        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     applyJdl() {
-        this.jdlService.doApplyJdl(this.gitHubOrganization, this.gitHubProject, this.jdlId).subscribe(
+        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.jdlId).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
             },
-            () => console.log('Error applying the JDL Model.')
+            err => {
+                console.log('Error applying the JDL Model.');
+                console.log(err);
+            }
         );
     }
 
@@ -169,8 +137,10 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
-        modalRef.gitHubOrganization = this.gitHubOrganization;
-        modalRef.gitHubProject = this.gitHubProject;
+        modalRef.gitlabHost = this.gitlabHost;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
+        modalRef.selectedGitCompany = this.selectedGitCompany;
+        modalRef.selectedGitRepository = this.selectedGitRepository;
     }
 
     ngOnDestroy() {

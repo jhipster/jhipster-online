@@ -17,11 +17,11 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
-import { AccountService } from './account.service';
+import { AccountService } from 'app/core/auth/account.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class Principal {
     private userIdentity: any;
     private authenticated = false;

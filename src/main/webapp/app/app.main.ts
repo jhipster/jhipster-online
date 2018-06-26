@@ -27,6 +27,6 @@ if (module['hot']) {
 }
 
 platformBrowserDynamic()
-    .bootstrapModule(JhonlineAppModule)
-    .then(success => console.log(`Application started`))
+    .bootstrapModule(JhonlineAppModule, { preserveWhitespaces: true })
+    .then(() => console.log(`Application started`))
     .catch(err => console.error(err));

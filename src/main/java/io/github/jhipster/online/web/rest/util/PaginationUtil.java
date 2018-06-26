@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest.util;
 
 import org.springframework.data.domain.Page;
@@ -58,6 +59,7 @@ public final class PaginationUtil {
     }
 
     private static String generateUri(String baseUrl, int page, int size) {
-        return UriComponentsBuilder.fromUriString(baseUrl).queryParam("page", page).queryParam("size", size).toUriString();
+        return UriComponentsBuilder.fromUriString(baseUrl).queryParam("page", page).queryParam("size", size)
+            .toUriString();
     }
 }
