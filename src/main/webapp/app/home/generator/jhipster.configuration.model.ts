@@ -20,7 +20,7 @@
 export class JHipsterConfigurationModel {
     constructor(
         public applicationType: String,
-        public gitHubOrganization: String,
+        public gitCompany: String,
         public baseName: String,
         public packageName: String,
         public packageFolder: String,

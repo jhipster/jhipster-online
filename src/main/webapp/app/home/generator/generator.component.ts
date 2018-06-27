@@ -183,6 +183,7 @@ export class GeneratorComponent implements OnInit {
     newGenerator() {
         this.model = new JHipsterConfigurationModel(
             'monolith',
+            '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
             'io/github/jhipster/application',
