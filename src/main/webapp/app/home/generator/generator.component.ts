@@ -140,6 +140,7 @@ export class GeneratorComponent implements OnInit {
         if (this.model.enableTranslation && this.model.languages.indexOf(this.model.nativeLanguage) === -1) {
             this.model.languages.push(this.model.nativeLanguage);
         }
+        this.model.jhiPrefix = 'jhi';
     }
 
     onSubmit() {
@@ -216,7 +217,8 @@ export class GeneratorComponent implements OnInit {
             false,
             'en',
             ['en'],
-            'angularX'
+            'angularX',
+            'jhi'
         );
     }
 

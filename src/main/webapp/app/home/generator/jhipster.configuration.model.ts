@@ -45,6 +45,7 @@ export class JHipsterConfigurationModel {
         public enableTranslation: Boolean,
         public nativeLanguage: String,
         public languages: String[],
-        public clientFramework: String
+        public clientFramework: String,
+        public jhiPrefix: String
     ) { }
 }
