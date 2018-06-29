@@ -85,7 +85,7 @@ public class GitlabService implements GitProviderService {
         if (user.isPresent()) {
             this.getSyncedUserFromGitProvider(user.get());
         } else {
-            log.info("No user `{} was found to sync with GitHub");
+            log.info("No user `{} was found to sync with GitLab ");
         }
     }
 
@@ -118,7 +118,7 @@ public class GitlabService implements GitProviderService {
             List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
             myGroup.setGitProjects(projects);
         } catch (IOException e) {
-            log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+            log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
         groups.add(myGroup);
 
@@ -138,7 +138,7 @@ public class GitlabService implements GitProviderService {
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                 company.setGitProjects(projects);
             } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
+                log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
             }
         });
 
