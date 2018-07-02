@@ -231,7 +231,7 @@ export class GeneratorComponent implements OnInit {
             this.model.serviceDiscoveryType = 'eureka';
         }
         // database
-        if (this.model.applicationType !== 'microservice' && this.model.databaseType === 'no') {
+        if (this.model.databaseType === 'no') {
             this.model.databaseType = 'sql';
             this.changeDatabaseType();
         }
