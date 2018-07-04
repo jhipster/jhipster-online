@@ -24,12 +24,8 @@ import { Observable } from 'rxjs';
 export class StatisticsService {
     constructor(private http: HttpClient) {}
 
-    countYoRC(): Observable<string> {
-        return this.http.get(`/api/s/count-yorc`, { responseType: 'text' });
-    }
-
-    countYoRCByDate(date: Date): Observable<string> {
-        return this.http.get(`/api/s/count-yorc/${date}`, { responseType: 'text' });
+    countYoRC(): Observable<any> {
+        return this.http.get(`/api/yo-rcs/count`);
     }
 
     countUsers(): Observable<string> {
@@ -42,5 +38,21 @@ export class StatisticsService {
 
     getYoRCs(): Observable<any> {
         return this.http.get(`/api/yo-rcs`);
+    }
+
+    countYoRCByYears(): Observable<any> {
+        return this.http.get(`/api/s/count-yorc/yearly`);
+    }
+
+    countYoRCByMonths(): Observable<any> {
+        return this.http.get(`/api/s/count-yorc/monthly`);
+    }
+
+    countYoRCByDays(): Observable<any> {
+        return this.http.get(`/api/s/count-yorc/daily`);
+    }
+
+    countAllByClientFramework(): Observable<any> {
+        return this.http.get(`/api/s/client-framework`);
     }
 }

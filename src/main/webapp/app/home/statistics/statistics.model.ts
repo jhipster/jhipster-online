@@ -19,9 +19,6 @@ export class BasicChart {
 }
 
 export class LineChart extends BasicChart {
-    private minZoom: string;
-    private maxZoom: string;
-
     constructor(echartsService: NgxEchartsService, chartOptions: ChartOptions, elementRef: ElementRef, data: any) {
         super(echartsService, chartOptions, elementRef, data);
     }
@@ -29,15 +26,7 @@ export class LineChart extends BasicChart {
     build() {
         this.chartInstance = this.echartsService.init(this.elementRef.nativeElement);
         this.chartInstance.setOption(this.chartOptions);
-        // this.setupEventsHandlers();
         return this;
-    }
-
-    setupEventsHandlers() {
-        this.chartInstance.on('dataZoom', () => {
-            this.minZoom = Object.keys(this.data)[this.chartInstance.getOption().dataZoom[0].startValue];
-            this.maxZoom = Object.keys(this.data)[this.chartInstance.getOption().dataZoom[0].endValue];
-        });
     }
 }
 
@@ -70,6 +59,8 @@ export interface ChartSeries {
     itemStyle?: any;
 
     stack?: string;
+    smooth?: boolean;
+    symbolSize?: number;
     showSymbol?: boolean;
     label?: any;
     areaStyle?: any;

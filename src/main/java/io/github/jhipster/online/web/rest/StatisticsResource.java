@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.Instant;
+import java.time.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/s")
@@ -38,16 +41,33 @@ public class StatisticsResource {
         this.generatorIdentityService = generatorIdentityService;
     }
 
-    @GetMapping("/count-yorc/{date}")
+    @GetMapping("/count-yorc/yearly")
     @Timed
-    public long getYoRcCount(@PathVariable Instant date) {
-        return yoRCService.countAllByCreationDate(date);
+    public Map<LocalDate, Long> getCountAllByYear() {
+        return yoRCService.getCountAllByYear();
     }
 
-    @GetMapping("/count-yorc")
+    @GetMapping("/count-yorc/monthly")
     @Timed
-    public long getYoRcCount() {
-        return yoRCService.countAll();
+    public Map<LocalDate, Long>  getCountAllByMonth() {
+        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
+        Map<LocalDate, Long>  data = yoRCService.getCountAllByMonth(aYearAgo);
+
+        return data;
+    }
+
+    @GetMapping("/count-yorc/daily")
+    @Timed
+    public  Map<LocalDate, Long>  getCountAllByDay() {
+        Instant aMonthAgo = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
+        return yoRCService.getCountAllByDay(aMonthAgo);
+    }
+
+    @GetMapping("/client-framework")
+    @Timed
+    public List<TemporalDistributionDTO> countAllByClientFramework() {
+        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
+        return yoRCService.countAllByClientFrameworkByMonth(aYearAgo);
     }
 
     @GetMapping("/count-jdl")

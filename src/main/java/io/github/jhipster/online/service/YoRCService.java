@@ -8,6 +8,7 @@ import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.time.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing YoRC.
  */
@@ -38,15 +39,11 @@ public class YoRCService {
 
     private final LanguageService languageService;
 
-//    private final OwnerIdentityService ownerIdentityService;
-
-//    private final UserService userService;
-
     public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserRepository userRepository, LanguageService languageService) {
         this.yoRCRepository = yoRCRepository;
 //        this.ownerIdentityService = ownerIdentityService;
 //        this.userService = userService;
-        // this.addFakeData();
+//        this.addFakeData();
         this.ownerIdentityService = ownerIdentityService;
         this.userRepository = userRepository;
         this.languageService = languageService;
@@ -102,12 +99,53 @@ public class YoRCService {
         yoRCRepository.deleteById(id);
     }
 
-    public long countAllByCreationDate(Instant date) {
-        return yoRCRepository.countAllByCreationDate(date);
-    }
-
     public long countAll() {
         return yoRCRepository.count();
+    }
+
+    public Map<LocalDate, Long> getCountAllByYear() {
+        List<Object[]> dataFromDb = yoRCRepository.countAllByYear();
+        Map<LocalDate, Long> resultMap = new LinkedHashMap<>(dataFromDb.size());
+        for (Object[] result : dataFromDb) {
+            String rawDate = result[0].toString();
+            LocalDate localDate = getLocalDateByYear(rawDate);
+            resultMap.put(localDate, (Long)result[1]);
+        }
+        return resultMap;
+    }
+
+    public Map<LocalDate, Long> getCountAllByMonth(Instant date) {
+        List<Object[]> dataFromDb = yoRCRepository.countAllByMonth(date);
+        Map<LocalDate, Long> resultMap = new LinkedHashMap<>(dataFromDb.size());
+        for (Object[] result : dataFromDb) {
+            String rawDate = result[0].toString();
+            LocalDate localDate = getLocalDateByMonth(rawDate);
+            resultMap.put(localDate, (Long)result[1]);
+        }
+        return resultMap;
+    }
+
+    public Map<LocalDate, Long> getCountAllByDay(Instant date) {
+        List<Object[]> dataFromDb = yoRCRepository.countAllByDay(date);
+        Map<LocalDate, Long> resultMap = new LinkedHashMap<>(dataFromDb.size());
+        for (Object[] result : dataFromDb) {
+            resultMap.put(((Date) result[0]).toLocalDate(), (Long)result[1]);
+        }
+        return resultMap;
+    }
+
+    public  List<TemporalDistributionDTO> countAllByClientFrameworkByMonth(Instant date) {
+        List<Object[]> dataFromDb = yoRCRepository.countAllByClientFrameworkByMonth(date);
+        return dataFromDb.stream().collect(Collectors.groupingBy(a -> a[0]))
+            .entrySet()
+            .stream()
+            .map(entry -> {
+                String rawDate = entry.getKey().toString();
+                LocalDate localDate = getLocalDateByMonth(rawDate);
+                Map<String, Long> values = new HashMap<>();
+                entry.getValue().forEach(e -> values.put((String)e[1], (Long)e[2]));
+                return new TemporalDistributionDTO(localDate, values);
+            }).collect(Collectors.toList());
     }
 
     public void save(String applicationConfiguration) {
@@ -127,9 +165,17 @@ public class YoRCService {
         }
     }
 
+    private LocalDate getLocalDateByYear(String rawDate) {
+        return LocalDate.of(Integer.parseInt(rawDate.substring(0, 4)), 1, 1);
+    }
+
+    private LocalDate getLocalDateByMonth(String rawDate) {
+        return LocalDate.of(Integer.parseInt(rawDate.substring(0, 4)), Integer.parseInt(rawDate.substring(4, 6)), 1);
+    }
+
     public void addFakeData() {
         Instant now = Instant.now();
-        Instant start = now.minus(Duration.ofDays(365));
+        Instant start = now.minus(Duration.ofDays(700));
 
         String jhipsterVersion = "5.0.2";
         String gitProvider = "";
@@ -168,7 +214,7 @@ public class YoRCService {
             YoRC yorc = new YoRC();
 
             Duration between = Duration.between(start, now);
-            Instant createdDate = now.minus(Duration.ofSeconds((int)(Math.random() * between.getSeconds()))).truncatedTo(ChronoUnit.DAYS);
+            Instant createdDate = now.minus(Duration.ofSeconds((int)(Math.random() * between.getSeconds())));
 
             int randomUserLang = (int)(Math.random() * 3);
             if (randomUserLang == 0) {
