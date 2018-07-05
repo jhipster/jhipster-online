@@ -88,7 +88,7 @@ public class GitResourceIntTest {
     @Test
     public void testGetClientIdWithUnknownGitProvider() throws Exception {
         restMvc.perform(
-            get("/api/{gitProvider}/client-id", "Microsoft-GitHub")
+            get("/api/{gitProvider}/client-id", "TestProvider")
                 .accept(MediaType.APPLICATION_JSON)
                 .accept(MediaType.TEXT_PLAIN_VALUE))
             .andExpect(status().isInternalServerError());
@@ -110,7 +110,7 @@ public class GitResourceIntTest {
     public void testSaveTokenWithUnknownGitProvider() throws Exception {
         final String code = "ret66spihj6sio4bud2";
         restMvc.perform(
-            post("/api/{gitProvider}/save-token", "Microsoft-GitHub")
+            post("/api/{gitProvider}/save-token", "TestProvider")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(code))
             .andExpect(status().isInternalServerError());
@@ -118,9 +118,9 @@ public class GitResourceIntTest {
 
     @Test
     public void testRefreshGithubWithUnknownProvider() throws Exception {
-        final String unavailableGitProvider = "Microsoft-GitHub";
+        final String unavailableGitProvider = "TestProvider";
         restMvc.perform(
-            post("/api/{gitProvider}/refresh", "Microsoft-GitHub")
+            post("/api/{gitProvider}/refresh", "TestProvider")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string("Unknown git provider: " + unavailableGitProvider));

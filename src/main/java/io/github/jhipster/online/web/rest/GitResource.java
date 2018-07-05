@@ -45,6 +45,10 @@ public class GitResource {
 
     private final Logger log = LoggerFactory.getLogger(GitResource.class);
 
+    public static final String GITHUB = "github";
+
+    public static final String GITLAB = "gitlab";
+
     private final ApplicationProperties applicationProperties;
 
     private final UserService userService;
@@ -71,7 +75,7 @@ public class GitResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity getClientId(@PathVariable String gitProvider) {
-        switch (GitProvider.valueOf(gitProvider.toUpperCase())) {
+        switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 return new ResponseEntity<>(this.applicationProperties.getGithub().getClientId(), HttpStatus.OK);
             case GITLAB:
@@ -88,7 +92,7 @@ public class GitResource {
     @GetMapping("/callback/{gitProvider}")
     @Timed
     public RedirectView callback(@PathVariable String gitProvider, String code) {
-        switch (GitProvider.valueOf(gitProvider.toUpperCase())) {
+        switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);
                 return new RedirectView("/#/callback/github/" + code);
@@ -115,7 +119,7 @@ public class GitResource {
             String url;
             GitProvider gitProviderEnum;
             GitAccessTokenRequest request = new GitAccessTokenRequest();
-            switch (GitProvider.valueOf(gitProvider.toUpperCase())) {
+            switch (gitProvider.toLowerCase()) {
                 case GITHUB:
                     url = applicationProperties.getGithub().getHost() + "/login/oauth/access_token";
                     gitProviderEnum = GitProvider.GITHUB;
@@ -234,7 +238,7 @@ public class GitResource {
     ResponseEntity refreshGithub(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
-            switch (GitProvider.valueOf(gitProvider.toUpperCase())) {
+            switch (gitProvider.toLowerCase()) {
                 case GITHUB:
                     this.githubService.syncUserFromGitProvider();
                     break;
