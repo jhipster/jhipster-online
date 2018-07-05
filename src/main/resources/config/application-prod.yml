@@ -49,6 +49,7 @@ spring:
     liquibase:
         contexts: prod
     mail:
+        enabled: true
         host:
         port:
         username:
@@ -124,17 +125,15 @@ jhipster:
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
 # to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
+#application:
 #    github:
-#        clientId: XXX
-#        clientSecret: XXX
+#        client-id: XXX
+#        client-secret: XXX
+#        host: https://github.com
 #    gitlab:
-#        clientId: XXX
-#        clientSecret: XXX
-#        host: XXX
-#        redirectUri: XXX
+#        client-id: XXX
+#        client-secret: XXX
+#        host: https://gitlab.com
+#        redirect-uri: XXX

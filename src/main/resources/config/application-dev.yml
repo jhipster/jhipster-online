@@ -33,7 +33,7 @@ spring:
 
     datasource:
             type: com.zaxxer.hikari.HikariDataSource
-            url: jdbc:mysql://localhost:3306/jhonline?useUnicode=true&characterEncoding=utf8&useSSL=false
+            url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false
             username: root
             password:
             hikari:
@@ -113,6 +113,7 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
+        enabled: true
         from: jhonline@localhost
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -132,17 +133,17 @@ jhipster:
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
 # to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 #application:
 #    github:
-#        clientId: XXX
-#        clientSecret: XXX
+#        host: https://github.com
+#        client-id: XXX
+#        client-secret: XXX
+#        jhipster-bot-oauth-token: XXX
 #    gitlab:
-#        clientId: XXX
-#        clientSecret: XXX
-#        host: XXX
-#        redirectUri: XXX
+#        host: https://gitlab.com
+#        client-id: XXX
+#        client-secret: XXX
+#        redirect-uri: XXX
+#        jhipster-bot-oauth-token: XXX
