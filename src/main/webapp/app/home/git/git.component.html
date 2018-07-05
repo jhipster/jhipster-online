@@ -68,7 +68,7 @@
     <ng-container>
         <p class="text-center" *ngIf="!isGitlabConfigured">
             <a (disabled)="isAuthorizingGitlab" class="btn btn-primary"
-               href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
+               href="{{gitlabHost}}/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
             <span *ngIf="!isAuthorizingGitlab">
                 <i class="fab fa-gitlab"></i>
                 Authorize GitLab
