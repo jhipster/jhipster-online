@@ -312,4 +312,14 @@ public class GitResource {
         config.put("redirectUri", gitlabService.getRedirectUri());
         return new ResponseEntity<>(config, HttpStatus.OK);
     }
+
+    @GetMapping("/github/config")
+    @Timed
+    @Secured(AuthoritiesConstants.USER)
+    public @ResponseBody
+    ResponseEntity getGithubConfig() {
+        Map<String, String> config = new HashMap<>();
+        config.put("host", githubService.getHost());
+        return new ResponseEntity<>(config, HttpStatus.OK);
+    }
 }
