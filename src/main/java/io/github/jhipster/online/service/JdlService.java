@@ -122,7 +122,8 @@ public class JdlService {
                 int pullRequestNumber =
                     this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
-                this.logsService.addLog(applyJdlId, "Pull Request created at https://github.com/" +
+                this.logsService.addLog(applyJdlId, "Pull Request created at " + githubService.getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +
@@ -134,6 +135,7 @@ public class JdlService {
                     this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
                 this.logsService.addLog(applyJdlId, "Merge Request created at " + gitlabService.getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +

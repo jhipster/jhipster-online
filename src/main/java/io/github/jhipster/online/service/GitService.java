@@ -61,7 +61,7 @@ public class GitService {
         log.debug("Adding remote repository {} / {}", organization, applicationName);
         URIish urIish = null;
         if (gitProvider.equals(GitProvider.GITHUB)) {
-            urIish = new URIish("https://github.com/" + organization + "/" + applicationName + ".git");
+            urIish = new URIish(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git");
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
             urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" +
                 applicationName + ".git").setPass(user.getGitlabOAuthToken());
@@ -115,7 +115,7 @@ public class GitService {
                 .call();
         } else if (gitProvider.equals(GitProvider.GITHUB)) {
             git = Git.cloneRepository()
-                .setURI("https://github.com/" + organization + "/" + applicationName + ".git")
+                .setURI(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git")
                 .setDirectory(workingDir)
                 .setCredentialsProvider(getCredentialProvider(user, gitProvider))
                 .setCloneAllBranches(false)

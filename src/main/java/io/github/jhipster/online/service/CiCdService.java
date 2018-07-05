@@ -112,6 +112,7 @@ public class CiCdService {
                         branchName, pullRequestBody);
                 this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab()
                     .getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +
@@ -122,7 +123,9 @@ public class CiCdService {
                 int pullRequestNumber =
                     this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at https://github.com/" +
+                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGithub()
+                    .getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +
