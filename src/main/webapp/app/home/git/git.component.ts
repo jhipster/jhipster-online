@@ -64,8 +64,7 @@ export class GitComponent implements OnInit {
                     }
                 });
                 this.gitService.getGithubConfig().subscribe(config => {
-                    this.gitlabHost = config.host;
-                    this.gitlabRedirectUri = config.redirectUri;
+                    this.githubHost = config.host;
                 });
                 this.isGithubAvailable = true;
             }
