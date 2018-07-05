@@ -38,6 +38,7 @@ export class GitComponent implements OnInit {
     isAuthorizingGithub = false;
     isAuthorizingGitlab = false;
 
+    githubHost: string;
     gitlabHost: string;
     gitlabRedirectUri: string;
 
@@ -71,6 +72,10 @@ export class GitComponent implements OnInit {
                         this.isGithubConfigured = false;
                     }
                 );
+                this.gitService.getGithubConfig().subscribe(config => {
+                    this.gitlabHost = config.host;
+                    this.gitlabRedirectUri = config.redirectUri;
+                });
                 this.isGithubAvailable = true;
             }
         });

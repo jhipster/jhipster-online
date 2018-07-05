@@ -53,4 +53,8 @@ export class GitProviderService {
     getGitlabConfig(): Observable<any> {
         return this.http.get<any>('api/gitlab/config');
     }
+
+    getGithubConfig(): Observable<any> {
+        return this.http.get<any>('api/github/config');
+    }
 }
