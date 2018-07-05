@@ -61,6 +61,7 @@ public class ApplicationProperties {
     public static class Github {
         private String clientId;
         private String clientSecret;
+        private String host = "https://github.com";
         private String jhipsterBotOauthToken = "";
 
         public String getClientId() {
@@ -79,6 +80,14 @@ public class ApplicationProperties {
             this.clientSecret = clientSecret;
         }
 
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
         public String getJhipsterBotOauthToken() {
             return jhipsterBotOauthToken;
         }
@@ -91,7 +100,7 @@ public class ApplicationProperties {
     public static class Gitlab {
         private String clientId;
         private String clientSecret;
-        private String host;
+        private String host = "https://gitlab.com";
         private String redirectUri;
         private String jhipsterBotOauthToken = "";
 
