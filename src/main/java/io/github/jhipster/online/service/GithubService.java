@@ -22,6 +22,8 @@ package io.github.jhipster.online.service;
 import java.io.IOException;
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+
 import org.kohsuke.github.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +66,17 @@ public class GithubService implements GitProviderService {
         this.logsService = logsService;
         this.gitCompanyRepository = gitCompanyRepository;
         this.userRepository = userRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        if (isEnabled()) {
+            if (this.applicationProperties.getGithub().getHost().equals("https://github.com")) {
+                log.warn("JHipster Online is configured to work on the public GitHub instance at https://github.com");
+            } else {
+                log.warn("JHipster Online is configured to work on a private GitHub instance at {}", this.applicationProperties.getGithub().getHost());
+            }
+        }
     }
 
     @Override
@@ -198,6 +211,10 @@ public class GithubService implements GitProviderService {
 
         log.info("Pull Request created!");
         return number;
+    }
+
+    public String getHost() {
+        return applicationProperties.getGithub().getHost();
     }
 
     /**

@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.GitlabProject;
@@ -67,6 +69,17 @@ public class GitlabService implements GitProviderService {
         this.logsService = logsService;
         this.userRepository = userRepository;
         this.gitCompanyRepository = gitCompanyRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        if (isEnabled()) {
+            if (this.applicationProperties.getGitlab().getHost().equals("https://gitlab.com")) {
+                log.warn("JHipster Online is configured to work on the public GitLab instance at https://gitlab.com");
+            } else {
+                log.warn("JHipster Online is configured to work on a private GitLab instance at {}", this.applicationProperties.getGitlab().getHost());
+            }
+        }
     }
 
     @Override
