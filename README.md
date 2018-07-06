@@ -106,7 +106,7 @@ as any private instance of GitHub Enterprise that is configured inside your comp
 JHipster Online has to be configured as an "OAuth App": create a `jhipster` organization,
 and go to that organization's "Settings > Developer Settings > OAuth Apps" to create a new "OAuth App" with
 the required credentials. This will allow JHipster Online to create applications and pull requests on your
-behalf. Jhipser online uses `https://your-jhipster-online-url/api/callback` as callback endpoint.
+behalf. JHipster Online uses `https://your-jhipster-online-url/api/callback` as callback endpoint.
 
 JHipster Online also needs to have a specific "JHipster Bot" user configured, like the  
 [https://github.com/jhipster-bot](https://github.com/jhipster-bot) used by the official [JHipster Online website](https://start.jhipster.tech/).
