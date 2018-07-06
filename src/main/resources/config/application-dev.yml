@@ -136,6 +136,7 @@ jhipster:
 # ===================================================================
 
 #application:
+#    tmp-folder: /tmp
 #    github:
 #        host: https://github.com
 #        client-id: XXX

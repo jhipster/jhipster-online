@@ -10,12 +10,13 @@ You can use [https://start.jhipster.tech/](https://start.jhipster.tech/) for fre
 feature, you are welcome to contribute to the project. You can also choose to clone or fork the project, and have your own version
 that is hosted within your company.
 
-## Quickstart guide
+## Quick start guide
 
 JHipster Online is a JHipster application, so you can follow the [JHipster documentation](https://www.jhipster.tech/) to
-learn how to configure and set up JHipster Online. In that documentation, the 
-[JHipster common application properties](https://www.jhipster.tech/common-application-properties/) will probably be very
-useful.
+learn how to configure and set up JHipster Online.
+
+This quick start guide uses the default configuration that comes with JHipster Online: please read 
+the next section for details on configuring the application.
 
 - Install and run the front-end:
 
@@ -53,6 +54,24 @@ Then run:
 ## Specific configuration
 
 This section covers what is specific to JHipster Online over a normal JHipster application.
+
+For standard JHipster configuration, the [JHipster common application properties](https://www.jhipster.tech/common-application-properties/)
+will probably be very useful.
+
+### JHipster installation and execution
+
+JHipster Online generates a JHipster application by running the `jhipster` command line. In order for that
+command line to work, you need to have JHipster installed on your machine.
+
+We recommend you use the "Yarn installation" from the official [JHipster installation documentation](https://www.jhipster.tech/installation/).
+
+The applications will be generated in a temporary folder, which is `/tmp` by default. To customize that folder,
+configure the Spring Boot `application-*.yml` files as usual:
+
+```
+application:
+    tmp-folder: /tmp
+```
 
 ### Database configuration
 
