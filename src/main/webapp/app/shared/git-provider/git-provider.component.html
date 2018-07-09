@@ -20,7 +20,9 @@
                     <select id="gitCompany" [(ngModel)]="data.selectedGitCompany" name="gitCompany"
                             class="form-control"
                             #ctrl="ngModel"
-                            (ngModelChange)="updateGitProjectList($event)">
+                            (ngModelChange)="updateGitProjectList($event)"
+                            [disabled]="data.gitProjectListRefresh"
+                    >
                         <option *ngFor="let company of data.gitCompanies">{{company.name}}</option>
                     </select>
                 </div>
@@ -47,7 +49,9 @@
                         <label for="gitRepository">Git repository</label>
                         <select id="gitRepository" (ngModelChange)="updateSelectedGitRepository($event)" [(ngModel)]="data.selectedGitRepository" name="gitRepository"
                                 class="form-control"
-                                #ctrl="ngModel">
+                                #ctrl="ngModel"
+                                [disabled]="data.gitProjectListRefresh"
+                        >
                             <option *ngFor="let project of data.gitProjects">{{project}}</option>
                         </select>
                     </div>
