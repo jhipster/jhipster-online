@@ -81,7 +81,7 @@
         </p>
         <p class="text-center" *ngIf="isGitlabConfigured">
             <a class="btn btn-warning"
-               href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
+               href="{{gitlabHost}}/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
                 <i class="fab fa-gitlab"></i> JHipster
                 is already authorized, click here to re-synchronize your Gitlab account
             </a>
