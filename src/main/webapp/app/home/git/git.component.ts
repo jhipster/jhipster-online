@@ -62,7 +62,7 @@ export class GitComponent implements OnInit {
                     } else {
                         this.isGithubConfigured = true;
                     }
-                });
+                }, () => (this.isAuthorizingGithub = false));
                 this.gitService.getGithubConfig().subscribe(config => {
                     this.githubHost = config.host;
                 });
@@ -84,7 +84,7 @@ export class GitComponent implements OnInit {
                     } else {
                         this.isGitlabConfigured = true;
                     }
-                });
+                }, () => (this.isAuthorizingGitlab = false));
                 this.gitService.getGitlabConfig().subscribe(config => {
                     this.gitlabHost = config.host;
                     this.gitlabRedirectUri = config.redirectUri;
