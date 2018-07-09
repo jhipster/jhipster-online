@@ -80,4 +80,8 @@ public class OwnerIdentityService {
     public OwnerIdentity findOrCreateUser(User user) {
         return ownerIdentityRepository.findByOwner(user).orElseGet(() -> ownerIdentityRepository.save(new OwnerIdentity().owner(user)));
     }
+
+    public Optional<OwnerIdentity> findByUser(User user) {
+        return ownerIdentityRepository.findByOwner(user);
+    }
 }

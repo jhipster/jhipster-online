@@ -2,6 +2,7 @@ package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.OwnerIdentity;
+import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -52,6 +54,23 @@ public class GeneratorIdentityService {
     public List<GeneratorIdentity> findAll() {
         log.debug("Request to get all GeneratorIdentities");
         return generatorIdentityRepository.findAll();
+    }
+
+    /**
+     * Get all the generatorIdentities.
+     *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<GeneratorIdentity> findAllOwned() {
+        log.debug("Request to get all GeneratorIdentities");
+        Optional<OwnerIdentity> ownerIdentity = ownerIdentityService.findByUser(userService.getUser());
+
+        if (ownerIdentity.isPresent()) {
+            return generatorIdentityRepository.findAllByOwner(ownerIdentity.get());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 
@@ -103,6 +122,21 @@ public class GeneratorIdentityService {
 
         OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(userService.getUser());
         save(findOrCreateOneByGuid(guid).owner(ownerIdentity));
+
+        return true;
+    }
+
+    public boolean unbindCurrentUserFromGenerator(String guid) {
+        Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidIs(guid);
+
+        User currentUser  = userService.getUser();
+        OwnerIdentity owner  = maybeGeneratorIdentity.get().getOwner();
+        if (!maybeGeneratorIdentity.isPresent() || owner == null || owner.equals(currentUser)) {
+            return false;
+        }
+
+        maybeGeneratorIdentity.get().setOwner(null);
+        generatorIdentityRepository.save(maybeGeneratorIdentity.get());
 
         return true;
     }

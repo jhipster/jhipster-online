@@ -34,10 +34,10 @@ public class EntityStats implements Serializable {
     private String pagination;
 
     @Column(name = "dto")
-    private Boolean dto;
+    private String dto;
 
     @Column(name = "service")
-    private Boolean service;
+    private String service;
 
     @Column(name = "fluent_methods")
     private Boolean fluentMethods;
@@ -97,29 +97,29 @@ public class EntityStats implements Serializable {
         this.pagination = pagination;
     }
 
-    public Boolean isDto() {
+    public String isDto() {
         return dto;
     }
 
-    public EntityStats dto(Boolean dto) {
+    public EntityStats dto(String dto) {
         this.dto = dto;
         return this;
     }
 
-    public void setDto(Boolean dto) {
+    public void setDto(String dto) {
         this.dto = dto;
     }
 
-    public Boolean isService() {
+    public String isService() {
         return service;
     }
 
-    public EntityStats service(Boolean service) {
+    public EntityStats service(String service) {
         this.service = service;
         return this;
     }
 
-    public void setService(Boolean service) {
+    public void setService(String service) {
         this.service = service;
     }
 

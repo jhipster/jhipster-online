@@ -18,23 +18,11 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { JhonlineSubGenEventModule } from './sub-gen-event/sub-gen-event.module';
-import { JhonlineEntityStatsModule } from './entity-stats/entity-stats.module';
-import { JhonlineLanguageModule } from './language/language.module';
-import { JhonlineOwnerIdentityModule } from './owner-identity/owner-identity.module';
-import { JhonlineGeneratorIdentityModule } from './generator-identity/generator-identity.module';
-import { JhonlineYoRCModule } from './yo-rc/yo-rc.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
     // prettier-ignore
     imports: [
-        JhonlineSubGenEventModule,
-        JhonlineEntityStatsModule,
-        JhonlineLanguageModule,
-        JhonlineOwnerIdentityModule,
-        JhonlineGeneratorIdentityModule,
-        JhonlineYoRCModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -52,11 +52,11 @@ public class EntityStatsResourceIntTest {
     private static final String DEFAULT_PAGINATION = "AAAAAAAAAA";
     private static final String UPDATED_PAGINATION = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_DTO = false;
-    private static final Boolean UPDATED_DTO = true;
+    private static final String DEFAULT_DTO = "AAAAAAAAAA";
+    private static final String UPDATED_DTO = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_SERVICE = false;
-    private static final Boolean UPDATED_SERVICE = true;
+    private static final String DEFAULT_SERVICE = "AAAAAAAAAA";
+    private static final String UPDATED_SERVICE = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_FLUENT_METHODS = false;
     private static final Boolean UPDATED_FLUENT_METHODS = true;
@@ -67,7 +67,7 @@ public class EntityStatsResourceIntTest {
     @Autowired
     private EntityStatsRepository entityStatsRepository;
 
-    
+
 
     @Autowired
     private EntityStatsService entityStatsService;
@@ -179,12 +179,12 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].fields").value(hasItem(DEFAULT_FIELDS)))
             .andExpect(jsonPath("$.[*].relationships").value(hasItem(DEFAULT_RELATIONSHIPS)))
             .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION.toString())))
-            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO.booleanValue())))
-            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE.booleanValue())))
+            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO)))
+            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE)))
             .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-    
+
 
     @Test
     @Transactional
@@ -200,8 +200,8 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.fields").value(DEFAULT_FIELDS))
             .andExpect(jsonPath("$.relationships").value(DEFAULT_RELATIONSHIPS))
             .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION.toString()))
-            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO.booleanValue()))
-            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE.booleanValue()))
+            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO))
+            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE))
             .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }

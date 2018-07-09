@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Instant;
 
@@ -86,10 +87,27 @@ public class StatisticsResource {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/link")
+    @PostMapping("/link/{generatorId}")
     @Timed
-    public void linkGeneratorToCurrentUser(String generatorId) {
-        log.info("Linking current user to generator {}", generatorId);
-        generatorIdentityService.bindCurrentUserToGenerator(generatorId);
+    public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
+        log.info("Binding current user to generator {}", generatorId);
+
+        if (generatorIdentityService.bindCurrentUserToGenerator(generatorId)) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("It seems that this generator is already bound to a user.", HttpStatus.CONFLICT);
+        }
+    }
+
+    @DeleteMapping("/link/{generatorId}")
+    @Timed
+    public ResponseEntity UnlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
+        log.info("Unbinding current user to generator {}", generatorId);
+
+        if (generatorIdentityService.unbindCurrentUserFromGenerator(generatorId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("This generator doesn't exist or you don't own it.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

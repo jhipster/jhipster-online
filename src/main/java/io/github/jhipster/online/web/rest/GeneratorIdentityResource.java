@@ -47,7 +47,7 @@ public class GeneratorIdentityResource {
         log.debug("REST request to save GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() != null) {
             throw new BadRequestAlertException("A new generatorIdentity cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
         GeneratorIdentity result = generatorIdentityService.save(generatorIdentity);
         return ResponseEntity.created(new URI("/api/generator-identities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -69,7 +69,7 @@ public class GeneratorIdentityResource {
         log.debug("REST request to update GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
         GeneratorIdentity result = generatorIdentityService.save(generatorIdentity);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, generatorIdentity.getId().toString()))
@@ -115,4 +115,17 @@ public class GeneratorIdentityResource {
         generatorIdentityService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * GET  /generator-identities/owned : get all owned generatorIdentities.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of generatorIdentities in body
+     */
+    @GetMapping("/generator-identities/owned")
+    @Timed
+    public List<GeneratorIdentity> getAllOwnedGeneratorIdentities() {
+        log.debug("REST request to get all owned GeneratorIdentities");
+        return generatorIdentityService.findAllOwned();
+    }
+
 }

@@ -48,8 +48,8 @@ entity EntityStats {
     fields Integer,
     relationships Integer,
     pagination String,
-    dto Boolean,
-    service Boolean,
+    dto String,
+    service String,
     fluentMethods Boolean,
     date Instant
 }
