@@ -88,6 +88,13 @@ public class YoRCResource {
         return yoRCService.findAllByCreationDateAsc();
     }
 
+    @GetMapping("/yo-rcs/count")
+    @Timed
+    public long getAllYoRCSCount() {
+        log.debug("REST request to get all YoRCS count");
+        return yoRCService.countAll();
+    }
+
     /**
      * GET  /yo-rcs/:id : get the "id" yoRC.
      *

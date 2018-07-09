@@ -40,7 +40,19 @@
     <h4>Trend</h4>
     <hr />
     <div class="row">
-        <div #chart1 class="col-md-12" style="height: 300px;"></div>
+        <div class="col-md-12">
+            <div style="background-color: #fff;">
+                <div>
+                    <label for="time"></label>
+                    <select id="time" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
+                        <option value="days">Days</option>
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                    </select>
+                </div>
+                <div #chart1 style="height: 300px;"></div>
+            </div>
+        </div>
     </div>
     &nbsp;
     <h4>React/Angular distribution</h4>
@@ -55,10 +67,12 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div></div>
+            <div #chart4 style="height: 300px;"></div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
-            <div id="chart4"></div>
+            <div #chart5 style="height: 300px;"></div>
         </div>
     </div>
 </div>
