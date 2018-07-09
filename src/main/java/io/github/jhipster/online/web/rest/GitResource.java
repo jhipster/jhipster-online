@@ -235,7 +235,7 @@ public class GitResource {
     @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity refreshGithub(@PathVariable String gitProvider) {
+    ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
             switch (gitProvider.toLowerCase()) {
