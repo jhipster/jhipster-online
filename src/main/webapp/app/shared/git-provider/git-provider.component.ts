@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GitProviderService } from 'app/home/git/git.service';
@@ -27,6 +27,8 @@ import { GitProviderService } from 'app/home/git/git.service';
 })
 export class JhiGitProviderComponent implements OnInit {
     @Output() sharedData = new EventEmitter<any>();
+
+    @Input() simpleMode: boolean = false;
 
     data: any = {
         selectedGitProvider: null,
@@ -45,14 +47,14 @@ export class JhiGitProviderComponent implements OnInit {
     constructor(private gitService: GitProviderService, public router: Router) {}
 
     ngOnInit() {
-        this.data.gitProjectListRefresh = true;
+        this.sharedData.emit(this.data);
         this.gitService.getAvailableProviders().subscribe(providers => {
             providers.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
         });
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
-        this.data.gitCompanyListRefresh = true;
+        this.sharedData.emit(this.data);
         this.gitService.getCompanies(gitProvider).subscribe(
             companies => {
                 this.setGitProviderConfigurationStatus(gitProvider, true);
@@ -61,7 +63,7 @@ export class JhiGitProviderComponent implements OnInit {
                 this.data.gitCompanies = companies;
                 this.data.selectedGitCompany = companies[0].name;
                 this.addToAvailableProviderList(gitProvider);
-                if (this.router.url === '/generate-application') {
+                if (this.simpleMode) {
                     this.data = {
                         ...this.data,
                         selectedGitProvider: this.data.selectedGitProvider,
@@ -70,6 +72,7 @@ export class JhiGitProviderComponent implements OnInit {
                     this.sharedData.emit(this.data);
                 } else {
                     this.refreshGitProjectList();
+                    this.sharedData.emit(this.data);
                 }
             },
             () => {
@@ -81,6 +84,7 @@ export class JhiGitProviderComponent implements OnInit {
 
     refreshGitProjectList() {
         this.data.gitProjectListRefresh = true;
+        this.sharedData.emit(this.data);
         this.gitService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
             () => {
                 this.data.gitProjectListRefresh = false;
@@ -95,7 +99,7 @@ export class JhiGitProviderComponent implements OnInit {
     updateGitProjectList(companyName: string) {
         this.data.gitProjects = null;
         this.gitService.getProjects(this.data.selectedGitProvider, companyName).subscribe(projects => {
-            this.data.gitProjects = projects;
+            this.data.gitProjects = projects.sort();
             this.data.selectedGitRepository = projects[0];
             this.data = {
                 ...this.data,
@@ -109,6 +113,10 @@ export class JhiGitProviderComponent implements OnInit {
 
     updateSelectedGitRepository(gitRepository: string) {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
+    }
+
+    isRefreshing() {
+        return this.data.gitCompanyListRefresh || this.data.gitProjectListRefresh;
     }
 
     private setGitProviderConfigurationStatus(gitProvider: string, status: boolean) {

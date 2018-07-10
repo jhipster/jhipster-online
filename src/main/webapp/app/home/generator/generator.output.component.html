@@ -1,7 +1,12 @@
 <div class="modal-header">
-    <h4 class="modal-title"><span *ngIf="!displayApplicationUrl"><i class="fas fa-sync fa-spin"></i></span><span *ngIf="displayApplicationUrl"><i class="fas fa-sync"></i></span>&nbsp;Generating the application</h4>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-            (click)="clear()">&times;
+    <h4 class="modal-title">
+        <span *ngIf="!displayApplicationUrl">
+            <i class="fas fa-sync fa-spin"></i>
+        </span>
+        <span *ngIf="displayApplicationUrl">
+            <i class="fas fa-sync"></i>
+        </span>&nbsp;Generating the application</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;
     </button>
 </div>
 <div class="modal-body">
@@ -17,14 +22,18 @@ Sending request to the server...
         <div class="row" *ngIf="displayApplicationUrl && isGithubConfigured && selectedGitProvider === 'github'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="https://github.com/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">https://github.com/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b>
+                    <br/>Open your GitHub repository at
+                    <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
         <div class="row" *ngIf="displayApplicationUrl && isGitlabConfigured && selectedGitProvider === 'gitlab'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b>
+                    <br/>Open your GitLab repository at
+                    <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>

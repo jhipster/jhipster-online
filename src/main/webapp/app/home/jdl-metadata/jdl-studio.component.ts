@@ -84,10 +84,13 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    isGithubConfigured: boolean = false;
+    isGitlabConfigured: boolean = false;
+
+    isRefreshingGit: boolean = false;
 
     gitlabHost: string;
+    githubHost: string;
 
     constructor(
         private modalService: NgbModal,
@@ -110,6 +113,9 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         this.gitService.getGitlabConfig().subscribe(config => {
             this.gitlabHost = config.host;
         });
+        this.gitService.getGithubConfig().subscribe(config => {
+            this.githubHost = config.host;
+        });
     }
 
     updateSharedData(data: any) {
@@ -118,6 +124,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         this.selectedGitRepository = data.selectedGitRepository;
         this.isGithubConfigured = data.isGithubConfigured;
         this.isGitlabConfigured = data.isGitlabConfigured;
+        this.isRefreshingGit = data.gitProjectListRefresh || data.gitCompanyListRefresh;
     }
 
     applyJdl() {
@@ -137,6 +144,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
+        modalRef.githubHost = this.githubHost;
         modalRef.gitlabHost = this.gitlabHost;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;

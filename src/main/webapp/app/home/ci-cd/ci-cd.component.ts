@@ -39,14 +39,20 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    isGithubConfigured: boolean = false;
+    isGitlabConfigured: boolean = false;
 
+    githubHost: string;
     gitlabHost: string;
+
+    isRefreshingGit: boolean = false;
 
     constructor(private modalService: NgbModal, private gitService: GitProviderService, private ciCdService: CiCdService) {}
 
     ngOnInit() {
+        this.gitService.getGithubConfig().subscribe(config => {
+            this.githubHost = config.host;
+        });
         this.gitService.getGitlabConfig().subscribe(config => {
             this.gitlabHost = config.host;
         });
@@ -58,6 +64,7 @@ export class CiCdComponent implements OnInit {
         this.selectedGitRepository = data.selectedGitRepository;
         this.isGithubConfigured = data.isGithubConfigured;
         this.isGitlabConfigured = data.isGitlabConfigured;
+        this.isRefreshingGit = data.gitProjectListRefresh || data.gitCompanyListRefresh;
     }
 
     applyCiCd() {
@@ -75,6 +82,7 @@ export class CiCdComponent implements OnInit {
 
         modalRef.ciCdId = ciCdId;
         modalRef.ciCdTool = this.ciCdTool;
+        modalRef.githubHost = this.githubHost;
         modalRef.gitlabHost = this.gitlabHost;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;

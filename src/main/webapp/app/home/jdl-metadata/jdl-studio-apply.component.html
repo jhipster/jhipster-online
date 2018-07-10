@@ -20,7 +20,7 @@
     </p>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
     <p class="text-center" *ngIf="isGithubConfigured || isGitlabConfigured">
-        <button class="btn btn-primary" (click)="applyJdl()">
+        <button class="btn btn-primary" (click)="applyJdl()" [disabled]="isRefreshingGit">
             <span>
                 Yes, apply this JDL model
             </span>

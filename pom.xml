@@ -545,7 +545,7 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/jhonline</url>
+                    <url>jdbc:mysql://localhost:3306/jhipster-online</url>
                     <defaultSchemaName>jhonline</defaultSchemaName>
                     <username>root</username>
                     <password></password>
