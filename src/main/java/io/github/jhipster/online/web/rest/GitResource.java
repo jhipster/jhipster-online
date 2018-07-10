@@ -128,7 +128,7 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 case GITLAB:
-                    url = applicationProperties.getGitlab().getHost() + "oauth/token";
+                    url = applicationProperties.getGitlab().getHost() + "/oauth/token";
                     gitProviderEnum = GitProvider.GITLAB;
                     request.setClient_id(applicationProperties.getGitlab().getClientId());
                     request.setClient_secret(applicationProperties.getGitlab().getClientSecret());
