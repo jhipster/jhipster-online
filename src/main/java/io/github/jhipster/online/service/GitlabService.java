@@ -229,11 +229,11 @@ public class GitlabService implements GitProviderService {
     }
 
     /**
-     * Delete all the gitlab groups.
+     * Delete all the Gitlab groups.
      */
     @Transactional
-    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
-        log.debug("Request to delete all gitlab groups for current user");
-        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(userLogin, GitProvider.GITLAB.getValue());
+    public void deleteAllOrganizationsUser(User user) {
+        log.debug("Request to delete all gitlab groups for user {}", user.getLogin());
+        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(user.getLogin(), GitProvider.GITLAB.getValue());
     }
 }

@@ -234,8 +234,8 @@ public class GithubService implements GitProviderService {
      *
      */
     @Transactional
-    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
-        log.debug("Request to delete all github organizations for current user");
-        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(userLogin, GitProvider.GITHUB.getValue());
+    public void deleteAllOrganizationsUser(User user) {
+        log.debug("Request to delete all github organizations for user {}", user.getLogin());
+        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(user.getLogin(), GitProvider.GITHUB.getValue());
     }
 }
