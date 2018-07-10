@@ -84,10 +84,10 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean = false;
-    isGitlabConfigured: boolean = false;
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
-    isRefreshingGit: boolean = false;
+    isRefreshingGit = false;
 
     gitlabHost: string;
     githubHost: string;

@@ -28,7 +28,7 @@ import { GitProviderService } from 'app/home/git/git.service';
 export class JhiGitProviderComponent implements OnInit {
     @Output() sharedData = new EventEmitter<any>();
 
-    @Input() simpleMode: boolean = false;
+    @Input() simpleMode = false;
 
     data: any = {
         selectedGitProvider: null,

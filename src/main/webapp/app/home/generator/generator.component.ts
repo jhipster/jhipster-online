@@ -39,8 +39,8 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
-    isGithubConfigured: boolean = false;
-    isGitlabConfigured: boolean = false;
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     repositoryName: string;
 

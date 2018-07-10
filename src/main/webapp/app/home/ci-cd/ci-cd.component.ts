@@ -39,13 +39,13 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean = false;
-    isGitlabConfigured: boolean = false;
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     githubHost: string;
     gitlabHost: string;
 
-    isRefreshingGit: boolean = false;
+    isRefreshingGit = false;
 
     constructor(private modalService: NgbModal, private gitService: GitProviderService, private ciCdService: CiCdService) {}
 
