@@ -20,7 +20,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { GitCompanyModel } from 'app/home/generator/git.company.model';
+import { GitCompanyModel } from 'app/core';
 
 @Injectable({ providedIn: 'root' })
 export class GitProviderService {

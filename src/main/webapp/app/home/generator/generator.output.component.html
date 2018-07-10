@@ -17,7 +17,7 @@ Sending request to the server...
         <div class="row" *ngIf="displayApplicationUrl && isGithubConfigured && selectedGitProvider === 'github'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="https://github.com/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">https://github.com/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>

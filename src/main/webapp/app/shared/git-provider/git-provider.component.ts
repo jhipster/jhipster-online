@@ -19,7 +19,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GitProviderService } from 'app/home/git/git.service';
+import { GitConfigurationService } from 'app/core';
 
 @Component({
     selector: 'jhi-git-provider',
@@ -32,35 +32,30 @@ export class JhiGitProviderComponent implements OnInit {
         selectedGitProvider: null,
         selectedGitCompany: null,
         selectedGitRepository: null,
-        availableGitProviders: [],
         gitCompanies: [],
         gitProjects: [],
-        isGithubConfigured: false,
-        isGitlabConfigured: false,
-        baseName: null,
         gitCompanyListRefresh: false,
         gitProjectListRefresh: false
     };
 
-    constructor(private gitService: GitProviderService, public router: Router) {}
+    gitConfig: any;
+
+    constructor(private gitConfigurationService: GitConfigurationService, public router: Router) {}
 
     ngOnInit() {
         this.data.gitProjectListRefresh = true;
-        this.gitService.getAvailableProviders().subscribe(providers => {
-            providers.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
-        });
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitConfig.availableGitProviders.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
         this.data.gitCompanyListRefresh = true;
-        this.gitService.getCompanies(gitProvider).subscribe(
+        this.gitConfigurationService.gitProviderService.getCompanies(gitProvider).subscribe(
             companies => {
-                this.setGitProviderConfigurationStatus(gitProvider, true);
                 this.data.gitCompanyListRefresh = false;
                 this.data.selectedGitProvider = gitProvider;
                 this.data.gitCompanies = companies;
                 this.data.selectedGitCompany = companies[0].name;
-                this.addToAvailableProviderList(gitProvider);
                 if (this.router.url === '/generate-application') {
                     this.data = {
                         ...this.data,
@@ -74,14 +69,13 @@ export class JhiGitProviderComponent implements OnInit {
             },
             () => {
                 this.data.gitCompanyListRefresh = false;
-                this.setGitProviderConfigurationStatus(gitProvider, false);
             }
         );
     }
 
     refreshGitProjectList() {
         this.data.gitProjectListRefresh = true;
-        this.gitService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
+        this.gitConfigurationService.gitProviderService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
             () => {
                 this.data.gitProjectListRefresh = false;
                 this.updateGitProjectList(this.data.selectedGitCompany);
@@ -94,7 +88,7 @@ export class JhiGitProviderComponent implements OnInit {
 
     updateGitProjectList(companyName: string) {
         this.data.gitProjects = null;
-        this.gitService.getProjects(this.data.selectedGitProvider, companyName).subscribe(projects => {
+        this.gitConfigurationService.gitProviderService.getProjects(this.data.selectedGitProvider, companyName).subscribe(projects => {
             this.data.gitProjects = projects;
             this.data.selectedGitRepository = projects[0];
             this.data = {
@@ -109,28 +103,5 @@ export class JhiGitProviderComponent implements OnInit {
 
     updateSelectedGitRepository(gitRepository: string) {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
-    }
-
-    private setGitProviderConfigurationStatus(gitProvider: string, status: boolean) {
-        if (gitProvider === 'github') {
-            this.data.isGithubConfigured = status;
-            this.data = {
-                ...this.data,
-                isGithubConfigured: this.data.isGithubConfigured
-            };
-        } else if (gitProvider === 'gitlab') {
-            this.data.isGitlabConfigured = status;
-            this.data = {
-                ...this.data,
-                isGitlabConfigured: this.data.isGitlabConfigured
-            };
-        }
-        this.sharedData.emit(this.data);
-    }
-
-    private addToAvailableProviderList(gitProvider: string) {
-        if (!this.data.availableGitProviders.includes(gitProvider)) {
-            this.data.availableGitProviders.push(gitProvider);
-        }
     }
 }

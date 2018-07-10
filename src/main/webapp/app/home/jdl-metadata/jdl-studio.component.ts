@@ -21,9 +21,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
+import { GitConfigurationService } from 'app/core';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
-import { GitProviderService } from '../git/git.service';
 import { JdlOutputDialogComponent } from './jdl.output.component';
 import { JdlService } from './jdl.service';
 
@@ -84,16 +84,13 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
-
-    gitlabHost: string;
+    gitConfig: any;
 
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
         private route: ActivatedRoute,
-        private gitService: GitProviderService,
+        private gitConfigurationService: GitConfigurationService,
         private jdlService: JdlService
     ) {}
 
@@ -107,17 +104,13 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
                 (res: any) => console.log(res)
             );
         });
-        this.gitService.getGitlabConfig().subscribe(config => {
-            this.gitlabHost = config.host;
-        });
+        this.gitConfig = this.gitConfigurationService.gitConfig;
     }
 
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
-        this.isGithubConfigured = data.isGithubConfigured;
-        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     applyJdl() {
@@ -137,7 +130,8 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
-        modalRef.gitlabHost = this.gitlabHost;
+        modalRef.gitlabHost = this.gitConfig.gitlabHost;
+        modalRef.githubHost = this.gitConfig.githubHost;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.selectedGitRepository = this.selectedGitRepository;

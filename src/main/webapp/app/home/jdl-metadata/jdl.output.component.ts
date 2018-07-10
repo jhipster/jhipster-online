@@ -40,6 +40,7 @@ export class JdlOutputDialogComponent implements OnInit {
     isGitlabConfigured: boolean;
 
     gitlabHost: string;
+    githubHost: string;
 
     constructor(private activeModal: NgbActiveModal, private jdlService: JdlService) {}
 

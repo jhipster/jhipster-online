@@ -16,24 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
-import { Principal } from 'app/core/auth/principal.service';
-
-import { GitConfigurationService } from 'app/core';
-
-@Component({
-    selector: 'jhi-welcome',
-    templateUrl: './welcome.component.html',
-    styleUrls: ['welcome.scss']
-})
-export class WelcomeComponent {
-    gitConfig: any;
-
-    constructor(private principal: Principal, private gitConfigurationService: GitConfigurationService) {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
+export class GitCompanyModel {
+    constructor(public id: number, public name: string, public gitProvider: string) {}
 }

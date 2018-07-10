@@ -5,7 +5,7 @@
     <div class="container">
         <h4>Project configuration</h4>
         <hr>
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubConfigured && !gitConfig.isGitlabConfigured">
             <p>
                 <span class="fas fa-exclamation-triangle"></span>&nbsp;
                 <span><strong>Warning!</strong> To generate your application on GitHub or GitLab, you must authorize JHipster Online to access your GitHub or GitLab account.</span>
@@ -15,7 +15,7 @@
                 <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
             </p>
         </ngb-alert>
-        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
+        <div class="row" *ngIf="gitConfig.isGithubConfigured || gitConfig.isGitlabConfigured">
             <div class="col-md-12">
                 <p>
                     <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new

@@ -1,4 +1,4 @@
-<div *ngIf="data.isGithubConfigured || data.isGitlabConfigured">
+<div *ngIf="gitConfig.isGithubConfigured || gitConfig.isGitlabConfigured">
     <div class="container">
         <div class="row">
             <div class="col-md-5">
@@ -6,7 +6,7 @@
                     <label for="selectedGitProvider">Select the Git provider:</label>
                     <select id="selectedGitProvider" (ngModelChange)="refreshGitCompanyListByGitProvider($event)"
                             [(ngModel)]="data.selectedGitProvider" name="data.selectedGitProvider" class="form-control">
-                        <option *ngFor="let provider of data.availableGitProviders">{{provider}}</option>
+                        <option *ngFor="let provider of gitConfig.availableGitProviders">{{provider}}</option>
                     </select>
                 </div>
             </div>
