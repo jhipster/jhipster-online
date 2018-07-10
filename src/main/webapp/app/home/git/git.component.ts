@@ -50,19 +50,25 @@ export class GitComponent implements OnInit {
                 this.githubClientId = this.gitService.clientId('github').subscribe(clientId => (this.githubClientId = clientId));
                 this.isAuthorizingGithub = true;
                 this.isGithubConfigured = false;
-                this.gitService.getCompanies('github').subscribe(orgs => {
-                    if (orgs.length === 0) {
-                        this.gitService.refreshGitProvider('github').subscribe(
-                            () => (this.isGithubConfigured = true),
-                            () => {
-                                this.isAuthorizingGithub = false;
-                                this.isGithubConfigured = false;
-                            }
-                        );
-                    } else {
-                        this.isGithubConfigured = true;
+                this.gitService.getCompanies('github').subscribe(
+                    orgs => {
+                        if (orgs.length === 0) {
+                            this.gitService.refreshGitProvider('github').subscribe(
+                                () => (this.isGithubConfigured = true),
+                                () => {
+                                    this.isAuthorizingGithub = false;
+                                    this.isGithubConfigured = false;
+                                }
+                            );
+                        } else {
+                            this.isGithubConfigured = true;
+                        }
+                    },
+                    error => {
+                        this.isAuthorizingGithub = false;
+                        this.isGithubConfigured = false;
                     }
-                });
+                );
                 this.gitService.getGithubConfig().subscribe(config => {
                     this.githubHost = config.host;
                 });
@@ -72,19 +78,25 @@ export class GitComponent implements OnInit {
                 this.gitlabClientId = this.gitService.clientId('gitlab').subscribe(clientId => (this.gitlabClientId = clientId));
                 this.isAuthorizingGitlab = true;
                 this.isGitlabConfigured = false;
-                this.gitService.getCompanies('gitlab').subscribe(orgs => {
-                    if (orgs.length === 0) {
-                        this.gitService.refreshGitProvider('gitlab').subscribe(
-                            () => (this.isGitlabConfigured = true),
-                            () => {
-                                this.isAuthorizingGitlab = false;
-                                this.isGitlabConfigured = false;
-                            }
-                        );
-                    } else {
-                        this.isGitlabConfigured = true;
+                this.gitService.getCompanies('gitlab').subscribe(
+                    orgs => {
+                        if (orgs.length === 0) {
+                            this.gitService.refreshGitProvider('gitlab').subscribe(
+                                () => (this.isGitlabConfigured = true),
+                                () => {
+                                    this.isAuthorizingGitlab = false;
+                                    this.isGitlabConfigured = false;
+                                }
+                            );
+                        } else {
+                            this.isGitlabConfigured = true;
+                        }
+                    },
+                    error => {
+                        this.isAuthorizingGitlab = false;
+                        this.isGitlabConfigured = false;
                     }
-                });
+                );
                 this.gitService.getGitlabConfig().subscribe(config => {
                     this.gitlabHost = config.host;
                     this.gitlabRedirectUri = config.redirectUri;
