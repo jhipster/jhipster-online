@@ -106,7 +106,7 @@ as any private instance of GitHub Enterprise that is configured inside your comp
 JHipster Online has to be configured as an "OAuth App": create a `jhipster` organization,
 and go to that organization's "Settings > Developer Settings > OAuth Apps" to create a new "OAuth App" with
 the required credentials. This will allow JHipster Online to create applications and pull requests on your
-behalf.
+behalf. JHipster Online uses `https://your-jhipster-online-url/api/callback/github` as callback endpoint.
 
 JHipster Online also needs to have a specific "JHipster Bot" user configured, like the  
 [https://github.com/jhipster-bot](https://github.com/jhipster-bot) used by the official [JHipster Online website](https://start.jhipster.tech/).
@@ -127,7 +127,29 @@ application:
 
 ### GitLab configuration
 
-TODO
+Similarly to GitHub, your GitLab configuration must be placed in your `application-*.yml` using the `application.gitlab`
+keys. 
+
+JHipster Online is designed to accept any private or public GitLab provider.
+
+Required API credentials can be obtained by creating an Application directly on your GitLab. To do so, go to 
+"Settings > Applications". JHipster Online does not require any particular scope. The callback URL should be something like `https://your-jhipster-online-url/api/callback/gitlab`.
+
+JHipster Online will use a bot to interact with GitLab. It will require a Personnal access token. To get one, simply 
+go to "Settings > Access Tokens". Create a token with the API scope.
+
+Finally, your `application-dev.yml` or `application-prod.yml`, depending on the profile you wish to setup the GitLab 
+for, should be configured this way:
+```
+application:
+    gitlab:
+        host: https://gitlab.com # The GitLab to connect to. The main public GitLab instance is default here.
+        client-id: XXX # Your GitLab application Id
+        client-secret: XXX # Your GitLab application secret
+        redirect-uri: XXX   # The URI where the user will be redirected after GitLab authentication. This URI
+                            # must be registered in you GitLab application callback URLs
+        jhipster-bot-oauth-token: XXX # Your bot personnal access token.
+```
 
 ## Help and contribution to the project
 
