@@ -35,21 +35,6 @@ the next section for details on configuring the application.
 
     ./mvnw
 
-### Building for production
-
-To generate a production build, like any normal JHipster application, please run:
-
-    ./mvnw -Pprod clean package
-
-### Using Docker
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-    ./mvnw package -Pprod dockerfile:build
-
-Then run:
-
-    docker-compose -f src/main/docker/app.yml up -d
 
 ## Specific configuration
 
@@ -130,16 +115,25 @@ application:
 Similarly to GitHub, your GitLab configuration must be placed in your `application-*.yml` using the `application.gitlab`
 keys. 
 
-JHipster Online is designed to accept any private or public GitLab provider.
+JHipster Online can work on the public GitLab instance on [https://gitlab.com](https://gitlab.com) as well
+as any private instance of GitLab that is configured inside your company.
 
-Required API credentials can be obtained by creating an Application directly on your GitLab. To do so, go to 
-"Settings > Applications". JHipster Online does not require any particular scope. The callback URL should be something like `https://your-jhipster-online-url/api/callback/gitlab`.
+JHipster Online needs to have a specific "JHipster Bot" user configured: create that user (if you have your own private instance, you can call it
+`jhipster-bot`, otherwise choose the name you like), and log in using that user.
 
-JHipster Online will use a bot to interact with GitLab. It will require a Personnal access token. To get one, simply 
-go to "Settings > Access Tokens". Create a token with the API scope.
+Once logged in, the required API credentials can be created by going to "Settings > Applications > Add new application".
+Create a new application:
+ 
+ - Its name is `jhipster`
+ - The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
+ - It has the `api` and `read_user` scopes 
 
-Finally, your `application-dev.yml` or `application-prod.yml`, depending on the profile you wish to setup the GitLab 
-for, should be configured this way:
+Save that new application and store safely the `Application Id` and `Secret` values, so you can use them to configure 
+the `application-*.yml` files.
+
+Here is the final configuration, that should be set up inside the `application-dev.yml` file for 
+development, and inside the `application-prod.yml` file for production.
+
 ```
 application:
     gitlab:
@@ -150,6 +144,22 @@ application:
                             # must be registered in you GitLab application callback URLs
         jhipster-bot-oauth-token: XXX # Your bot personnal access token.
 ```
+
+## Building for production
+
+To generate a production build, like any normal JHipster application, please run:
+
+    ./mvnw -Pprod clean package
+
+### Using Docker
+You can also fully dockerize your application and all the services that it depends on.
+To achieve this, first build a docker image of your app by running:
+
+    ./mvnw package -Pprod dockerfile:build
+
+Then run:
+
+    docker-compose -f src/main/docker/app.yml up -d
 
 ## Help and contribution to the project
 
