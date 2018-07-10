@@ -19,7 +19,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { GitConfigurationService } from 'app/core';
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
@@ -41,7 +41,7 @@ export class GeneratorComponent implements OnInit {
 
     repositoryName: string;
 
-    gitConfig: any;
+    gitConfig: GitConfigurationModel;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -161,8 +161,8 @@ export class GeneratorComponent implements OnInit {
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.repositoryName = this.repositoryName;
-        modalRef.gitlabHost = this.gitConfigurationService.gitConfig.gitlabHost;
-        modalRef.githubHost = this.gitConfigurationService.gitConfig.githubHost;
+        modalRef.gitlabHost = this.gitConfig.gitlabHost;
+        modalRef.githubHost = this.gitConfig.githubHost;
         modalRef.isGithubConfigured = this.gitConfig.isGithubConfigured;
         modalRef.isGitlabConfigured = this.gitConfig.isGitlabConfigured;
     }

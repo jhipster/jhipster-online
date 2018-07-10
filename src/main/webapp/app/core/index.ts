@@ -24,6 +24,7 @@ export * from './auth/password-reset.service';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './git/git-company.model';
+export * from './git/git-configuration.model';
 export * from './auth/principal.service';
 export * from './auth/user-route-access-service';
 export * from './login/login-modal.service';

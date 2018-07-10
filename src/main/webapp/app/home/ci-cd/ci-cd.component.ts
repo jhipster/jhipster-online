@@ -19,7 +19,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { GitConfigurationService } from 'app/core';
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 import { CiCdService } from './ci-cd.service';
 
@@ -39,7 +39,7 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    gitConfig: any;
+    gitConfig: GitConfigurationModel;
 
     constructor(
         private modalService: NgbModal,

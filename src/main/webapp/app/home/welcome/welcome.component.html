@@ -12,27 +12,30 @@
 <div [ngSwitch]="isAuthenticated()">
     <hr/>
     <div *ngSwitchCase="true">
-        <h3 *ngIf="gitConfig.isGitlabAvailable && gitConfig.isGithubAvailable">Using JHipster Online with GitHub or GitLab, to get the full experience</h3>
-        <h3 *ngIf="gitConfig.isGitlabAvailable && !gitConfig.isGithubAvailable">Using JHipster Online with GitLab, to get the full experience</h3>
-        <h3 *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">Using JHipster Online with GitHub, to get the full experience</h3>
+        <h3 *ngIf="gitConfig.isGitlabAvailable || gitConfig.isGithubAvailable">
+            Using JHipster Online with
+            <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+            <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+            <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+            to get the full experience
+        </h3>
         <ul *ngIf="gitConfig.isGitlabAvailable || gitConfig.isGithubAvailable">
-            <li *ngIf="gitConfig.isGitlabAvailable && gitConfig.isGithubAvailable">
-                <a routerLink="/git">Step 1: Configure JHipster Online to access your GitHub or GitLab account</a>
+            <li>
+                <a routerLink="/git">
+                    Step 1: Configure JHipster Online to access your
+                    <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+                    <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+                    <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+                    account
+                </a>
             </li>
-            <li *ngIf="gitConfig.isGitlabAvailable && !gitConfig.isGithubAvailable">
-                <a routerLink="/git">Step 1: Configure JHipster Online to access your GitLab account</a>
-            </li>
-            <li *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-                <a routerLink="/git">Step 1: Configure JHipster Online to access your GitHub account</a>
-            </li>
-            <li *ngIf="gitConfig.isGitlabAvailable && gitConfig.isGithubAvailable">
-                <a routerLink="/generate-application">Step 2: Use JHipster Online to generate an application on GitHub or GitLab</a>
-            </li>
-            <li *ngIf="gitConfig.isGitlabAvailable && !gitConfig.isGithubAvailable">
-                <a routerLink="/generate-application">Step 2: Use JHipster Online to generate an application on GitLab</a>
-            </li>
-            <li *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-                <a routerLink="/generate-application">Step 2: Use JHipster Online to generate an application on GitHub</a>
+            <li>
+                <a routerLink="/generate-application">
+                    Step 2: Use JHipster Online to generate an application on
+                    <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+                    <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+                    <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+                </a>
             </li>
             <li><a routerLink="/design-entities">Step 3: Use the JHipster Studio to add entities to your application</a></li>
             <li><a routerLink="/ci-cd">Step 4: Set up continuous integration for your application</a></li>

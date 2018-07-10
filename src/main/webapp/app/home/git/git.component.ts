@@ -18,7 +18,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { GitConfigurationService } from 'app/core';
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 
 @Component({
     selector: 'jhi-github',
@@ -26,11 +26,40 @@ import { GitConfigurationService } from 'app/core';
     styleUrls: ['git.scss']
 })
 export class GitComponent implements OnInit {
-    gitConfig: any;
+    gitConfig: GitConfigurationModel;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
+        console.log(this.gitConfig);
+        this.gitConfig.availableGitProviders.forEach(provider => {
+            this.gitConfigurationService.gitProviderService.getCompanies(provider).subscribe(orgs => {
+                if (orgs.length === 0) {
+                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider).subscribe(
+                        () => {
+                            switch (provider) {
+                                case 'github':
+                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: true };
+                                    break;
+                                case 'gitlab':
+                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: true };
+                                    break;
+                            }
+                        },
+                        () => {
+                            switch (provider) {
+                                case 'github':
+                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: true };
+                                    break;
+                                case 'gitlab':
+                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: true };
+                                    break;
+                            }
+                        }
+                    );
+                }
+            });
+        });
     }
 }

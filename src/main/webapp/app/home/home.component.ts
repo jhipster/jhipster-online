@@ -20,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { LoginModalService, Principal, Account, GitConfigurationService } from 'app/core';
+import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
 
 @Component({
     selector: 'jhi-home',
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
 
-    gitConfig: any;
+    gitConfig: GitConfigurationModel;
 
     constructor(
         private principal: Principal,
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
         this.principal.identity().then(account => {
             this.account = account;
             this.gitConfigurationService.setGitConfiguration();
-            this.gitConfig = this.gitConfigurationService.gitConfig;
+            this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
         });
         this.registerAuthenticationSuccess();
     }
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
             this.principal.identity().then(account => {
                 this.account = account;
                 this.gitConfigurationService.setGitConfiguration();
-                this.gitConfig = this.gitConfigurationService.gitConfig;
+                this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
             });
         });
     }

@@ -21,7 +21,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
-import { GitConfigurationService } from 'app/core';
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
 import { JdlOutputDialogComponent } from './jdl.output.component';
@@ -84,7 +84,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    gitConfig: any;
+    gitConfig: GitConfigurationModel;
 
     constructor(
         private modalService: NgbModal,

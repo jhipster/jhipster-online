@@ -36,7 +36,6 @@ export class GeneratorOutputDialogComponent implements OnInit {
 
     selectedGitProvider: string;
     selectedGitCompany: string;
-    selectedGitProject: string;
 
     isGithubConfigured: boolean;
     isGitlabConfigured: boolean;
