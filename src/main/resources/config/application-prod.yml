@@ -127,8 +127,11 @@ jhipster:
 # to have type-safe configuration, like in the JHipsterProperties above
 # ===================================================================
 
-#application:
-#    tmp-folder: /tmp
+application:
+    tmp-folder: /tmp
+    jhipster-cmd:
+        cmd: /usr/local/bin/jhipster
+        timeout: 120
 #    github:
 #        client-id: XXX
 #        client-secret: XXX

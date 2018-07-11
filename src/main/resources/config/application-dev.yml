@@ -137,6 +137,9 @@ jhipster:
 
 #application:
 #    tmp-folder: /tmp
+#    jhipster-cmd:
+#        cmd: XXX
+#        timeout: 120
 #    github:
 #        host: https://github.com
 #        client-id: XXX
