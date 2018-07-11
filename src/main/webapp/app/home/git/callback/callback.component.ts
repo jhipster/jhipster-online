@@ -29,6 +29,7 @@ import { GithubCallbackService } from './callback.service';
 })
 export class CallbackComponent implements OnInit {
     token: string;
+
     provider: string;
 
     message: string;
@@ -46,7 +47,7 @@ export class CallbackComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
+        this.gitConfig = this.gitConfigurationService.gitConfig;
         this.route.params.subscribe(params => {
             this.provider = params['provider'];
             this.token = params['token'];
@@ -58,11 +59,7 @@ export class CallbackComponent implements OnInit {
                     this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
                     this.isLoading = false;
                     this.alertType = 'success';
-                    this.gitConfig =
-                        this.provider === 'github'
-                            ? { ...this.gitConfig, isGithubConfigured: true }
-                            : { ...this.gitConfig, isGitlabConfigured: true };
-                    this.gitConfigurationService.updateGitConfig(this.gitConfig);
+                    localStorage.setItem(this.provider === 'github' ? 'isGithubConfigured' : 'isGitlabConfigured', 'true');
                 },
                 () => {
                     this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;

@@ -1,55 +1,44 @@
+/**
+ * Copyright 2017-2018 the original author or authors from the JHipster Online project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing; software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Injectable } from '@angular/core';
 
 import { GitConfigurationModel, GitProviderService } from 'app/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable({ providedIn: 'root' })
 export class GitConfigurationService {
-    gitConfig: GitConfigurationModel = {
-        availableGitProviders: [],
+    gitConfig: GitConfigurationModel;
 
-        isGithubAvailable: false,
-        isGithubConfigured: false,
-        isAuthorizingGithub: false,
-        githubClientId: '',
-        githubHost: '',
-
-        isGitlabAvailable: false,
-        isGitlabConfigured: false,
-        isAuthorizingGitlab: false,
-        gitlabRedirectUri: '',
-        gitlabClientId: '',
-        gitlabHost: ''
-    };
-
-    private gitConfigSource = new BehaviorSubject(this.gitConfig);
-    currentGitConfig = this.gitConfigSource.asObservable();
-
-    constructor(public gitProviderService: GitProviderService) {}
-
-    updateGitConfig(gitConfig: GitConfigurationModel) {
-        this.gitConfigSource.next(gitConfig);
+    constructor(public gitProviderService: GitProviderService) {
+        this.newGitConfig();
     }
 
-    setGitConfiguration() {
-        this.gitProviderService.getAvailableProviders().subscribe(providers => {
-            if (providers.includes('github')) {
-                this.gitProviderService.clientId('github').subscribe(clientId => (this.gitConfig.githubClientId = clientId));
-                this.gitProviderService.getGithubConfig().subscribe(config => {
-                    this.gitConfig.githubHost = config.host;
-                });
-                this.gitConfig.isGithubAvailable = true;
-                this.gitConfig.availableGitProviders.push('github');
-            }
-            if (providers.includes('gitlab')) {
-                this.gitProviderService.clientId('gitlab').subscribe(clientId => (this.gitConfig.gitlabClientId = clientId));
-                this.gitProviderService.getGitlabConfig().subscribe(config => {
-                    this.gitConfig.gitlabHost = config.host;
-                    this.gitConfig.gitlabRedirectUri = config.redirectUri;
-                });
-                this.gitConfig.isGitlabAvailable = true;
-                this.gitConfig.availableGitProviders.push('gitlab');
-            }
-        });
+    setupGitConfiguration(): Promise<any> {
+        return this.gitProviderService
+            .getGitConfig()
+            .toPromise()
+            .then((config: any) => {
+                this.gitConfig = { ...this.gitConfig, ...config };
+            })
+            .catch(() => Promise.resolve());
+    }
+
+    private newGitConfig() {
+        this.gitConfig = new GitConfigurationModel([], false, false, '', '', false, false, '', '', '');
     }
 }

@@ -19,7 +19,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GitConfigurationService } from 'app/core';
+import { GitConfigurationService, GitProviderModel } from 'app/core';
 
 @Component({
     selector: 'jhi-git-provider',
@@ -28,21 +28,17 @@ import { GitConfigurationService } from 'app/core';
 export class JhiGitProviderComponent implements OnInit {
     @Output() sharedData = new EventEmitter<any>();
 
-    data: any = {
-        selectedGitProvider: null,
-        selectedGitCompany: null,
-        selectedGitRepository: null,
-        gitCompanies: [],
-        gitProjects: [],
-        gitCompanyListRefresh: false,
-        gitProjectListRefresh: false
-    };
+    data: GitProviderModel;
 
     gitConfig: any;
+
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
 
     constructor(private gitConfigurationService: GitConfigurationService, public router: Router) {}
 
     ngOnInit() {
+        this.newGitProviderModel();
         this.data.gitProjectListRefresh = true;
         this.gitConfig = this.gitConfigurationService.gitConfig;
         this.gitConfig.availableGitProviders.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
@@ -103,5 +99,9 @@ export class JhiGitProviderComponent implements OnInit {
 
     updateSelectedGitRepository(gitRepository: string) {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
+    }
+
+    private newGitProviderModel() {
+        this.data = new GitProviderModel('', '', '', [], [], false, false);
     }
 }

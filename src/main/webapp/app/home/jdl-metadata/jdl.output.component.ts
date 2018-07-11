@@ -36,9 +36,6 @@ export class JdlOutputDialogComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
-
     gitlabHost: string;
     githubHost: string;
 

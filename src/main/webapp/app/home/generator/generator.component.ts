@@ -39,6 +39,9 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+
     repositoryName: string;
 
     gitConfig: GitConfigurationModel;
@@ -163,8 +166,6 @@ export class GeneratorComponent implements OnInit {
         modalRef.repositoryName = this.repositoryName;
         modalRef.gitlabHost = this.gitConfig.gitlabHost;
         modalRef.githubHost = this.gitConfig.githubHost;
-        modalRef.isGithubConfigured = this.gitConfig.isGithubConfigured;
-        modalRef.isGitlabConfigured = this.gitConfig.isGitlabConfigured;
     }
 
     downloadFile(blob: Blob) {
@@ -209,7 +210,7 @@ export class GeneratorComponent implements OnInit {
             'angularX',
             'jhi'
         );
-        this.repositoryName = this.model.baseName + 'Repository';
+        this.repositoryName = `${this.model.baseName}Repository`;
     }
 
     changeApplicationType() {

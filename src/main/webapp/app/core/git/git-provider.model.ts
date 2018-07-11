@@ -16,17 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class GitConfigurationModel {
+export class GitProviderModel {
     constructor(
-        public availableGitProviders: any,
-        public isGithubAvailable: boolean,
-        public isAuthorizingGithub: boolean,
-        public githubClientId: string,
-        public githubHost: string,
-        public isGitlabAvailable: boolean,
-        public isAuthorizingGitlab: boolean,
-        public gitlabRedirectUri: string,
-        public gitlabClientId: string,
-        public gitlabHost: string
+        public selectedGitProvider: string,
+        public selectedGitCompany: string,
+        public selectedGitRepository: string,
+        public gitCompanies: any,
+        public gitProjects: any,
+        public gitCompanyListRefresh: boolean,
+        public gitProjectListRefresh: boolean
     ) {}
 }

@@ -86,6 +86,14 @@ public class GithubService implements GitProviderService {
                 this.applicationProperties.getGithub().getClientSecret() != null;
     }
 
+    @Override
+    public String getHost() {
+        return applicationProperties.getGithub().getHost();
+    }
+
+    @Override
+    public String getClientId() { return applicationProperties.getGithub().getClientId(); }
+
     /**
      * Sync User data from GitHub.
      */
@@ -211,10 +219,6 @@ public class GithubService implements GitProviderService {
 
         log.info("Pull Request created!");
         return number;
-    }
-
-    public String getHost() {
-        return applicationProperties.getGithub().getHost();
     }
 
     /**

@@ -4,13 +4,28 @@
     </h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubConfigured && !gitConfig.isGitlabConfigured">
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
+        <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
+    </ngb-alert>
+    <ngb-alert [dismissible]="false" type="danger" *ngIf="(gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable) && !isGithubConfigured && !isGitlabConfigured">
         <p>
-            <i class="fas fa-exclamation-triangle"></i>&nbsp;
-            <span><strong>Warning!</strong> To apply a JDL Model on a GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
+            <span class="fas fa-exclamation-triangle"></span>&nbsp;
+            <span><strong>Warning!</strong> To apply a JDL Model on a
+                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+                project, you must authorize JHipster Online to access your
+                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+                account.</span>
         </p>
         <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
+            <a routerLink="/git" class="btn btn-primary" role="button">Configure your
+                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
+                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
+                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
+                account</a>
         </p>
     </ngb-alert>
     <p *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
@@ -22,7 +37,7 @@
         master branch.</i>
     </p>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <p class="text-center" *ngIf="gitConfig.isGithubConfigured || gitConfig.isGitlabConfigured">
+    <p class="text-center" *ngIf="isGithubConfigured || isGitlabConfigured">
         <button class="btn btn-primary" (click)="applyJdl()">
             <span>
                 Yes, apply this JDL model

@@ -84,6 +84,9 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+
     gitConfig: GitConfigurationModel;
 
     constructor(
@@ -95,6 +98,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
         this.subscription = this.route.params.subscribe(params => {
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
@@ -104,7 +108,6 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
                 (res: any) => console.log(res)
             );
         });
-        this.gitConfig = this.gitConfigurationService.gitConfig;
     }
 
     updateSharedData(data: any) {

@@ -41,20 +41,19 @@ export class HomeComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        console.log(this.gitConfig);
         this.principal.identity().then(account => {
             this.account = account;
-            this.gitConfigurationService.setGitConfiguration();
-            this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
         });
         this.registerAuthenticationSuccess();
     }
 
     registerAuthenticationSuccess() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
         this.eventManager.subscribe('authenticationSuccess', () => {
             this.principal.identity().then(account => {
                 this.account = account;
-                this.gitConfigurationService.setGitConfiguration();
-                this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
             });
         });
     }

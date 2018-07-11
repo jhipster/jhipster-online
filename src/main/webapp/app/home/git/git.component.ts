@@ -28,36 +28,26 @@ import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 export class GitComponent implements OnInit {
     gitConfig: GitConfigurationModel;
 
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
-        this.gitConfigurationService.currentGitConfig.subscribe(config => (this.gitConfig = config));
-        console.log(this.gitConfig);
+        this.gitConfig = this.gitConfigurationService.gitConfig;
         this.gitConfig.availableGitProviders.forEach(provider => {
-            this.gitConfigurationService.gitProviderService.getCompanies(provider).subscribe(orgs => {
+            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(orgs => {
                 if (orgs.length === 0) {
-                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider).subscribe(
-                        () => {
-                            switch (provider) {
-                                case 'github':
-                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: true };
-                                    break;
-                                case 'gitlab':
-                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: true };
-                                    break;
-                            }
-                        },
-                        () => {
-                            switch (provider) {
-                                case 'github':
-                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: true };
-                                    break;
-                                case 'gitlab':
-                                    this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: true };
-                                    break;
-                            }
+                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider).subscribe(() => {
+                        switch (provider) {
+                            case 'github':
+                                this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: false };
+                                break;
+                            case 'gitlab':
+                                this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: false };
+                                break;
                         }
-                    );
+                    });
                 }
             });
         });

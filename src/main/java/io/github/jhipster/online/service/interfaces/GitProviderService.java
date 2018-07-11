@@ -16,7 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.github.jhipster.online.service.interfaces;
 
 import io.github.jhipster.online.domain.User;
@@ -24,6 +23,10 @@ import io.github.jhipster.online.domain.User;
 public interface GitProviderService {
 
     boolean isEnabled();
+
+    String getHost();
+
+    String getClientId();
 
     void syncUserFromGitProvider() throws Exception;
 
