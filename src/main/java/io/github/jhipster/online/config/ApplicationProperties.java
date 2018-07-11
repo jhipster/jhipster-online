@@ -68,12 +68,8 @@ public class ApplicationProperties {
         return mail;
     }
 
-
-
     public static class JhipsterCmd {
-
         private String cmd = System.getProperty("user.home") + "/.yarn/bin/jhipster";
-
         private Integer timeout = 120;
 
         public String getCmd() {
