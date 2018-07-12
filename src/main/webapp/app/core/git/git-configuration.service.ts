@@ -39,6 +39,6 @@ export class GitConfigurationService {
     }
 
     private newGitConfig() {
-        this.gitConfig = new GitConfigurationModel([], false, false, '', '', false, false, '', '', '');
+        this.gitConfig = new GitConfigurationModel([], false, false, null, null, false, false, null, null, null);
     }
 }

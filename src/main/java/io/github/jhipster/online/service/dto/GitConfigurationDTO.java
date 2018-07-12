@@ -1,13 +1,9 @@
 package io.github.jhipster.online.service.dto;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
-
-import java.util.List;
 import java.util.Objects;
 
 public class GitConfigurationDTO {
 
-    private List<GitProvider> availableGitProviders;
     private String githubHost;
     private String githubClientId;
     private boolean isGithubAvailable;
@@ -16,15 +12,13 @@ public class GitConfigurationDTO {
     private String gitlabClientId;
     private boolean isGitlabAvailable;
 
-    public GitConfigurationDTO(List<GitProvider> availableGitProviders,
-                               String githubHost,
+    public GitConfigurationDTO(String githubHost,
                                String githubClientId,
                                boolean isGithubAvailable,
                                String gitlabHost,
                                String gitlabRedirectUri,
                                String gitlabClientId,
                                boolean isGitlabAvailable) {
-        this.availableGitProviders = availableGitProviders;
         this.githubHost = githubHost;
         this.githubClientId = githubClientId;
         this.isGithubAvailable = isGithubAvailable;
@@ -32,14 +26,6 @@ public class GitConfigurationDTO {
         this.gitlabRedirectUri = gitlabRedirectUri;
         this.gitlabClientId = gitlabClientId;
         this.isGitlabAvailable = isGitlabAvailable;
-    }
-
-    public List<GitProvider> getAvailableGitProviders() {
-        return availableGitProviders;
-    }
-
-    public void setAvailableGitProviders(List<GitProvider> availableGitProviders) {
-        this.availableGitProviders = availableGitProviders;
     }
 
     public String getGithubHost() {
@@ -105,7 +91,6 @@ public class GitConfigurationDTO {
         GitConfigurationDTO that = (GitConfigurationDTO) o;
         return isGithubAvailable == that.isGithubAvailable &&
             isGitlabAvailable == that.isGitlabAvailable &&
-            Objects.equals(availableGitProviders, that.availableGitProviders) &&
             Objects.equals(githubHost, that.githubHost) &&
             Objects.equals(githubClientId, that.githubClientId) &&
             Objects.equals(gitlabHost, that.gitlabHost) &&
@@ -115,7 +100,7 @@ public class GitConfigurationDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(availableGitProviders, githubHost, githubClientId, isGithubAvailable,
+        return Objects.hash(githubHost, githubClientId, isGithubAvailable,
             gitlabHost, gitlabRedirectUri, gitlabClientId, isGitlabAvailable);
     }
 }

@@ -288,17 +288,8 @@ public class GitResource {
     @Timed
     public @ResponseBody
     ResponseEntity getGitlabConfig() {
-        List<GitProvider> availableGitProviders = new ArrayList<>();
-        if (githubService.isEnabled()) {
-            availableGitProviders.add(GitProvider.GITHUB);
-        }
-        if (gitlabService.isEnabled()) {
-            availableGitProviders.add(GitProvider.GITLAB);
-        }
-
         return new ResponseEntity<>(
             new GitConfigurationDTO(
-                availableGitProviders,
                 githubService.getHost(),
                 githubService.getClientId(),
                 githubService.isEnabled(),

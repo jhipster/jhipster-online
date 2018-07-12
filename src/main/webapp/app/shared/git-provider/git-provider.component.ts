@@ -41,7 +41,15 @@ export class JhiGitProviderComponent implements OnInit {
         this.newGitProviderModel();
         this.data.gitProjectListRefresh = true;
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.gitConfig.availableGitProviders.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
+
+        if (this.gitConfig.isGithubAvailable && this.isGithubConfigured) {
+            this.data.availableGitProviders.push('GitHub');
+        }
+        if (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured) {
+            this.data.availableGitProviders.push('GitLab');
+        }
+
+        this.data.availableGitProviders.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
@@ -102,6 +110,6 @@ export class JhiGitProviderComponent implements OnInit {
     }
 
     private newGitProviderModel() {
-        this.data = new GitProviderModel('', '', '', [], [], false, false);
+        this.data = new GitProviderModel([], null, null, null, [], [], false, false);
     }
 }

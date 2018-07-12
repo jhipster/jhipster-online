@@ -18,6 +18,7 @@
  */
 export class GitProviderModel {
     constructor(
+        public availableGitProviders: any,
         public selectedGitProvider: string,
         public selectedGitCompany: string,
         public selectedGitRepository: string,

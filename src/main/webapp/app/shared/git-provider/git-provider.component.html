@@ -6,7 +6,7 @@
                     <label for="selectedGitProvider">Select the Git provider:</label>
                     <select id="selectedGitProvider" (ngModelChange)="refreshGitCompanyListByGitProvider($event)"
                             [(ngModel)]="data.selectedGitProvider" name="data.selectedGitProvider" class="form-control">
-                        <option *ngFor="let provider of gitConfig.availableGitProviders">{{provider}}</option>
+                        <option *ngFor="let provider of data.availableGitProviders">{{provider}}</option>
                     </select>
                 </div>
             </div>
