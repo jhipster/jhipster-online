@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(request);
         }
 
-        const token = this.localStorage.retrieve('authenticationtoken') || this.sessionStorage.retrieve('authenticationtoken');
+        const token = this.localStorage.retrieve('authenticationToken') || this.sessionStorage.retrieve('authenticationToken');
         if (!!token) {
             request = request.clone({
                 setHeaders: {

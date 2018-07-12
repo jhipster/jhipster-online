@@ -1,14 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { of } from 'rxjs/observable/of';
 
-import { UserService, PasswordResetService, User } from 'app/core';
+import { PasswordResetService } from 'app/core';
 import { UserMgmtResetDialogComponent } from 'app/admin/user-management/user-management-reset-dialog.component';
 import { JhonlineTestModule } from '../../../test.module';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from '@angular/common/http';
 
 describe('Component Tests', () => {
     describe('User Management Reset Component', () => {
