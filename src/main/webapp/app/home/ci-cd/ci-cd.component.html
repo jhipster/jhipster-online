@@ -1,40 +1,11 @@
 <form #generatorForm="ngForm">
-
     <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
         There is no git providers available. Contact your administrator to configure a git provider.
     </ngb-alert>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="(gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable) && !isGithubConfigured && !isGitlabConfigured">
-        <p>
-            <span class="fas fa-exclamation-triangle"></span>&nbsp;
-            <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your
-                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
-                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
-                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
-                project, you must authorize JHipster Online to access your
-                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
-                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
-                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
-                account.</span>
-        </p>
-        <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your
-                <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
-                <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
-                <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
-                account</a>
-        </p>
-    </ngb-alert>
-    <p *ngIf="isGithubConfigured || isGitlabConfigured">
-        <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
-        <ng-container *ngIf="isGithubConfigured && isGitlabConfigured">GitHub or GitLab</ng-container>
-        <ng-container *ngIf="isGithubConfigured && !isGitlabConfigured">GitHub</ng-container>
-        <ng-container *ngIf="!isGithubConfigured && isGitlabConfigured">GitLab</ng-container>
-        repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
-        master branch.</i>
-    </p>
+    <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
     <div *ngIf="isGithubConfigured || isGitlabConfigured">
         <div class="container">

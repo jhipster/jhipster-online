@@ -9,40 +9,7 @@
             <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
             <span>You will only be able to download your application as a Zip file.</span>
         </ngb-alert>
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="(gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable) && !isGithubConfigured && !isGitlabConfigured">
-            <p>
-                <span class="fas fa-exclamation-triangle"></span>&nbsp;
-                <span><strong>Warning!</strong> To generate your application on
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab, </ng-container>
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub, </ng-container>
-                    <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab, </ng-container>
-                    you must authorize JHipster Online to access your
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
-                    <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
-                    account.</span>
-                <span>You will only be able to download your application as a Zip file.</span>
-            </p>
-            <p class="text-center" *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
-                <a routerLink="/git" class="btn btn-primary" role="button">Configure your
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitHub or GitLab</ng-container>
-                    <ng-container *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">GitHub</ng-container>
-                    <ng-container *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable">GitLab</ng-container>
-                    account
-                </a>
-            </p>
-        </ngb-alert>
-        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
-            <div class="col-md-12">
-                <p>
-                    <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
-                    <ng-container *ngIf="isGithubConfigured && isGitlabConfigured">GitHub or GitLab</ng-container>
-                    <ng-container *ngIf="isGithubConfigured && !isGitlabConfigured">GitHub</ng-container>
-                    <ng-container *ngIf="!isGithubConfigured && isGitlabConfigured">GitLab</ng-container>
-                    repository, and will push the generated project in that repository.</i>
-                </p>
-            </div>
-        </div>
+        <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
         <div class="row">
             <div class="col-md-12">

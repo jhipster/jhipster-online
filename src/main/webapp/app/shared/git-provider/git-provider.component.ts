@@ -16,10 +16,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GitConfigurationService, GitProviderModel } from 'app/core';
+
+@Component({
+    selector: 'jhi-git-provider-alert',
+    templateUrl: './git-provider-alert.component.html'
+})
+export class JhiGitProviderAlertComponent implements OnInit {
+    gitConfig: any;
+
+    @Input() tab: string;
+
+    message: string;
+
+    displayedGitProvider: string;
+
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+
+    constructor(private gitConfigurationService: GitConfigurationService) {}
+
+    ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.updateGitProviderName();
+
+        if (this.tab === 'ci-cd') {
+            this.message = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
+                you must authorize JHipster Online to access your ${this.displayedGitProvider} account.`;
+        } else if (this.tab === 'generate-application') {
+            this.message = ` To generate your application on ${this.displayedGitProvider}, you must authorize JHipster Online to access
+            your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
+        } else if (this.tab === 'design-entities-apply') {
+            this.message = ` To apply a JDL Model on a ${this.displayedGitProvider} project, you must authorize JHipster Online to access
+            your ${this.displayedGitProvider} account.`;
+        }
+    }
+
+    isAlertShowing() {
+        return (
+            (this.gitConfig.isGithubAvailable || this.gitConfig.isGitlabAvailable) && !this.isGithubConfigured && !this.isGitlabConfigured
+        );
+    }
+
+    private updateGitProviderName() {
+        if (this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
+            this.displayedGitProvider = 'GitHub/GitLab';
+        } else if (this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable) {
+            this.displayedGitProvider = 'GitHub';
+        } else if (!this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
+            this.displayedGitProvider = 'GitLab';
+        }
+    }
+}
 
 @Component({
     selector: 'jhi-git-provider',
