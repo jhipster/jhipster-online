@@ -71,16 +71,16 @@ public class GitResource {
     /**
      * Handles the callback code returned by the OAuth2 authentication.
      */
-    @GetMapping("/callback/{gitProvider}")
+    @GetMapping("/{gitProvider}/callback")
     @Timed
     public RedirectView callback(@PathVariable String gitProvider, String code) {
         switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/callback/github/" + code);
+                return new RedirectView("/#/github/callback/" + code);
             case GITLAB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/callback/gitlab/" + code);
+                return new RedirectView("/#//gitlab/callback/" + code);
             default:
                 log.error("Unknown git provider : {}", gitProvider);
                 return null;
@@ -217,7 +217,7 @@ public class GitResource {
     @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity refreshGithub(@PathVariable String gitProvider) {
+    ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
             switch (gitProvider.toLowerCase()) {

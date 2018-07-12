@@ -35,6 +35,7 @@ import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.JdlMetadataService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 
@@ -52,8 +53,11 @@ public class JdlMetadataResource {
 
     private final JdlMetadataService jdlMetadataService;
 
-    public JdlMetadataResource(JdlMetadataService jdlMetadataService) {
+    private final UserService userService;
+
+    public JdlMetadataResource(JdlMetadataService jdlMetadataService, UserService userService) {
         this.jdlMetadataService = jdlMetadataService;
+        this.userService = userService;
     }
 
     /**
@@ -84,7 +88,7 @@ public class JdlMetadataResource {
     @Timed
     public List<JdlMetadata> getAllJdlMetadata() {
         log.debug("REST request to get all JdlMetadata");
-        return jdlMetadataService.findAllForCurrentUser();
+        return jdlMetadataService.findAllForUser(userService.getUser());
     }
 
     /**
