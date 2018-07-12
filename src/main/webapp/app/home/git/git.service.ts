@@ -39,15 +39,15 @@ export class GitProviderService {
     }
 
     getCompanies(provider: string): Observable<GitCompanyModel[]> {
-        return this.http.get<GitCompanyModel[]>(`api/${provider}/companies`).map((res: GitCompanyModel[]) => res);
+        return this.http.get<GitCompanyModel[]>(`api/${provider}/companies`);
     }
 
     getProjects(provider: string, companyName: string): Observable<string[]> {
-        return this.http.get<string[]>(`api/${provider}/companies/${companyName}/projects`).map((res: string[]) => res);
+        return this.http.get<string[]>(`api/${provider}/companies/${companyName}/projects`);
     }
 
     getAvailableProviders(): Observable<string[]> {
-        return this.http.get<string[]>('api/git/providers').map((res: string[]) => res);
+        return this.http.get<string[]>('api/git/providers');
     }
 
     getGitlabConfig(): Observable<any> {

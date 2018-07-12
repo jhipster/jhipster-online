@@ -32,7 +32,7 @@
                     <button class="btn btn-success btn-sm" (click)="setActive(user, false)" *ngIf="user.activated"
                             [disabled]="currentAccount.login === user.login">Activated</button>
                 </td>
-                
+
                 <td>
                     <div *ngFor="let authority of user.authorities">
                         <span class="badge badge-info">{{ authority }}</span>
@@ -59,7 +59,7 @@
                         <button type="submit" (click)="resetPassword(user)"
                                 class="btn btn-secondary btn-sm"
                                 *ngIf="!isMailEnabled">
-                            <i class="fas fa-undo"></i>
+                            <fa-icon [icon]="'undo'"></fa-icon>
                             <span class="d-none d-md-inline">Reset password</span>
                         </button>
                         <button type="button" (click)="deleteUser(user)"

@@ -30,20 +30,20 @@
             <a class="btn btn-primary"
                href="{{githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
             <span *ngIf="!isAuthorizingGithub">
-                <i class="fab fa-github"></i>
-                Authorize GitHub
+                <fa-icon [icon]="['fab', 'github']"></fa-icon>
+                &nbsp;Authorize GitHub
             </span>
                 <span *ngIf="isAuthorizingGithub">
-                <i class="fab fa-github fa-spin"></i>
-                Checking GitHub link...
-            </span>
+                    <fa-icon [icon]="['fab', 'github']" [spin]="true"></fa-icon>
+                    &nbsp;Checking GitHub link...
+                </span>
             </a>
         </p>
         <p class="text-center" *ngIf="isGithubConfigured">
             <a class="btn btn-warning"
                href="{{githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
-                <i class="fab fa-github"></i> JHipster
-                is already authorized, click here to re-synchronize your Github account
+                <fa-icon [icon]="['fab', 'github']"></fa-icon>&nbsp;
+                JHipster is already authorized, click here to re-synchronize your Github account
             </a>
         </p>
     </ng-container>
@@ -70,19 +70,20 @@
             <a (disabled)="isAuthorizingGitlab" class="btn btn-primary"
                href="{{gitlabHost}}/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
             <span *ngIf="!isAuthorizingGitlab">
-                <i class="fab fa-gitlab"></i>
-                Authorize GitLab
+                <fa-icon [icon]="['fab', 'gitlab']"></fa-icon>
+                &nbsp;Authorize GitLab
             </span>
             <span *ngIf="isAuthorizingGitlab">
-                <i class="fab fa-gitlab fa-spin"></i>
-                Checking GitLab link...
+                <fa-icon [icon]="['fab', 'gitlab']" [spin]="true"></fa-icon>
+                &nbsp;Checking GitLab link...
             </span>
             </a>
         </p>
         <p class="text-center" *ngIf="isGitlabConfigured">
             <a class="btn btn-warning"
                href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
-                <i class="fab fa-gitlab"></i> JHipster
+                <fa-icon [icon]="['fab', 'gitlab']"></fa-icon>
+                &nbsp;JHipster
                 is already authorized, click here to re-synchronize your Gitlab account
             </a>
         </p>
