@@ -16,26 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.jhipster.online.service.interfaces;
-
-import io.github.jhipster.online.domain.User;
-
-public interface GitProviderService {
-
-    boolean isEnabled();
-
-    String getHost();
-
-    String getClientId();
-
-    void syncUserFromGitProvider() throws Exception;
-
-    User getSyncedUserFromGitProvider(User user) throws Exception;
-
-    void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
-        organization, String repositoryName);
-
-    int createPullRequest(User user, String organization, String applicationName,
-        String title, String branchName, String body) throws Exception;
-
+export class GitCompanyModel {
+    constructor(public id: number, public name: string, public gitProvider: string) {}
 }

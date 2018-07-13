@@ -10,30 +10,21 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing; software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
-import { Principal } from 'app/core/auth/principal.service';
-
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
-
-@Component({
-    selector: 'jhi-welcome',
-    templateUrl: './welcome.component.html',
-    styleUrls: ['welcome.scss']
-})
-export class WelcomeComponent {
-    gitConfig: GitConfigurationModel;
-
-    constructor(private principal: Principal, private gitConfigurationService: GitConfigurationService) {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
+export class GitProviderModel {
+    constructor(
+        public availableGitProviders: any,
+        public selectedGitProvider: string,
+        public selectedGitCompany: string,
+        public selectedGitRepository: string,
+        public gitCompanies: any,
+        public gitProjects: any,
+        public gitCompanyListRefresh: boolean,
+        public gitProjectListRefresh: boolean
+    ) {}
 }

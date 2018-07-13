@@ -83,6 +83,18 @@ public class GitlabService implements GitProviderService {
     }
 
     @Override
+    public String getHost() {
+        return applicationProperties.getGitlab().getHost();
+    }
+
+    @Override
+    public String getClientId() { return applicationProperties.getGitlab().getClientId(); }
+
+    public String getRedirectUri() {
+        return applicationProperties.getGitlab().getRedirectUri();
+    }
+
+    @Override
     public boolean isEnabled() {
         return
             this.applicationProperties.getGitlab().getClientId() != null &&
@@ -205,14 +217,6 @@ public class GitlabService implements GitProviderService {
         gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
         return number;
-    }
-
-    public String getHost() {
-        return applicationProperties.getGitlab().getHost();
-    }
-
-    public String getRedirectUri() {
-        return applicationProperties.getGitlab().getRedirectUri();
     }
 
     /**

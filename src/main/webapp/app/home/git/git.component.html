@@ -1,4 +1,4 @@
-<div *ngIf="!isGithubAvailable && !isGitlabAvailable">
+<div *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
     <h2><span class="fa fa-wrench"></span>&nbsp;<span>No GitHub or GitLab configuration available</span></h2>
 
     <div class="alert alert-info" role="alert">
@@ -9,7 +9,7 @@
     </p>
 </div>
 
-<div *ngIf="isGithubAvailable">
+<div *ngIf="gitConfig.isGithubAvailable">
     <h2><span class="fa fa-wrench"></span>&nbsp;<span>GitHub configuration</span></h2>
     <p>
         If you give access to your GitHub account to JHipster Online, it will:
@@ -22,34 +22,34 @@
     </ul>
 
     <div class="alert alert-info" role="alert">
-        You can revoke this access at any time in your <a href="{{githubHost}}/settings/applications">GitHub</a> settings.
+        You can revoke this access at any time in your <a href="{{gitConfig.githubHost}}/settings/applications">GitHub</a> settings.
     </div>
 
     <ng-container>
         <p class="text-center" *ngIf="!isGithubConfigured">
             <a class="btn btn-primary"
-               href="{{githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
-            <span *ngIf="!isAuthorizingGithub">
+               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
+            <span *ngIf="!gitConfig.isAuthorizingGithub">
                 <fa-icon [icon]="['fab', 'github']"></fa-icon>
                 &nbsp;Authorize GitHub
             </span>
-                <span *ngIf="isAuthorizingGithub">
-                    <fa-icon [icon]="['fab', 'github']" [spin]="true"></fa-icon>
+            <span *ngIf="gitConfig.isAuthorizingGithub">
+                <fa-icon [icon]="['fab', 'github']" [spin]="true"></fa-icon>
                     &nbsp;Checking GitHub link...
-                </span>
+            </span>
             </a>
         </p>
         <p class="text-center" *ngIf="isGithubConfigured">
             <a class="btn btn-warning"
-               href="{{githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{githubClientId}}" role="button">
-                <fa-icon [icon]="['fab', 'github']"></fa-icon>&nbsp;
-                JHipster is already authorized, click here to re-synchronize your Github account
+               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
+            <fa-icon [icon]="['fab', 'github']"></fa-icon>&nbsp;JHipster
+                is already authorized, click here to re-synchronize your Github account
             </a>
         </p>
     </ng-container>
 </div>
 
-<div *ngIf="isGitlabAvailable">
+<div *ngIf="gitConfig.isGitlabAvailable">
     <h2><span class="fa fa-wrench"></span>&nbsp;<span>GitLab configuration</span></h2>
     <p>
         If you give access to your GitLab account to JHipster Online, it will:
@@ -62,18 +62,18 @@
     </ul>
 
     <div class="alert alert-info" role="alert">
-        You can revoke this access at any time in your <a href="{{gitlabHost}}/profile/applications">GitLab</a> settings.
+        You can revoke this access at any time in your <a href="{{gitConfig.gitlabHost}}/profile/applications">GitLab</a> settings.
     </div>
 
     <ng-container>
         <p class="text-center" *ngIf="!isGitlabConfigured">
-            <a (disabled)="isAuthorizingGitlab" class="btn btn-primary"
-               href="{{gitlabHost}}/oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
-            <span *ngIf="!isAuthorizingGitlab">
+            <a (disabled)="gitConfig.isAuthorizingGitlab" class="btn btn-primary"
+               href="{{gitConfig.gitlabHost}}/oauth/authorize?client_id={{gitConfig.gitlabClientId}}&redirect_uri={{gitConfig.gitlabRedirectUri}}&response_type=code" role="button">
+            <span *ngIf="!gitConfig.isAuthorizingGitlab">
                 <fa-icon [icon]="['fab', 'gitlab']"></fa-icon>
                 &nbsp;Authorize GitLab
             </span>
-            <span *ngIf="isAuthorizingGitlab">
+            <span *ngIf="gitConfig.isAuthorizingGitlab">
                 <fa-icon [icon]="['fab', 'gitlab']" [spin]="true"></fa-icon>
                 &nbsp;Checking GitLab link...
             </span>
@@ -81,10 +81,9 @@
         </p>
         <p class="text-center" *ngIf="isGitlabConfigured">
             <a class="btn btn-warning"
-               href="{{gitlabHost}}oauth/authorize?client_id={{gitlabClientId}}&redirect_uri={{gitlabRedirectUri}}&response_type=code" role="button">
-                <fa-icon [icon]="['fab', 'gitlab']"></fa-icon>
-                &nbsp;JHipster
-                is already authorized, click here to re-synchronize your Gitlab account
+               href="{{gitConfig.gitlabHost}}/oauth/authorize?client_id={{gitConfig.gitlabClientId}}&redirect_uri={{gitConfig.gitlabRedirectUri}}&response_type=code" role="button">
+                <fa-icon [icon]="['fab', 'gitlab']"></fa-icon> &nbsp;JHipster
+                is already authorized, click here to re-synchronize your GitLab account
             </a>
         </p>
     </ng-container>

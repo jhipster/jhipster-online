@@ -20,15 +20,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { GitCompanyModel } from 'app/home/generator/git.company.model';
+import { GitCompanyModel } from 'app/core';
 
 @Injectable({ providedIn: 'root' })
 export class GitProviderService {
     constructor(private http: HttpClient) {}
-
-    clientId(string: string): Observable<string> {
-        return this.http.get(`api/${string.valueOf()}/client-id`, { responseType: 'text' });
-    }
 
     saveGitOAuthToken(provider: string, token: string): Observable<any> {
         return this.http.post<any>(`api/${provider}/save-token`, token);
@@ -46,15 +42,7 @@ export class GitProviderService {
         return this.http.get<string[]>(`api/${provider}/companies/${companyName}/projects`);
     }
 
-    getAvailableProviders(): Observable<string[]> {
-        return this.http.get<string[]>('api/git/providers');
-    }
-
-    getGitlabConfig(): Observable<any> {
-        return this.http.get<any>('api/gitlab/config');
-    }
-
-    getGithubConfig(): Observable<any> {
-        return this.http.get<any>('api/github/config');
+    getGitConfig(): Observable<any> {
+        return this.http.get<any>('api/git/config');
     }
 }

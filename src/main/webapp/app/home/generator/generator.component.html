@@ -4,25 +4,12 @@
 
     <div class="container">
         <h4>Project configuration</h4>
-        <hr>
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
-            <p>
-                <span class="fas fa-exclamation-triangle"></span>&nbsp;
-                <span><strong>Warning!</strong> To generate your application on GitHub or GitLab, you must authorize JHipster Online to access your GitHub or GitLab account.</span>
-                <span>You will only be able to download your application as a Zip file</span>
-            </p>
-            <p class="text-center">
-                <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
-            </p>
+        <hr />
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
+            <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
+            <span>You will only be able to download your application as a Zip file.</span>
         </ngb-alert>
-        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
-            <div class="col-md-12">
-                <p>
-                    <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
-                    GitHub/GitLab repository, and will push the generated project in that repository.</i>
-                </p>
-            </div>
-        </div>
+        <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
         <div class="row">
             <div class="col-md-12">
@@ -43,9 +30,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Application type</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -61,9 +48,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Server side options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -239,7 +226,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4 [hidden]="model.applicationType === 'microservice'">Client side options</h4>
         <hr [hidden]="model.applicationType === 'microservice'">
         <div class="row" [hidden]="model.applicationType === 'microservice'">
@@ -262,9 +249,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Internationalization options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -291,9 +278,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Testing options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -309,7 +296,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="text-center">
