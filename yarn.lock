@@ -111,7 +111,7 @@
   version "0.1.0-9"
   resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.1.0-9.tgz#fb57a37050234602a7244d9224f9f53225199d33"
 
-"@fortawesome/fontawesome-common-types@^0.2.0-6":
+"@fortawesome/fontawesome-common-types@^0.2.0", "@fortawesome/fontawesome-common-types@^0.2.0-6":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.0.tgz#6bcf6481030f59e7ffd1a40a67cd464d47780f6a"
 
@@ -120,6 +120,12 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.0-11.tgz#b8ee99b3a078f5253623a631a122ff60a6e5bb4c"
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.0-6"
+
+"@fortawesome/free-brands-svg-icons@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.1.0.tgz#f8a449943784cb59e0400b88cd4f33c81a281328"
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.0"
 
 "@fortawesome/free-solid-svg-icons@5.1.0-8":
   version "5.1.0-8"
