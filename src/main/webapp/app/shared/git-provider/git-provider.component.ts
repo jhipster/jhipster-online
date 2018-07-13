@@ -30,7 +30,8 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     @Input() tab: string;
 
-    message: string;
+    warningMessage: string;
+    infoMessage: string;
 
     displayedGitProvider: string;
 
@@ -44,14 +45,24 @@ export class JhiGitProviderAlertComponent implements OnInit {
         this.updateGitProviderName();
 
         if (this.tab === 'ci-cd') {
-            this.message = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
+            this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
                 you must authorize JHipster Online to access your ${this.displayedGitProvider} account.`;
+            this.infoMessage = ` will access your project's ${this.displayedGitProvider} repository and create a new branch
+                with Continuous Integration configuration. You can then decide if you want to merge this branch into your master branch.`;
         } else if (this.tab === 'generate-application') {
-            this.message = ` To generate your application on ${this.displayedGitProvider}, you must authorize JHipster Online to access
-            your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
+            this.warningMessage = ` To generate your application on ${
+                this.displayedGitProvider
+            }, you must authorize JHipster Online to access
+                your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
+            this.infoMessage = ` will create a new ${this.displayedGitProvider} repository,
+                and will push the generated project in that repository.`;
         } else if (this.tab === 'design-entities-apply') {
-            this.message = ` To apply a JDL Model on a ${this.displayedGitProvider} project, you must authorize JHipster Online to access
-            your ${this.displayedGitProvider} account.`;
+            this.warningMessage = ` To apply a JDL Model on a ${
+                this.displayedGitProvider
+            } project, you must authorize JHipster Online to access
+                your ${this.displayedGitProvider} account.`;
+            this.infoMessage = ` will access your project's ${this.displayedGitProvider} repository and create a new branch with this model.
+                You can then decide if you want to merge this branch into your master branch.`;
         }
     }
 
@@ -90,17 +101,17 @@ export class JhiGitProviderComponent implements OnInit {
 
     ngOnInit() {
         this.newGitProviderModel();
-        this.data.gitProjectListRefresh = true;
         this.gitConfig = this.gitConfigurationService.gitConfig;
 
         if (this.gitConfig.isGithubAvailable && this.isGithubConfigured) {
             this.data.availableGitProviders.push('GitHub');
+            this.data.selectedGitProvider = 'GitHub';
         }
         if (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured) {
             this.data.availableGitProviders.push('GitLab');
         }
 
-        this.data.availableGitProviders.forEach(provider => this.refreshGitCompanyListByGitProvider(provider));
+        this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider);
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
@@ -108,7 +119,6 @@ export class JhiGitProviderComponent implements OnInit {
         this.gitConfigurationService.gitProviderService.getCompanies(gitProvider).subscribe(
             companies => {
                 this.data.gitCompanyListRefresh = false;
-                this.data.selectedGitProvider = gitProvider;
                 this.data.gitCompanies = companies;
                 this.data.selectedGitCompany = companies[0].name;
                 if (this.router.url === '/generate-application') {
@@ -119,7 +129,7 @@ export class JhiGitProviderComponent implements OnInit {
                     };
                     this.sharedData.emit(this.data);
                 } else {
-                    this.refreshGitProjectList();
+                    this.updateGitProjectList(this.data.selectedGitCompany);
                 }
             },
             () => {

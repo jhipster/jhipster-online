@@ -80,7 +80,7 @@ public class GitResource {
                 return new RedirectView("/#/github/callback/" + code);
             case GITLAB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#//gitlab/callback/" + code);
+                return new RedirectView("/#/gitlab/callback/" + code);
             default:
                 log.error("Unknown git provider : {}", gitProvider);
                 return null;

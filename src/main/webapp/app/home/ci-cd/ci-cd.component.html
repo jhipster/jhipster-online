@@ -7,7 +7,7 @@
     </ngb-alert>
     <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="isGithubConfigured || isGitlabConfigured">
+    <div *ngIf="(gitConfig.isGithubAvailable && isGithubConfigured) || (gitConfig.isGitlabAvailable && isGitlabConfigured)">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
