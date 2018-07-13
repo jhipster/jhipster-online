@@ -109,6 +109,7 @@ export class JhiGitProviderComponent implements OnInit {
         }
         if (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured) {
             this.data.availableGitProviders.push('GitLab');
+            this.data.selectedGitProvider = 'GitLab';
         }
 
         this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider);
