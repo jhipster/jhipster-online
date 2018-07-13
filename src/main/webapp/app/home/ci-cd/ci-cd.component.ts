@@ -19,8 +19,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
-import { GitProviderService } from '../git/git.service';
 import { CiCdService } from './ci-cd.service';
 
 @Component({
@@ -39,25 +39,25 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
+    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
 
-    gitlabHost: string;
+    gitConfig: GitConfigurationModel;
 
-    constructor(private modalService: NgbModal, private gitService: GitProviderService, private ciCdService: CiCdService) {}
+    constructor(
+        private modalService: NgbModal,
+        private gitConfigurationService: GitConfigurationService,
+        private ciCdService: CiCdService
+    ) {}
 
     ngOnInit() {
-        this.gitService.getGitlabConfig().subscribe(config => {
-            this.gitlabHost = config.host;
-        });
+        this.gitConfig = this.gitConfigurationService.gitConfig;
     }
 
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
-        this.isGithubConfigured = data.isGithubConfigured;
-        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     applyCiCd() {
@@ -75,7 +75,8 @@ export class CiCdComponent implements OnInit {
 
         modalRef.ciCdId = ciCdId;
         modalRef.ciCdTool = this.ciCdTool;
-        modalRef.gitlabHost = this.gitlabHost;
+        modalRef.gitlabHost = this.gitConfig.gitlabHost;
+        modalRef.githubHost = this.gitConfig.githubHost;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.selectedGitRepository = this.selectedGitRepository;

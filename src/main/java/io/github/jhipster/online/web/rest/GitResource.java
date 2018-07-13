@@ -21,6 +21,7 @@ package io.github.jhipster.online.web.rest;
 
 import java.util.*;
 
+import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -45,9 +46,9 @@ public class GitResource {
 
     private final Logger log = LoggerFactory.getLogger(GitResource.class);
 
-    public static final String GITHUB = "github";
+    private static final String GITHUB = "github";
 
-    public static final String GITLAB = "gitlab";
+    private static final String GITLAB = "gitlab";
 
     private final ApplicationProperties applicationProperties;
 
@@ -65,25 +66,6 @@ public class GitResource {
         this.userService = userService;
         this.githubService = githubService;
         this.gitlabService = gitlabService;
-    }
-
-    /**
-     * The client ID used for OAuth2 authentication.
-     */
-    @GetMapping("/{gitProvider}/client-id")
-    @Timed
-    @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity getClientId(@PathVariable String gitProvider) {
-        switch (gitProvider.toLowerCase()) {
-            case GITHUB:
-                return new ResponseEntity<>(this.applicationProperties.getGithub().getClientId(), HttpStatus.OK);
-            case GITLAB:
-                return new ResponseEntity<>(this.applicationProperties.getGitlab().getClientId(), HttpStatus.OK);
-            default:
-                log.error("Unknown git provider : {}", gitProvider);
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     /**
@@ -240,10 +222,11 @@ public class GitResource {
         try {
             switch (gitProvider.toLowerCase()) {
                 case GITHUB:
+                    log.info("Refreshing GitHub.");
                     this.githubService.syncUserFromGitProvider();
                     break;
                 case GITLAB:
-                    log.info("Refreshing Gitlab.");
+                    log.info("Refreshing GitLab.");
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
@@ -252,8 +235,17 @@ public class GitResource {
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            log.error("Could not refresh Github data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Github data could not be refreshed");
+            switch (gitProvider.toLowerCase()) {
+                case GITHUB:
+                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be refreshed");
+                case GITLAB:
+                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be refreshed");
+                default:
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
+                        gitProvider);
+            }
         }
     }
 
@@ -292,39 +284,20 @@ public class GitResource {
         return new ResponseEntity<>(this.userService.getProjects(companyName, maybeGitProvider.get()), HttpStatus.OK);
     }
 
-    @GetMapping("/git/providers")
+    @GetMapping("/git/config")
     @Timed
-    @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity getAvailableProviders() {
-        Set<String> result = new HashSet<>();
-        if (githubService.isEnabled()) {
-            result.add(GitProvider.GITHUB.getValue());
-        }
-        if (gitlabService.isEnabled()) {
-            result.add(GitProvider.GITLAB.getValue());
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @GetMapping("/gitlab/config")
-    @Timed
-    @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity getGitlabConfig() {
-        Map<String, String> config = new HashMap<>();
-        config.put("host", gitlabService.getHost());
-        config.put("redirectUri", gitlabService.getRedirectUri());
-        return new ResponseEntity<>(config, HttpStatus.OK);
-    }
-
-    @GetMapping("/github/config")
-    @Timed
-    @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity getGithubConfig() {
-        Map<String, String> config = new HashMap<>();
-        config.put("host", githubService.getHost());
-        return new ResponseEntity<>(config, HttpStatus.OK);
+        return new ResponseEntity<>(
+            new GitConfigurationDTO(
+                githubService.getHost(),
+                githubService.getClientId(),
+                githubService.isEnabled(),
+                gitlabService.getHost(),
+                gitlabService.getRedirectUri(),
+                gitlabService.getClientId(),
+                gitlabService.isEnabled()
+            ), HttpStatus.OK
+        );
     }
 }

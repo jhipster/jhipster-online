@@ -5,16 +5,24 @@
                 <div class="footer-col col-md-12 mt-5 footer-icons">
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            <a href="https://twitter.com/java_hipster" target="_blank" class="btn-social btn-rounded"><i class="fab fa-fw fa-twitter"></i></a>
+                            <a href="https://twitter.com/java_hipster" target="_blank" class="btn-social btn-rounded">
+                                <fa-icon prefix="fab" [icon]="['fab', 'twitter']"></fa-icon>
+                            </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="https://github.com/jhipster/generator-jhipster" target="_blank" class="btn-social btn-rounded"><i class="fab fa-fw fa-github"></i></a>
+                            <a href="https://github.com/jhipster/generator-jhipster" target="_blank" class="btn-social btn-rounded">
+                                <fa-icon prefix="fab" [icon]="['fab', 'github']"></fa-icon>
+                            </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="https://github.com/jhipster/jhipster-online" target="_blank" class="btn-social btn-rounded"><i class="fab fa-fw fa-github"></i></a>
+                            <a href="https://github.com/jhipster/jhipster-online" target="_blank" class="btn-social btn-rounded">
+                                <fa-icon [icon]="['fab', 'github']"></fa-icon>
+                            </a>
                         </li>
                         <li class="list-inline-item">
-                            <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" class="btn-social btn-rounded"><i class="fas fa-fw fa-comments"></i></a>
+                            <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" class="btn-social btn-rounded">
+                                <fa-icon [icon]="'comments'"></fa-icon>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -27,7 +35,7 @@
                 <div class="col-lg-12">
                     JHipster Online |
                     <a href="https://github.com/jhipster/jhipster-online/issues" target="_blank">
-                        <i class="fa fa-fw fa-bug" aria-hidden="true"></i>
+                        <fa-icon [icon]="'bug'"></fa-icon>
                         Submit a bug report
                     </a>
                 </div>

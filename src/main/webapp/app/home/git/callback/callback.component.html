@@ -4,7 +4,10 @@
     <i>
         JHipster Online can create new repositories for you, using
         <a routerLink="/generate-application">the online application generator</a>.
-        You can revoke this access at any time in your <a href="https://github.com/settings/applications">GitHub</a>/GitLab settings.
+        You can revoke this access at any time in your
+        <ng-container *ngIf="provider === 'github'"><a href="{{gitConfig.githubHost}}/settings/applications">GitHub</a></ng-container>
+        <ng-container *ngIf="provider === 'gitlab'"><a href="{{gitConfig.gitlabHost}}/profile/applications">GitLab</a></ng-container>
+        settings.
     </i>
 </div>
 
@@ -14,7 +17,7 @@
 
 <div class="alert alert-{{alertType}}">
     <span *ngIf="isLoading">
-        <i class="fas fa-spin fa-sync"></i>
+        <fa-icon [icon]="'sync'" [spin]="true"></fa-icon>
     </span>
     {{message}}
 </div>

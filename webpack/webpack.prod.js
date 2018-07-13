@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Visualizer = require('webpack-visualizer-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
@@ -11,8 +12,8 @@ const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 
 const ENV = 'production';
-const extractSASS = new ExtractTextPlugin(`[name]-sass.[hash].css`);
-const extractCSS = new ExtractTextPlugin(`[name].[hash].css`);
+const extractSASS = new ExtractTextPlugin(`content/[name]-sass.[hash].css`);
+const extractCSS = new ExtractTextPlugin(`content/[name].[hash].css`);
 
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
     // Enable source maps. Please note that this will slow down the build.
@@ -42,7 +43,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             test: /(vendor\.scss|global\.scss)/,
             use: extractSASS.extract({
                 fallback: 'style-loader',
-                use: ['css-loader', 'postcss-loader', 'sass-loader']
+                use: ['css-loader', 'postcss-loader', 'sass-loader'],
+                publicPath: '../'
             })
         },
         {
@@ -54,7 +56,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             test: /(vendor\.css|global\.css)/,
             use: extractCSS.extract({
                 fallback: 'style-loader',
-                use: ['css-loader']
+                use: ['css-loader'],
+                publicPath: '../'
             })
         }]
     },
@@ -101,6 +104,11 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     plugins: [
         extractSASS,
         extractCSS,
+        new MomentLocalesPlugin({
+            localesToKeep: [
+                // jhipster-needle-i18n-language-moment-webpack - JHipster will add/remove languages in this array
+            ]
+        }),
         new Visualizer({
             // Webpack statistics in target folder
             filename: '../stats.html'

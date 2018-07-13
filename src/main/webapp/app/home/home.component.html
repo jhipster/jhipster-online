@@ -5,42 +5,44 @@
                 <nav class="navbar navbar-light">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+
                             <a id="home" class="nav-link text-primary mt-3" routerLink="/">
-                                    <span class="btn-rounded align-middle">
-                                <i class="fa fa-home fa-2x align-middle"></i>
-                            </span>
+                                <span class="btn-rounded align-middle">
+                                    <fa-icon [icon]="'home'" [size]="'2x'"></fa-icon>
+                                </span>
                                 <span class="align-middle h5">Home</span>
                             </a>
                         </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                            <a id="configure"  class="nav-link text-primary mt-3" routerLink="/git">
+                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                            *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
+                            <a id="configure" class="nav-link text-primary mt-3" routerLink="/git">
                                 <span class="btn-rounded align-middle">
-                                <i class="fa fa-wrench fa-2x align-middle"></i>
-                            </span>
+                                    <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>
+                                </span>
                                 <span class="align-middle h5">Configure</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a id="create-app" class="nav-link text-primary mt-3" routerLink="/generate-application">
                                 <span class="btn-rounded align-middle">
-                                <i class="fa fa-rocket fa-2x align-middle"></i>
-                            </span>
+                                    <fa-icon [icon]="'rocket'" [size]="'2x'"></fa-icon>
+                                </span>
                                 <span class="align-middle h5">Create Application</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a id="design-entities" class="nav-link text-primary mt-3" routerLink="/design-entities">
                                 <span class="btn-rounded align-middle">
-                                <i class="fa fa-object-group fa-2x align-middle"></i>
-                            </span>
+                                    <fa-icon [icon]="'object-group'" [size]="'2x'"></fa-icon>
+                                </span>
                                 <span class="align-middle h5">Design Entities</span>
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a id="ci-cd" class="nav-link text-primary mt-3" routerLink="/ci-cd">
                                 <span class="btn-rounded align-middle">
-                                <i class="fas fa-cloud-upload-alt fa-2x align-middle"></i>
-                            </span>
+                                    <fa-icon [icon]="'cloud-upload-alt'" [size]="'2x'"></fa-icon>
+                                </span>
                                 <span class="align-middle h5">Continuous Integration</span>
                             </a>
                         </li>
@@ -69,7 +71,8 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Authentication
+                                    <fa-icon [icon]="'sign-in-alt'"></fa-icon>
+                                    &nbsp;Authentication
                                 </div>
                                 <div class="card-body">
                                     <h4 class="card-title">Sign in</h4>
@@ -81,7 +84,8 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i> Registration
+                                    <fa-icon [icon]="'user-plus'"></fa-icon>
+                                    &nbsp;Registration
                                 </div>
                                 <div class="card-body">
                                     <h4 class="card-title">Register</h4>

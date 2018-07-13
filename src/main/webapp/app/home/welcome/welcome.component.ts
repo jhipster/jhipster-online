@@ -19,13 +19,19 @@
 import { Component } from '@angular/core';
 import { Principal } from 'app/core/auth/principal.service';
 
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
+
 @Component({
     selector: 'jhi-welcome',
     templateUrl: './welcome.component.html',
     styleUrls: ['welcome.scss']
 })
 export class WelcomeComponent {
-    constructor(private principal: Principal) {}
+    gitConfig: GitConfigurationModel;
+
+    constructor(private principal: Principal, private gitConfigurationService: GitConfigurationService) {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+    }
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
