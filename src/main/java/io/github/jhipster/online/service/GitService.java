@@ -86,7 +86,7 @@ public class GitService {
     public void commit(Git git, File workingDir, String message) throws GitAPIException {
         log.debug("Commiting all files to repository {}", workingDir);
         git.commit()
-            .setCommitter("JHipster Bot", "jhipster-bot@users.noreply.github.com")
+            .setCommitter("JHipster Bot", "jhipster-bot@jhipster.tech")
             .setMessage(message)
             .call();
     }
