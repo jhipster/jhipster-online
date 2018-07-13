@@ -6,7 +6,7 @@
     <hr/>
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
         <p>
-            <i class="fas fa-exclamation-triangle"></i>&nbsp;
+            <fa-icon [icon]="'exclamation-triangle'"></fa-icon>
             <span><strong>Warning!</strong> To apply a JDL Model on a GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
         </p>
         <p class="text-center">

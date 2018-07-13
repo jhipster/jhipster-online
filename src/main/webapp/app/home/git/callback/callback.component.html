@@ -14,7 +14,7 @@
 
 <div class="alert alert-{{alertType}}">
     <span *ngIf="isLoading">
-        <i class="fas fa-spin fa-sync"></i>
+        <fa-icon [icon]="'sync'" [spin]="true"></fa-icon>
     </span>
     {{message}}
 </div>

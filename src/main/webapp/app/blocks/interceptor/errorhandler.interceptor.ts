@@ -32,7 +32,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                     if (err instanceof HttpErrorResponse) {
                         if (!(err.status === 401 && (err.message === '' || (err.url && err.url.indexOf('/api/account') === 0)))) {
                             if (this.eventManager !== undefined) {
-                                this.eventManager.broadcast({ name: 'jhonline.httpError', content: err });
+                                this.eventManager.broadcast({ name: 'jhonlineApp.httpError', content: err });
                             }
                         }
                     }
