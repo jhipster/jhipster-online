@@ -256,3 +256,38 @@ export class HomePage {
         this.ciCdMenuItem.click();
     }
 }
+
+export class GeneratorPage {
+    downloadAsZipButton = element(by.id('download'));
+    resetButton = element(by.id('reset'));
+    appNameInput = element(by.id('baseName'));
+
+    isDowloadClickeable() {
+        // this.downloadAsZipButton.isEnabled().then(value => console.log(value));
+        return this.downloadAsZipButton.isEnabled();
+    }
+
+    isResetClickeable() {
+        return this.resetButton.isEnabled();
+    }
+
+    clickOnDownload() {
+        this.downloadAsZipButton.click();
+    }
+
+    clickOnReset() {
+        this.resetButton.click();
+    }
+
+    clearAppName() {
+        this.appNameInput.clear();
+    }
+
+    getAppName() {
+        return this.appNameInput.getAttribute('value');
+    }
+
+    setAppName(appName: string) {
+        this.appNameInput.sendKeys(appName);
+    }
+}

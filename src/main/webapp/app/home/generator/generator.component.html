@@ -306,10 +306,10 @@
                             <button type="submit" class="btn btn-primary" [disabled]="!generatorForm.form.valid" (click)="onSubmit()" *ngIf="selectedGitProvider">
                                 Generate on {{selectedGitProvider}}
                             </button>
-                            <button type="submit" class="btn btn-info" [disabled]="!generatorForm.form.valid" (click)="onSubmitDownload()">
+                            <button id="download" type="submit" class="btn btn-info" [disabled]="!generatorForm.form.valid" (click)="onSubmitDownload()">
                                 Download as Zip file
                             </button>
-                            <button type="button" class="btn btn-dark" (click)="newGenerator()">Reset</button>
+                            <button id="reset" type="button" class="btn btn-dark" (click)="newGenerator()">Reset</button>
                         </div>
                         <div *ngSwitchCase="false">
                             <span
