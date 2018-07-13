@@ -228,3 +228,31 @@ export class SettingsPage {
         return this.saveButton.click();
     }
 }
+
+export class HomePage {
+    homeMenuItem = element(by.id('home'));
+    configMenuItem = element(by.id('configure'));
+    creatAppMenuItem = element(by.id('create-app'));
+    designEntitiesMenuItem = element(by.id('design-entities'));
+    ciCdMenuItem = element(by.id('ci-cd'));
+
+    clickOnHome() {
+        this.homeMenuItem.click();
+    }
+
+    clickOnConfig() {
+        this.configMenuItem.click();
+    }
+
+    clickOnCreateApp() {
+        this.creatAppMenuItem.click();
+    }
+
+    clickOnDesignEntities() {
+        this.designEntitiesMenuItem.click();
+    }
+
+    clickOnCiCd() {
+        this.ciCdMenuItem.click();
+    }
+}
