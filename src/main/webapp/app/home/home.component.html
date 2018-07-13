@@ -12,7 +12,8 @@
                                 <span class="align-middle h5">Home</span>
                             </a>
                         </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                            *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
                             <a class="nav-link text-primary mt-3" routerLink="/git">
                                 <span class="btn-rounded align-middle">
                                     <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>

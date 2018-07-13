@@ -17,23 +17,31 @@
  * limitations under the License.
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbDateMomentAdapter } from './util/datepicker-adapter';
 import {
     JhonlineSharedLibsModule,
     JhiGitProviderComponent,
+    JhiGitProviderAlertComponent,
     JhonlineSharedCommonModule,
     JhiLoginModalComponent,
     HasAnyAuthorityDirective
 } from 'app/shared';
 
 @NgModule({
-    imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule],
-    declarations: [JhiLoginModalComponent, JhiGitProviderComponent, HasAnyAuthorityDirective],
+    imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule, RouterModule],
+    declarations: [JhiLoginModalComponent, JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective],
     providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
     entryComponents: [JhiLoginModalComponent],
-    exports: [JhonlineSharedCommonModule, JhiLoginModalComponent, JhiGitProviderComponent, HasAnyAuthorityDirective],
+    exports: [
+        JhonlineSharedCommonModule,
+        JhiLoginModalComponent,
+        JhiGitProviderComponent,
+        JhiGitProviderAlertComponent,
+        HasAnyAuthorityDirective
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineSharedModule {}
