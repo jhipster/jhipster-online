@@ -53,9 +53,9 @@ describe('account', () => {
 
         browser.waitForAngular();
 
-        const expect2 = /You are logged in as user "admin"/;
+        const expect2 = /Administration/;
         element
-            .all(by.css('.alert-success span'))
+            .all(by.id('admin-menu'))
             .getText()
             .then(value => {
                 expect(value).toMatch(expect2);
