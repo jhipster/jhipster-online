@@ -138,7 +138,7 @@ public class GitService {
     /**
      * If a generation failed, it could have left a non-empty directory.
      */
-    @Scheduled(fixedDelay = 6_000L)
+    @Scheduled(fixedDelay = 60_000L)
     public void cleanUpOldApplications() {
         File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/");
         if (workingDir.exists()) {

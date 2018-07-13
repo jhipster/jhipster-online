@@ -8,12 +8,7 @@
             </span>
         </a>
         <button class="btn btn-info float-right" (click)="loadAll()">
-            <span *ngIf="jdlRefresh">
-                <i class="fas fa-sync fa-spin"></i>
-            </span>
-            <span *ngIf="!jdlRefresh">
-                <i class="fas fa-sync"></i>
-            </span>
+                <fa-icon [icon]="'sync'" [spin]="jdlRefresh"></fa-icon>
             <span>
             Refresh
             </span>
@@ -58,7 +53,7 @@
                                 [routerLink]="['/design-entities-delete/'+ jdlMetadata.id]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
-                            <i class="fa fa-trash"></i>
+                            <fa-icon [icon]="'trash'"></fa-icon>
                             <span class="hidden-md-down">Delete</span>
                         </button>
                     </div>

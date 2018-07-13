@@ -87,6 +87,14 @@ public class GithubService implements GitProviderService {
                 this.applicationProperties.getGithub().getClientSecret() != null;
     }
 
+    @Override
+    public String getHost() {
+        return applicationProperties.getGithub().getHost();
+    }
+
+    @Override
+    public String getClientId() { return applicationProperties.getGithub().getClientId(); }
+
     /**
      * Sync User data from GitHub.
      */
@@ -107,7 +115,9 @@ public class GithubService implements GitProviderService {
     @Transactional
     @Override
     public User getSyncedUserFromGitProvider(User user) throws Exception {
-        log.info("Syncing user `{}` with GitHub", user.getLogin());
+        log.info("Syncing user `{}` with GitHub...", user.getLogin());
+        StopWatch watch = new StopWatch();
+        watch.start();
         GitHub gitHub = this.getConnection(user);
         GHMyself ghMyself = gitHub.getMyself();
         String githubLogin = ghMyself.getLogin();
@@ -155,7 +165,6 @@ public class GithubService implements GitProviderService {
                 .findFirst()
                 .orElseThrow(Exception::new);
         }
-
         try {
             List<String> ownedProjects = gitHub.getMyself().getAllRepositories().entrySet().stream()
                 .filter(entry ->
@@ -223,10 +232,6 @@ public class GithubService implements GitProviderService {
         return number;
     }
 
-    public String getHost() {
-        return applicationProperties.getGithub().getHost();
-    }
-
     /**
      * Connect to GitHub as the current logged in user.
      */
@@ -244,8 +249,8 @@ public class GithubService implements GitProviderService {
      *
      */
     @Transactional
-    public void deleteAllOrganizationsForCurrentUser(String userLogin) {
-        log.debug("Request to delete all github organizations for current user");
-        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(userLogin, GitProvider.GITHUB.getValue());
+    public void deleteAllOrganizationsUser(User user) {
+        log.debug("Request to delete all github organizations for user {}", user.getLogin());
+        gitCompanyRepository.deleteAllByUserLoginAndGitProvider(user.getLogin(), GitProvider.GITHUB.getValue());
     }
 }
