@@ -130,11 +130,13 @@ jhipster:
 #application:
 #    tmp-folder: /tmp
 #    github:
-#        client-id: XXX
-#        client-secret: XXX
 #        host: https://github.com
-#    gitlab:
 #        client-id: XXX
 #        client-secret: XXX
+#        jhipster-bot-oauth-token: XXX
+#    gitlab:
 #        host: https://gitlab.com
+#        client-id: XXX
+#        client-secret: XXX
 #        redirect-uri: XXX
+#        jhipster-bot-oauth-token: XXX
