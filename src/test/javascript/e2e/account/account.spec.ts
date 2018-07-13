@@ -36,7 +36,6 @@ describe('account', () => {
             });
     });
 
-    // TODO: there's no alert when you login atm.
     it('should login successfully with admin account', () => {
         const expect1 = /Login/;
         element
