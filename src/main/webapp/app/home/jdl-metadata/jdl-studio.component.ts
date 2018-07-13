@@ -107,7 +107,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
                 },
                 (res: any) => console.log(res)
             );
-        }); 
+        });
     }
 
     updateSharedData(data: any) {

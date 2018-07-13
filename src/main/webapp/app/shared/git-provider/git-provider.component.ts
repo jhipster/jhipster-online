@@ -124,7 +124,6 @@ export class JhiGitProviderComponent implements OnInit {
                 this.data.gitCompanyListRefresh = false;
                 this.data.gitCompanies = companies;
                 this.data.selectedGitCompany = companies[0].name;
-                this.addToAvailableProviderList(gitProvider);
                 if (this.simpleMode) {
                     this.data = {
                         ...this.data,
@@ -135,7 +134,6 @@ export class JhiGitProviderComponent implements OnInit {
                 } else {
                     this.updateGitProjectList(this.data.selectedGitCompany);
                     this.sharedData.emit(this.data);
-
                 }
             },
             () => {
