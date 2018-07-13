@@ -114,7 +114,9 @@ public class GithubService implements GitProviderService {
     @Transactional
     @Override
     public User getSyncedUserFromGitProvider(User user) throws Exception {
-        log.info("Syncing user `{}` with GitHub", user.getLogin());
+        log.info("Syncing user `{}` with GitHub...", user.getLogin());
+        StopWatch watch = new StopWatch();
+        watch.start();
         GitHub gitHub = this.getConnection(user);
         GHMyself ghMyself = gitHub.getMyself();
         user.setGithubUser(ghMyself.getLogin());
@@ -123,7 +125,7 @@ public class GithubService implements GitProviderService {
         user.setGithubLocation(ghMyself.getLocation());
         Set<GitCompany> organizations = user.getGitCompanies();
         GitCompany myOrganization;
-        // Sync the current user's projects
+        log.debug("Syncing user's projects");
         if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
             myOrganization = new GitCompany();
             myOrganization.setName(ghMyself.getLogin());
@@ -136,7 +138,6 @@ public class GithubService implements GitProviderService {
                 .findFirst()
                 .orElseThrow(Exception::new);
         }
-
         try {
             syncCompanyGitProjects(gitHub, myOrganization);
         } catch (IOException e) {
@@ -145,6 +146,7 @@ public class GithubService implements GitProviderService {
 
         // Sync the projects from the user's companies
         for (String organizationName : gitHub.getMyOrganizations().keySet()) {
+            log.debug("Syncing organization `{}`", organizationName);
             GitCompany organization = new GitCompany();
             organization.setName(organizationName);
             organization.setUser(user);
@@ -161,6 +163,8 @@ public class GithubService implements GitProviderService {
         }
 
         user.setGitCompanies(organizations);
+        watch.stop();
+        log.info("Finished syncing user `{}` with GitHub in {} ms", user.getLogin(), watch.getTotalTimeMillis());
         return user;
     }
 
