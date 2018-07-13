@@ -142,7 +142,7 @@ public class GitlabService implements GitProviderService {
         }
 
         try {
-            List<GitlabProject> projectList = gitlab.getProjects();
+            List<GitlabProject> projectList = gitlab.getMembershipProjects();
             List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
             gitCompany.setGitProjects(projects);
         } catch (IOException e) {
