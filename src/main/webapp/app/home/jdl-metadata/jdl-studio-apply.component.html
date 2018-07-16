@@ -7,33 +7,6 @@
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
         <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
     </ngb-alert>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable && !isGithubConfigured">
-        <p>
-            <fa-icon [icon]="'exclamation-triangle'"></fa-icon>
-            <span><strong>Warning!</strong> To apply a JDL Model on a GitHub project, you must authorize JHipster Online to access your GitHub account.</span>
-        </p>
-        <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub account</a>
-        </p>
-    </ngb-alert>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable && !isGitlabConfigured">
-        <p>
-            <fa-icon [icon]="'exclamation-triangle'"></fa-icon>
-            <span><strong>Warning!</strong> To apply a JDL Model on a GitLab project, you must authorize JHipster Online to access your GitLab account.</span>
-        </p>
-        <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitLab account</a>
-        </p>
-    </ngb-alert>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="gitConfig.isGithubAvailable && gitConfig.isGitlabAvailable && !isGithubConfigured && !isGitlabConfigured">
-        <p>
-            <fa-icon [icon]="'exclamation-triangle'"></fa-icon>
-            <span><strong>Warning!</strong> To apply a JDL Model on a GitHub or GitLab project, you must authorize JHipster Online to access your GitHub or GitLab account.</span>
-        </p>
-        <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub or GitLab account</a>
-        </p>
-    </ngb-alert>
     <jhi-git-provider-alert [tab]="'design-entities-apply'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
 
