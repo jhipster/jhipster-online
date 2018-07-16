@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -74,7 +75,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     private updateGitProviderName() {
         if (this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
-            this.displayedGitProvider = 'GitHub/GitLab';
+            this.displayedGitProvider = 'GitHub or GitLab';
         } else if (this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable) {
             this.displayedGitProvider = 'GitHub';
         } else if (!this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
