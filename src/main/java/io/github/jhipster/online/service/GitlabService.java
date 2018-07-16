@@ -142,7 +142,7 @@ public class GitlabService implements GitProviderService {
         }
 
         try {
-            List<GitlabProject> projectList = gitlab.getProjects().stream()
+            List<GitlabProject> projectList = gitlab.getMembershipProjects().stream()
                 .filter(p ->  p.getOwner() != null && p.getOwner().getId().equals(myself.getId()))
                 .collect(Collectors.toList());
 
