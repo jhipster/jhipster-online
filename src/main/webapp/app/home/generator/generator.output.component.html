@@ -27,6 +27,7 @@ Sending request to the server...
         <div class="row" *ngIf="displayApplicationUrl && isGitlabConfigured && selectedGitProvider === 'GitLab'">
             <div class="col-md-12">
                 <div class="lead">
+
                     <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>

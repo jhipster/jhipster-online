@@ -36,6 +36,7 @@
     </ngb-alert>
     <jhi-git-provider-alert [tab]="'design-entities-apply'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
+
     <p class="text-center" *ngIf="(gitConfig.isGithubAvailable && isGithubConfigured) || (gitConfig.isGitlabAvailable && isGitlabConfigured)">
         <button class="btn btn-primary" (click)="applyJdl()">
             <span>

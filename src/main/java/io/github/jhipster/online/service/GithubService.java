@@ -21,6 +21,7 @@ package io.github.jhipster.online.service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -119,16 +120,42 @@ public class GithubService implements GitProviderService {
         watch.start();
         GitHub gitHub = this.getConnection(user);
         GHMyself ghMyself = gitHub.getMyself();
+        String githubLogin = ghMyself.getLogin();
         user.setGithubUser(ghMyself.getLogin());
         user.setGithubEmail(ghMyself.getEmail());
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
         Set<GitCompany> organizations = user.getGitCompanies();
         GitCompany myOrganization;
-        log.debug("Syncing user's projects");
+
+        // Sync the projects from the user's companies
+        Map<String, GHOrganization> myOrganizations = gitHub.getMyOrganizations();
+        for (String organizationName : myOrganizations.keySet()) {
+            GitCompany organization = new GitCompany();
+            organization.setName(organizationName);
+            organization.setUser(user);
+            organization.setGitProvider(GitProvider.GITHUB.getValue());
+
+            // Get or create organization
+            if (organizations.stream().noneMatch(g -> g.getName().equals(organization.getName()))) {
+                gitCompanyRepository.save(organization);
+                organizations.add(organization);
+            }
+            organization.setGitProjects(new ArrayList<>(myOrganizations.get(organizationName).getRepositories().keySet()));
+        }
+
+        user.setGitCompanies(organizations);
+        List<String> organizationsProjects = organizations.stream()
+            .filter(o ->
+                o.getGitProvider().equals("github") && !o.getName().equals(githubLogin))
+            .flatMap(o ->
+                o.getGitProjects().stream())
+            .collect(Collectors.toList());
+
+        // Sync the current user's projects
         if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
             myOrganization = new GitCompany();
-            myOrganization.setName(ghMyself.getLogin());
+            myOrganization.setName(githubLogin);
             myOrganization.setUser(user);
             myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
             gitCompanyRepository.save(myOrganization);
@@ -139,39 +166,19 @@ public class GithubService implements GitProviderService {
                 .orElseThrow(Exception::new);
         }
         try {
-            syncCompanyGitProjects(gitHub, myOrganization);
+            List<String> ownedProjects = gitHub.getMyself().getAllRepositories().entrySet().stream()
+                .filter(entry ->
+                    organizationsProjects.stream()
+                        .noneMatch(p ->
+                            p.equals(entry.getKey())))
+                .map(entry -> entry.getKey())
+                .collect(Collectors.toList());
+            myOrganization.setGitProjects(ownedProjects);
         } catch (IOException e) {
             log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
 
-        // Sync the projects from the user's companies
-        for (String organizationName : gitHub.getMyOrganizations().keySet()) {
-            log.debug("Syncing organization `{}`", organizationName);
-            GitCompany organization = new GitCompany();
-            organization.setName(organizationName);
-            organization.setUser(user);
-            organization.setGitProvider(GitProvider.GITHUB.getValue());
-            if (organizations.stream().noneMatch(g -> g.getName().equals(organization.getName()))) {
-                gitCompanyRepository.save(organization);
-                organizations.add(organization);
-            }
-            try {
-                syncCompanyGitProjects(gitHub, organization);
-            } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
-            }
-        }
-
-        user.setGitCompanies(organizations);
-        watch.stop();
-        log.info("Finished syncing user `{}` with GitHub in {} ms", user.getLogin(), watch.getTotalTimeMillis());
         return user;
-    }
-
-    private void syncCompanyGitProjects(GitHub gitHub, GitCompany myOrganization) throws IOException {
-        Map<String, GHRepository> projectMap = gitHub.getMyself().getAllRepositories();
-        List<String> projects = new ArrayList<>(projectMap.keySet());
-        myOrganization.setGitProjects(projects);
     }
 
     /**

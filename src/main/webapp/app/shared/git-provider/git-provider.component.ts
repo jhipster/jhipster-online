@@ -90,6 +90,8 @@ export class JhiGitProviderAlertComponent implements OnInit {
 export class JhiGitProviderComponent implements OnInit {
     @Output() sharedData = new EventEmitter<any>();
 
+    @Input() simpleMode = false;
+
     data: GitProviderModel;
 
     gitConfig: any;
@@ -122,7 +124,7 @@ export class JhiGitProviderComponent implements OnInit {
                 this.data.gitCompanyListRefresh = false;
                 this.data.gitCompanies = companies;
                 this.data.selectedGitCompany = companies[0].name;
-                if (this.router.url === '/generate-application') {
+                if (this.simpleMode) {
                     this.data = {
                         ...this.data,
                         selectedGitProvider: this.data.selectedGitProvider,
@@ -131,6 +133,7 @@ export class JhiGitProviderComponent implements OnInit {
                     this.sharedData.emit(this.data);
                 } else {
                     this.updateGitProjectList(this.data.selectedGitCompany);
+                    this.sharedData.emit(this.data);
                 }
             },
             () => {
@@ -141,6 +144,7 @@ export class JhiGitProviderComponent implements OnInit {
 
     refreshGitProjectList() {
         this.data.gitProjectListRefresh = true;
+        this.sharedData.emit(this.data);
         this.gitConfigurationService.gitProviderService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
             () => {
                 this.data.gitProjectListRefresh = false;
@@ -155,7 +159,7 @@ export class JhiGitProviderComponent implements OnInit {
     updateGitProjectList(companyName: string) {
         this.data.gitProjects = null;
         this.gitConfigurationService.gitProviderService.getProjects(this.data.selectedGitProvider, companyName).subscribe(projects => {
-            this.data.gitProjects = projects;
+            this.data.gitProjects = projects.sort();
             this.data.selectedGitRepository = projects[0];
             this.data = {
                 ...this.data,
@@ -169,6 +173,10 @@ export class JhiGitProviderComponent implements OnInit {
 
     updateSelectedGitRepository(gitRepository: string) {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
+    }
+
+    isRefreshing() {
+        return this.data.gitCompanyListRefresh || this.data.gitProjectListRefresh;
     }
 
     private newGitProviderModel() {

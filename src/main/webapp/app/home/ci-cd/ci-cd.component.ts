@@ -39,6 +39,8 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
+    isRefreshingGit = false;
+
     isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
     isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
 
@@ -58,6 +60,7 @@ export class CiCdComponent implements OnInit {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
+        this.isRefreshingGit = data.gitProjectListRefresh || data.gitCompanyListRefresh;
     }
 
     applyCiCd() {

@@ -8,6 +8,6 @@
     </p>
 </ngb-alert>
 <p *ngIf="(gitConfig.isGithubAvailable && isGithubConfigured) || (gitConfig.isGithubAvailable && isGitlabConfigured)">
-    <span class="fas fa-info-circle"></span>&nbsp;
+    <fa-icon [icon]="'info-circle'"></fa-icon>
     <i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster bot</a>{{infoMessage}}</i>
 </p>
