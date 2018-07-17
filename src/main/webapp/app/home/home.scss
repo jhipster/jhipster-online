@@ -14,60 +14,59 @@ Main page styles
 Side bar
 ============================================================================= */
 
-#wrapper {
-    padding-left: 0;
-    -webkit-transition: all 0.75s ease;
-    -moz-transition: all 0.75s ease;
-    -o-transition: all 0.75s ease;
-    transition: all 0.75s ease;
-}
+@media (max-width: 768px) {
+    #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
+    }
 
-#wrapper.toggled {
-    padding-left: 400px;
-}
+    .side-menu {
+        display: none;
+    }
 
-.side-menu {
-    z-index: 1000;
-    position: absolute;
-    left: 400px;
-    width: 0;
-    margin-left: -350px;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    background: none;
-    -webkit-transition: all 0.75s ease;
-    -moz-transition: all 0.75s ease;
-    -o-transition: all 0.75s ease;
-    transition: all 0.75s ease;
+    #wrapper.toggled .side-menu {
+        width: 100%;
+        display: inline-block;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
 }
-
-#wrapper.toggled .side-menu {
-    width: 350px;
-    display: inline-block;
-    border-right: 1px solid #ddd;
-}
-
-/* Sidebar Styles */
 
 @media (min-width: 768px) {
     #wrapper {
         padding-left: 0;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
     }
+
     #wrapper.toggled {
-        padding-left: 400px;
+        padding-left: 25%;
     }
+
     .side-menu {
+        z-index: 1000;
+        position: absolute;
+        left: 25%;
         width: 0;
+        margin-left: -25%;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        background: none;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
     }
+
     #wrapper.toggled .side-menu {
-        width: 350px;
-    }
-    .col-md-12 {
-        padding: 20px;
-        position: relative;
-    }
-    #wrapper.toggled .col-md-12 {
-        position: relative;
-        margin-right: 0;
+        width: 20%;
+        height: 95%;
+        display: inline-block;
+        border-right: 1px solid #ddd;
     }
 }
