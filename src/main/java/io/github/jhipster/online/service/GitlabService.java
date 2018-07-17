@@ -228,6 +228,13 @@ public class GitlabService implements GitProviderService {
         return number;
     }
 
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGitlabOAuthToken() != null;
+    }
+
     /**
      * Connect to GitLab as the current logged in user.
      */

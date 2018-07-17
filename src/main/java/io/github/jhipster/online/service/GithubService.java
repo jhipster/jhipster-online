@@ -232,6 +232,13 @@ public class GithubService implements GitProviderService {
         return number;
     }
 
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGithubOAuthToken() != null;
+    }
+
     /**
      * Connect to GitHub as the current logged in user.
      */

@@ -28,13 +28,20 @@ import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 export class GitComponent implements OnInit {
     gitConfig: GitConfigurationModel;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
+
         this.gitConfig.availableGitProviders.forEach(provider => {
             this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(orgs => {
                 if (orgs.length === 0) {

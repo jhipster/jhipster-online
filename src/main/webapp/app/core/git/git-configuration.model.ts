@@ -27,6 +27,8 @@ export class GitConfigurationModel {
         public isAuthorizingGitlab: boolean,
         public gitlabRedirectUri: string,
         public gitlabClientId: string,
-        public gitlabHost: string
+        public gitlabHost: string,
+        public githubConfigured: boolean,
+        public gitlabConfigured: boolean
     ) {}
 }

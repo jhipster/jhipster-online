@@ -59,7 +59,11 @@ export class CallbackComponent implements OnInit {
                     this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
                     this.isLoading = false;
                     this.alertType = 'success';
-                    localStorage.setItem(this.provider === 'github' ? 'isGithubConfigured' : 'isGitlabConfigured', 'true');
+                    if (this.provider === 'github') {
+                        this.gitConfigurationService.gitConfig.githubConfigured = true;
+                    } else if (this.provider === 'gitlab') {
+                        this.gitConfigurationService.gitConfig.gitlabConfigured = true;
+                    }
                 },
                 () => {
                     this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;

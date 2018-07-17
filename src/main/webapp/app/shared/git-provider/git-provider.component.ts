@@ -36,13 +36,19 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     displayedGitProvider: string;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
         this.updateGitProviderName();
 
         if (this.tab === 'ci-cd') {
@@ -97,14 +103,20 @@ export class JhiGitProviderComponent implements OnInit {
 
     gitConfig: any;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService, public router: Router) {}
 
     ngOnInit() {
         this.newGitProviderModel();
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
 
         if (this.gitConfig.isGithubAvailable && this.isGithubConfigured) {
             this.data.availableGitProviders.push('GitHub');

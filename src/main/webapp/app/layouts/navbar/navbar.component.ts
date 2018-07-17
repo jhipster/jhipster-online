@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { VERSION } from 'app/app.constants';
-import { Principal, LoginModalService, LoginService } from 'app/core';
+import { Principal, LoginModalService, LoginService, GitConfigurationService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
 
 @Component({
@@ -42,6 +42,7 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
+        private gitConfigurationService: GitConfigurationService,
         private router: Router
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
@@ -70,6 +71,7 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
+        this.gitConfigurationService.newGitConfig();
         this.router.navigate(['']);
     }
 

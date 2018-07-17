@@ -39,8 +39,8 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     repositoryName: string;
 
@@ -100,6 +100,12 @@ export class GeneratorComponent implements OnInit {
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
     }
 
     updateSharedData(data: any) {
@@ -166,6 +172,8 @@ export class GeneratorComponent implements OnInit {
         modalRef.repositoryName = this.repositoryName;
         modalRef.gitlabHost = this.gitConfig.gitlabHost;
         modalRef.githubHost = this.gitConfig.githubHost;
+        modalRef.gitlabConfigured = this.gitConfig.isGitlabAvailable;
+        modalRef.githubConfigured = this.gitConfig.isGithubAvailable;
     }
 
     downloadFile(blob: Blob) {
