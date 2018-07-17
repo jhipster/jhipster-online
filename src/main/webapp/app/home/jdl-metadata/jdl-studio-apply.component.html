@@ -5,7 +5,7 @@
     <jhi-alert></jhi-alert>
     <hr/>
     <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-        <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
+        <span>There is no Git provider available, please contact your administrator to configure one.</span>
     </ngb-alert>
     <jhi-git-provider-alert [tab]="'design-entities-apply'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
