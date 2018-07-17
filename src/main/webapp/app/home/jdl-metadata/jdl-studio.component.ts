@@ -89,6 +89,8 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     gitConfig: GitConfigurationModel;
 
+    isGitProviderComponentValid: boolean;
+
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
@@ -114,6 +116,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
+        this.isGitProviderComponentValid = data.isValid;
     }
 
     applyJdl() {
