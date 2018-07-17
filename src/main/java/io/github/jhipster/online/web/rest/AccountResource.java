@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
 
-import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
@@ -59,12 +58,6 @@ public class AccountResource {
 
     private final JdlMetadataService jdlMetadataService;
 
-    private final JdlService jdlService;
-
-    private final GithubService githubService;
-
-    private final GitlabService gitlabService;
-
     public AccountResource(UserRepository userRepository,
         UserService userService,
         MailService mailService,
@@ -76,9 +69,6 @@ public class AccountResource {
         this.userService = userService;
         this.mailService = mailService;
         this.jdlMetadataService = jdlMetadataService;
-        this.jdlService = jdlService;
-        this.githubService = githubService;
-        this.gitlabService = gitlabService;
     }
 
     /**
@@ -164,17 +154,6 @@ public class AccountResource {
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (!user.isPresent()) {
             throw new InternalServerErrorException("User could not be found");
-        }
-
-        for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForCurrentUser()) {
-            jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
-        }
-        jdlMetadataService.deleteAllForCurrentUser(userLogin);
-        if (githubService.isEnabled()) {
-            githubService.deleteAllOrganizationsForCurrentUser(userLogin);
-        }
-        if (gitlabService.isEnabled()) {
-            gitlabService.deleteAllOrganizationsForCurrentUser(userLogin);
         }
         userService.deleteUser(userLogin);
     }

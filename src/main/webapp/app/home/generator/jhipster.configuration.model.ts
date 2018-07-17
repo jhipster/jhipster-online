@@ -19,11 +19,11 @@
 
 export class JHipsterConfigurationModel {
     constructor(
-        public applicationType: String,
-        public gitCompany: String,
-        public baseName: String,
-        public packageName: String,
-        public packageFolder: String,
+        public applicationType: string,
+        public gitCompany: string,
+        public baseName: string,
+        public packageName: string,
+        public packageFolder: string,
         public serverPort: Number,
         public serviceDiscoveryType: any,
         public authenticationType: string,
@@ -37,14 +37,14 @@ export class JHipsterConfigurationModel {
         public searchEngine: any,
         public enableSwaggerCodegen: any,
         public messageBroker: any,
-        public buildTool: String,
+        public buildTool: string,
         public useSass: Boolean,
-        public clientPackageManager: String,
-        public testFrameworks: String[],
+        public clientPackageManager: string,
+        public testFrameworks: string[],
         public enableTranslation: Boolean,
-        public nativeLanguage: String,
-        public languages: String[],
-        public clientFramework: String,
-        public jhiPrefix: String
+        public nativeLanguage: string,
+        public languages: string[],
+        public clientFramework: string,
+        public jhiPrefix: string
     ) {}
 }

@@ -18,7 +18,6 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ClipboardModule } from 'ngx-clipboard';
 
 import { JhonlineSharedModule } from 'app/shared';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
@@ -45,9 +44,8 @@ import {
 @NgModule({
     imports: [
         JhonlineSharedModule,
-        RouterModule.forChild(adminState),
+        RouterModule.forChild(adminState)
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
-        ClipboardModule
     ],
     declarations: [
         AuditsComponent,

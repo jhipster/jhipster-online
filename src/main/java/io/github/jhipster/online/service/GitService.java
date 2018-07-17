@@ -86,7 +86,7 @@ public class GitService {
     public void commit(Git git, File workingDir, String message) throws GitAPIException {
         log.debug("Commiting all files to repository {}", workingDir);
         git.commit()
-            .setCommitter("JHipster Bot", "jhipster-bot@users.noreply.github.com")
+            .setCommitter("JHipster Bot", "jhipster-bot@jhipster.tech")
             .setMessage(message)
             .call();
     }
@@ -138,7 +138,7 @@ public class GitService {
     /**
      * If a generation failed, it could have left a non-empty directory.
      */
-    @Scheduled(fixedDelay = 6_000L)
+    @Scheduled(fixedDelay = 60_000L)
     public void cleanUpOldApplications() {
         File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/");
         if (workingDir.exists()) {

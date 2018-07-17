@@ -37,7 +37,7 @@ export class JdlMetadataService {
     }
 
     find(id: number): Observable<JdlMetadata> {
-        return this.http.get<JdlMetadata>(`${this.metadataUrl}/${id}`).map((res: JdlMetadata) => res);
+        return this.http.get<JdlMetadata>(`${this.metadataUrl}/${id}`);
     }
 
     query(req?: any): Observable<JdlMetadata[]> {

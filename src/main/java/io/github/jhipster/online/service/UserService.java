@@ -75,6 +75,10 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final JdlMetadataService jdlMetadataService;
+
+    private final JdlService jdlService;
+
     public UserService(UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
@@ -83,7 +87,7 @@ public class UserService {
         MailService mailService,
         JHipsterProperties jHipsterProperties,
         GitCompanyRepository gitCompanyRepository,
-        GitlabService gitlabService) {
+        GitlabService gitlabService, JdlMetadataService jdlMetadataService, JdlService jdlService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
@@ -93,6 +97,8 @@ public class UserService {
         this.gitCompanyRepository = gitCompanyRepository;
         this.gitlabService = gitlabService;
         this.jHipsterProperties = jHipsterProperties;
+        this.jdlMetadataService = jdlMetadataService;
+        this.jdlService = jdlService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -254,13 +260,22 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
+            for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForUser(user)) {
+                jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
+            }
+            jdlMetadataService.deleteAllForUser(user);
+            if (githubService.isEnabled()) {
+                githubService.deleteAllOrganizationsUser(user);
+            }
+            if (gitlabService.isEnabled()) {
+                gitlabService.deleteAllOrganizationsUser(user);
+            }
             userRepository.delete(user);
             this.clearUserCaches(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
-    @Transactional
     public void saveToken(String code, GitProvider gitProvider) throws Exception {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() ->
             new Exception("No authenticated user can be found."));
@@ -324,11 +339,6 @@ public class UserService {
             .getGitCompanies();
         Hibernate.initialize(groups);
         return groups;
-    }
-
-    @Transactional
-    public void deleteOrganizations(String login) {
-        githubService.deleteAllOrganizationsForCurrentUser(login);
     }
 
     @Transactional(readOnly = true)

@@ -87,7 +87,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: jhonline@localhost
+        from: no-reply@jhipster.tech
     swagger:
         default-include-pattern: /api/.*
         title: jhonline API
