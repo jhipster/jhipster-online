@@ -25,6 +25,7 @@ export class GitProviderModel {
         public gitCompanies: any,
         public gitProjects: any,
         public gitCompanyListRefresh: boolean,
-        public gitProjectListRefresh: boolean
+        public gitProjectListRefresh: boolean,
+        public isValid: boolean
     ) {}
 }
