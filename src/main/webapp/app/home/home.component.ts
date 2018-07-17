@@ -22,7 +22,6 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
 import { SidebarService } from '../layouts/sidebar/sidebar.service';
-import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
 
 @Component({
     selector: 'jhi-home',

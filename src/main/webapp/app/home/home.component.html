@@ -13,12 +13,12 @@
                     </div>
                 </div>
                 <div *ngSwitchCase="true">
-                    <nav *ngIf="!isMenuCollapsed" class="navbar navbar-light">
+                    <nav class="navbar navbar-light">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                                 <a class="nav-link text-primary mt-3" routerLink="/">
                                     <span class="btn-rounded align-middle">
-                                        <i class="fa fa-home fa-2x align-middle"></i>
+                                        <fa-icon [icon]="'home'" [size]="'2x'"></fa-icon>
                                     </span>
                                     <span class="align-middle h5">Home</span>
                                 </a>
@@ -26,7 +26,7 @@
                             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                                 <a class="nav-link text-primary mt-3" routerLink="/git">
                                     <span class="btn-rounded align-middle">
-                                        <i class="fa fa-wrench fa-2x align-middle"></i>
+                                        <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>
                                     </span>
                                     <span class="align-middle h5">Configure</span>
                                 </a>
@@ -34,7 +34,7 @@
                             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                                 <a class="nav-link text-primary mt-3" routerLink="/generate-application">
                                     <span class="btn-rounded align-middle">
-                                        <i class="fa fa-rocket fa-2x align-middle"></i>
+                                        <fa-icon [icon]="'rocket'" [size]="'2x'"></fa-icon>
                                     </span>
                                     <span class="align-middle h5">Create Application</span>
                                 </a>
@@ -42,7 +42,7 @@
                             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                                 <a class="nav-link text-primary mt-3" routerLink="/design-entities">
                                     <span class="btn-rounded align-middle">
-                                        <i class="fa fa-object-group fa-2x align-middle"></i>
+                                        <fa-icon [icon]="'object-group'" [size]="'2x'"></fa-icon>
                                     </span>
                                     <span class="align-middle h5">Design Entities</span>
                                 </a>
@@ -50,7 +50,7 @@
                             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                                 <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
                                     <span class="btn-rounded align-middle">
-                                        <i class="fas fa-cloud-upload-alt fa-2x align-middle"></i>
+                                        <fa-icon [icon]="'cloud-upload-alt'" [size]="'2x'"></fa-icon>
                                     </span>
                                     <span class="align-middle h5">Continuous Integration</span>
                                 </a>

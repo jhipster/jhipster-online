@@ -112,7 +112,7 @@
             <li *ngIf="isAuthenticated()" class="nav-item dropdown pointer">
                 <a class="nav-link" href="javascript:void(0);">
                     <span>
-                        <i class="fas fa-bars" aria-hidden="true"></i>
+                        <fa-icon [icon]="'bars'"></fa-icon>
                         <span (click)="toggleSidebar()">{{getSidebarStatus()}} Sidebar</span>
                     </span>
                 </a>
