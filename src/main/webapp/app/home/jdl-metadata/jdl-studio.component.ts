@@ -143,4 +143,10 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
+
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (
+            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured)
+        );
+    }
 }
