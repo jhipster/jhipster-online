@@ -16,15 +16,15 @@
         <form>
             <label for="reset-link"></label>
             <input type="text" id="reset-link" [value]="resetLink" size="50" readonly #resetLinkInput />
-            <button class="btn btn-primary" (click)="generateResetLink(user.email)"><span *ngIf="isGeneratingLink"><i class="fas fa-sync fa-spin"></i></span><span *ngIf="!isGeneratingLink"><i class="fas fa-sync"></i></span> Generate link</button>
+            <button class="btn btn-primary" (click)="generateResetLink(user.email)">
+                <fa-icon [icon]="'sync'" [spin]="isGeneratingLink"></fa-icon>
+                &nbsp;Generate link
+            </button>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" [ngxClipboard]="resetLinkInput" (cbOnSuccess)="showClipboardSuccess = true" (cbOnError)="showClipboardError = true">
-            <i class="fas fa-copy"></i>&nbsp;<span>Copy to clipboard</span>
-        </button>
         <button type="submit" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <i class="fas fa-times"></i>&nbsp;<span>Close</span>
+            <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span>Close</span>
         </button>
     </div>
 </form>

@@ -1,6 +1,8 @@
 # JHipster Online
 
-JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/) 
+[![Build Status][travis-image]][travis-url]  [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
+
+JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
 
 This is an Open Source project ([Apache 2 license](https://github.com/jhipster/jhipster-online/blob/master/LICENSE.txt))
@@ -15,7 +17,7 @@ that is hosted within your company.
 JHipster Online is a JHipster application, so you can follow the [JHipster documentation](https://www.jhipster.tech/) to
 learn how to configure and set up JHipster Online.
 
-This quick start guide uses the default configuration that comes with JHipster Online: please read 
+This quick start guide uses the default configuration that comes with JHipster Online: please read
 the next section for details on configuring the application.
 
 - Install and run the front-end:
@@ -35,21 +37,6 @@ the next section for details on configuring the application.
 
     ./mvnw
 
-### Building for production
-
-To generate a production build, like any normal JHipster application, please run:
-
-    ./mvnw -Pprod clean package
-
-### Using Docker
-You can also fully dockerize your application and all the services that it depends on.
-To achieve this, first build a docker image of your app by running:
-
-    ./mvnw package -Pprod dockerfile:build
-
-Then run:
-
-    docker-compose -f src/main/docker/app.yml up -d
 
 ## Specific configuration
 
@@ -85,12 +72,12 @@ JHipster Online uses JWT to secure the application. For a production application
 - The `jhipster.security.authentication.jwt.key` is configured, and that key is stored securely (**not** commited in your application's Git repository).
 We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
 in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
-- The application is only available through HTTPS. You can configure it using Spring Boot (please read the comments in the `application-prod.yml` file), or 
+- The application is only available through HTTPS. You can configure it using Spring Boot (please read the comments in the `application-prod.yml` file), or
 using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 
 ### Mail
 
-E-mails are used to validate users' e-mail addresses or to send "forgotten password" e-mails. They are disabled by default, 
+E-mails are used to validate users' e-mail addresses or to send "forgotten password" e-mails. They are disabled by default,
 but it might be a good idea to configure them once the application is in production.
 
 To configure e-mail sending, you need to configure the `jhipster.mail` keys (see [JHipster common application properties](https://www.jhipster.tech/common-application-properties/)),
@@ -106,14 +93,14 @@ as any private instance of GitHub Enterprise that is configured inside your comp
 JHipster Online has to be configured as an "OAuth App": create a `jhipster` organization,
 and go to that organization's "Settings > Developer Settings > OAuth Apps" to create a new "OAuth App" with
 the required credentials. This will allow JHipster Online to create applications and pull requests on your
-behalf.
+behalf. JHipster Online uses `https://your-jhipster-online-url/api/github/callback` as callback endpoint.
 
 JHipster Online also needs to have a specific "JHipster Bot" user configured, like the  
 [https://github.com/jhipster-bot](https://github.com/jhipster-bot) used by the official [JHipster Online website](https://start.jhipster.tech/).
-In order for JHipster Online to use that bot, it will need its OAuth token: log in as the "JHipster Bot" user, and go to 
+In order for JHipster Online to use that bot, it will need its OAuth token: log in as the "JHipster Bot" user, and go to
 "Settings > Developer Settings > Personal access tokens" and generate a new token.
 
-Here is the final configuration, that should be set up inside the `application-dev.yml` file for 
+Here is the final configuration, that should be set up inside the `application-dev.yml` file for
 development, and inside the `application-prod.yml` file for production.
 
 ```
@@ -127,11 +114,58 @@ application:
 
 ### GitLab configuration
 
-TODO
+Similarly to GitHub, your GitLab configuration must be placed in your `application-*.yml` using the `application.gitlab`
+keys.
+
+JHipster Online can work on the public GitLab instance on [https://gitlab.com](https://gitlab.com) as well
+as any private instance of GitLab that is configured inside your company.
+
+JHipster Online needs to have a specific "JHipster Bot" user configured: create that user (if you have your own private instance, you can call it
+`jhipster-bot`, otherwise choose the name you like), and log in using that user.
+
+Once logged in, the required API credentials can be created by going to "Settings > Applications > Add new application".
+Create a new application:
+
+ - Its name is `jhipster`
+ - The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
+ - It has the `api` and `read_user` scopes
+
+Save that new application and store safely the `Application Id` and `Secret` values, so you can use them to configure
+the `application-*.yml` files.
+
+Here is the final configuration, that should be set up inside the `application-dev.yml` file for
+development, and inside the `application-prod.yml` file for production.
+
+```
+application:
+    gitlab:
+        host: https://gitlab.com # The GitLab to connect to. The main public GitLab instance is default here.
+        client-id: XXX # Your GitLab application Id
+        client-secret: XXX # Your GitLab application secret
+        redirect-uri: XXX   # The URI where the user will be redirected after GitLab authentication. This URI
+                            # must be registered in you GitLab application callback URLs
+        jhipster-bot-oauth-token: XXX # Your bot personnal access token.
+```
+
+## Building for production
+
+To generate a production build, like any normal JHipster application, please run:
+
+    ./mvnw -Pprod clean package
+
+### Using Docker
+You can also fully dockerize your application and all the services that it depends on.
+To achieve this, first build a docker image of your app by running:
+
+    ./mvnw package -Pprod dockerfile:build
+
+Then run:
+
+    docker-compose -f src/main/docker/app.yml up -d
 
 ## Help and contribution to the project
 
-Please note that this project is part of the [JHipster organization](https://github.com/jhipster) and it follows the rules 
+Please note that this project is part of the [JHipster organization](https://github.com/jhipster) and it follows the rules
 of the [JHipster project](https://github.com/jhipster/generator-jhipster).
 
 ### If you have an issue, a bug or a feature request
@@ -146,3 +180,6 @@ You should [post it on Stack Overflow using the "jhipster" tag](https://stackove
 
 We have the same code of conduct as the main JHipster project:
 [JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/master/CODE_OF_CONDUCT.md).
+
+[travis-image]: https://travis-ci.org/jhipster/jhipster-online.svg?branch=master
+[travis-url]: https://travis-ci.org/jhipster/jhipster-online

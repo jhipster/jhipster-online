@@ -22,7 +22,7 @@ import { CallbackComponent } from './callback.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GITHUB_CALLBACK_ROUTE: Route = {
-    path: 'callback/:provider/:token',
+    path: ':provider/callback/:token',
     component: CallbackComponent,
     data: {
         authorities: ['ROLE_USER'],

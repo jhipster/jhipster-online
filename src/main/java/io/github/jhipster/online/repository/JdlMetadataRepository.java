@@ -33,8 +33,7 @@ import java.util.List;
 @Repository
 public interface JdlMetadataRepository extends JpaRepository<JdlMetadata, String> {
 
-    @Query("select jdl_metadata from JdlMetadata jdl_metadata where jdl_metadata.user.login = ?#{principal.username}")
-    List<JdlMetadata> findByUserIsCurrentUser();
+    List<JdlMetadata> findAllByUserLogin(String userLogin);
 
     void deleteAllByUserLogin(String userLogin);
 }
