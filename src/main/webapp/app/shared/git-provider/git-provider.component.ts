@@ -144,10 +144,10 @@ export class JhiGitProviderComponent implements OnInit {
                         selectedGitProvider: this.data.selectedGitProvider,
                         selectedGitCompany: this.data.selectedGitCompany
                     };
-                    this.sharedData.emit(this.data);
+                    this.emitSharedData();
                 } else {
                     this.updateGitProjectList(this.data.selectedGitCompany);
-                    this.sharedData.emit(this.data);
+                    this.emitSharedData();
                 }
             },
             () => {
@@ -158,7 +158,7 @@ export class JhiGitProviderComponent implements OnInit {
 
     refreshGitProjectList() {
         this.data.gitProjectListRefresh = true;
-        this.sharedData.emit(this.data);
+        this.emitSharedData();
         this.gitConfigurationService.gitProviderService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
             () => {
                 this.data.gitProjectListRefresh = false;
@@ -181,7 +181,7 @@ export class JhiGitProviderComponent implements OnInit {
                 selectedGitCompany: this.data.selectedGitCompany,
                 selectedGitRepository: this.data.selectedGitRepository
             };
-            this.sharedData.emit(this.data);
+            this.emitSharedData();
         });
     }
 
@@ -189,11 +189,20 @@ export class JhiGitProviderComponent implements OnInit {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
     }
 
+    emitSharedData() {
+        this.data.isValid = !this.isRefreshing() && !this.simpleMode && this.isGitProjectsEmpty(); // There's available project when not in simple mode
+        this.sharedData.emit(this.data);
+    }
+
+    isGitProjectsEmpty() {
+        return this.data.gitProjects && this.data.gitProjects.length > 0;
+    }
+
     isRefreshing() {
         return this.data.gitCompanyListRefresh || this.data.gitProjectListRefresh;
     }
 
     private newGitProviderModel() {
-        this.data = new GitProviderModel([], null, null, null, [], [], false, false);
+        this.data = new GitProviderModel([], null, null, null, [], [], false, false, false);
     }
 }

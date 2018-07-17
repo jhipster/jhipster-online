@@ -7,7 +7,7 @@
     <jhi-git-provider-alert [tab]="'design-entities-apply'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
     <p class="text-center" *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
-        <button class="btn btn-primary" (click)="applyJdl()">
+        <button class="btn btn-primary" (click)="applyJdl()" [disabled]="!isGitProviderComponentValid">
             <span>
                 Yes, apply this JDL model
             </span>

@@ -51,7 +51,7 @@
         </div>
         <hr/>
         <p class="text-center">
-            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="isRefreshingGit">
+            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
             <span>
             Yes, add Continuous Integration
             </span>
