@@ -39,7 +39,7 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isRefreshingGit = false;
+    isGitProviderComponentValid = false;
 
     isGithubConfigured = false;
     isGitlabConfigured = false;
@@ -66,7 +66,7 @@ export class CiCdComponent implements OnInit {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
-        this.isRefreshingGit = data.gitProjectListRefresh || data.gitCompanyListRefresh;
+        this.isGitProviderComponentValid = data.isValid;
     }
 
     applyCiCd() {
