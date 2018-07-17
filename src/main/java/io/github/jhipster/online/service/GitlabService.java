@@ -166,7 +166,7 @@ public class GitlabService implements GitProviderService {
             }
 
             try {
-                List<GitlabProject> projectList = gitlab.getGroup(group.getName()).getSharedProjects();
+                List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                 company.setGitProjects(projects);
             } catch (IOException e) {
