@@ -1,25 +1,18 @@
 /* ==========================================================================
 Developement Ribbon
 ========================================================================== */
-.ribbon {
-    background-color: rgba(170, 0, 0, 0.5);
-    left: -3.5em;
-    moz-transform: rotate(-45deg);
-    ms-transform: rotate(-45deg);
-    o-transform: rotate(-45deg);
-    webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
+.devRibbon,
+.forkRibbon {
     overflow: hidden;
     position: absolute;
-    top: 40px;
     white-space: nowrap;
-    width: 15em;
     z-index: 9999;
     pointer-events: none;
     opacity: 0.75;
 }
 
-.ribbon a {
+.devRibbon a,
+.forkRibbon a {
     color: #fff;
     display: block;
     font-weight: 400;
@@ -29,4 +22,28 @@ Developement Ribbon
     text-decoration: none;
     text-shadow: 0 0 5px #444;
     pointer-events: none;
+}
+
+.devRibbon {
+    background-color: rgba(170, 0, 0, 0.5);
+    left: -3.5em;
+    moz-transform: rotate(-45deg);
+    ms-transform: rotate(-45deg);
+    o-transform: rotate(-45deg);
+    webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    width: 15em;
+    top: 40px;
+}
+
+.forkRibbon {
+    background-color: rgba(205, 235, 240, 0.5);
+    left: -11.5em;
+    moz-transform: rotate(-45deg);
+    ms-transform: rotate(-45deg);
+    o-transform: rotate(-45deg);
+    webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    top: 73px;
+    width: 35em;
 }

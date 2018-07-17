@@ -36,6 +36,7 @@ import { JhonlineAccountModule } from './account/account.module';
 import { JhonlineEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { SidebarService } from './layouts/sidebar/sidebar.service';
 
 @NgModule({
     imports: [
@@ -74,7 +75,8 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
             useClass: NotificationInterceptor,
             multi: true,
             deps: [Injector]
-        }
+        },
+        SidebarService
     ],
     bootstrap: [JhiMainComponent]
 })
