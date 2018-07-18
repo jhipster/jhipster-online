@@ -5,11 +5,6 @@
     <div class="container">
         <h4>Project configuration</h4>
         <hr />
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-            <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
-            <span>You will only be able to download your application as a Zip file.</span>
-        </ngb-alert>
-
         <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">

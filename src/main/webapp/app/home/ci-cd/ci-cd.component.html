@@ -2,12 +2,9 @@
     <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-        There is no Git provider available, please contact your administrator to configure one.
-    </ngb-alert>
     <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="(gitConfig.isGithubAvailable && isGithubConfigured) || (gitConfig.isGitlabAvailable && isGitlabConfigured)">
+    <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
