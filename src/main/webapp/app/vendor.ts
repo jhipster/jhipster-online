@@ -67,7 +67,8 @@ import {
     faTrash,
     faInfoCircle,
     faCheck,
-    faBolt
+    faBolt,
+    faTimesCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
@@ -119,4 +120,5 @@ library.add(faTrash);
 library.add(faInfoCircle);
 library.add(faCheck);
 library.add(faBolt);
+library.add(faTimesCircle);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

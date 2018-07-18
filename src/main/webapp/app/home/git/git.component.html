@@ -29,13 +29,9 @@
         <p class="text-center" *ngIf="!githubConfigured">
             <a class="btn btn-primary"
                href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
-            <span *ngIf="!gitConfig.isAuthorizingGithub">
+            <span>
                 <fa-icon [icon]="['fab', 'github']"></fa-icon>
                 &nbsp;Authorize GitHub
-            </span>
-            <span *ngIf="gitConfig.isAuthorizingGithub">
-                <fa-icon [icon]="['fab', 'github']" [spin]="true"></fa-icon>
-                    &nbsp;Checking GitHub link...
             </span>
             </a>
         </p>
@@ -67,15 +63,11 @@
 
     <ng-container>
         <p class="text-center" *ngIf="!gitlabConfigured">
-            <a (disabled)="gitConfig.isAuthorizingGitlab" class="btn btn-primary"
+            <a class="btn btn-primary"
                href="{{gitConfig.gitlabHost}}/oauth/authorize?client_id={{gitConfig.gitlabClientId}}&redirect_uri={{gitConfig.gitlabRedirectUri}}&response_type=code" role="button">
-            <span *ngIf="!gitConfig.isAuthorizingGitlab">
+            <span>
                 <fa-icon [icon]="['fab', 'gitlab']"></fa-icon>
                 &nbsp;Authorize GitLab
-            </span>
-            <span *ngIf="gitConfig.isAuthorizingGitlab">
-                <fa-icon [icon]="['fab', 'gitlab']" [spin]="true"></fa-icon>
-                &nbsp;Checking GitLab link...
             </span>
             </a>
         </p>

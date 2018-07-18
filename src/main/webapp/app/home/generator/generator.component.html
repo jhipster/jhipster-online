@@ -308,8 +308,7 @@
                             <button type="button" class="btn btn-dark" (click)="newGenerator()">Reset</button>
                         </div>
                         <div *ngSwitchCase="false">
-                            <span
-                                class="fas fa-sync fa-spin"></span>
+                            <fa-icon [icon]="'sync'" [spin]="true"></fa-icon>
                             <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="selectedGitProvider">
                                 Generate on {{selectedGitProvider}}
                             </button>
