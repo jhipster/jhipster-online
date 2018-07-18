@@ -1,13 +1,10 @@
 <form #generatorForm="ngForm">
-    <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <h2><fa-icon [icon]="'cloud-upload-alt'"></fa-icon>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-        There is no git providers available. Contact your administrator to configure a git provider.
-    </ngb-alert>
     <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="(gitConfig.isGithubAvailable && isGithubConfigured) || (gitConfig.isGitlabAvailable && isGitlabConfigured)">
+    <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -54,7 +51,7 @@
         </div>
         <hr/>
         <p class="text-center">
-            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="isRefreshingGit">
+            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
             <span>
             Yes, add Continuous Integration
             </span>

@@ -52,12 +52,21 @@ command line to work, you need to have JHipster installed on your machine.
 
 We recommend you use the "Yarn installation" from the official [JHipster installation documentation](https://www.jhipster.tech/installation/).
 
-The applications will be generated in a temporary folder, which is `/tmp` by default. To customize that folder,
-configure the Spring Boot `application-*.yml` files as usual:
+If you need more configuration options for running the JHipster command, you can modify:
+ 
+- the location of the `jhipster` command
+- the timeout value for that command (the default is 120 seconds - please note that on our production server a generation usually
+ takes 5 to 6 seconds)
+- the temporary folder in which the application will be generated (`/tmp` by default)
+
+Those are customized using the Spring Boot `application-*.yml` files as usual, for example:
 
 ```
 application:
-    tmp-folder: /tmp
+    jhipster-cmd:
+        cmd: /opt/jhipster
+        timeout: 60
+    tmp-folder: /ramfs
 ```
 
 ### Database configuration

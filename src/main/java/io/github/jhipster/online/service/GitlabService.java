@@ -124,11 +124,13 @@ public class GitlabService implements GitProviderService {
         GitlabUser myself = gitlab.getUser();
         user.setGitlabUser(myself.getUsername());
         user.setGitlabEmail(myself.getEmail());
-        Set<GitCompany> groups = user.getGitCompanies();
+        Set<GitCompany> currentGitlabCompanies =
+            user.getGitCompanies().stream().filter(c -> c.getGitProvider().equals(GitProvider.GITLAB.getValue())).collect(Collectors.toSet());
+
         GitCompany gitCompany;
 
         log.debug("Syncing user's projects");
-        if (groups.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
+        if (currentGitlabCompanies.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
             gitCompany = new GitCompany();
             gitCompany.setName(myself.getUsername());
             gitCompany.setUser(user);
@@ -137,7 +139,7 @@ public class GitlabService implements GitProviderService {
             gitCompanyRepository.save(gitCompany);
 
         } else {
-            gitCompany = groups.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(
+            gitCompany = currentGitlabCompanies.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(
                 () -> new Exception("Should not happen."));
         }
 
@@ -151,22 +153,30 @@ public class GitlabService implements GitProviderService {
         } catch (IOException e) {
             log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
-        groups.add(gitCompany);
+        currentGitlabCompanies.add(gitCompany);
 
         // Sync the projects from the user's groups
+        Set<GitCompany> updatedGitlabCompanies = new HashSet<>();
         gitlab.getGroups().forEach(group -> {
             log.debug("Syncing organization `{}`", group.getName());
-            GitCompany company = new GitCompany();
-            company.setName(group.getName());
-            company.setUser(user);
-            company.setGitProvider(GitProvider.GITLAB.getValue());
-            if (groups.stream().noneMatch(g -> g.getName().equals(company.getName()))) {
-                gitCompanyRepository.save(company);
-                groups.add(company);
-            }
+            GitCompany company;
+            Optional<GitCompany> currentGitlabCompany =
+                currentGitlabCompanies.stream().filter(g -> g.getName().equals(group.getName())).findFirst();
 
+            if (!currentGitlabCompany.isPresent()) {
+                log.debug("Saving new company `{}`", group.getName());
+                company = new GitCompany();
+                company.setName(group.getName());
+                company.setUser(user);
+                company.setGitProvider(GitProvider.GITLAB.getValue());
+                gitCompanyRepository.save(company);
+            } else {
+                company = currentGitlabCompany.get();
+            }
+            log.debug("Adding company `{}` to user", company.getName());
+            updatedGitlabCompanies.add(company);
             try {
-                List<GitlabProject> projectList = gitlab.getGroup(group.getName()).getSharedProjects();
+                List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                 company.setGitProjects(projects);
             } catch (IOException e) {
@@ -174,7 +184,7 @@ public class GitlabService implements GitProviderService {
             }
         });
 
-        user.setGitCompanies(groups);
+        user.setGitCompanies(updatedGitlabCompanies);
         watch.stop();
         log.info("Finished syncing user `{}` with GitLab in {} ms", user.getLogin(), watch.getTotalTimeMillis());
         return user;
@@ -226,6 +236,13 @@ public class GitlabService implements GitProviderService {
         gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
         return number;
+    }
+
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGitlabOAuthToken() != null;
     }
 
     /**

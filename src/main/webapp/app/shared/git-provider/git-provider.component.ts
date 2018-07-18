@@ -33,17 +33,25 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     warningMessage: string;
     infoMessage: string;
+    noGitProvidersMessage: string;
 
     displayedGitProvider: string;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
         this.updateGitProviderName();
+        this.noGitProvidersMessage = `There is no git providers available. Contact your administrator to configure a git provider.`;
 
         if (this.tab === 'ci-cd') {
             this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
@@ -57,6 +65,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
                 your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
             this.infoMessage = ` will create a new ${this.displayedGitProvider} repository,
                 and will push the generated project in that repository.`;
+            this.noGitProvidersMessage = `${this.noGitProvidersMessage} You will only be able to download your application as a Zip file.`;
         } else if (this.tab === 'design-entities-apply') {
             this.warningMessage = ` To apply a JDL Model on a ${
                 this.displayedGitProvider
@@ -73,7 +82,17 @@ export class JhiGitProviderAlertComponent implements OnInit {
         );
     }
 
-    private updateGitProviderName() {
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (
+            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGithubAvailable && this.isGitlabConfigured)
+        );
+    }
+
+    isNoGitProviders() {
+        return !this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable;
+    }
+
+    updateGitProviderName() {
         if (this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
             this.displayedGitProvider = 'GitHub or GitLab';
         } else if (this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable) {
@@ -97,14 +116,20 @@ export class JhiGitProviderComponent implements OnInit {
 
     gitConfig: any;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService, public router: Router) {}
 
     ngOnInit() {
         this.newGitProviderModel();
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
 
         if (this.gitConfig.isGithubAvailable && this.isGithubConfigured) {
             this.data.availableGitProviders.push('GitHub');
@@ -131,10 +156,10 @@ export class JhiGitProviderComponent implements OnInit {
                         selectedGitProvider: this.data.selectedGitProvider,
                         selectedGitCompany: this.data.selectedGitCompany
                     };
-                    this.sharedData.emit(this.data);
+                    this.emitSharedData();
                 } else {
                     this.updateGitProjectList(this.data.selectedGitCompany);
-                    this.sharedData.emit(this.data);
+                    this.emitSharedData();
                 }
             },
             () => {
@@ -145,7 +170,7 @@ export class JhiGitProviderComponent implements OnInit {
 
     refreshGitProjectList() {
         this.data.gitProjectListRefresh = true;
-        this.sharedData.emit(this.data);
+        this.emitSharedData();
         this.gitConfigurationService.gitProviderService.refreshGitProvider(this.data.selectedGitProvider).subscribe(
             () => {
                 this.data.gitProjectListRefresh = false;
@@ -168,7 +193,7 @@ export class JhiGitProviderComponent implements OnInit {
                 selectedGitCompany: this.data.selectedGitCompany,
                 selectedGitRepository: this.data.selectedGitRepository
             };
-            this.sharedData.emit(this.data);
+            this.emitSharedData();
         });
     }
 
@@ -176,11 +201,20 @@ export class JhiGitProviderComponent implements OnInit {
         this.sharedData.emit({ ...this.data, selectedGitRepository: gitRepository });
     }
 
+    emitSharedData() {
+        this.data.isValid = !this.isRefreshing() && !this.simpleMode && this.isGitProjectsEmpty(); // There's available project when not in simple mode
+        this.sharedData.emit(this.data);
+    }
+
+    isGitProjectsEmpty() {
+        return this.data.gitProjects && this.data.gitProjects.length > 0;
+    }
+
     isRefreshing() {
         return this.data.gitCompanyListRefresh || this.data.gitProjectListRefresh;
     }
 
     private newGitProviderModel() {
-        this.data = new GitProviderModel([], null, null, null, [], [], false, false);
+        this.data = new GitProviderModel([], null, null, null, [], [], false, false, false);
     }
 }

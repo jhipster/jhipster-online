@@ -23,6 +23,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from 'app/core/login/login.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { GitConfigurationService } from 'app/core';
 
 @Component({
     selector: 'jhi-login-modal',
@@ -42,6 +43,7 @@ export class JhiLoginModalComponent implements AfterViewInit {
         private elementRef: ElementRef,
         private renderer: Renderer,
         private router: Router,
+        private gitConfigurationService: GitConfigurationService,
         public activeModal: NgbActiveModal
     ) {
         this.credentials = {};
@@ -79,6 +81,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
                     name: 'authenticationSuccess',
                     content: 'Sending Authentication Success'
                 });
+
+                this.gitConfigurationService.setupGitConfiguration();
 
                 // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                 // // since login is succesful, go to stored previousState and clear previousState

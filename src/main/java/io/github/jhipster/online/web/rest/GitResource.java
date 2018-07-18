@@ -288,16 +288,20 @@ public class GitResource {
     @Timed
     public @ResponseBody
     ResponseEntity getGitlabConfig() {
-        return new ResponseEntity<>(
-            new GitConfigurationDTO(
-                githubService.getHost(),
-                githubService.getClientId(),
-                githubService.isEnabled(),
-                gitlabService.getHost(),
-                gitlabService.getRedirectUri(),
-                gitlabService.getClientId(),
-                gitlabService.isEnabled()
-            ), HttpStatus.OK
-        );
+        GitConfigurationDTO result = new GitConfigurationDTO(
+            githubService.getHost(),
+            githubService.getClientId(),
+            githubService.isEnabled(),
+            gitlabService.getHost(),
+            gitlabService.getRedirectUri(),
+            gitlabService.getClientId(),
+            gitlabService.isEnabled(),
+            githubService.isConfigured(),
+            gitlabService.isConfigured());
+
+        this.log.debug("Git configuration : {}", result);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 }

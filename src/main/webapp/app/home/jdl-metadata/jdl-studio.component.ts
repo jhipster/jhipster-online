@@ -84,10 +84,12 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     gitConfig: GitConfigurationModel;
+
+    isGitProviderComponentValid: boolean;
 
     constructor(
         private modalService: NgbModal,
@@ -99,6 +101,13 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
+
         this.subscription = this.route.params.subscribe(params => {
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
@@ -114,6 +123,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
+        this.isGitProviderComponentValid = data.isValid;
     }
 
     applyJdl() {
@@ -142,5 +152,11 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (
+            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured)
+        );
     }
 }

@@ -39,10 +39,10 @@ export class CiCdComponent implements OnInit {
     selectedGitCompany: string;
     selectedGitRepository: string;
 
-    isRefreshingGit = false;
+    isGitProviderComponentValid = false;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    isGithubConfigured = false;
+    isGitlabConfigured = false;
 
     gitConfig: GitConfigurationModel;
 
@@ -54,13 +54,19 @@ export class CiCdComponent implements OnInit {
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.isGitlabConfigured = gitConfig.gitlabConfigured;
+            this.isGithubConfigured = gitConfig.githubConfigured;
+        });
     }
 
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
         this.selectedGitRepository = data.selectedGitRepository;
-        this.isRefreshingGit = data.gitProjectListRefresh || data.gitCompanyListRefresh;
+        this.isGitProviderComponentValid = data.isValid;
     }
 
     applyCiCd() {
@@ -83,5 +89,11 @@ export class CiCdComponent implements OnInit {
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
         modalRef.selectedGitRepository = this.selectedGitRepository;
+    }
+
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (
+            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGithubAvailable && this.isGitlabConfigured)
+        );
     }
 }

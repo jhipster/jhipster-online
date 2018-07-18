@@ -125,27 +125,37 @@ public class GithubService implements GitProviderService {
         user.setGithubEmail(ghMyself.getEmail());
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
-        Set<GitCompany> organizations = user.getGitCompanies();
-        GitCompany myOrganization;
+        Set<GitCompany> currentGithubCompanies =
+            user.getGitCompanies().stream().filter(c -> c.getGitProvider().equals(GitProvider.GITHUB.getValue())).collect(Collectors.toSet());
+
+        Set<GitCompany> updatedGithubCompanies = new HashSet<>();
 
         // Sync the projects from the user's companies
-        Map<String, GHOrganization> myOrganizations = gitHub.getMyOrganizations();
-        for (String organizationName : myOrganizations.keySet()) {
-            GitCompany organization = new GitCompany();
-            organization.setName(organizationName);
-            organization.setUser(user);
-            organization.setGitProvider(GitProvider.GITHUB.getValue());
+        Map<String, GHOrganization> githubOrganizations = gitHub.getMyOrganizations();
+        for (String githubOrganizationName : githubOrganizations.keySet()) {
+            log.debug("Syncing company `{}`", githubOrganizationName);
+            GitCompany company;
+            // Create company if it does not already exist
+            Optional<GitCompany> currentGitHubOrganization =
+                currentGithubCompanies.stream().filter(g -> g.getName().equals(githubOrganizationName)).findFirst();
 
-            // Get or create organization
-            if (organizations.stream().noneMatch(g -> g.getName().equals(organization.getName()))) {
-                gitCompanyRepository.save(organization);
-                organizations.add(organization);
+            if (!currentGitHubOrganization.isPresent()) {
+                log.debug("Saving new company `{}`", githubOrganizationName);
+                company = new GitCompany();
+                company.setName(githubOrganizationName);
+                company.setUser(user);
+                company.setGitProvider(GitProvider.GITHUB.getValue());
+                company = gitCompanyRepository.save(company);
+            } else {
+                company = currentGitHubOrganization.get();
             }
-            organization.setGitProjects(new ArrayList<>(myOrganizations.get(organizationName).getRepositories().keySet()));
+            log.debug("Adding company `{}` to user", company.getName());
+            updatedGithubCompanies.add(company);
+            company.setGitProjects(new ArrayList<>(githubOrganizations.get(githubOrganizationName).getRepositories().keySet()));
         }
 
-        user.setGitCompanies(organizations);
-        List<String> organizationsProjects = organizations.stream()
+        user.setGitCompanies(updatedGithubCompanies);
+        List<String> organizationsProjects = updatedGithubCompanies.stream()
             .filter(o ->
                 o.getGitProvider().equals("github") && !o.getName().equals(githubLogin))
             .flatMap(o ->
@@ -153,14 +163,16 @@ public class GithubService implements GitProviderService {
             .collect(Collectors.toList());
 
         // Sync the current user's projects
-        if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
+        log.debug("Syncing user's projects");
+        GitCompany myOrganization;
+        if (currentGithubCompanies.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
             myOrganization = new GitCompany();
             myOrganization.setName(githubLogin);
             myOrganization.setUser(user);
             myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
             gitCompanyRepository.save(myOrganization);
         } else {
-            myOrganization = organizations.stream()
+            myOrganization = currentGithubCompanies.stream()
                 .filter(g -> g.getName().equals(ghMyself.getLogin()))
                 .findFirst()
                 .orElseThrow(Exception::new);
@@ -171,13 +183,12 @@ public class GithubService implements GitProviderService {
                     organizationsProjects.stream()
                         .noneMatch(p ->
                             p.equals(entry.getKey())))
-                .map(entry -> entry.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
             myOrganization.setGitProjects(ownedProjects);
         } catch (IOException e) {
             log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
-
         return user;
     }
 
@@ -230,6 +241,13 @@ public class GithubService implements GitProviderService {
 
         log.info("Pull Request created!");
         return number;
+    }
+
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGithubOAuthToken() != null;
     }
 
     /**
