@@ -33,6 +33,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     warningMessage: string;
     infoMessage: string;
+    noGitProvidersMessage: string;
 
     displayedGitProvider: string;
 
@@ -50,6 +51,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
             this.isGithubConfigured = gitConfig.githubConfigured;
         });
         this.updateGitProviderName();
+        this.noGitProvidersMessage = `There is no git providers available. Contact your administrator to configure a git provider.`;
 
         if (this.tab === 'ci-cd') {
             this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
@@ -63,6 +65,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
                 your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
             this.infoMessage = ` will create a new ${this.displayedGitProvider} repository,
                 and will push the generated project in that repository.`;
+            this.noGitProvidersMessage = `${this.noGitProvidersMessage} You will only be able to download your application as a Zip file.`;
         } else if (this.tab === 'design-entities-apply') {
             this.warningMessage = ` To apply a JDL Model on a ${
                 this.displayedGitProvider
@@ -79,7 +82,17 @@ export class JhiGitProviderAlertComponent implements OnInit {
         );
     }
 
-    private updateGitProviderName() {
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (
+            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGithubAvailable && this.isGitlabConfigured)
+        );
+    }
+
+    isNoGitProviders() {
+        return !this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable;
+    }
+
+    updateGitProviderName() {
         if (this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
             this.displayedGitProvider = 'GitHub or GitLab';
         } else if (this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable) {

@@ -20,8 +20,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 
+import { createRequestOption } from 'app/shared';
 import { JdlMetadata } from './jdl-metadata.model';
-import { createRequestOption } from '../../shared';
 
 @Injectable({ providedIn: 'root' })
 export class JdlMetadataService {
