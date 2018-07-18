@@ -41,8 +41,8 @@ export class CiCdComponent implements OnInit {
 
     isGitProviderComponentValid = false;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     gitConfig: GitConfigurationModel;
 
@@ -54,11 +54,11 @@ export class CiCdComponent implements OnInit {
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.isGitlabConfigured = gitConfig.gitlabConfigured;
-            this.isGithubConfigured = gitConfig.githubConfigured;
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
         });
     }
 
@@ -92,8 +92,6 @@ export class CiCdComponent implements OnInit {
     }
 
     isAtLeastOneGitProviderAvailableAndConfigured() {
-        return (
-            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGithubAvailable && this.isGitlabConfigured)
-        );
+        return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.githubAvailable && this.gitlabConfigured);
     }
 }

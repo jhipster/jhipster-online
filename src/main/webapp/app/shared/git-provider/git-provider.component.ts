@@ -37,21 +37,21 @@ export class JhiGitProviderAlertComponent implements OnInit {
 
     displayedGitProvider: string;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.isGitlabConfigured = gitConfig.gitlabConfigured;
-            this.isGithubConfigured = gitConfig.githubConfigured;
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
         });
         this.updateGitProviderName();
-        this.noGitProvidersMessage = `There is no git providers available. Contact your administrator to configure a git provider.`;
+        this.noGitProvidersMessage = `There is no Git provider available, please contact your administrator to configure one.`;
 
         if (this.tab === 'ci-cd') {
             this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
@@ -77,27 +77,23 @@ export class JhiGitProviderAlertComponent implements OnInit {
     }
 
     isAlertShowing() {
-        return (
-            (this.gitConfig.isGithubAvailable || this.gitConfig.isGitlabAvailable) && !this.isGithubConfigured && !this.isGitlabConfigured
-        );
+        return (this.gitConfig.githubAvailable || this.gitConfig.gitlabAvailable) && !this.githubConfigured && !this.gitlabConfigured;
     }
 
     isAtLeastOneGitProviderAvailableAndConfigured() {
-        return (
-            (this.gitConfig.isGithubAvailable && this.isGithubConfigured) || (this.gitConfig.isGithubAvailable && this.isGitlabConfigured)
-        );
+        return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.githubAvailable && this.gitlabConfigured);
     }
 
     isNoGitProviders() {
-        return !this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable;
+        return !this.gitConfig.githubAvailable && !this.gitConfig.gitlabAvailable;
     }
 
     updateGitProviderName() {
-        if (this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
+        if (this.gitConfig.githubAvailable && this.gitConfig.gitlabAvailable) {
             this.displayedGitProvider = 'GitHub or GitLab';
-        } else if (this.gitConfig.isGithubAvailable && !this.gitConfig.isGitlabAvailable) {
+        } else if (this.gitConfig.githubAvailable && !this.gitConfig.gitlabAvailable) {
             this.displayedGitProvider = 'GitHub';
-        } else if (!this.gitConfig.isGithubAvailable && this.gitConfig.isGitlabAvailable) {
+        } else if (!this.gitConfig.githubAvailable && this.gitConfig.gitlabAvailable) {
             this.displayedGitProvider = 'GitLab';
         }
     }
@@ -116,36 +112,35 @@ export class JhiGitProviderComponent implements OnInit {
 
     gitConfig: any;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService, public router: Router) {}
 
     ngOnInit() {
         this.newGitProviderModel();
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.isGitlabConfigured = gitConfig.gitlabConfigured;
-            this.isGithubConfigured = gitConfig.githubConfigured;
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
         });
 
-        if (this.gitConfig.isGithubAvailable && this.isGithubConfigured) {
-            this.data.availableGitProviders.push('GitHub');
-            this.data.selectedGitProvider = 'GitHub';
-        }
-        if (this.gitConfig.isGitlabAvailable && this.isGitlabConfigured) {
+        if (this.gitConfig.gitlabAvailable && this.gitlabConfigured) {
             this.data.availableGitProviders.push('GitLab');
             this.data.selectedGitProvider = 'GitLab';
         }
-
+        if (this.gitConfig.githubAvailable && this.githubConfigured) {
+            this.data.availableGitProviders.push('GitHub');
+            this.data.selectedGitProvider = 'GitHub';
+        }
         this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider);
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
         this.data.gitCompanyListRefresh = true;
-        this.gitConfigurationService.gitProviderService.getCompanies(gitProvider).subscribe(
+        this.gitConfigurationService.gitProviderService.getCompanies(gitProvider.toLowerCase()).subscribe(
             companies => {
                 this.data.gitCompanyListRefresh = false;
                 this.data.gitCompanies = companies;

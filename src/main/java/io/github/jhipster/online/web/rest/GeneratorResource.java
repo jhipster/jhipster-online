@@ -82,9 +82,9 @@ public class GeneratorResource {
         String applicationId = UUID.randomUUID().toString();
 
         log.debug("Using provider: {} ({})", provider, JsonPath.read(document, "$.git-provider"));
-        log.debug("Generating application id={} - {} / {}", applicationId, gitCompany, applicationName);
-        this.logsService.addLog(applicationId, "Generating application " + gitCompany + "/" +
-            applicationName);
+        log.debug("Generating application in repository id={} - {} / {}", applicationId, gitCompany, repositoryName);
+        this.logsService.addLog(applicationId, "Generating application in repository " + gitCompany + "/" +
+            repositoryName);
 
         try {
             if (provider.equals(GitProvider.GITHUB)) {

@@ -19,9 +19,9 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
 
-import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,6 +39,7 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 
 @RestController
 @RequestMapping("/api")
@@ -93,8 +94,7 @@ public class GitResource {
     @PostMapping("/{gitProvider}/save-token")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
+    public @ResponseBody ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -216,8 +216,7 @@ public class GitResource {
     @PostMapping("/{gitProvider}/refresh")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
             switch (gitProvider.toLowerCase()) {
@@ -237,11 +236,15 @@ public class GitResource {
         } catch (Exception e) {
             switch (gitProvider.toLowerCase()) {
                 case GITHUB:
-                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be refreshed");
+                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
+                        e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be " +
+                        "refreshed");
                 case GITLAB:
-                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be refreshed");
+                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
+                        e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " +
+                        "refreshed");
                 default:
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
                         gitProvider);
@@ -255,8 +258,7 @@ public class GitResource {
     @GetMapping("/{gitProvider}/companies")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity getUserCompanies(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity getUserCompanies(@PathVariable String gitProvider) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         if (!maybeGitProvider.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -275,8 +277,7 @@ public class GitResource {
     @GetMapping("/{gitProvider}/companies/{companyName}/projects")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
+    public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         if (!maybeGitProvider.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -286,8 +287,8 @@ public class GitResource {
 
     @GetMapping("/git/config")
     @Timed
-    public @ResponseBody
-    ResponseEntity getGitlabConfig() {
+    @Secured(AuthoritiesConstants.USER)
+    public @ResponseBody ResponseEntity getGitlabConfig() {
         GitConfigurationDTO result = new GitConfigurationDTO(
             githubService.getHost(),
             githubService.getClientId(),

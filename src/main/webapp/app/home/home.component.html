@@ -13,7 +13,7 @@
                             </a>
                         </li>
                         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                            *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
+                            *ngIf="gitConfig.githubAvailable || gitConfig.gitlabAvailable">
                             <a class="nav-link text-primary mt-3" routerLink="/git">
                                 <span class="btn-rounded align-middle">
                                     <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>

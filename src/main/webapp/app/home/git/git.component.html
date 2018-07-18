@@ -1,4 +1,4 @@
-<div *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
+<div *ngIf="!gitConfig.githubAvailable && !gitConfig.gitlabAvailable">
     <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>No GitHub or GitLab configuration available</span></h2>
 
     <div class="alert alert-info" role="alert">
@@ -9,7 +9,7 @@
     </p>
 </div>
 
-<div *ngIf="gitConfig.isGithubAvailable">
+<div *ngIf="gitConfig.githubAvailable">
     <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>GitHub configuration</span></h2>
     <p>
         If you give access to your GitHub account to JHipster Online, it will:
@@ -26,7 +26,7 @@
     </div>
 
     <ng-container>
-        <p class="text-center" *ngIf="!isGithubConfigured">
+        <p class="text-center" *ngIf="!githubConfigured">
             <a class="btn btn-primary"
                href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
             <span *ngIf="!gitConfig.isAuthorizingGithub">
@@ -39,7 +39,7 @@
             </span>
             </a>
         </p>
-        <p class="text-center" *ngIf="isGithubConfigured">
+        <p class="text-center" *ngIf="githubConfigured">
             <a class="btn btn-warning"
                href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
             <fa-icon [icon]="['fab', 'github']"></fa-icon>&nbsp;JHipster
@@ -49,7 +49,7 @@
     </ng-container>
 </div>
 
-<div *ngIf="gitConfig.isGitlabAvailable">
+<div *ngIf="gitConfig.gitlabAvailable">
     <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>GitLab configuration</span></h2>
     <p>
         If you give access to your GitLab account to JHipster Online, it will:
@@ -66,7 +66,7 @@
     </div>
 
     <ng-container>
-        <p class="text-center" *ngIf="!isGitlabConfigured">
+        <p class="text-center" *ngIf="!gitlabConfigured">
             <a (disabled)="gitConfig.isAuthorizingGitlab" class="btn btn-primary"
                href="{{gitConfig.gitlabHost}}/oauth/authorize?client_id={{gitConfig.gitlabClientId}}&redirect_uri={{gitConfig.gitlabRedirectUri}}&response_type=code" role="button">
             <span *ngIf="!gitConfig.isAuthorizingGitlab">
@@ -79,7 +79,7 @@
             </span>
             </a>
         </p>
-        <p class="text-center" *ngIf="isGitlabConfigured">
+        <p class="text-center" *ngIf="gitlabConfigured">
             <a class="btn btn-warning"
                href="{{gitConfig.gitlabHost}}/oauth/authorize?client_id={{gitConfig.gitlabClientId}}&redirect_uri={{gitConfig.gitlabRedirectUri}}&response_type=code" role="button">
                 <fa-icon [icon]="['fab', 'gitlab']"></fa-icon> &nbsp;JHipster

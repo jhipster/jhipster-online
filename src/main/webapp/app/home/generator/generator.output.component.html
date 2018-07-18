@@ -17,14 +17,14 @@ Sending request to the server...
                 </pre>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && isGithubConfigured && selectedGitProvider === 'GitHub'">
+        <div class="row" *ngIf="displayApplicationUrl && githubConfigured && selectedGitProvider === 'GitHub'">
             <div class="col-md-12">
                 <div class="lead">
                     <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && isGitlabConfigured && selectedGitProvider === 'GitLab'">
+        <div class="row" *ngIf="displayApplicationUrl && gitlabConfigured && selectedGitProvider === 'GitLab'">
             <div class="col-md-12">
                 <div class="lead">
 

@@ -28,33 +28,24 @@ import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 export class GitComponent implements OnInit {
     gitConfig: GitConfigurationModel;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.isGitlabConfigured = gitConfig.gitlabConfigured;
-            this.isGithubConfigured = gitConfig.githubConfigured;
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
         });
 
         this.gitConfig.availableGitProviders.forEach(provider => {
-            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(orgs => {
-                if (orgs.length === 0) {
-                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider).subscribe(() => {
-                        switch (provider) {
-                            case 'github':
-                                this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: false };
-                                break;
-                            case 'gitlab':
-                                this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: false };
-                                break;
-                        }
-                    });
+            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(companies => {
+                if (companies.length === 0) {
+                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider);
                 }
             });
         });

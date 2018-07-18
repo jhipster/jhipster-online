@@ -39,8 +39,8 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     repositoryName: string;
 
@@ -100,11 +100,11 @@ export class GeneratorComponent implements OnInit {
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
         this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.isGitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.isGithubConfigured = this.gitConfig.githubConfigured;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.isGitlabConfigured = gitConfig.gitlabConfigured;
-            this.isGithubConfigured = gitConfig.githubConfigured;
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
         });
     }
 
@@ -172,8 +172,8 @@ export class GeneratorComponent implements OnInit {
         modalRef.repositoryName = this.repositoryName;
         modalRef.gitlabHost = this.gitConfig.gitlabHost;
         modalRef.githubHost = this.gitConfig.githubHost;
-        modalRef.gitlabConfigured = this.gitConfig.isGitlabAvailable;
-        modalRef.githubConfigured = this.gitConfig.isGithubAvailable;
+        modalRef.gitlabConfigured = this.gitConfig.gitlabAvailable;
+        modalRef.githubConfigured = this.gitConfig.githubAvailable;
     }
 
     downloadFile(blob: Blob) {
@@ -218,7 +218,7 @@ export class GeneratorComponent implements OnInit {
             'angularX',
             'jhi'
         );
-        this.repositoryName = `${this.model.baseName}Repository`;
+        this.repositoryName = 'jhipster-sample-application';
     }
 
     changeApplicationType() {
