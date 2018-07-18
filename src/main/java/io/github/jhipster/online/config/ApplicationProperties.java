@@ -133,7 +133,6 @@ public class ApplicationProperties {
         private String clientSecret;
         private String host = "https://gitlab.com";
         private String redirectUri;
-        private String jhipsterBotOauthToken = "";
 
         public String getClientId() {
             return clientId;
@@ -165,14 +164,6 @@ public class ApplicationProperties {
 
         public void setRedirectUri(String redirectUri) {
             this.redirectUri = redirectUri;
-        }
-
-        public String getJhipsterBotOauthToken() {
-            return jhipsterBotOauthToken;
-        }
-
-        public void setJhipsterBotOauthToken(String jhipsterBotOauthToken) {
-            this.jhipsterBotOauthToken = jhipsterBotOauthToken;
         }
     }
 

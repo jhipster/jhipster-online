@@ -153,7 +153,6 @@ application:
         client-secret: XXX # Your GitLab application secret
         redirect-uri: XXX   # The URI where the user will be redirected after GitLab authentication. This URI
                             # must be registered in you GitLab application callback URLs
-        jhipster-bot-oauth-token: XXX # Your bot personnal access token.
 ```
 
 ## Building for production
