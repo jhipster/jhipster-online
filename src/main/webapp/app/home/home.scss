@@ -1,27 +1,72 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-.side-menu {
-    border-right: 1px solid #ddd;
+
+.menu-notLogged {
+    margin-top: 15px;
 }
 
-.hipster {
-    display: inline-block;
-    width: 70px;
-    height: 89px;
-    background: url('../../content/images/logo-jhipster.png') no-repeat center top;
-    background-size: contain;
+.page-wrapper {
+    min-height: 400px;
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min--moz-device-pixel-ratio: 2),
-    only screen and (-o-min-device-pixel-ratio: 2/1),
-    only screen and (min-device-pixel-ratio: 2),
-    only screen and (min-resolution: 192dpi),
-    only screen and (min-resolution: 2dppx) {
-    .hipster {
-        background: url('../../content/images/logo-jhipster.png') no-repeat center top;
-        background-size: contain;
+/*==============================================================================
+Side bar
+============================================================================= */
+
+@media (max-width: 768px) {
+    #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
+    }
+
+    .side-menu {
+        display: none;
+    }
+
+    #wrapper.toggled .side-menu {
+        width: 100%;
+        display: inline-block;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+}
+
+@media (min-width: 768px) {
+    #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
+    }
+
+    #wrapper.toggled {
+        padding-left: 25%;
+    }
+
+    .side-menu {
+        z-index: 1000;
+        position: absolute;
+        left: 25%;
+        width: 0;
+        margin-left: -25%;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        background: none;
+        -webkit-transition: all 0.75s ease;
+        -moz-transition: all 0.75s ease;
+        -o-transition: all 0.75s ease;
+        transition: all 0.75s ease;
+    }
+
+    #wrapper.toggled .side-menu {
+        width: 20%;
+        height: 95%;
+        display: inline-block;
+        border-right: 1px solid #ddd;
     }
 }

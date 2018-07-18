@@ -22,7 +22,8 @@ import { ProfileInfo } from './profile-info.model';
 
 @Component({
     selector: 'jhi-page-ribbon',
-    template: `<div class="ribbon" *ngIf="ribbonEnv"><a href="">{{ribbonEnv}}</a></div>`,
+    template: `<div class="devRibbon" *ngIf="ribbonEnv"><a href="">{{ribbonEnv}}</a></div>
+    <div class="forkRibbon" ><a href="https://github.com/jhipster/jhipster-online">Fork me on GitHub</a></div>`,
     styleUrls: ['page-ribbon.scss']
 })
 export class PageRibbonComponent implements OnInit {

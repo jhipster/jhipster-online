@@ -1,126 +1,125 @@
-<div class="row">
-    <div class="col-md-3 side-menu">
-        <div [ngSwitch]="isAuthenticated()">
-            <div *ngSwitchCase="true">
-                <nav class="navbar navbar-light">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                            <a class="nav-link text-primary mt-3" routerLink="/">
-                                <span class="btn-rounded align-middle">
-                                    <fa-icon [icon]="'home'" [size]="'2x'"></fa-icon>
-                                </span>
-                                <span class="align-middle h5">Home</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                            *ngIf="gitConfig.isGithubAvailable || gitConfig.isGitlabAvailable">
-                            <a class="nav-link text-primary mt-3" routerLink="/git">
-                                <span class="btn-rounded align-middle">
-                                    <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>
-                                </span>
-                                <span class="align-middle h5">Configure</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                            <a class="nav-link text-primary mt-3" routerLink="/generate-application">
-                                <span class="btn-rounded align-middle">
-                                    <fa-icon [icon]="'rocket'" [size]="'2x'"></fa-icon>
-                                </span>
-                                <span class="align-middle h5">Create Application</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                            <a class="nav-link text-primary mt-3" routerLink="/design-entities">
-                                <span class="btn-rounded align-middle">
-                                    <fa-icon [icon]="'object-group'" [size]="'2x'"></fa-icon>
-                                </span>
-                                <span class="align-middle h5">Design Entities</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                            <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
-                                <span class="btn-rounded align-middle">
-                                    <fa-icon [icon]="'cloud-upload-alt'" [size]="'2x'"></fa-icon>
-                                </span>
-                                <span class="align-middle h5">Continuous Integration</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div *ngSwitchCase="false">
-                <div class="alert alert-info" role="alert">
-                    JHipster Online is the best place to generate <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> applications, with no installation required!
+<div id="wrapper" xmlns="http://www.w3.org/1999/html" [ngClass]="{'toggled': isToggled()}">
+    <div class="row">
+        <div class="col-md-3 side-menu">
+            <div [ngSwitch]="isAuthenticated()">
+                <div *ngSwitchCase="false">
+                    <div class="row menu-notLogged">
+                        <div class="alert alert-info" role="alert">
+                            JHipster Online is the best place to generate <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> applications, with no installation required!
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            No more command line: fill an easy-to-use Web form, JHipster Online generates a complete <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> application on your GitHub account.
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div *ngSwitchCase="false">
-                <div class="alert alert-info" role="alert">
-                    No more command line: fill an easy-to-use Web form, JHipster Online generates a complete <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> application on your GitHub account.
+                <div *ngSwitchCase="true">
+                    <nav class="navbar navbar-light">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="nav-link text-primary mt-3" routerLink="/">
+                                    <span class="btn-rounded align-middle">
+                                        <fa-icon [icon]="'home'" [size]="'2x'"></fa-icon>
+                                    </span>
+                                    <span class="align-middle h5">Home</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="nav-link text-primary mt-3" routerLink="/git">
+                                    <span class="btn-rounded align-middle">
+                                        <fa-icon [icon]="'wrench'" [size]="'2x'"></fa-icon>
+                                    </span>
+                                    <span class="align-middle h5">Configure</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="nav-link text-primary mt-3" routerLink="/generate-application">
+                                    <span class="btn-rounded align-middle">
+                                        <fa-icon [icon]="'rocket'" [size]="'2x'"></fa-icon>
+                                    </span>
+                                    <span class="align-middle h5">Create Application</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="nav-link text-primary mt-3" routerLink="/design-entities">
+                                    <span class="btn-rounded align-middle">
+                                        <fa-icon [icon]="'object-group'" [size]="'2x'"></fa-icon>
+                                    </span>
+                                    <span class="align-middle h5">Design Entities</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
+                                    <span class="btn-rounded align-middle">
+                                        <fa-icon [icon]="'cloud-upload-alt'" [size]="'2x'"></fa-icon>
+                                    </span>
+                                    <span class="align-middle h5">Continuous Integration</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-9">
-        <router-outlet></router-outlet>
-        <router-outlet name="popup"></router-outlet>
+        <div class="col-md-12 page-wrapper">
+            <router-outlet></router-outlet>
+            <router-outlet name="popup"></router-outlet>
             <div>
-            <div [ngSwitch]="isAuthenticated()">
-                <div class="container" *ngSwitchCase="false">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <fa-icon [icon]="'sign-in-alt'"></fa-icon>
-                                    &nbsp;Authentication
+                <div [ngSwitch]="isAuthenticated()">
+                    <div class="container" *ngSwitchCase="false">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Authentication
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title">Sign in</h4>
+                                        <p class="card-text">If you already have an account:</p>
+                                        <button type="button" class="btn btn-info" (click)="login()">Please sign in</button>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <h4 class="card-title">Sign in</h4>
-                                    <p class="card-text">If you already have an account:</p>
-                                    <button type="button" class="btn btn-info" (click)="login()">Please sign in</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i> Registration
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title">Register</h4>
+                                        <p class="card-text">If you want to create a new account:</p>
+                                        <a class="btn btn-info" routerLink="register">Please register</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <fa-icon [icon]="'user-plus'"></fa-icon>
-                                    &nbsp;Registration
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="card-title">Register</h4>
-                                    <p class="card-text">If you want to create a new account:</p>
-                                    <a class="btn btn-info" routerLink="register">Please register</a>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr>
+                                <h4>JHipster is an Open Source, widely popular application generator</h4>
+                                <p>
+                                    If you want more information on JHipster:
+                                </p>
+                                <ul>
+                                    <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener">JHipster homepage (with documentation, slides, tutorials, etc.)</a></li>
+                                    <li><a href="https://github.com/jhipster/generator-jhipster" target="_blank"
+                                           rel="noopener">JHipster source code on GitHub</a></li>
+                                    <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener">JHipster on Twitter</a></li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr>
-                            <h4>JHipster is an Open Source, widely popular application generator</h4>
-                            <p>
-                               If you want more information on JHipster:
-                            </p>
-                            <ul>
-                                <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener">JHipster homepage (with documentation, slides, tutorials, etc.)</a></li>
-                                <li><a href="https://github.com/jhipster/generator-jhipster" target="_blank"
-                                               rel="noopener">JHipster source code on GitHub</a></li>
-                                <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener">JHipster on Twitter</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr>
-                            <h4>JHipster Online is also Open Source!</h4>
-                            <p>
-                                The application on <a href="https://start.jhipster.tech/" target="_blank">https://start.jhipster.tech/</a> is the
-                                official JHipster Online instance, which is managed by the JHipster team.
-                            </p>
-                            <p>
-                                If you want to look at our source code, or if in your company wants to host (and modify!) its own version of JHipster Online, the
-                                project is available on GitHub at <a href="https://github.com/jhipster/jhipster-online" target="_blank">https://github.com/jhipster/jhipster-online</a>.
-                            </p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr>
+                                <h4>JHipster Online is also Open Source!</h4>
+                                <p>
+                                    The application on <a href="https://start.jhipster.tech/" target="_blank">https://start.jhipster.tech/</a> is the
+                                    official JHipster Online instance, which is managed by the JHipster team.
+                                </p>
+                                <p>
+                                    If you want to look at our source code, or if in your company wants to host (and modify!) its own version of JHipster Online, the
+                                    project is available on GitHub at <a href="https://github.com/jhipster/jhipster-online" target="_blank">https://github.com/jhipster/jhipster-online</a>.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -23,6 +23,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { VERSION } from 'app/app.constants';
 import { Principal, LoginModalService, LoginService, GitConfigurationService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
+import { SidebarService } from '../sidebar/sidebar.service';
 
 @Component({
     selector: 'jhi-navbar',
@@ -42,8 +43,10 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
+        private router: Router,
+        private sidebarService: SidebarService
         private gitConfigurationService: GitConfigurationService,
-        private router: Router
+
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -81,5 +84,13 @@ export class NavbarComponent implements OnInit {
 
     getImageUrl() {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
+    }
+
+    toggleSidebar() {
+        this.sidebarService.toggleSidebar();
+    }
+
+    getSidebarStatus() {
+        return this.sidebarService.getSidebarStatus();
     }
 }

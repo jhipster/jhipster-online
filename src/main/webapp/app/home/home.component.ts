@@ -21,6 +21,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
+import { SidebarService } from '../layouts/sidebar/sidebar.service';
 
 @Component({
     selector: 'jhi-home',
@@ -37,6 +38,7 @@ export class HomeComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private gitConfigurationService: GitConfigurationService,
+        private sidebarService: SidebarService,
         private eventManager: JhiEventManager
     ) {}
 
@@ -64,5 +66,9 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    isToggled() {
+        return this.sidebarService.getIsShown();
     }
 }
