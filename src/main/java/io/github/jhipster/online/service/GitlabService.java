@@ -166,7 +166,7 @@ public class GitlabService implements GitProviderService {
             }
 
             try {
-                List<GitlabProject> projectList = gitlab.getGroup(group.getName()).getSharedProjects();
+                List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                 company.setGitProjects(projects);
             } catch (IOException e) {
@@ -226,6 +226,13 @@ public class GitlabService implements GitProviderService {
         gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
         return number;
+    }
+
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGitlabOAuthToken() != null;
     }
 
     /**

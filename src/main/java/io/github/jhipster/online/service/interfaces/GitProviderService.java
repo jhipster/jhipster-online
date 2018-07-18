@@ -38,4 +38,6 @@ public interface GitProviderService {
     int createPullRequest(User user, String organization, String applicationName,
         String title, String branchName, String body) throws Exception;
 
+    boolean isConfigured();
+
 }

@@ -16,12 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 
 import { GitConfigurationModel, GitProviderService } from 'app/core';
 
 @Injectable({ providedIn: 'root' })
 export class GitConfigurationService {
+    sharedData = new EventEmitter<GitConfigurationModel>();
+
     gitConfig: GitConfigurationModel;
 
     constructor(public gitProviderService: GitProviderService) {
@@ -34,11 +36,13 @@ export class GitConfigurationService {
             .toPromise()
             .then((config: any) => {
                 this.gitConfig = { ...this.gitConfig, ...config };
+                this.sharedData.emit(this.gitConfig);
             })
             .catch(() => Promise.resolve());
     }
 
-    private newGitConfig() {
-        this.gitConfig = new GitConfigurationModel([], false, false, null, null, false, false, null, null, null);
+    newGitConfig() {
+        this.gitConfig = new GitConfigurationModel([], false, false, null, null, false, false, null, null, null, false, false);
+        this.sharedData.emit(this.gitConfig);
     }
 }

@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
         this.gitConfig = this.gitConfigurationService.gitConfig;
         this.principal.identity().then(account => {
             this.account = account;
+            this.gitConfigurationService.setupGitConfiguration();
         });
         this.registerAuthenticationSuccess();
     }

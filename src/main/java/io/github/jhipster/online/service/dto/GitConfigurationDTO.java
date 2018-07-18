@@ -5,12 +5,22 @@ import java.util.Objects;
 public class GitConfigurationDTO {
 
     private String githubHost;
+
     private String githubClientId;
+
     private boolean isGithubAvailable;
+
     private String gitlabHost;
+
     private String gitlabRedirectUri;
+
     private String gitlabClientId;
+
     private boolean isGitlabAvailable;
+
+    private boolean isGithubConfigured;
+
+    private boolean isGitlabConfigured;
 
     public GitConfigurationDTO(String githubHost,
                                String githubClientId,
@@ -18,7 +28,7 @@ public class GitConfigurationDTO {
                                String gitlabHost,
                                String gitlabRedirectUri,
                                String gitlabClientId,
-                               boolean isGitlabAvailable) {
+                               boolean isGitlabAvailable, boolean isGithubConfigured, boolean isGitlabConfigured) {
         this.githubHost = githubHost;
         this.githubClientId = githubClientId;
         this.isGithubAvailable = isGithubAvailable;
@@ -26,6 +36,8 @@ public class GitConfigurationDTO {
         this.gitlabRedirectUri = gitlabRedirectUri;
         this.gitlabClientId = gitlabClientId;
         this.isGitlabAvailable = isGitlabAvailable;
+        this.isGithubConfigured = isGithubConfigured;
+        this.isGitlabConfigured = isGitlabConfigured;
     }
 
     public String getGithubHost() {
@@ -84,6 +96,38 @@ public class GitConfigurationDTO {
         this.isGitlabAvailable = isGitlabAvailable;
     }
 
+    public boolean isGithubAvailable() {
+        return isGithubAvailable;
+    }
+
+    public void setGithubAvailable(boolean githubAvailable) {
+        isGithubAvailable = githubAvailable;
+    }
+
+    public boolean isGitlabAvailable() {
+        return isGitlabAvailable;
+    }
+
+    public void setGitlabAvailable(boolean gitlabAvailable) {
+        isGitlabAvailable = gitlabAvailable;
+    }
+
+    public boolean isGithubConfigured() {
+        return isGithubConfigured;
+    }
+
+    public void setGithubConfigured(boolean githubConfigured) {
+        isGithubConfigured = githubConfigured;
+    }
+
+    public boolean isGitlabConfigured() {
+        return isGitlabConfigured;
+    }
+
+    public void setGitlabConfigured(boolean gitlabConfigured) {
+        isGitlabConfigured = gitlabConfigured;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,6 +135,8 @@ public class GitConfigurationDTO {
         GitConfigurationDTO that = (GitConfigurationDTO) o;
         return isGithubAvailable == that.isGithubAvailable &&
             isGitlabAvailable == that.isGitlabAvailable &&
+            isGithubConfigured == that.isGithubConfigured &&
+            isGitlabConfigured == that.isGitlabConfigured &&
             Objects.equals(githubHost, that.githubHost) &&
             Objects.equals(githubClientId, that.githubClientId) &&
             Objects.equals(gitlabHost, that.gitlabHost) &&
@@ -100,7 +146,22 @@ public class GitConfigurationDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(githubHost, githubClientId, isGithubAvailable,
-            gitlabHost, gitlabRedirectUri, gitlabClientId, isGitlabAvailable);
+
+        return Objects.hash(githubHost, githubClientId, isGithubAvailable, gitlabHost, gitlabRedirectUri, gitlabClientId, isGitlabAvailable, isGithubConfigured, isGitlabConfigured);
+    }
+
+    @Override
+    public String toString() {
+        return "GitConfigurationDTO{" +
+            "githubHost='" + githubHost + '\'' +
+            ", githubClientId='" + githubClientId + '\'' +
+            ", isGithubAvailable=" + isGithubAvailable +
+            ", gitlabHost='" + gitlabHost + '\'' +
+            ", gitlabRedirectUri='" + gitlabRedirectUri + '\'' +
+            ", gitlabClientId='" + gitlabClientId + '\'' +
+            ", isGitlabAvailable=" + isGitlabAvailable +
+            ", githubConfigured=" + isGithubConfigured +
+            ", gitlabConfigured=" + isGitlabConfigured +
+            '}';
     }
 }
