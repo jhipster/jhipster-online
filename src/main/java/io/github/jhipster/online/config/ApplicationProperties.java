@@ -69,7 +69,7 @@ public class ApplicationProperties {
     }
 
     public static class JhipsterCmd {
-        private String cmd = System.getProperty("user.home") + "/.yarn/bin/jhipster";
+        private String cmd = "jhipster";
         private Integer timeout = 120;
 
         public String getCmd() {

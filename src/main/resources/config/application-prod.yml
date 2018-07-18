@@ -130,7 +130,7 @@ jhipster:
 application:
     tmp-folder: /tmp
     jhipster-cmd:
-        cmd: /usr/local/bin/jhipster
+        cmd: jhipster
         timeout: 120
 #    github:
 #        host: https://github.com

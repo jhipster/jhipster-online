@@ -64,9 +64,9 @@ Those are customized using the Spring Boot `application-*.yml` files as usual, f
 ```
 application:
     jhipster-cmd:
-        cmd: /opt/jhipster
+        cmd: /usr/local/bin/jhipster
         timeout: 60
-    tmp-folder: /ramfs
+    tmp-folder: /tmp
 ```
 
 ### Database configuration
