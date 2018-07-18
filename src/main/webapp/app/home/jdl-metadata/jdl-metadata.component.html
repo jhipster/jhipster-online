@@ -2,7 +2,7 @@
     <h2>
         <span class="fa fa-object-group"></span>&nbsp;<span>Design Entities</span>
         <a href="jdl-studio/" class="btn btn-primary float-right jh-create-entity create-jdl-metadata">
-            <span class="fa fa-bolt"></span>
+            <fa-icon [icon]="'bolt'"></fa-icon>
             <span>
             Create a new JDL model
             </span>
@@ -39,14 +39,14 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <a href="jdl-studio/#!/view/{{jdlMetadata.id}}" class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="hidden-md-down">Open</span>
                         </a>
                         <button type="submit"
                                 [routerLink]="['/design-entities-apply/'+ jdlMetadata.id]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-check"></span>
+                            <fa-icon [icon]="'check'"></fa-icon>
                             <span class="hidden-md-down">Apply</span>
                         </button>
                         <button type="submit"
