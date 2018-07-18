@@ -1,5 +1,5 @@
 <div *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-    <h2><span class="fa fa-wrench"></span>&nbsp;<span>No GitHub or GitLab configuration available</span></h2>
+    <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>No GitHub or GitLab configuration available</span></h2>
 
     <div class="alert alert-info" role="alert">
         This JHipster Online instance is not configured with GitHub or GitLab, so you cannot generate applications on those services.
@@ -10,7 +10,7 @@
 </div>
 
 <div *ngIf="gitConfig.isGithubAvailable">
-    <h2><span class="fa fa-wrench"></span>&nbsp;<span>GitHub configuration</span></h2>
+    <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>GitHub configuration</span></h2>
     <p>
         If you give access to your GitHub account to JHipster Online, it will:
     </p>
@@ -50,7 +50,7 @@
 </div>
 
 <div *ngIf="gitConfig.isGitlabAvailable">
-    <h2><span class="fa fa-wrench"></span>&nbsp;<span>GitLab configuration</span></h2>
+    <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>GitLab configuration</span></h2>
     <p>
         If you give access to your GitLab account to JHipster Online, it will:
     </p>
