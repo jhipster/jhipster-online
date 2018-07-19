@@ -4,7 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,17 +46,14 @@ public class StatisticsResource {
 
     @GetMapping("/count-yorc/yearly")
     @Timed
-    public Map<LocalDate, Long> getCountAllByYear() {
-        return yoRCService.getCountAllByYear();
+    public List<TemporalCountDTO> getCountAllByYear() {
+        return yoRCService.getCountAllByYear(Instant.EPOCH, TemporalFunction.YEAR);
     }
 
     @GetMapping("/count-yorc/monthly")
     @Timed
-    public Map<LocalDate, Long>  getCountAllByMonth() {
-        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
-        Map<LocalDate, Long>  data = yoRCService.getCountAllByMonth(aYearAgo);
-
-        return data;
+    public List<TemporalCountDTO>  getCountAllByMonth() {
+        return yoRCService.getCountAllByYear(Instant.now().minus(Duration.ofDays(365)), TemporalFunction.YEAR_MONTH);
     }
 
     @GetMapping("/count-yorc/daily")

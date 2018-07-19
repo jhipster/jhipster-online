@@ -1,24 +1,10 @@
 <form #generatorForm="ngForm">
-
-    <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <h2><fa-icon [icon]="'cloud-upload-alt'"></fa-icon>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
-        <p>
-            <span class="fas fa-exclamation-triangle"></span>&nbsp;
-            <span><strong>Warning!</strong> To configure Continuous Integration/Continuous Deployment on your GitHub/GitLab project, you must authorize JHipster Online to access your GitHub/GitLab account.</span>
-        </p>
-        <p class="text-center">
-            <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
-        </p>
-    </ngb-alert>
-    <p *ngIf="isGithubConfigured || isGitlabConfigured">
-        <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
-        GitHub repository and create a new branch with Continuous Integration configuration. You can then decide if you want to merge this branch into your
-        master branch.</i>
-    </p>
+    <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="isGithubConfigured || isGitlabConfigured">
+    <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -41,14 +27,14 @@
                         <li>A <code>Jenkinsfile</code> will be added to your project.</li>
                         <li>Go to your Jenkins instance</li>
                         <li>Create a new job, using a `Pipeline script from SCM`</li>
-                        <li>Point the SCM configuration to your GitHub/GitLab repository</li>
+                        <li>Point the SCM configuration to your GitHub or GitLab repository</li>
                     </ul>
                 </div>
             </div>
         </div>
         <hr/>
         <p>
-            Choose the Continuous Integration system you which to configure:
+            Choose the Continuous Integration system you want to configure:
         </p>
         <div class="container">
             <div class="row">
@@ -65,7 +51,7 @@
         </div>
         <hr/>
         <p class="text-center">
-            <button class="btn btn-primary" (click)="applyCiCd()">
+            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
             <span>
             Yes, add Continuous Integration
             </span>

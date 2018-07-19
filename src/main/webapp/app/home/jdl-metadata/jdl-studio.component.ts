@@ -21,9 +21,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
-import { GitProviderService } from '../git/git.service';
 import { JdlOutputDialogComponent } from './jdl.output.component';
 import { JdlService } from './jdl.service';
 
@@ -82,20 +82,32 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
     selectedGitProvider: string;
     selectedGitCompany: string;
-    selectedGitProject: string;
+    selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    githubConfigured = false;
+    gitlabConfigured = false;
+
+    gitConfig: GitConfigurationModel;
+
+    isGitProviderComponentValid: boolean;
 
     constructor(
         private modalService: NgbModal,
         private jdlMetadataService: JdlMetadataService,
         private route: ActivatedRoute,
-        private gitService: GitProviderService,
+        private gitConfigurationService: GitConfigurationService,
         private jdlService: JdlService
     ) {}
 
     ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
+        });
+
         this.subscription = this.route.params.subscribe(params => {
             this.jdlMetadataService.find(params['jdlId']).subscribe(
                 (jdlMetadata: JdlMetadata) => {
@@ -110,13 +122,12 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
-        this.selectedGitProject = data.selectedGitProject;
-        this.isGithubConfigured = data.isGithubConfigured;
-        this.isGitlabConfigured = data.isGitlabConfigured;
+        this.selectedGitRepository = data.selectedGitRepository;
+        this.isGitProviderComponentValid = data.isValid;
     }
 
     applyJdl() {
-        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitProject, this.jdlId).subscribe(
+        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.jdlId).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -132,11 +143,18 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.applyJdlId = applyJdlId;
+        modalRef.gitlabHost = this.gitConfig.gitlabHost;
+        modalRef.githubHost = this.gitConfig.githubHost;
+        modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.selectedGitProject = this.selectedGitProject;
+        modalRef.selectedGitRepository = this.selectedGitRepository;
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    isAtLeastOneGitProviderAvailableAndConfigured() {
+        return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured);
     }
 }

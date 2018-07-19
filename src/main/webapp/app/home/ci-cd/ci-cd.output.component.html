@@ -1,5 +1,8 @@
 <div class="modal-header">
-    <h4 class="modal-title"><span *ngIf="!displayApplicationUrl"><i class="fas fa-sync fa-spin"></i></span><span *ngIf="displayApplicationUrl"><i class="fas fa-sync"></i></span>&nbsp;Configuring Continuous Integration/Continuous Deployment</h4>
+    <h4 class="modal-title">
+        <fa-icon [icon]="'sync'" [spin]="!displayApplicationUrl"></fa-icon>
+        <span *ngIf="!displayApplicationUrl">&nbsp;Configuring Continuous Integration/Continuous Deployment</span>
+    </h4>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
             (click)="clear()">&times;
     </button>
@@ -14,24 +17,24 @@ Sending request to the server...
                 </pre>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && selectedGitProvider === 'github'">
+        <div class="row" *ngIf="displayApplicationUrl && selectedGitProvider === 'GitHub'">
             <div class="col-md-12">
                 <div class="lead">
                     <b>Continuous Integration configured!</b>
                     <ul>
-                        <li>Merge the Pull Request at <a href="https://github.com/{{selectedGitCompany}}/{{selectedGitProject}}/pulls" target="_blank">https://github.com/{{selectedGitCompany}}/{{selectedGitProject}}/pulls</a></li>
-                        <li>Open your GitHub branch at <a href="https://github.com/{{selectedGitCompany}}/{{selectedGitProject}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}" target="_blank">https://github.com/{{selectedGitCompany}}/{{selectedGitProject}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}</a></li>
+                        <li>Merge the Pull Request at <a href="{{githubHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/pulls" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/pulls</a></li>
+                        <li>Open your GitHub branch at <a href="{{githubHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && selectedGitProvider === 'gitlab'">
+        <div class="row" *ngIf="displayApplicationUrl && selectedGitProvider === 'GitLab'">
             <div class="col-md-12">
                 <div class="lead">
                     <b>Continuous Integration configured!</b>
                     <ul>
-                        <li>Merge the Merge Request at <a href="https://gitlab.ippon.fr/{{selectedGitCompany}}/{{selectedGitProject}}/merge_requests" target="_blank">https://gitlab.ippon.fr/{{selectedGitCompany}}/{{selectedGitProject}}/merge_requests</a></li>
-                        <li>Open your GitLab branch at <a href="https://gitlab.ippon.fr/{{selectedGitCompany}}/{{selectedGitProject}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}" target="_blank">https://gitlab.ippon.fr/{{selectedGitCompany}}/{{selectedGitProject}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}</a></li>
+                        <li>Merge the Merge Request at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/merge_requests" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/merge_requests</a></li>
+                        <li>Open your GitLab branch at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{selectedGitRepository}}/tree/jhipster-{{ciCdTool}}-{{ciCdId}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,6 +43,6 @@ Sending request to the server...
 </div>
 <div class="modal-footer">
     <button type="submit" (click)="clear()" class="btn btn-primary">
-        <span class="fas fa-times-circle"></span>&nbsp;Close this window
+        <fa-icon [icon]="'times-circle'"></fa-icon>&nbsp;Close this window
     </button>
 </div>

@@ -22,14 +22,22 @@ import io.github.jhipster.online.domain.User;
 
 public interface GitProviderService {
 
+    boolean isEnabled();
+
+    String getHost();
+
+    String getClientId();
+
     void syncUserFromGitProvider() throws Exception;
 
     User getSyncedUserFromGitProvider(User user) throws Exception;
 
     void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
-        organization, String applicationName);
+        organization, String repositoryName);
 
     int createPullRequest(User user, String organization, String applicationName,
-                          String title, String branchName, String body) throws Exception;
+        String title, String branchName, String body) throws Exception;
+
+    boolean isConfigured();
 
 }

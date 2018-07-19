@@ -768,6 +768,8 @@ public class AccountResourceIntTest {
 
     @Test
     public void testRequestPasswordResetWrongEmail() throws Exception {
+        when(mockMailService.isEnabled()).thenReturn(true);
+
         restMvc.perform(
             post("/api/account/reset-password/init")
                 .content("password-reset-wrong-email@example.com"))

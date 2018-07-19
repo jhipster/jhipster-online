@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
 import java.time.Instant;
@@ -28,8 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.repository.JdlMetadataRepository;
-import io.github.jhipster.online.repository.JdlRepository;
+import io.github.jhipster.online.repository.*;
+import io.github.jhipster.online.security.SecurityUtils;
 
 /**
  * Service Implementation for managing JdlMetadata.
@@ -44,12 +45,14 @@ public class JdlMetadataService {
 
     private final JdlRepository jdlRepository;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository, UserService userService) {
+    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository,
+        UserRepository userRepository) {
+
         this.jdlMetadataRepository = jdlMetadataRepository;
         this.jdlRepository = jdlRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -60,7 +63,7 @@ public class JdlMetadataService {
      */
     public JdlMetadata create(JdlMetadata jdlMetadata, String content) {
         log.debug("Request to create JdlMetadata and JDL : {}", jdlMetadata);
-        User currentUser = userService.getUser();
+        User currentUser = this.getUser();
         jdlMetadata.setUser(currentUser);
         jdlMetadata.setCreatedDate(Instant.now());
         jdlMetadata.setUpdatedDate(Instant.now());
@@ -83,7 +86,7 @@ public class JdlMetadataService {
      */
     public JdlMetadata saveJdlMetadata(JdlMetadata jdlMetadata) {
         log.debug("Request to save JdlMetadata : {}", jdlMetadata);
-        User user = userService.getUser();
+        User user = this.getUser();
         jdlMetadata.setUser(user);
         return jdlMetadataRepository.save(jdlMetadata);
     }
@@ -105,10 +108,10 @@ public class JdlMetadataService {
      *
      *  @return the list of entities
      */
-    @Transactional
-    public List<JdlMetadata> findAllForCurrentUser() {
-        log.debug("Request to get all JdlMetadata for current user");
-        return jdlMetadataRepository.findByUserIsCurrentUser();
+    @Transactional(readOnly = true)
+    public List<JdlMetadata> findAllForUser(User user) {
+        log.debug("Request to get all JdlMetadata for user {}", user.getLogin());
+        return jdlMetadataRepository.findAllByUserLogin(user.getLogin());
     }
 
     /**
@@ -123,7 +126,7 @@ public class JdlMetadataService {
         Optional<JdlMetadata> jdlMetadata = jdlMetadataRepository.findById(id);
         if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && jdlMetadata.get().isIsPublic()) {
             return jdlMetadata;
-        } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(userService.getUser())) {
+        } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(this.getUser())) {
             return jdlMetadata;
         } else {
             throw new AccessDeniedException("Current user does not have access to this JDL file");
@@ -152,8 +155,12 @@ public class JdlMetadataService {
      *
      */
     @Transactional
-    public void deleteAllForCurrentUser(String userLogin) {
-        log.debug("Request to delete all JdlMetadata for current user");
-        jdlMetadataRepository.deleteAllByUserLogin(userLogin);
+    public void deleteAllForUser(User user) {
+        log.debug("Request to delete all JdlMetadata for user {}", user.getLogin());
+        jdlMetadataRepository.deleteAllByUserLogin(user.getLogin());
+    }
+
+    private User getUser() {
+        return userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElse(null);
     }
 }

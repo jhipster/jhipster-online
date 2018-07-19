@@ -1,14 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { of } from 'rxjs/observable/of';
 
-import { UserService, PasswordResetService, User } from 'app/core';
+import { PasswordResetService } from 'app/core';
 import { UserMgmtResetDialogComponent } from 'app/admin/user-management/user-management-reset-dialog.component';
 import { JhonlineTestModule } from '../../../test.module';
 import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from '@angular/common/http';
+import 'rxjs/add/observable/of';
 
 describe('Component Tests', () => {
     describe('User Management Reset Component', () => {
@@ -37,7 +35,7 @@ describe('Component Tests', () => {
             mockActiveModal = fixture.debugElement.injector.get(NgbActiveModal);
             comp = fixture.componentInstance;
 
-            spyOn(service, 'getResetLink').and.returnValue(Observable.of('http://dummy-link.com/'));
+            spyOn(service, 'getResetLink').and.returnValue(Observable.of('https://www.jhipster.tech/'));
 
             comp.ngOnInit();
         });
@@ -51,7 +49,7 @@ describe('Component Tests', () => {
 
         it('should generate a reset link', () => {
             comp.generateResetLink('real@email.com');
-            expect(comp.resetLink).toEqual('http://dummy-link.com/');
+            expect(comp.resetLink).toEqual('https://www.jhipster.tech/');
         });
     });
 });

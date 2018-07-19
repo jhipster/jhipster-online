@@ -1,0 +1,139 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="jhipster" id="1531990990670-1">
+        <createTable tableName="crash_report">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="crash_reportPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="env" type="VARCHAR(255)"/>
+            <column name="jdl" type="VARCHAR(255)"/>
+            <column name="source" type="VARCHAR(255)"/>
+            <column name="stack" type="VARCHAR(255)"/>
+            <column name="yorc" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-2">
+        <createTable tableName="entity_stats">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="dto" type="VARCHAR(255)"/>
+            <column name="fields" type="INT"/>
+            <column name="fluent_methods" type="BIT"/>
+            <column name="pagination" type="VARCHAR(255)"/>
+            <column name="relationships" type="INT"/>
+            <column name="service" type="VARCHAR(255)"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-3">
+        <createTable tableName="generator_identity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="generator_identityPK"/>
+            </column>
+            <column name="guid" type="VARCHAR(255)"/>
+            <column name="host" type="VARCHAR(255)"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-4">
+        <createTable tableName="language">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="languagePK"/>
+            </column>
+            <column name="iso_code" type="VARCHAR(255)"/>
+            <column name="yorc_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-5">
+        <createTable tableName="owner_identity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="owner_identityPK"/>
+            </column>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-6">
+        <createTable tableName="sub_gen_event">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="event" type="VARCHAR(255)"/>
+            <column name="source" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="VARCHAR(255)"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-7">
+        <createTable tableName="yo_rc">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="yo_rcPK"/>
+            </column>
+            <column name="application_type" type="VARCHAR(255)"/>
+            <column name="arch" type="VARCHAR(255)"/>
+            <column name="authentication_type" type="VARCHAR(255)"/>
+            <column name="build_tool" type="VARCHAR(255)"/>
+            <column name="cache_provider" type="VARCHAR(255)"/>
+            <column name="client_framework" type="VARCHAR(255)"/>
+            <column name="client_package_manager" type="VARCHAR(255)"/>
+            <column name="cores" type="VARCHAR(255)"/>
+            <column name="cpu" type="VARCHAR(255)"/>
+            <column name="creation_date" type="TINYBLOB"/>
+            <column name="database_type" type="VARCHAR(255)"/>
+            <column name="dev_database_type" type="VARCHAR(255)"/>
+            <column name="enable_hibernate_cache" type="BIT"/>
+            <column name="enable_swagger_codegen" type="BIT"/>
+            <column name="enable_translation" type="BIT"/>
+            <column name="git_provider" type="VARCHAR(255)"/>
+            <column name="has_cucumber" type="BIT"/>
+            <column name="has_gatling" type="BIT"/>
+            <column name="has_protractor" type="BIT"/>
+            <column name="jhi_prefix" type="VARCHAR(255)"/>
+            <column name="jhipster_version" type="VARCHAR(255)"/>
+            <column name="memory" type="VARCHAR(255)"/>
+            <column name="message_broker" type="BIT"/>
+            <column name="native_language" type="VARCHAR(255)"/>
+            <column name="node_version" type="VARCHAR(255)"/>
+            <column name="os" type="VARCHAR(255)"/>
+            <column name="prod_database_type" type="VARCHAR(255)"/>
+            <column name="search_engine" type="BIT"/>
+            <column name="server_port" type="VARCHAR(255)"/>
+            <column name="service_discovery_type" type="BIT"/>
+            <column name="use_sass" type="BIT"/>
+            <column name="user_language" type="VARCHAR(255)"/>
+            <column name="websocket" type="BIT"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-8">
+        <addUniqueConstraint columnNames="owner_id" constraintName="UC_OWNER_IDENTITYOWNER_ID_COL" tableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-9">
+        <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-10">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="owner_identity" constraintName="FK2jhvj3o1gxdap3j7j6fbub33n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-11">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FK2s3ro4k55fj08yf02eb7giag" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-12">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FK6jdlrp17gudamkl05dkotw1i5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-13">
+        <addForeignKeyConstraint baseColumnNames="yorc_id" baseTableName="language" constraintName="FK6o445s9yvlyfor8xnkt9ww3kc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="yo_rc"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-14">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKfjjqne1y380ehskbaiuat3qdc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-15">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKndhe4ndo6wp3xlfmew7ma6dg6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1531990990670-16">
+        <dropUniqueConstraint constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+        <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
+    </changeSet>
+</databaseChangeLog>

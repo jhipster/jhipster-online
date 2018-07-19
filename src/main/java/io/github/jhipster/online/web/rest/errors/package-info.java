@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Specific errors used with Zalando's "problem-spring-web" library.
  *

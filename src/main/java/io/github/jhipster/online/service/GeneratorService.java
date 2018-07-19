@@ -16,12 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
 import java.io.*;
 import java.net.URISyntaxException;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -32,6 +32,7 @@ import org.zeroturnaround.zip.ZipUtil;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 
 @Service
 public class GeneratorService {
@@ -68,11 +69,11 @@ public class GeneratorService {
     }
 
     public void generateGitApplication(User user, String applicationId,
-                                       String applicationConfiguration, String githubOrganization, String applicationName,
-                                       GitProvider gitProvider) throws IOException, GitAPIException, URISyntaxException {
+        String applicationConfiguration, String githubOrganization, String repositoryName,
+        GitProvider gitProvider) throws IOException, GitAPIException, URISyntaxException {
         File workingDir = generateApplication(applicationId, applicationConfiguration);
         this.logsService.addLog(applicationId, "Pushing the application to the Git remote repository");
-        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, applicationName, gitProvider);
+        this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, repositoryName, gitProvider);
         this.logsService.addLog(applicationId, "Application successfully pushed!");
         this.gitService.cleanUpDirectory(workingDir);
     }

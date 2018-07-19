@@ -16,29 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.utils.URIUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
-import org.springframework.web.util.UriUtils;
+import io.github.jhipster.online.domain.enums.GitProvider;
 
 @Service
 public class GitService {
@@ -51,7 +48,8 @@ public class GitService {
         this.applicationProperties = applicationProperties;
     }
 
-    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
+    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName,
+        GitProvider gitProvider)
         throws GitAPIException, URISyntaxException {
 
         log.info("Create Git repository for {}", workingDir);
@@ -63,9 +61,10 @@ public class GitService {
         log.debug("Adding remote repository {} / {}", organization, applicationName);
         URIish urIish = null;
         if (gitProvider.equals(GitProvider.GITHUB)) {
-            urIish = new URIish("https://github.com/" + organization + "/" + applicationName + ".git");
+            urIish = new URIish(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git");
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
-            urIish = new URIish("https://gitlab.ippon.fr/"+ organization + "/" + applicationName + ".git").setPass(user.getGitlabOAuthToken());
+            urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" +
+                applicationName + ".git").setPass(user.getGitlabOAuthToken());
         }
         RemoteAddCommand remoteAddCommand = git.remoteAdd();
         remoteAddCommand.setName("origin");
@@ -87,18 +86,20 @@ public class GitService {
     public void commit(Git git, File workingDir, String message) throws GitAPIException {
         log.debug("Commiting all files to repository {}", workingDir);
         git.commit()
-            .setCommitter("JHipster Bot", "jhipster-bot@users.noreply.github.com")
+            .setCommitter("JHipster Bot", "jhipster-bot@jhipster.tech")
             .setMessage(message)
             .call();
     }
 
-    public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider gitProvider) throws
+    public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider
+        gitProvider) throws
         GitAPIException {
         log.info("Pushing {} to {} / {}", workingDir, user, organization, applicationName);
         git.push().setCredentialsProvider(getCredentialProvider(user, gitProvider)).call();
     }
 
-    public Git cloneRepository(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
+    public Git cloneRepository(User user, File workingDir, String organization, String applicationName, GitProvider
+        gitProvider)
         throws GitAPIException {
 
         log.debug("Cloning repository {} / {}", organization, applicationName);
@@ -106,14 +107,15 @@ public class GitService {
         Git git = null;
         if (gitProvider.equals(GitProvider.GITLAB)) {
             git = Git.cloneRepository()
-                .setURI(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
+                .setURI(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + "" +
+                    ".git")
                 .setDirectory(workingDir)
                 .setCredentialsProvider(getCredentialProvider(user, gitProvider))
                 .setCloneAllBranches(false)
                 .call();
         } else if (gitProvider.equals(GitProvider.GITHUB)) {
             git = Git.cloneRepository()
-                .setURI("https://github.com/" + organization + "/" + applicationName + ".git")
+                .setURI(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git")
                 .setDirectory(workingDir)
                 .setCredentialsProvider(getCredentialProvider(user, gitProvider))
                 .setCloneAllBranches(false)
@@ -136,7 +138,7 @@ public class GitService {
     /**
      * If a generation failed, it could have left a non-empty directory.
      */
-    @Scheduled(fixedDelay = 6_000L)
+    @Scheduled(fixedDelay = 60_000L)
     public void cleanUpOldApplications() {
         File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/");
         if (workingDir.exists()) {

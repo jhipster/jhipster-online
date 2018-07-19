@@ -16,23 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
-import java.io.*;
+import java.io.File;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 
 @Service
 public class CiCdService {
@@ -52,11 +52,11 @@ public class CiCdService {
     private final ApplicationProperties applicationProperties;
 
     public CiCdService(LogsService logsService,
-                       GitService gitService,
-                       @Autowired(required = false) GithubService githubService,
-                       @Autowired(required = false) GitlabService gitlabService,
-                       JHipsterService jHipsterService,
-                       ApplicationProperties applicationProperties) {
+        GitService gitService,
+        GithubService githubService,
+        GitlabService gitlabService,
+        JHipsterService jHipsterService,
+        ApplicationProperties applicationProperties) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.githubService = githubService;
@@ -69,17 +69,20 @@ public class CiCdService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId, GitProvider gitProvider) {
+    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId,
+        GitProvider gitProvider) {
         StopWatch watch = new StopWatch();
         watch.start();
         try {
             log.info("Beginning to configure CI with {} to {} / {}", ciCdTool, organizationName, projectName);
-            this.logsService.addLog(ciCdId, "Cloning GitHub repository `" + organizationName +
-                "/" + projectName + "`");
+            boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
+            this.logsService.addLog(ciCdId, "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" +
+                organizationName + "/" + projectName + "`");
+
             File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
                 ciCdId);
             FileUtils.forceMkdir(workingDir);
-            Git git  = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
+            Git git = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
             String branchName = "jhipster-" + ciCdTool + "-" + ciCdId;
             this.logsService.addLog(ciCdId, "Creating branch `" + branchName + "`");
@@ -94,20 +97,22 @@ public class CiCdService {
                 StringUtils.capitalize(ciCdTool) +
                 " Continuous Integration");
 
-            this.logsService.addLog(ciCdId, "Pushing the application to the Git remote repository");
+            this.logsService.addLog(ciCdId, "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " " +
+                "remote repository");
             this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
-            this.logsService.addLog(ciCdId, "Creating Pull Request");
+            this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
             String pullRequestTitle = "Configure Continuous Integration with " + StringUtils.capitalize(ciCdTool);
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
-            int pullRequestNumber = -1;
-            if (gitProvider.equals(GitProvider.GITHUB)) {
-                pullRequestNumber =
+            if (isGitHub) {
+                int pullRequestNumber =
                     this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab().getHost() +
+                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab()
+                    .getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +
@@ -115,10 +120,12 @@ public class CiCdService {
                     pullRequestNumber
                 );
             } else if (gitProvider.equals(GitProvider.GITLAB)) {
-                pullRequestNumber =
+                int pullRequestNumber =
                     this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at https://github.com/" +
+                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGithub()
+                    .getHost() +
+                    "/" +
                     organizationName +
                     "/" +
                     projectName +

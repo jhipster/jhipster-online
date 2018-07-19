@@ -16,16 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
 import java.io.*;
 import java.util.UUID;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +34,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
 
@@ -55,10 +55,10 @@ public class GeneratorResource {
     private final LogsService logsService;
 
     public GeneratorResource(GeneratorService generatorService,
-                             @Autowired(required = false) GithubService githubService,
-                             @Autowired(required = false) GitlabService gitlabService,
-                             UserService userService,
-                             LogsService logsService) {
+        GithubService githubService,
+        GitlabService gitlabService,
+        UserService userService,
+        LogsService logsService) {
         this.generatorService = generatorService;
         this.githubService = githubService;
         this.gitlabService = gitlabService;
@@ -69,7 +69,7 @@ public class GeneratorResource {
     @PostMapping("/generate-application")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity generateApplicationOnGitHub(@RequestBody String applicationConfiguration) throws Exception {
+    public ResponseEntity generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
         User user = userService.getUser();
         log.debug("Reading application configuration");
@@ -78,23 +78,26 @@ public class GeneratorResource {
             .orElseThrow(() -> new Exception("No git provider"));
         String gitCompany = JsonPath.read(document, "$.git-company");
         String applicationName = JsonPath.read(document, "$.generator-jhipster.baseName");
+        String repositoryName = JsonPath.read(document, "$.repository-name");
         String applicationId = UUID.randomUUID().toString();
 
         log.debug("Using provider: {} ({})", provider, JsonPath.read(document, "$.git-provider"));
-        log.debug("Generating application id={} - {} / {}", applicationId, gitCompany, applicationName);
-        this.logsService.addLog(applicationId,"Generating application " + gitCompany + "/" +
-            applicationName);
+        log.debug("Generating application in repository id={} - {} / {}", applicationId, gitCompany, repositoryName);
+        this.logsService.addLog(applicationId, "Generating application in repository " + gitCompany + "/" +
+            repositoryName);
 
         try {
             if (provider.equals(GitProvider.GITHUB)) {
-                this.githubService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+                this.githubService.createGitProviderRepository(
+                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             } else if (provider.equals(GitProvider.GITLAB)) {
-                this.gitlabService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, applicationName);
+                this.gitlabService.createGitProviderRepository(
+                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             }
 
         } catch (Exception e) {
             log.error("Error generating application", e);
-            this.logsService.addLog(applicationId,"An error has occurred: " + e.getMessage());
+            this.logsService.addLog(applicationId, "An error has occurred: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(applicationId, HttpStatus.CREATED);

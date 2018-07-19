@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.repository.JdlRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
@@ -139,10 +140,14 @@ public class JdlResource {
     @PostMapping("/apply-jdl/{gitProvider}/{organizationName}/{projectName}/{jdlId}")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName,
+    public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
+        @PathVariable String projectName,
         @PathVariable String jdlId) {
-        log.info("Applying JDL `{}` on GitHub project {}/{}", jdlId, organizationName, projectName);
+        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId,
+            organizationName, projectName);
         User user = userService.getUser();
+
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
         String applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" +
             System.nanoTime();
@@ -151,7 +156,7 @@ public class JdlResource {
 
         try {
             this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
-                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
+                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(jdlId, "An error has occurred: " + e.getMessage());

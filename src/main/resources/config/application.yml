@@ -34,7 +34,7 @@ management:
 
 spring:
     application:
-        name: jhonline
+        name: jhipster-online
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -94,7 +94,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: jhonline@localhost
+        from: no-reply@jhipster.tech
     swagger:
         default-include-pattern: /api/.*
         title: jhonline API

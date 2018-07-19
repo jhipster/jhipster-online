@@ -2,12 +2,12 @@
     <h2 id="page-heading">
         <span>Bound Generators</span>
         <button class="btn btn-primary float-right" (click)="refresh()">
-            <span class="fas fa-sync"></span> <span>Refresh</span>
+            <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
         </button>
     </h2>
     <p>In this page is displayed every generator that is bound to your account.</p>
     <ngb-alert [dismissible]="false" type="info" >
-        <i class="fas fa-lightbulb"></i>&nbsp;
+        <fa-icon [icon]="'lightbulb'"></fa-icon>
         <span>You can obtain your generator ID by using the command: <b>jhipster link-account --guid</b>.</span>
     </ngb-alert>
     <jhi-alert></jhi-alert>

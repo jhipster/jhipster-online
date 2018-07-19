@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity JdlMetadata.
+    -->
+    <changeSet id="20171116094805-1" author="jhipster">
+        <createTable tableName="jdl_metadata">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="jhi_key" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_public" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+
+        <createIndex indexName="idx_jdl_metadata_key"
+                     tableName="jdl_metadata"
+                     unique="true">
+            <column name="jhi_key" type="varchar(255)"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- BEGIN: the primary key cannot be added with H2 -->
+    <changeSet id="20171116094805-2" author="jhipster" dbms="mysql">
+        <addColumn tableName="github_organization">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20171116094805-3" author="jhipster" dbms="h2">
+        <addColumn tableName="github_organization">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <!-- END: the primary key cannot be added with H2 -->
+
+    <changeSet id="20171116094805-4" author="jhipster">
+        <renameColumn newColumnName="name"
+                      oldColumnName="github_organizations"
+                      tableName="github_organization"
+                      columnDataType="varchar(150)"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="github_organization"
+                                 constraintName="fk_github_organization_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <createTable tableName="github_project">
+            <column name="github_organization_id" type="bigint">
+            </column>
+            <column name="github_projects" type="varchar(150)">
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_jhi_user_github_project"
+                     tableName="github_project"
+                     unique="false">
+            <column name="github_organization_id" type="bigint"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="github_organization_id"
+                                 baseTableName="github_project"
+                                 constraintName="fk_github_project_github_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="github_organization"/>
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

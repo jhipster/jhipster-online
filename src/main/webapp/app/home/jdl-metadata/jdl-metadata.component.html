@@ -1,19 +1,14 @@
 <div>
     <h2>
-        <span class="fa fa-object-group"></span>&nbsp;<span>Design Entities</span>
+        <fa-icon [icon]="'object-group'"></fa-icon>&nbsp;<span>Design Entities</span>
         <a href="jdl-studio/" class="btn btn-primary float-right jh-create-entity create-jdl-metadata">
-            <span class="fa fa-bolt"></span>
+            <fa-icon [icon]="'bolt'"></fa-icon>
             <span>
             Create a new JDL model
             </span>
         </a>
         <button class="btn btn-info float-right" (click)="loadAll()">
-            <span *ngIf="jdlRefresh">
-                <i class="fas fa-sync fa-spin"></i>
-            </span>
-            <span *ngIf="!jdlRefresh">
-                <i class="fas fa-sync"></i>
-            </span>
+                <fa-icon [icon]="'sync'" [spin]="jdlRefresh"></fa-icon>
             <span>
             Refresh
             </span>
@@ -21,7 +16,7 @@
     </h2>
     <jhi-alert></jhi-alert>
     <p>
-        <i>The JDL Studio is a graphical tool to design your entities using the <a href="http://www.jhipster.tech/jdl/" target="_blank">JHipster Domain Language (JDL)</a>.</i>
+        <i>The JDL Studio is a graphical tool to design your entities using the <a href="https://www.jhipster.tech/jdl/" target="_blank">JHipster Domain Language (JDL)</a>.</i>
     </p>
     <div class="table-responsive" *ngIf="jdlMetadata">
         <table class="table table-striped">
@@ -44,21 +39,21 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <a href="jdl-studio/#!/view/{{jdlMetadata.id}}" class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="hidden-md-down">Open</span>
                         </a>
                         <button type="submit"
                                 [routerLink]="['/design-entities-apply/'+ jdlMetadata.id]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-check"></span>
+                            <fa-icon [icon]="'check'"></fa-icon>
                             <span class="hidden-md-down">Apply</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/design-entities-delete/'+ jdlMetadata.id]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
-                            <i class="fa fa-trash"></i>
+                            <fa-icon [icon]="'trash'"></fa-icon>
                             <span class="hidden-md-down">Delete</span>
                         </button>
                     </div>

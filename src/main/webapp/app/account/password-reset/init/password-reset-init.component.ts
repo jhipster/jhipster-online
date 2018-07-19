@@ -30,7 +30,7 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
     errorEmailNotExists: string;
     resetAccount: any;
     success: string;
-    areEmailsEnabled: boolean;
+    isMailEnabled: boolean;
 
     constructor(
         private passwordResetInitService: PasswordResetInitService,
@@ -41,8 +41,8 @@ export class PasswordResetInitComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.resetAccount = {};
-        this.areEmailsEnabled = true;
-        this.passwordResetService.areMailsEnabled().subscribe(result => (this.areEmailsEnabled = result === 'true'));
+        this.isMailEnabled = true;
+        this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
     }
 
     ngAfterViewInit() {

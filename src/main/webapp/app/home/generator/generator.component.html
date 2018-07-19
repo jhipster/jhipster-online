@@ -1,45 +1,12 @@
 <form #generatorForm="ngForm">
 
-    <h2><span class="fas fa-rocket"></span>&nbsp;<span>Application generation</span></h2>
+    <h2><fa-icon [icon]="'rocket'"></fa-icon>&nbsp;<span>Application generation</span></h2>
 
     <div class="container">
         <h4>Project configuration</h4>
-        <hr>
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!isGithubConfigured && !isGitlabConfigured">
-            <p>
-                <span class="fas fa-exclamation-triangle"></span>&nbsp;
-                <span><strong>Warning!</strong> To generate your application on GitHub or GitLab, you must authorize JHipster Online to access your GitHub or GitLab account.</span>
-                <span>You will only be able to download your application as a Zip file</span>
-            </p>
-            <p class="text-center">
-                <a routerLink="/git" class="btn btn-primary" role="button">Configure your GitHub/GitLab account</a>
-            </p>
-        </ngb-alert>
-        <div class="row" *ngIf="isGithubConfigured || isGitlabConfigured">
-            <div class="col-md-12">
-                <p>
-                    <span class="fas fa-info-circle"></span>&nbsp;<i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will create a new
-                    GitHub/GitLab repository, and will push the generated project in that repository.</i>
-                </p>
-            </div>
-        </div>
-        <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-        <div class="alert alert-info">
-            <div class="row">
-                <div class="col-md-1">
-                    <input type="checkbox" class="form-control" id="isStatsEnabled"
-                           [(ngModel)]="isStatsEnabled" name="isStatsEnabled"
-                           #enableSwaggerCodegen="ngModel">
-                </div>
-                <div class="col-md-11">
-                    <label for="isStatsEnabled">
-                        By checking this checkbox, you will allow JHipster Online to retrieve your yo-rc.json.
-                        <span class="fas fa-smile"></span>.
-                    </label>
-                </div>
-            </div>
-        </div>
         <hr />
+        <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
+        <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -50,9 +17,18 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="repositoryName">Repository name</label>
+                    <input type="text" class="form-control" id="repositoryName" [(ngModel)]="repositoryName" name="repositoryName"
+                           required pattern="^([a-zA-Z0-9\-_]*)$">
+                </div>
+            </div>
+        </div>
+        <hr />
         <h4>Application type</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -68,16 +44,17 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Server side options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="packageName">What is your default Java package name?</label>
                     <input type="text" class="form-control" id="packageName" [(ngModel)]="model.packageName"
                            name="packageName" #packageName="ngModel"
-                           required pattern="^([a-z_]{1}[a-z0-9_]*(\.[a-z_]{1}[a-z0-9_]*)*)$">
+                           required pattern="^([a-z_]{1}[a-z0-9_]*(\.[a-z_]{1}[a-z0-9_]*)*)$"
+                           (change)="changePackageName()">
                     <div *ngIf="packageName.errors" class="alert alert-danger">The package name you have provided is not a valid Java package name.</div>
                 </div>
                 <div class="form-group">
@@ -132,7 +109,8 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">[BETA] Couchbase</option>
                         <option value="no"
-                                [hidden]="((model.authenticationType === 'uaa' || model.authenticationType === 'oauth2') && model.applicationType === 'gateway')">No database</option>
+                                [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
+                    || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -208,7 +186,7 @@
                                        #enableSwaggerCodegen="ngModel">
                             </div>
                             <div class="col-md-5">
-                                <label for="enableSwaggerCodegen">API first development using swagger-codegen</label>
+                                <label for="enableSwaggerCodegen">API first development using OpenAPI-generator</label>
                             </div>
                             <div class="col-md-1">
                                 <input type="checkbox" class="form-control" id="searchEngine"
@@ -244,7 +222,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4 [hidden]="model.applicationType === 'microservice'">Client side options</h4>
         <hr [hidden]="model.applicationType === 'microservice'">
         <div class="row" [hidden]="model.applicationType === 'microservice'">
@@ -267,9 +245,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Internationalization options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -296,9 +274,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <h4>Testing options</h4>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -314,7 +292,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="text-center">
@@ -330,9 +308,8 @@
                             <button type="button" class="btn btn-dark" (click)="newGenerator()">Reset</button>
                         </div>
                         <div *ngSwitchCase="false">
-                            <span
-                                class="fas fa-sync fa-spin"></span>
-                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="!selectedGitProvider">
+                            <fa-icon [icon]="'sync'" [spin]="true"></fa-icon>
+                            <button type="submit" class="btn btn-primary" [disabled]="true" *ngIf="selectedGitProvider">
                                 Generate on {{selectedGitProvider}}
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="true">

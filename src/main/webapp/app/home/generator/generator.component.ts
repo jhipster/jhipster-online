@@ -19,9 +19,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
-import { GitProviderService } from '../git/git.service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
 
 @Component({
@@ -39,8 +39,12 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    githubConfigured = false;
+    gitlabConfigured = false;
+
+    repositoryName: string;
+
+    gitConfig: GitConfigurationModel;
 
     isStatsEnabled = false;
 
@@ -87,27 +91,33 @@ export class GeneratorComponent implements OnInit {
         ];
     }
 
-    constructor(private modalService: NgbModal, private generatorService: GeneratorService, private gitService: GitProviderService) {
+    constructor(
+        private modalService: NgbModal,
+        private generatorService: GeneratorService,
+        private gitConfigurationService: GitConfigurationService
+    ) {
         this.newGenerator();
     }
 
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
+        });
     }
 
     updateSharedData(data: any) {
         this.selectedGitProvider = data.selectedGitProvider;
         this.selectedGitCompany = data.selectedGitCompany;
-        this.isGithubConfigured = data.isGithubConfigured;
-        this.isGitlabConfigured = data.isGitlabConfigured;
     }
 
     checkModelBeforeSubmit() {
         this.submitted = true;
 
-        if (this.model.authenticationType === 'oauth2') {
-            this.model.clientFramework = 'angularX';
-        }
         if (this.model.cacheProvider === 'no') {
             this.model.enableHibernateCache = false;
         }
@@ -123,17 +133,15 @@ export class GeneratorComponent implements OnInit {
         if (this.model.messageBroker) {
             this.model.messageBroker = 'kafka';
         }
-        if (this.model.enableSocialSignIn) {
-            this.model.enableSocialSignIn = true;
-        }
         if (this.model.enableTranslation && this.model.languages.indexOf(this.model.nativeLanguage) === -1) {
             this.model.languages.push(this.model.nativeLanguage);
         }
+        this.model.jhiPrefix = 'jhi';
     }
 
     onSubmit() {
         this.checkModelBeforeSubmit();
-        this.generatorService.generateOnGitHub(this.model, this.selectedGitProvider, this.selectedGitCompany).subscribe(
+        this.generatorService.generateOnGit(this.model, this.selectedGitProvider, this.selectedGitCompany, this.repositoryName).subscribe(
             res => {
                 this.openOutputModal(res);
                 this.submitted = false;
@@ -163,9 +171,11 @@ export class GeneratorComponent implements OnInit {
         modalRef.applicationId = applicationId;
         modalRef.selectedGitProvider = this.selectedGitProvider;
         modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.isGithubConfigured = this.isGithubConfigured;
-        modalRef.isGitlabConfigured = this.isGitlabConfigured;
-        modalRef.baseName = this.model.baseName;
+        modalRef.repositoryName = this.repositoryName;
+        modalRef.gitlabHost = this.gitConfig.gitlabHost;
+        modalRef.githubHost = this.gitConfig.githubHost;
+        modalRef.gitlabConfigured = this.gitConfig.gitlabAvailable;
+        modalRef.githubConfigured = this.gitConfig.githubAvailable;
     }
 
     downloadFile(blob: Blob) {
@@ -183,8 +193,10 @@ export class GeneratorComponent implements OnInit {
     newGenerator() {
         this.model = new JHipsterConfigurationModel(
             'monolith',
+            '',
             'jhipsterSampleApplication',
             'io.github.jhipster.application',
+            'io/github/jhipster/application',
             8080,
             false,
             'jwt',
@@ -200,14 +212,15 @@ export class GeneratorComponent implements OnInit {
             false,
             'maven',
             false,
-            false,
             'yarn',
             [],
             false,
             'en',
             ['en'],
-            'angularX'
+            'angularX',
+            'jhi'
         );
+        this.repositoryName = 'jhipster-sample-application';
     }
 
     changeApplicationType() {
@@ -228,7 +241,7 @@ export class GeneratorComponent implements OnInit {
             this.model.serviceDiscoveryType = 'eureka';
         }
         // database
-        if (this.model.applicationType !== 'microservice' && this.model.databaseType === 'no') {
+        if (this.model.databaseType === 'no') {
             this.model.databaseType = 'sql';
             this.changeDatabaseType();
         }
@@ -237,6 +250,10 @@ export class GeneratorComponent implements OnInit {
             this.model.cacheProvider = 'hazelcast';
             this.model.enableHibernateCache = true;
         }
+    }
+
+    changePackageName() {
+        this.model.packageFolder = this.model.packageName.replace(/\./g, '/');
     }
 
     changeServiceDiscoveryType() {
@@ -270,14 +287,12 @@ export class GeneratorComponent implements OnInit {
             this.model.prodDatabaseType = 'cassandra';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
-            this.model.enableSocialSignIn = false;
             this.model.searchEngine = false;
         } else if (this.model.databaseType === 'couchbase') {
             this.model.devDatabaseType = 'couchbase';
             this.model.prodDatabaseType = 'couchbase';
             this.model.cacheProvider = 'no';
             this.model.enableHibernateCache = false;
-            this.model.enableSocialSignIn = false;
             this.model.searchEngine = false;
         } else if (this.model.databaseType === 'no') {
             this.model.devDatabaseType = 'no';

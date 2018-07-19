@@ -16,41 +16,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.online.domain.Authority;
-import io.github.jhipster.online.domain.GitCompany;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.repository.AuthorityRepository;
-import io.github.jhipster.online.config.Constants;
-import io.github.jhipster.online.repository.GitCompanyRepository;
-import io.github.jhipster.online.repository.UserRepository;
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.util.RandomUtil;
-import io.github.jhipster.online.service.dto.UserDTO;
-
-import org.hibernate.Hibernate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import io.github.jhipster.online.web.rest.errors.InvalidPasswordException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.Collections.EMPTY_LIST;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.*;
+import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.repository.*;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.dto.UserDTO;
+import io.github.jhipster.online.service.util.RandomUtil;
+import io.github.jhipster.online.web.rest.errors.InvalidPasswordException;
 
 /**
  * Service class for managing users.
@@ -79,17 +75,19 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    private final boolean areEmailsEnabled;
+    private final JdlMetadataService jdlMetadataService;
+
+    private final JdlService jdlService;
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       AuthorityRepository authorityRepository,
-                       @Autowired(required = false) GithubService githubService,
-                       CacheManager cacheManager,
-                       @Autowired(required = false) MailService mailService,
-                       JHipsterProperties jHipsterProperties,
-                       GitCompanyRepository gitCompanyRepository,
-                       @Autowired(required = false) GitlabService gitlabService) {
+        PasswordEncoder passwordEncoder,
+        AuthorityRepository authorityRepository,
+        GithubService githubService,
+        CacheManager cacheManager,
+        MailService mailService,
+        JHipsterProperties jHipsterProperties,
+        GitCompanyRepository gitCompanyRepository,
+        GitlabService gitlabService, JdlMetadataService jdlMetadataService, JdlService jdlService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
@@ -99,7 +97,8 @@ public class UserService {
         this.gitCompanyRepository = gitCompanyRepository;
         this.gitlabService = gitlabService;
         this.jHipsterProperties = jHipsterProperties;
-        this.areEmailsEnabled = mailService != null;
+        this.jdlMetadataService = jdlMetadataService;
+        this.jdlService = jdlService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -158,7 +157,7 @@ public class UserService {
         newUser.setLangKey(userDTO.getLangKey());
 
         // new user is active if mails are disabled
-        newUser.setActivated(!areEmailsEnabled);
+        newUser.setActivated(!mailService.isEnabled());
 
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
@@ -261,15 +260,25 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
+            for (JdlMetadata jdlMetadata : jdlMetadataService.findAllForUser(user)) {
+                jdlService.deleteAllForJdlMetadata(jdlMetadata.getId());
+            }
+            jdlMetadataService.deleteAllForUser(user);
+            if (githubService.isEnabled()) {
+                githubService.deleteAllOrganizationsUser(user);
+            }
+            if (gitlabService.isEnabled()) {
+                gitlabService.deleteAllOrganizationsUser(user);
+            }
             userRepository.delete(user);
             this.clearUserCaches(user);
             log.debug("Deleted User: {}", user);
         });
     }
 
-    @Transactional
     public void saveToken(String code, GitProvider gitProvider) throws Exception {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() -> new Exception("No authenticated user can be found."));
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElseThrow(() ->
+            new Exception("No authenticated user can be found."));
 
         if (gitProvider.equals(GitProvider.GITHUB)) {
             user.setGithubOAuthToken(code);
@@ -332,18 +341,14 @@ public class UserService {
         return groups;
     }
 
-    @Transactional
-    public void deleteOrganizations(String login) {
-        githubService.deleteAllOrganizationsForCurrentUser(login);
-    }
-
     @Transactional(readOnly = true)
     public List getProjects(String organizationName, GitProvider gitProvider) {
         Collection<GitCompany> organizations = this.getOrganizations(gitProvider);
         if (organizations.size() == 0) {
             return EMPTY_LIST;
         }
-        Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
+        Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals
+            (organizationName)).findFirst();
         if (!organization.isPresent()) {
             return EMPTY_LIST;
         } else {
@@ -370,7 +375,8 @@ public class UserService {
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3,
+            ChronoUnit.DAYS));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

@@ -23,7 +23,7 @@ import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
 import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
-import { comparingLineChart, lineChart, pieChart } from 'app/home/statistics/statistics.options';
+import { comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
 // import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
 
 @Component({
@@ -61,9 +61,9 @@ export class StatisticsComponent implements AfterViewInit {
         this.statisticsService.countYoRCByMonths().subscribe(data => {
             const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart2, null).build();
         });
-        this.statisticsService.countYoRCByDays().subscribe(data => {
-            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
-        });
+        // this.statisticsService.countYoRCByDays().subscribe(data => {
+        //     const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
+        // });
         this.statisticsService.countAllByClientFramework().subscribe(data => {
             data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
             const linechart2 = new LineChart(this.echartsService, comparingLineChart(data, 'Date', 'Amount'), this.chart4, null).build();

@@ -16,23 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
-
-import io.github.jhipster.online.service.AuditEventService;
-import io.github.jhipster.online.web.rest.util.PaginationUtil;
-
-import io.github.jhipster.web.util.ResponseUtil;
-import org.springframework.boot.actuate.audit.AuditEvent;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+
+import org.springframework.boot.actuate.audit.AuditEvent;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+import io.github.jhipster.online.service.AuditEventService;
+import io.github.jhipster.online.web.rest.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for getting the audit events.
@@ -68,7 +67,7 @@ public class AuditResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      */
-    @GetMapping(params = {"fromDate", "toDate"})
+    @GetMapping(params = { "fromDate", "toDate" })
     public ResponseEntity<List<AuditEvent>> getByDates(
         @RequestParam(value = "fromDate") LocalDate fromDate,
         @RequestParam(value = "toDate") LocalDate toDate,

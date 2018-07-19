@@ -16,11 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.service;
 
 import java.io.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.SystemUtils;
+import io.github.jhipster.online.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,14 +35,23 @@ public class JHipsterService {
 
     private final LogsService logsService;
 
-    private String jhipsterCommand = "";
+    private final ApplicationProperties applicationProperties;
 
-    public JHipsterService(LogsService logsService) {
+    private final Executor taskExecutor;
+
+    private String jhipsterCommand;
+
+    private Integer timeout;
+
+    public JHipsterService(LogsService logsService, ApplicationProperties applicationProperties, Executor taskExecutor) {
         this.logsService = logsService;
-        if (SystemUtils.IS_OS_LINUX) {
-            jhipsterCommand = "timeout 120 ";
-        }
-        jhipsterCommand += System.getProperty("user.home") + "/.yarn/bin/jhipster";
+        this.applicationProperties = applicationProperties;
+        this.taskExecutor = taskExecutor;
+
+        jhipsterCommand = this.applicationProperties.getJhipsterCmd().getCmd();
+        timeout = this.applicationProperties.getJhipsterCmd().getTimeout();
+
+        log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
     }
 
     public void installYarnDependencies(String generationId, File workingDir) throws IOException {
@@ -71,10 +83,23 @@ public class JHipsterService {
     }
 
     private void runProcess(String generationId, File workingDir, String command) throws IOException {
+        log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
         try {
             String line;
             Process p = Runtime.getRuntime().exec
                 (command, null, workingDir);
+
+            taskExecutor.execute(() -> {
+                try {
+                    p.waitFor(timeout, TimeUnit.SECONDS);
+                    if (p.isAlive()) {
+                        p.destroyForcibly();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
             BufferedReader input =
                 new BufferedReader
                     (new InputStreamReader(p.getInputStream()));

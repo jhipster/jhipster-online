@@ -35,10 +35,10 @@ export class CiCdOutputDialogComponent implements OnInit {
 
     selectedGitProvider: string;
     selectedGitCompany: string;
-    selectedGitProject: string;
+    selectedGitRepository: string;
 
-    isGithubConfigured: boolean;
-    isGitlabConfigured: boolean;
+    gitlabHost: string;
+    githubHost: string;
 
     constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
 

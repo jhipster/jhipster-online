@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * MapStruct mappers for mapping domain objects and Data Transfer Objects.
  */

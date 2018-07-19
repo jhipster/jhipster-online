@@ -33,7 +33,7 @@ spring:
 
     datasource:
             type: com.zaxxer.hikari.HikariDataSource
-            url: jdbc:mysql://localhost:3306/jhonline?useUnicode=true&characterEncoding=utf8&useSSL=false
+            url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false
             username: root
             password:
             hikari:
@@ -51,7 +51,7 @@ spring:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+#            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
     liquibase:
         contexts: dev
     mail:
@@ -120,7 +120,8 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: jhonline@localhost
+        enabled: true
+        from: jhipster-online@jhipster.tech
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
@@ -139,19 +140,21 @@ jhipster:
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
 # to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-    mail:
-        enable: false
+#application:
+#    tmp-folder: /tmp
+#    jhipster-cmd:
+#        cmd: XXX
+#        timeout: 120
 #    github:
-#        clientId: XXX
-#        clientSecret: XXX
+#        host: https://github.com
+#        client-id: XXX
+#        client-secret: XXX
+#        jhipster-bot-oauth-token: XXX
 #    gitlab:
-#        clientId: XXX
-#        clientSecret: XXX
-#        host: XXX
-#        redirectUri: XXX
+#        host: https://gitlab.com
+#        client-id: XXX
+#        client-secret: XXX
+#        redirect-uri: XXX
+#        jhipster-bot-oauth-token: XXX

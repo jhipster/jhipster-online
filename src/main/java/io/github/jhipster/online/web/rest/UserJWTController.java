@@ -16,25 +16,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.security.jwt.JWTConfigurer;
-import io.github.jhipster.online.security.jwt.TokenProvider;
-import io.github.jhipster.online.web.rest.vm.LoginVM;
+import javax.validation.Valid;
 
-import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.github.jhipster.online.security.jwt.JWTConfigurer;
+import io.github.jhipster.online.security.jwt.TokenProvider;
+import io.github.jhipster.online.web.rest.vm.LoginVM;
 
 /**
  * Controller to authenticate users.

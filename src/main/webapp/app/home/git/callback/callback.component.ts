@@ -18,6 +18,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { GithubCallbackService } from './callback.service';
 
 @Component({
@@ -27,6 +29,7 @@ import { GithubCallbackService } from './callback.service';
 })
 export class CallbackComponent implements OnInit {
     token: string;
+
     provider: string;
 
     message: string;
@@ -35,9 +38,16 @@ export class CallbackComponent implements OnInit {
 
     alertType = 'warning';
 
-    constructor(private route: ActivatedRoute, private callbackService: GithubCallbackService) {}
+    gitConfig: GitConfigurationModel;
+
+    constructor(
+        private route: ActivatedRoute,
+        private callbackService: GithubCallbackService,
+        private gitConfigurationService: GitConfigurationService
+    ) {}
 
     ngOnInit(): void {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
         this.route.params.subscribe(params => {
             this.provider = params['provider'];
             this.token = params['token'];
@@ -49,6 +59,11 @@ export class CallbackComponent implements OnInit {
                     this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
                     this.isLoading = false;
                     this.alertType = 'success';
+                    if (this.provider === 'github') {
+                        this.gitConfigurationService.gitConfig.githubConfigured = true;
+                    } else if (this.provider === 'gitlab') {
+                        this.gitConfigurationService.gitConfig.gitlabConfigured = true;
+                    }
                 },
                 () => {
                     this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;

@@ -4,17 +4,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.domain.YoRC_;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.dto.RawSQL;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.*;
@@ -39,7 +45,9 @@ public class YoRCService {
 
     private final LanguageService languageService;
 
-    public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserRepository userRepository, LanguageService languageService) {
+    private final EntityManager entityManager;
+
+    public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserRepository userRepository, LanguageService languageService, EntityManager entityManager) {
         this.yoRCRepository = yoRCRepository;
 //        this.ownerIdentityService = ownerIdentityService;
 //        this.userService = userService;
@@ -47,6 +55,7 @@ public class YoRCService {
         this.ownerIdentityService = ownerIdentityService;
         this.userRepository = userRepository;
         this.languageService = languageService;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -69,12 +78,6 @@ public class YoRCService {
     public List<YoRC> findAll() {
         log.debug("Request to get all YoRCS");
         return yoRCRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public List<YoRC> findAllByCreationDateAsc() {
-        log.debug("Request to get all YoRCS by CreationDate asc");
-        return yoRCRepository.findAllByOrderByCreationDateAsc();
     }
 
     /**
@@ -103,15 +106,24 @@ public class YoRCService {
         return yoRCRepository.count();
     }
 
-    public Map<LocalDate, Long> getCountAllByYear() {
-        List<Object[]> dataFromDb = yoRCRepository.countAllByYear();
-        Map<LocalDate, Long> resultMap = new LinkedHashMap<>(dataFromDb.size());
-        for (Object[] result : dataFromDb) {
-            String rawDate = result[0].toString();
-            LocalDate localDate = getLocalDateByYear(rawDate);
-            resultMap.put(localDate, (Long)result[1]);
-        }
-        return resultMap;
+    public List<TemporalCountDTO> getCountAllByYear(Instant date) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RawSQL> query = builder.createQuery(RawSQL.class);
+        Root<YoRC> root = query.from(YoRC.class);
+        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, "date");
+        query.select(builder.construct(RawSQL.class, builder.function("YEAR", Integer.class, root.get(YoRC_.creationDate)), builder.count(root)))
+            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
+            .groupBy(builder.function("YEAR", Integer.class, root.get(YoRC_.creationDate)))
+            .orderBy(builder.asc(builder.function("YEAR", Integer.class, root.get(YoRC_.creationDate))));
+
+        return entityManager
+            .createQuery(query)
+            .setParameter("date", date)
+            .getResultList()
+            .stream()
+            .map(item ->
+                new TemporalCountDTO(getLocalDateByYear(item.getDate()), item.getCount()))
+            .collect(Collectors.toList());
     }
 
     public Map<LocalDate, Long> getCountAllByMonth(Instant date) {
@@ -165,8 +177,8 @@ public class YoRCService {
         }
     }
 
-    private LocalDate getLocalDateByYear(String rawDate) {
-        return LocalDate.of(Integer.parseInt(rawDate.substring(0, 4)), 1, 1);
+    private LocalDate getLocalDateByYear(Integer rawDate) {
+        return LocalDate.of(rawDate, 1, 1);
     }
 
     private LocalDate getLocalDateByMonth(String rawDate) {

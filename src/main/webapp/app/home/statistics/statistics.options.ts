@@ -10,7 +10,7 @@ export const lineChart = (data: any) => {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: Object.keys(data).map(date => prettifyDate(date))
+            data: data.map(obj => prettifyDate(obj.date))
         },
         yAxis: {
             type: 'value'
@@ -22,7 +22,7 @@ export const lineChart = (data: any) => {
         ],
         series: [
             {
-                data: Object.keys(data).map(date => data[date]),
+                data: data.map(obj => obj.count),
                 type: 'line',
                 smooth: true
             }

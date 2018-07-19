@@ -20,7 +20,6 @@ package io.github.jhipster.online.web.rest;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.service.GithubService;
 import io.github.jhipster.online.service.GitlabService;
 import io.github.jhipster.online.service.UserService;
@@ -86,23 +85,20 @@ public class GitResourceIntTest {
     }
 
     @Test
-    public void testGetClientIdWithUnknownGitProvider() throws Exception {
-        restMvc.perform(
-            get("/api/{gitProvider}/client-id", "Microsoft-GitHub")
-                .accept(MediaType.APPLICATION_JSON)
-                .accept(MediaType.TEXT_PLAIN_VALUE))
-            .andExpect(status().isInternalServerError());
-    }
+    public void testGetGitConfiguration() throws Exception {
+        when(mockGithubService.getClientId()).thenReturn("fzerfzer54fer8gf48");
+        when(mockGithubService.getHost()).thenReturn("http://github.com");
+        when(mockGithubService.isEnabled()).thenReturn(true);
 
-    @Test
-    public void testGetClientIdWithExistingGitProvider() throws Exception {
-        when(mockApplicationProperties.getGitlab().getClientId()).thenReturn("T--Xx_|o|_xX--T");
+        when(mockGitlabService.getClientId()).thenReturn("rf478erf48erg4er8g41ref47ef481098g49");
+        when(mockGitlabService.getHost()).thenReturn("http//gitlab.com");
+        when(mockGitlabService.getRedirectUri()).thenReturn("http//localhost:9000/api/callback/github");
+        when(mockGitlabService.isEnabled()).thenReturn(true);
 
         restMvc.perform(
-            get("/api/{gitProvider}/client-id", "GitLab")
-                .accept(MediaType.APPLICATION_JSON)
-                .accept(MediaType.TEXT_PLAIN_VALUE))
-            .andExpect(content().contentType(TestUtil.TEXT_PLAIN))
+            get("/api/git/config", "TestProvider")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
     }
 
@@ -110,7 +106,7 @@ public class GitResourceIntTest {
     public void testSaveTokenWithUnknownGitProvider() throws Exception {
         final String code = "ret66spihj6sio4bud2";
         restMvc.perform(
-            post("/api/{gitProvider}/save-token", "Microsoft-GitHub")
+            post("/api/{gitProvider}/save-token", "TestProvider")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(code))
             .andExpect(status().isInternalServerError());
@@ -118,9 +114,9 @@ public class GitResourceIntTest {
 
     @Test
     public void testRefreshGithubWithUnknownProvider() throws Exception {
-        final String unavailableGitProvider = "Microsoft-GitHub";
+        final String unavailableGitProvider = "TestProvider";
         restMvc.perform(
-            post("/api/{gitProvider}/refresh", "Microsoft-GitHub")
+            post("/api/{gitProvider}/refresh", "TestProvider")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string("Unknown git provider: " + unavailableGitProvider));

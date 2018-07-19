@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.domain.enums.GitProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
 
@@ -54,11 +55,13 @@ public class CiCdResource {
     @PostMapping("/ci-cd/{gitProvider}/{organizationName}/{projectName}/{ciCdTool}")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName, @PathVariable String projectName, @PathVariable String ciCdTool) {
-        log.info("Configuring CI: {} on GitHub project {}/{}", ciCdTool, organizationName, projectName);
+    public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName,
+        @PathVariable String projectName, @PathVariable String ciCdTool) {
+        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        log.info("Configuring CI: {} on " + (isGitHub ? "GitHub" : "GitLab") + " {}/{}", ciCdTool, organizationName,
+            projectName);
         User user = userService.getUser();
-        String ciCdId = "ci-" +
-            System.nanoTime();
+        String ciCdId = "ci-" + System.nanoTime();
 
         if (ciCdTool == null || (!ciCdTool.equals("travis") && !ciCdTool.equals("jenkins"))) {
             this.logsService.addLog(ciCdId, "Continuous Integration with `" + ciCdTool + "` is not supported.");
@@ -71,7 +74,7 @@ public class CiCdResource {
 
         try {
             this.ciCdService.configureCiCd(user, organizationName, projectName, ciCdTool,
-                ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(() -> new Exception("")));
+                ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(ciCdId, "An error has occurred: " + e.getMessage());

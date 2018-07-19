@@ -18,7 +18,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { GitProviderService } from './git.service';
+import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 
 @Component({
     selector: 'jhi-github',
@@ -26,53 +26,28 @@ import { GitProviderService } from './git.service';
     styleUrls: ['git.scss']
 })
 export class GitComponent implements OnInit {
-    githubClientId;
-    gitlabClientId;
+    gitConfig: GitConfigurationModel;
 
-    isGithubAvailable = false;
-    isGitlabAvailable = false;
+    githubConfigured = false;
+    gitlabConfigured = false;
 
-    isGithubConfigured = false;
-    isGitlabConfigured = false;
+    constructor(private gitConfigurationService: GitConfigurationService) {}
 
-    isAuthorizingGithub = false;
-    isAuthorizingGitlab = false;
+    ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
+        });
 
-    gitlabHost: string;
-    gitlabRedirectUri: string;
-
-    constructor(private gitService: GitProviderService) {}
-
-    ngOnInit(): void {
-        this.gitService.getAvailableProviders().subscribe(providers => {
-            if (providers.includes('gitlab')) {
-                this.gitlabClientId = this.gitService.clientId('gitlab').subscribe(clientId => (this.gitlabClientId = clientId));
-                this.isAuthorizingGitlab = true;
-                this.gitService.refreshGitProvider('gitlab').subscribe(
-                    () => (this.isGitlabConfigured = true),
-                    () => {
-                        this.isAuthorizingGitlab = false;
-                        this.isGitlabConfigured = false;
-                    }
-                );
-                this.gitService.getGitlabConfig().subscribe(config => {
-                    this.gitlabHost = config.host;
-                    this.gitlabRedirectUri = config.redirectUri;
-                });
-                this.isGitlabAvailable = true;
-            }
-            if (providers.includes('github')) {
-                this.githubClientId = this.gitService.clientId('github').subscribe(clientId => (this.githubClientId = clientId));
-                this.isAuthorizingGithub = true;
-                this.gitService.refreshGitProvider('github').subscribe(
-                    () => (this.isGithubConfigured = true),
-                    () => {
-                        this.isAuthorizingGithub = false;
-                        this.isGithubConfigured = false;
-                    }
-                );
-                this.isGithubAvailable = true;
-            }
+        this.gitConfig.availableGitProviders.forEach(provider => {
+            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(companies => {
+                if (companies.length === 0) {
+                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider);
+                }
+            });
         });
     }
 }

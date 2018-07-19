@@ -16,10 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.web.rest.vm;
 
-import io.github.jhipster.online.service.dto.UserDTO;
 import javax.validation.constraints.Size;
+
+import io.github.jhipster.online.service.dto.UserDTO;
 
 /**
  * View Model extending the UserDTO, which is meant to be used in the user management UI.

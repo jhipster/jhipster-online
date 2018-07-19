@@ -18,7 +18,7 @@
  */
 import './vendor.ts';
 
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
@@ -30,13 +30,17 @@ import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interc
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
 import { JhonlineSharedModule } from 'app/shared';
-import { JhonlineCoreModule } from 'app/core';
+import { JhonlineCoreModule, GitConfigurationService } from 'app/core';
+import { JhonlineHomeModule } from 'app/home';
 import { JhonlineAppRoutingModule } from './app-routing.module';
-import { JhonlineHomeModule } from './home/home.module';
 import { JhonlineAccountModule } from './account/account.module';
 import { JhonlineEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+
+export function setupGitConfiguration(gitConfigurationService: GitConfigurationService) {
+    return () => gitConfigurationService.setupGitConfiguration();
+}
 
 @NgModule({
     imports: [
@@ -76,6 +80,13 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
             useClass: NotificationInterceptor,
             multi: true,
             deps: [Injector]
+        },
+        GitConfigurationService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: setupGitConfiguration,
+            deps: [GitConfigurationService],
+            multi: true
         }
     ],
     bootstrap: [JhiMainComponent]

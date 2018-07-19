@@ -1,0 +1,17 @@
+<ngb-alert [dismissible]="false" type="danger" *ngIf="isNoGitProviders()">
+    <fa-icon [icon]="'exclamation-triangle'"></fa-icon>&nbsp;
+    <span>{{noGitProvidersMessage}}</span>
+</ngb-alert>
+<ngb-alert [dismissible]="false" type="danger" *ngIf="isAlertShowing()">
+    <p>
+        <fa-icon [icon]="'exclamation-triangle'"></fa-icon>&nbsp;
+        <span><strong>Warning!</strong>{{warningMessage}}</span>
+    </p>
+    <p class="text-center">
+        <a routerLink="/git" class="btn btn-primary" role="button">Configure your {{displayedGitProvider}} account</a>
+    </p>
+</ngb-alert>
+<p *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
+    <fa-icon [icon]="'info-circle'"></fa-icon>
+    <i>The JHipster bot {{infoMessage}}</i>
+</p>

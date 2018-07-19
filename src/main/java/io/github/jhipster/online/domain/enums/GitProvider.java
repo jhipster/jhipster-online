@@ -16,12 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.domain.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 public enum GitProvider {
+
     GITHUB("github"), GITLAB("gitlab");
 
     private String value;

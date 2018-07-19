@@ -10,7 +10,7 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing; software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -20,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { LoginModalService, Principal, Account } from 'app/core';
+import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
 
 @Component({
     selector: 'jhi-home',
@@ -31,17 +31,28 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
 
-    constructor(private principal: Principal, private loginModalService: LoginModalService, private eventManager: JhiEventManager) {}
+    gitConfig: GitConfigurationModel;
+
+    constructor(
+        private principal: Principal,
+        private loginModalService: LoginModalService,
+        private gitConfigurationService: GitConfigurationService,
+        private eventManager: JhiEventManager
+    ) {}
 
     ngOnInit() {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitConfigurationService.sharedData.subscribe(config => (this.gitConfig = config));
         this.principal.identity().then(account => {
             this.account = account;
+            this.gitConfigurationService.setupGitConfiguration();
         });
         this.registerAuthenticationSuccess();
     }
 
     registerAuthenticationSuccess() {
-        this.eventManager.subscribe('authenticationSuccess', message => {
+        this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.eventManager.subscribe('authenticationSuccess', () => {
             this.principal.identity().then(account => {
                 this.account = account;
             });

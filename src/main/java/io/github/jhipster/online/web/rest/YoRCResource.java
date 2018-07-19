@@ -76,18 +76,6 @@ public class YoRCResource {
             .body(result);
     }
 
-    /**
-     * GET  /yo-rcs : get all the yoRCS.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of yoRCS in body
-     */
-    @GetMapping("/yo-rcs")
-    @Timed
-    public List<YoRC> getAllYoRCS() {
-        log.debug("REST request to get all YoRCS");
-        return yoRCService.findAllByCreationDateAsc();
-    }
-
     @GetMapping("/yo-rcs/count")
     @Timed
     public long getAllYoRCSCount() {
