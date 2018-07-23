@@ -11,6 +11,13 @@ entity YoRC {
     memory String,
     userLanguage String,
 
+    //
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
     // Pure YoRc
     serverPort String,
     authenticationType String,
@@ -41,7 +48,7 @@ entity SubGenEvent {
     source String,
     type String,
     event String,
-    date Instant
+    moment Instant
 }
 
 entity EntityStats {
@@ -51,7 +58,7 @@ entity EntityStats {
     dto String,
     service String,
     fluentMethods Boolean,
-    date Instant
+    moment Instant
 }
 
 entity Language {
@@ -68,7 +75,7 @@ entity GeneratorIdentity {
 }
 
 entity CrashReport {
-    date Instant,
+    moment Instant,
     source String,
     env String,
     stack String,

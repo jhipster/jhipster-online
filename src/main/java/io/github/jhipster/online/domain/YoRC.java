@@ -59,6 +59,21 @@ public class YoRC implements Serializable {
     @Column(name = "user_language")
     private String userLanguage;
 
+    @Column(name = "jhi_year")
+    private Integer year;
+
+    @Column(name = "month")
+    private Integer month;
+
+    @Column(name = "week")
+    private Integer week;
+
+    @Column(name = "day")
+    private Integer day;
+
+    @Column(name = "hour")
+    private Integer hour;
+
     @Column(name = "server_port")
     private String serverPort;
 
@@ -273,6 +288,71 @@ public class YoRC implements Serializable {
 
     public void setUserLanguage(String userLanguage) {
         this.userLanguage = userLanguage;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public YoRC year(Integer year) {
+        this.year = year;
+        return this;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public YoRC month(Integer month) {
+        this.month = month;
+        return this;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public YoRC week(Integer week) {
+        this.week = week;
+        return this;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public YoRC day(Integer day) {
+        this.day = day;
+        return this;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+
+    public Integer getHour() {
+        return hour;
+    }
+
+    public YoRC hour(Integer hour) {
+        this.hour = hour;
+        return this;
+    }
+
+    public void setHour(Integer hour) {
+        this.hour = hour;
     }
 
     public String getServerPort() {
@@ -647,6 +727,11 @@ public class YoRC implements Serializable {
             ", cores='" + getCores() + "'" +
             ", memory='" + getMemory() + "'" +
             ", userLanguage='" + getUserLanguage() + "'" +
+            ", year=" + getYear() +
+            ", month=" + getMonth() +
+            ", week=" + getWeek() +
+            ", day=" + getDay() +
+            ", hour=" + getHour() +
             ", serverPort='" + getServerPort() + "'" +
             ", authenticationType='" + getAuthenticationType() + "'" +
             ", cacheProvider='" + getCacheProvider() + "'" +

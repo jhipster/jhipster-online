@@ -1,4 +1,5 @@
 {
+    "name": "YoRC",
     "fields": [
         {
             "fieldName": "jhipsterVersion",
@@ -39,6 +40,26 @@
         {
             "fieldName": "userLanguage",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "week",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hour",
+            "fieldType": "Integer"
         },
         {
             "fieldName": "serverPort",

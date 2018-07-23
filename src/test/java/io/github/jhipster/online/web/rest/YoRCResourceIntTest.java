@@ -10,7 +10,6 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +25,6 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.ArrayList;
 
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,6 +70,21 @@ public class YoRCResourceIntTest {
 
     private static final String DEFAULT_USER_LANGUAGE = "AAAAAAAAAA";
     private static final String UPDATED_USER_LANGUAGE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
+
+    private static final Integer DEFAULT_MONTH = 1;
+    private static final Integer UPDATED_MONTH = 2;
+
+    private static final Integer DEFAULT_WEEK = 1;
+    private static final Integer UPDATED_WEEK = 2;
+
+    private static final Integer DEFAULT_DAY = 1;
+    private static final Integer UPDATED_DAY = 2;
+
+    private static final Integer DEFAULT_HOUR = 1;
+    private static final Integer UPDATED_HOUR = 2;
 
     private static final String DEFAULT_SERVER_PORT = "AAAAAAAAAA";
     private static final String UPDATED_SERVER_PORT = "BBBBBBBBBB";
@@ -145,7 +158,7 @@ public class YoRCResourceIntTest {
     @Autowired
     private YoRCRepository yoRCRepository;
 
-    
+
 
     @Autowired
     private YoRCService yoRCService;
@@ -195,6 +208,11 @@ public class YoRCResourceIntTest {
             .cores(DEFAULT_CORES)
             .memory(DEFAULT_MEMORY)
             .userLanguage(DEFAULT_USER_LANGUAGE)
+            .year(DEFAULT_YEAR)
+            .month(DEFAULT_MONTH)
+            .week(DEFAULT_WEEK)
+            .day(DEFAULT_DAY)
+            .hour(DEFAULT_HOUR)
             .serverPort(DEFAULT_SERVER_PORT)
             .authenticationType(DEFAULT_AUTHENTICATION_TYPE)
             .cacheProvider(DEFAULT_CACHE_PROVIDER)
@@ -251,6 +269,11 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.getCores()).isEqualTo(DEFAULT_CORES);
         assertThat(testYoRC.getMemory()).isEqualTo(DEFAULT_MEMORY);
         assertThat(testYoRC.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
+        assertThat(testYoRC.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testYoRC.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(testYoRC.getWeek()).isEqualTo(DEFAULT_WEEK);
+        assertThat(testYoRC.getDay()).isEqualTo(DEFAULT_DAY);
+        assertThat(testYoRC.getHour()).isEqualTo(DEFAULT_HOUR);
         assertThat(testYoRC.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
         assertThat(testYoRC.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
         assertThat(testYoRC.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
@@ -316,6 +339,11 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].cores").value(hasItem(DEFAULT_CORES.toString())))
             .andExpect(jsonPath("$.[*].memory").value(hasItem(DEFAULT_MEMORY.toString())))
             .andExpect(jsonPath("$.[*].userLanguage").value(hasItem(DEFAULT_USER_LANGUAGE.toString())))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
+            .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
+            .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
+            .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].serverPort").value(hasItem(DEFAULT_SERVER_PORT.toString())))
             .andExpect(jsonPath("$.[*].authenticationType").value(hasItem(DEFAULT_AUTHENTICATION_TYPE.toString())))
             .andExpect(jsonPath("$.[*].cacheProvider").value(hasItem(DEFAULT_CACHE_PROVIDER.toString())))
@@ -340,7 +368,7 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].hasGatling").value(hasItem(DEFAULT_HAS_GATLING.booleanValue())))
             .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER.booleanValue())));
     }
-    
+
 
     @Test
     @Transactional
@@ -363,6 +391,11 @@ public class YoRCResourceIntTest {
             .andExpect(jsonPath("$.cores").value(DEFAULT_CORES.toString()))
             .andExpect(jsonPath("$.memory").value(DEFAULT_MEMORY.toString()))
             .andExpect(jsonPath("$.userLanguage").value(DEFAULT_USER_LANGUAGE.toString()))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
+            .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
+            .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
+            .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.serverPort").value(DEFAULT_SERVER_PORT.toString()))
             .andExpect(jsonPath("$.authenticationType").value(DEFAULT_AUTHENTICATION_TYPE.toString()))
             .andExpect(jsonPath("$.cacheProvider").value(DEFAULT_CACHE_PROVIDER.toString()))
@@ -418,6 +451,11 @@ public class YoRCResourceIntTest {
             .cores(UPDATED_CORES)
             .memory(UPDATED_MEMORY)
             .userLanguage(UPDATED_USER_LANGUAGE)
+            .year(UPDATED_YEAR)
+            .month(UPDATED_MONTH)
+            .week(UPDATED_WEEK)
+            .day(UPDATED_DAY)
+            .hour(UPDATED_HOUR)
             .serverPort(UPDATED_SERVER_PORT)
             .authenticationType(UPDATED_AUTHENTICATION_TYPE)
             .cacheProvider(UPDATED_CACHE_PROVIDER)
@@ -461,6 +499,11 @@ public class YoRCResourceIntTest {
         assertThat(testYoRC.getCores()).isEqualTo(UPDATED_CORES);
         assertThat(testYoRC.getMemory()).isEqualTo(UPDATED_MEMORY);
         assertThat(testYoRC.getUserLanguage()).isEqualTo(UPDATED_USER_LANGUAGE);
+        assertThat(testYoRC.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testYoRC.getMonth()).isEqualTo(UPDATED_MONTH);
+        assertThat(testYoRC.getWeek()).isEqualTo(UPDATED_WEEK);
+        assertThat(testYoRC.getDay()).isEqualTo(UPDATED_DAY);
+        assertThat(testYoRC.getHour()).isEqualTo(UPDATED_HOUR);
         assertThat(testYoRC.getServerPort()).isEqualTo(UPDATED_SERVER_PORT);
         assertThat(testYoRC.getAuthenticationType()).isEqualTo(UPDATED_AUTHENTICATION_TYPE);
         assertThat(testYoRC.getCacheProvider()).isEqualTo(UPDATED_CACHE_PROVIDER);

@@ -97,7 +97,7 @@ public class EntityStats implements Serializable {
         this.pagination = pagination;
     }
 
-    public String isDto() {
+    public String getDto() {
         return dto;
     }
 
@@ -110,7 +110,7 @@ public class EntityStats implements Serializable {
         this.dto = dto;
     }
 
-    public String isService() {
+    public String getService() {
         return service;
     }
 
@@ -190,8 +190,8 @@ public class EntityStats implements Serializable {
             ", fields=" + getFields() +
             ", relationships=" + getRelationships() +
             ", pagination='" + getPagination() + "'" +
-            ", dto='" + isDto() + "'" +
-            ", service='" + isService() + "'" +
+            ", dto='" + getDto() + "'" +
+            ", service='" + getService() + "'" +
             ", fluentMethods='" + isFluentMethods() + "'" +
             ", date='" + getDate() + "'" +
             "}";

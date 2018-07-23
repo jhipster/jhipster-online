@@ -1,4 +1,5 @@
 {
+    "name": "EntityStats",
     "fields": [
         {
             "fieldName": "fields",
@@ -14,11 +15,11 @@
         },
         {
             "fieldName": "dto",
-            "fieldType": "Boolean"
+            "fieldType": "String"
         },
         {
             "fieldName": "service",
-            "fieldType": "Boolean"
+            "fieldType": "String"
         },
         {
             "fieldName": "fluentMethods",

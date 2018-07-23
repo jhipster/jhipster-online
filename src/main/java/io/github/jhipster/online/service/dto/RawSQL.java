@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public class RawSQL {
 
-    private Integer date;
+    private Integer moment;
 
     private Long count;
 
-    public RawSQL(Integer date, Long count) {
-        this.date = date;
+    public RawSQL(Integer moment, Long count) {
+        this.moment = moment;
         this.count = count;
     }
 
-    public Integer getDate() {
-        return date;
+    public Integer getMoment() {
+        return moment;
     }
 
-    public void setDate(Integer date) {
-        this.date = date;
+    public void setMoment(Integer moment) {
+        this.moment = moment;
     }
 
     public Long getCount() {
@@ -34,13 +34,20 @@ public class RawSQL {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RawSQL rawSQL = (RawSQL) o;
-        return Objects.equals(date, rawSQL.date) &&
+        return Objects.equals(moment, rawSQL.moment) &&
             Objects.equals(count, rawSQL.count);
     }
 
     @Override
     public int hashCode() {
+        return Objects.hash(moment, count);
+    }
 
-        return Objects.hash(date, count);
+    @Override
+    public String toString() {
+        return "RawSQL{" +
+            "moment=" + moment +
+            ", count=" + count +
+            '}';
     }
 }

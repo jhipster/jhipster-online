@@ -5,8 +5,7 @@ import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
-import io.github.jhipster.online.service.enums.TemporalFunction;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -47,28 +46,28 @@ public class StatisticsResource {
     @GetMapping("/count-yorc/yearly")
     @Timed
     public List<TemporalCountDTO> getCountAllByYear() {
-        return yoRCService.getCountAllByYear(Instant.EPOCH, TemporalFunction.YEAR);
+        return yoRCService.getCount(Instant.ofEpochMilli(0), TemporalValueType.YEAR);
     }
 
     @GetMapping("/count-yorc/monthly")
     @Timed
     public List<TemporalCountDTO>  getCountAllByMonth() {
-        return yoRCService.getCountAllByYear(Instant.now().minus(Duration.ofDays(365)), TemporalFunction.YEAR_MONTH);
+        return yoRCService.getCount(Instant.now().minus(Duration.ofDays(365*2)),  TemporalValueType.MONTH);
     }
 
     @GetMapping("/count-yorc/daily")
     @Timed
-    public  Map<LocalDate, Long>  getCountAllByDay() {
+    public  List<TemporalCountDTO>  getCountAllByDay() {
         Instant aMonthAgo = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
-        return yoRCService.getCountAllByDay(aMonthAgo);
+        return yoRCService.getCount(aMonthAgo, TemporalValueType.MONTH);
     }
 
-    @GetMapping("/client-framework")
-    @Timed
-    public List<TemporalDistributionDTO> countAllByClientFramework() {
-        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
-        return yoRCService.countAllByClientFrameworkByMonth(aYearAgo);
-    }
+//    @GetMapping("/client-framework")
+//    @Timed
+//    public List<TemporalDistributionDTO> countAllByClientFramework() {
+//        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
+//        return yoRCService.countAllByClientFrameworkByMonth(aYearAgo);
+//    }
 
     @GetMapping("/count-jdl")
     @Timed

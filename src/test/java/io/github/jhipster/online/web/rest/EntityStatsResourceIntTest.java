@@ -10,7 +10,6 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +25,6 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.ArrayList;
 
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -140,8 +138,8 @@ public class EntityStatsResourceIntTest {
         assertThat(testEntityStats.getFields()).isEqualTo(DEFAULT_FIELDS);
         assertThat(testEntityStats.getRelationships()).isEqualTo(DEFAULT_RELATIONSHIPS);
         assertThat(testEntityStats.getPagination()).isEqualTo(DEFAULT_PAGINATION);
-        assertThat(testEntityStats.isDto()).isEqualTo(DEFAULT_DTO);
-        assertThat(testEntityStats.isService()).isEqualTo(DEFAULT_SERVICE);
+        assertThat(testEntityStats.getDto()).isEqualTo(DEFAULT_DTO);
+        assertThat(testEntityStats.getService()).isEqualTo(DEFAULT_SERVICE);
         assertThat(testEntityStats.isFluentMethods()).isEqualTo(DEFAULT_FLUENT_METHODS);
         assertThat(testEntityStats.getDate()).isEqualTo(DEFAULT_DATE);
     }
@@ -179,8 +177,8 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].fields").value(hasItem(DEFAULT_FIELDS)))
             .andExpect(jsonPath("$.[*].relationships").value(hasItem(DEFAULT_RELATIONSHIPS)))
             .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION.toString())))
-            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO)))
-            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE)))
+            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO.toString())))
+            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE.toString())))
             .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
@@ -200,8 +198,8 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.fields").value(DEFAULT_FIELDS))
             .andExpect(jsonPath("$.relationships").value(DEFAULT_RELATIONSHIPS))
             .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION.toString()))
-            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO))
-            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE))
+            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO.toString()))
+            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE.toString()))
             .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
@@ -246,8 +244,8 @@ public class EntityStatsResourceIntTest {
         assertThat(testEntityStats.getFields()).isEqualTo(UPDATED_FIELDS);
         assertThat(testEntityStats.getRelationships()).isEqualTo(UPDATED_RELATIONSHIPS);
         assertThat(testEntityStats.getPagination()).isEqualTo(UPDATED_PAGINATION);
-        assertThat(testEntityStats.isDto()).isEqualTo(UPDATED_DTO);
-        assertThat(testEntityStats.isService()).isEqualTo(UPDATED_SERVICE);
+        assertThat(testEntityStats.getDto()).isEqualTo(UPDATED_DTO);
+        assertThat(testEntityStats.getService()).isEqualTo(UPDATED_SERVICE);
         assertThat(testEntityStats.isFluentMethods()).isEqualTo(UPDATED_FLUENT_METHODS);
         assertThat(testEntityStats.getDate()).isEqualTo(UPDATED_DATE);
     }

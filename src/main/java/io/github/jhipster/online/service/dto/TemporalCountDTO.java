@@ -1,24 +1,24 @@
 package io.github.jhipster.online.service.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class TemporalCountDTO {
+public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     private Long count;
 
-    public TemporalCountDTO(LocalDate date, Long count) {
+    public TemporalCountDTO(LocalDateTime date, Long count) {
         this.date = date;
         this.count = count;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -39,6 +39,7 @@ public class TemporalCountDTO {
             Objects.equals(count, that.count);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(date, count);
@@ -50,5 +51,10 @@ public class TemporalCountDTO {
             "date=" + date +
             ", count=" + count +
             '}';
+    }
+
+    @Override
+    public int compareTo(TemporalCountDTO other) {
+        return date.compareTo(other.date);
     }
 }

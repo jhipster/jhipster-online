@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
-import { ILanguage } from './language.model';
-import { IOwnerIdentity } from './owner-identity.model';
+import { ILanguage } from 'app/shared/model//language.model';
+import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
 
 export interface IYoRC {
     id?: number;
@@ -14,6 +14,11 @@ export interface IYoRC {
     cores?: string;
     memory?: string;
     userLanguage?: string;
+    year?: number;
+    month?: number;
+    week?: number;
+    day?: number;
+    hour?: number;
     serverPort?: string;
     authenticationType?: string;
     cacheProvider?: string;
@@ -54,6 +59,11 @@ export class YoRC implements IYoRC {
         public cores?: string,
         public memory?: string,
         public userLanguage?: string,
+        public year?: number,
+        public month?: number,
+        public week?: number,
+        public day?: number,
+        public hour?: number,
         public serverPort?: string,
         public authenticationType?: string,
         public cacheProvider?: string,
