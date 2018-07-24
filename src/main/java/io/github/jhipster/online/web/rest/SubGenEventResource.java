@@ -47,7 +47,7 @@ public class SubGenEventResource {
         log.debug("REST request to save SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() != null) {
             throw new BadRequestAlertException("A new subGenEvent cannot already have an ID", ENTITY_NAME, "idexists");
-        }        
+        }
         SubGenEvent result = subGenEventService.save(subGenEvent);
         return ResponseEntity.created(new URI("/api/sub-gen-events/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -69,7 +69,7 @@ public class SubGenEventResource {
         log.debug("REST request to update SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }        
+        }
         SubGenEvent result = subGenEventService.save(subGenEvent);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, subGenEvent.getId().toString()))

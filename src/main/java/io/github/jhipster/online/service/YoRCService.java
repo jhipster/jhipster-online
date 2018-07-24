@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.domain.YoRC_;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
+import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.dto.RawSQL;
+import io.github.jhipster.online.service.dto.RawSQLField;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +28,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.time.*;
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,8 +41,6 @@ import java.util.stream.Collectors;
 @Transactional
 @JsonDeserialize(using = YoRCDeserializer.class)
 public class YoRCService {
-
-    private final static Integer numberOfDaysOfEpoch = 1970 * 365;
 
     private final Logger log = LoggerFactory.getLogger(YoRCService.class);
 
@@ -117,16 +120,41 @@ public class YoRCService {
             .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
             .groupBy(root.get(dbTemporalFunction.getFieldName()));
 
-        List<TemporalCountDTO> result = entityManager
+        return entityManager
             .createQuery(query)
             .setParameter("date", after)
             .getResultList()
             .stream()
             .map(item ->
-                new TemporalCountDTO(absoluteMomentToLocalDateTime(item.getMoment(), dbTemporalFunction), item.getCount()))
+                new TemporalCountDTO(TemporalValueType.absoluteMomentToLocalDateTime(item.getMoment().longValue(), dbTemporalFunction), item.getCount()))
+            .sorted(TemporalCountDTO::compareTo)
             .collect(Collectors.toList());
-        result.sort(TemporalCountDTO::compareTo);
-        return result;
+    }
+
+    public List<TemporalDistributionDTO> getFieldCount(Instant after, YoRCColumn field, TemporalValueType dbTemporalFunction) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
+        Root<YoRC> root = query.from(YoRC.class);
+        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, "date");
+
+        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getValue()), builder.count(root)))
+            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
+            .groupBy(root.get(field.getValue()), root.get(dbTemporalFunction.getFieldName()));
+
+        return entityManager
+            .createQuery(query)
+            .setParameter("date", after)
+            .getResultList()
+            .stream()
+            .collect(Collectors.groupingBy(RawSQLField::getMoment))
+            .entrySet()
+            .stream()
+            .map(entry -> {
+                LocalDateTime localDate = TemporalValueType.absoluteMomentToLocalDateTime(entry.getKey().longValue(), dbTemporalFunction);
+                Map<String, Long> values = new HashMap<>();
+                entry.getValue().forEach(e -> values.put(e.getField(), e.getCount()));
+                return new TemporalDistributionDTO(localDate, values);
+            }).collect(Collectors.toList());
     }
 
     public void save(String applicationConfiguration) {
@@ -146,17 +174,4 @@ public class YoRCService {
         }
     }
 
-    public LocalDateTime absoluteMomentToLocalDateTime(Integer value, TemporalValueType valueType) {
-        if (valueType.getUnit().equals(ChronoUnit.DAYS)) {
-            return LocalDateTime
-                .ofEpochSecond(0, 0, ZoneOffset.UTC)
-                .plus(Duration.of((value * valueType.getDayMultiplier()) - numberOfDaysOfEpoch, ChronoUnit.DAYS));
-        } else {
-            return LocalDateTime
-                .ofEpochSecond(0, 0, ZoneOffset.UTC)
-                .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()));
-        }
-
-
-    }
 }

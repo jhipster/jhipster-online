@@ -244,79 +244,79 @@ public class YoRCResourceIntTest {
         yoRC = createEntity(em);
     }
 
-    @Test
-    @Transactional
-    public void createYoRC() throws Exception {
-        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
+//    @Test
+//    @Transactional
+//    public void createYoRC() throws Exception {
+//        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
+//
+//        // Create the YoRC
+//        restYoRCMockMvc.perform(post("/api/yo-rcs")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
+//            .andExpect(status().isCreated());
+//
+//        // Validate the YoRC in the database
+//        List<YoRC> yoRCList = yoRCRepository.findAll();
+//        assertThat(yoRCList).hasSize(databaseSizeBeforeCreate + 1);
+//        YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
+//        assertThat(testYoRC.getJhipsterVersion()).isEqualTo(DEFAULT_JHIPSTER_VERSION);
+//        assertThat(testYoRC.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+//        assertThat(testYoRC.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
+//        assertThat(testYoRC.getNodeVersion()).isEqualTo(DEFAULT_NODE_VERSION);
+//        assertThat(testYoRC.getOs()).isEqualTo(DEFAULT_OS);
+//        assertThat(testYoRC.getArch()).isEqualTo(DEFAULT_ARCH);
+//        assertThat(testYoRC.getCpu()).isEqualTo(DEFAULT_CPU);
+//        assertThat(testYoRC.getCores()).isEqualTo(DEFAULT_CORES);
+//        assertThat(testYoRC.getMemory()).isEqualTo(DEFAULT_MEMORY);
+//        assertThat(testYoRC.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
+//        assertThat(testYoRC.getYear()).isEqualTo(DEFAULT_YEAR);
+//        assertThat(testYoRC.getMonth()).isEqualTo(DEFAULT_MONTH);
+//        assertThat(testYoRC.getWeek()).isEqualTo(DEFAULT_WEEK);
+//        assertThat(testYoRC.getDay()).isEqualTo(DEFAULT_DAY);
+//        assertThat(testYoRC.getHour()).isEqualTo(DEFAULT_HOUR);
+//        assertThat(testYoRC.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
+//        assertThat(testYoRC.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
+//        assertThat(testYoRC.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
+//        assertThat(testYoRC.isEnableHibernateCache()).isEqualTo(DEFAULT_ENABLE_HIBERNATE_CACHE);
+//        assertThat(testYoRC.isWebsocket()).isEqualTo(DEFAULT_WEBSOCKET);
+//        assertThat(testYoRC.getDatabaseType()).isEqualTo(DEFAULT_DATABASE_TYPE);
+//        assertThat(testYoRC.getDevDatabaseType()).isEqualTo(DEFAULT_DEV_DATABASE_TYPE);
+//        assertThat(testYoRC.getProdDatabaseType()).isEqualTo(DEFAULT_PROD_DATABASE_TYPE);
+//        assertThat(testYoRC.isSearchEngine()).isEqualTo(DEFAULT_SEARCH_ENGINE);
+//        assertThat(testYoRC.isMessageBroker()).isEqualTo(DEFAULT_MESSAGE_BROKER);
+//        assertThat(testYoRC.isServiceDiscoveryType()).isEqualTo(DEFAULT_SERVICE_DISCOVERY_TYPE);
+//        assertThat(testYoRC.getBuildTool()).isEqualTo(DEFAULT_BUILD_TOOL);
+//        assertThat(testYoRC.isEnableSwaggerCodegen()).isEqualTo(DEFAULT_ENABLE_SWAGGER_CODEGEN);
+//        assertThat(testYoRC.getClientFramework()).isEqualTo(DEFAULT_CLIENT_FRAMEWORK);
+//        assertThat(testYoRC.isUseSass()).isEqualTo(DEFAULT_USE_SASS);
+//        assertThat(testYoRC.getClientPackageManager()).isEqualTo(DEFAULT_CLIENT_PACKAGE_MANAGER);
+//        assertThat(testYoRC.getApplicationType()).isEqualTo(DEFAULT_APPLICATION_TYPE);
+//        assertThat(testYoRC.getJhiPrefix()).isEqualTo(DEFAULT_JHI_PREFIX);
+//        assertThat(testYoRC.isEnableTranslation()).isEqualTo(DEFAULT_ENABLE_TRANSLATION);
+//        assertThat(testYoRC.getNativeLanguage()).isEqualTo(DEFAULT_NATIVE_LANGUAGE);
+//        assertThat(testYoRC.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
+//        assertThat(testYoRC.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
+//        assertThat(testYoRC.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
+//    }
 
-        // Create the YoRC
-        restYoRCMockMvc.perform(post("/api/yo-rcs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
-            .andExpect(status().isCreated());
-
-        // Validate the YoRC in the database
-        List<YoRC> yoRCList = yoRCRepository.findAll();
-        assertThat(yoRCList).hasSize(databaseSizeBeforeCreate + 1);
-        YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
-        assertThat(testYoRC.getJhipsterVersion()).isEqualTo(DEFAULT_JHIPSTER_VERSION);
-        assertThat(testYoRC.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
-        assertThat(testYoRC.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
-        assertThat(testYoRC.getNodeVersion()).isEqualTo(DEFAULT_NODE_VERSION);
-        assertThat(testYoRC.getOs()).isEqualTo(DEFAULT_OS);
-        assertThat(testYoRC.getArch()).isEqualTo(DEFAULT_ARCH);
-        assertThat(testYoRC.getCpu()).isEqualTo(DEFAULT_CPU);
-        assertThat(testYoRC.getCores()).isEqualTo(DEFAULT_CORES);
-        assertThat(testYoRC.getMemory()).isEqualTo(DEFAULT_MEMORY);
-        assertThat(testYoRC.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
-        assertThat(testYoRC.getYear()).isEqualTo(DEFAULT_YEAR);
-        assertThat(testYoRC.getMonth()).isEqualTo(DEFAULT_MONTH);
-        assertThat(testYoRC.getWeek()).isEqualTo(DEFAULT_WEEK);
-        assertThat(testYoRC.getDay()).isEqualTo(DEFAULT_DAY);
-        assertThat(testYoRC.getHour()).isEqualTo(DEFAULT_HOUR);
-        assertThat(testYoRC.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
-        assertThat(testYoRC.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
-        assertThat(testYoRC.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
-        assertThat(testYoRC.isEnableHibernateCache()).isEqualTo(DEFAULT_ENABLE_HIBERNATE_CACHE);
-        assertThat(testYoRC.isWebsocket()).isEqualTo(DEFAULT_WEBSOCKET);
-        assertThat(testYoRC.getDatabaseType()).isEqualTo(DEFAULT_DATABASE_TYPE);
-        assertThat(testYoRC.getDevDatabaseType()).isEqualTo(DEFAULT_DEV_DATABASE_TYPE);
-        assertThat(testYoRC.getProdDatabaseType()).isEqualTo(DEFAULT_PROD_DATABASE_TYPE);
-        assertThat(testYoRC.isSearchEngine()).isEqualTo(DEFAULT_SEARCH_ENGINE);
-        assertThat(testYoRC.isMessageBroker()).isEqualTo(DEFAULT_MESSAGE_BROKER);
-        assertThat(testYoRC.isServiceDiscoveryType()).isEqualTo(DEFAULT_SERVICE_DISCOVERY_TYPE);
-        assertThat(testYoRC.getBuildTool()).isEqualTo(DEFAULT_BUILD_TOOL);
-        assertThat(testYoRC.isEnableSwaggerCodegen()).isEqualTo(DEFAULT_ENABLE_SWAGGER_CODEGEN);
-        assertThat(testYoRC.getClientFramework()).isEqualTo(DEFAULT_CLIENT_FRAMEWORK);
-        assertThat(testYoRC.isUseSass()).isEqualTo(DEFAULT_USE_SASS);
-        assertThat(testYoRC.getClientPackageManager()).isEqualTo(DEFAULT_CLIENT_PACKAGE_MANAGER);
-        assertThat(testYoRC.getApplicationType()).isEqualTo(DEFAULT_APPLICATION_TYPE);
-        assertThat(testYoRC.getJhiPrefix()).isEqualTo(DEFAULT_JHI_PREFIX);
-        assertThat(testYoRC.isEnableTranslation()).isEqualTo(DEFAULT_ENABLE_TRANSLATION);
-        assertThat(testYoRC.getNativeLanguage()).isEqualTo(DEFAULT_NATIVE_LANGUAGE);
-        assertThat(testYoRC.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
-        assertThat(testYoRC.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
-        assertThat(testYoRC.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void createYoRCWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
-
-        // Create the YoRC with an existing ID
-        yoRC.setId(1L);
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restYoRCMockMvc.perform(post("/api/yo-rcs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the YoRC in the database
-        List<YoRC> yoRCList = yoRCRepository.findAll();
-        assertThat(yoRCList).hasSize(databaseSizeBeforeCreate);
-    }
+//    @Test
+//    @Transactional
+//    public void createYoRCWithExistingId() throws Exception {
+//        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
+//
+//        // Create the YoRC with an existing ID
+//        yoRC.setId(1L);
+//
+//        // An entity with an existing ID cannot be created, so this API call must fail
+//        restYoRCMockMvc.perform(post("/api/yo-rcs")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
+//            .andExpect(status().isBadRequest());
+//
+//        // Validate the YoRC in the database
+//        List<YoRC> yoRCList = yoRCRepository.findAll();
+//        assertThat(yoRCList).hasSize(databaseSizeBeforeCreate);
+//    }
 
     @Test
     @Transactional
@@ -428,124 +428,124 @@ public class YoRCResourceIntTest {
             .andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
-    public void updateYoRC() throws Exception {
-        // Initialize the database
-        yoRCService.save(yoRC);
-
-        int databaseSizeBeforeUpdate = yoRCRepository.findAll().size();
-
-        // Update the yoRC
-        YoRC updatedYoRC = yoRCRepository.findById(yoRC.getId()).get();
-        // Disconnect from session so that the updates on updatedYoRC are not directly saved in db
-        em.detach(updatedYoRC);
-        updatedYoRC
-            .jhipsterVersion(UPDATED_JHIPSTER_VERSION)
-            .creationDate(UPDATED_CREATION_DATE)
-            .gitProvider(UPDATED_GIT_PROVIDER)
-            .nodeVersion(UPDATED_NODE_VERSION)
-            .os(UPDATED_OS)
-            .arch(UPDATED_ARCH)
-            .cpu(UPDATED_CPU)
-            .cores(UPDATED_CORES)
-            .memory(UPDATED_MEMORY)
-            .userLanguage(UPDATED_USER_LANGUAGE)
-            .year(UPDATED_YEAR)
-            .month(UPDATED_MONTH)
-            .week(UPDATED_WEEK)
-            .day(UPDATED_DAY)
-            .hour(UPDATED_HOUR)
-            .serverPort(UPDATED_SERVER_PORT)
-            .authenticationType(UPDATED_AUTHENTICATION_TYPE)
-            .cacheProvider(UPDATED_CACHE_PROVIDER)
-            .enableHibernateCache(UPDATED_ENABLE_HIBERNATE_CACHE)
-            .websocket(UPDATED_WEBSOCKET)
-            .databaseType(UPDATED_DATABASE_TYPE)
-            .devDatabaseType(UPDATED_DEV_DATABASE_TYPE)
-            .prodDatabaseType(UPDATED_PROD_DATABASE_TYPE)
-            .searchEngine(UPDATED_SEARCH_ENGINE)
-            .messageBroker(UPDATED_MESSAGE_BROKER)
-            .serviceDiscoveryType(UPDATED_SERVICE_DISCOVERY_TYPE)
-            .buildTool(UPDATED_BUILD_TOOL)
-            .enableSwaggerCodegen(UPDATED_ENABLE_SWAGGER_CODEGEN)
-            .clientFramework(UPDATED_CLIENT_FRAMEWORK)
-            .useSass(UPDATED_USE_SASS)
-            .clientPackageManager(UPDATED_CLIENT_PACKAGE_MANAGER)
-            .applicationType(UPDATED_APPLICATION_TYPE)
-            .jhiPrefix(UPDATED_JHI_PREFIX)
-            .enableTranslation(UPDATED_ENABLE_TRANSLATION)
-            .nativeLanguage(UPDATED_NATIVE_LANGUAGE)
-            .hasProtractor(UPDATED_HAS_PROTRACTOR)
-            .hasGatling(UPDATED_HAS_GATLING)
-            .hasCucumber(UPDATED_HAS_CUCUMBER);
-
-        restYoRCMockMvc.perform(put("/api/yo-rcs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedYoRC)))
-            .andExpect(status().isOk());
-
-        // Validate the YoRC in the database
-        List<YoRC> yoRCList = yoRCRepository.findAll();
-        assertThat(yoRCList).hasSize(databaseSizeBeforeUpdate);
-        YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
-        assertThat(testYoRC.getJhipsterVersion()).isEqualTo(UPDATED_JHIPSTER_VERSION);
-        assertThat(testYoRC.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
-        assertThat(testYoRC.getGitProvider()).isEqualTo(UPDATED_GIT_PROVIDER);
-        assertThat(testYoRC.getNodeVersion()).isEqualTo(UPDATED_NODE_VERSION);
-        assertThat(testYoRC.getOs()).isEqualTo(UPDATED_OS);
-        assertThat(testYoRC.getArch()).isEqualTo(UPDATED_ARCH);
-        assertThat(testYoRC.getCpu()).isEqualTo(UPDATED_CPU);
-        assertThat(testYoRC.getCores()).isEqualTo(UPDATED_CORES);
-        assertThat(testYoRC.getMemory()).isEqualTo(UPDATED_MEMORY);
-        assertThat(testYoRC.getUserLanguage()).isEqualTo(UPDATED_USER_LANGUAGE);
-        assertThat(testYoRC.getYear()).isEqualTo(UPDATED_YEAR);
-        assertThat(testYoRC.getMonth()).isEqualTo(UPDATED_MONTH);
-        assertThat(testYoRC.getWeek()).isEqualTo(UPDATED_WEEK);
-        assertThat(testYoRC.getDay()).isEqualTo(UPDATED_DAY);
-        assertThat(testYoRC.getHour()).isEqualTo(UPDATED_HOUR);
-        assertThat(testYoRC.getServerPort()).isEqualTo(UPDATED_SERVER_PORT);
-        assertThat(testYoRC.getAuthenticationType()).isEqualTo(UPDATED_AUTHENTICATION_TYPE);
-        assertThat(testYoRC.getCacheProvider()).isEqualTo(UPDATED_CACHE_PROVIDER);
-        assertThat(testYoRC.isEnableHibernateCache()).isEqualTo(UPDATED_ENABLE_HIBERNATE_CACHE);
-        assertThat(testYoRC.isWebsocket()).isEqualTo(UPDATED_WEBSOCKET);
-        assertThat(testYoRC.getDatabaseType()).isEqualTo(UPDATED_DATABASE_TYPE);
-        assertThat(testYoRC.getDevDatabaseType()).isEqualTo(UPDATED_DEV_DATABASE_TYPE);
-        assertThat(testYoRC.getProdDatabaseType()).isEqualTo(UPDATED_PROD_DATABASE_TYPE);
-        assertThat(testYoRC.isSearchEngine()).isEqualTo(UPDATED_SEARCH_ENGINE);
-        assertThat(testYoRC.isMessageBroker()).isEqualTo(UPDATED_MESSAGE_BROKER);
-        assertThat(testYoRC.isServiceDiscoveryType()).isEqualTo(UPDATED_SERVICE_DISCOVERY_TYPE);
-        assertThat(testYoRC.getBuildTool()).isEqualTo(UPDATED_BUILD_TOOL);
-        assertThat(testYoRC.isEnableSwaggerCodegen()).isEqualTo(UPDATED_ENABLE_SWAGGER_CODEGEN);
-        assertThat(testYoRC.getClientFramework()).isEqualTo(UPDATED_CLIENT_FRAMEWORK);
-        assertThat(testYoRC.isUseSass()).isEqualTo(UPDATED_USE_SASS);
-        assertThat(testYoRC.getClientPackageManager()).isEqualTo(UPDATED_CLIENT_PACKAGE_MANAGER);
-        assertThat(testYoRC.getApplicationType()).isEqualTo(UPDATED_APPLICATION_TYPE);
-        assertThat(testYoRC.getJhiPrefix()).isEqualTo(UPDATED_JHI_PREFIX);
-        assertThat(testYoRC.isEnableTranslation()).isEqualTo(UPDATED_ENABLE_TRANSLATION);
-        assertThat(testYoRC.getNativeLanguage()).isEqualTo(UPDATED_NATIVE_LANGUAGE);
-        assertThat(testYoRC.isHasProtractor()).isEqualTo(UPDATED_HAS_PROTRACTOR);
-        assertThat(testYoRC.isHasGatling()).isEqualTo(UPDATED_HAS_GATLING);
-        assertThat(testYoRC.isHasCucumber()).isEqualTo(UPDATED_HAS_CUCUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void updateNonExistingYoRC() throws Exception {
-        int databaseSizeBeforeUpdate = yoRCRepository.findAll().size();
-
-        // Create the YoRC
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
-        restYoRCMockMvc.perform(put("/api/yo-rcs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the YoRC in the database
-        List<YoRC> yoRCList = yoRCRepository.findAll();
-        assertThat(yoRCList).hasSize(databaseSizeBeforeUpdate);
-    }
+//    @Test
+//    @Transactional
+//    public void updateYoRC() throws Exception {
+//        // Initialize the database
+//        yoRCService.save(yoRC);
+//
+//        int databaseSizeBeforeUpdate = yoRCRepository.findAll().size();
+//
+//        // Update the yoRC
+//        YoRC updatedYoRC = yoRCRepository.findById(yoRC.getId()).get();
+//        // Disconnect from session so that the updates on updatedYoRC are not directly saved in db
+//        em.detach(updatedYoRC);
+//        updatedYoRC
+//            .jhipsterVersion(UPDATED_JHIPSTER_VERSION)
+//            .creationDate(UPDATED_CREATION_DATE)
+//            .gitProvider(UPDATED_GIT_PROVIDER)
+//            .nodeVersion(UPDATED_NODE_VERSION)
+//            .os(UPDATED_OS)
+//            .arch(UPDATED_ARCH)
+//            .cpu(UPDATED_CPU)
+//            .cores(UPDATED_CORES)
+//            .memory(UPDATED_MEMORY)
+//            .userLanguage(UPDATED_USER_LANGUAGE)
+//            .year(UPDATED_YEAR)
+//            .month(UPDATED_MONTH)
+//            .week(UPDATED_WEEK)
+//            .day(UPDATED_DAY)
+//            .hour(UPDATED_HOUR)
+//            .serverPort(UPDATED_SERVER_PORT)
+//            .authenticationType(UPDATED_AUTHENTICATION_TYPE)
+//            .cacheProvider(UPDATED_CACHE_PROVIDER)
+//            .enableHibernateCache(UPDATED_ENABLE_HIBERNATE_CACHE)
+//            .websocket(UPDATED_WEBSOCKET)
+//            .databaseType(UPDATED_DATABASE_TYPE)
+//            .devDatabaseType(UPDATED_DEV_DATABASE_TYPE)
+//            .prodDatabaseType(UPDATED_PROD_DATABASE_TYPE)
+//            .searchEngine(UPDATED_SEARCH_ENGINE)
+//            .messageBroker(UPDATED_MESSAGE_BROKER)
+//            .serviceDiscoveryType(UPDATED_SERVICE_DISCOVERY_TYPE)
+//            .buildTool(UPDATED_BUILD_TOOL)
+//            .enableSwaggerCodegen(UPDATED_ENABLE_SWAGGER_CODEGEN)
+//            .clientFramework(UPDATED_CLIENT_FRAMEWORK)
+//            .useSass(UPDATED_USE_SASS)
+//            .clientPackageManager(UPDATED_CLIENT_PACKAGE_MANAGER)
+//            .applicationType(UPDATED_APPLICATION_TYPE)
+//            .jhiPrefix(UPDATED_JHI_PREFIX)
+//            .enableTranslation(UPDATED_ENABLE_TRANSLATION)
+//            .nativeLanguage(UPDATED_NATIVE_LANGUAGE)
+//            .hasProtractor(UPDATED_HAS_PROTRACTOR)
+//            .hasGatling(UPDATED_HAS_GATLING)
+//            .hasCucumber(UPDATED_HAS_CUCUMBER);
+//
+//        restYoRCMockMvc.perform(put("/api/yo-rcs")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(updatedYoRC)))
+//            .andExpect(status().isOk());
+//
+//        // Validate the YoRC in the database
+//        List<YoRC> yoRCList = yoRCRepository.findAll();
+//        assertThat(yoRCList).hasSize(databaseSizeBeforeUpdate);
+//        YoRC testYoRC = yoRCList.get(yoRCList.size() - 1);
+//        assertThat(testYoRC.getJhipsterVersion()).isEqualTo(UPDATED_JHIPSTER_VERSION);
+//        assertThat(testYoRC.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
+//        assertThat(testYoRC.getGitProvider()).isEqualTo(UPDATED_GIT_PROVIDER);
+//        assertThat(testYoRC.getNodeVersion()).isEqualTo(UPDATED_NODE_VERSION);
+//        assertThat(testYoRC.getOs()).isEqualTo(UPDATED_OS);
+//        assertThat(testYoRC.getArch()).isEqualTo(UPDATED_ARCH);
+//        assertThat(testYoRC.getCpu()).isEqualTo(UPDATED_CPU);
+//        assertThat(testYoRC.getCores()).isEqualTo(UPDATED_CORES);
+//        assertThat(testYoRC.getMemory()).isEqualTo(UPDATED_MEMORY);
+//        assertThat(testYoRC.getUserLanguage()).isEqualTo(UPDATED_USER_LANGUAGE);
+//        assertThat(testYoRC.getYear()).isEqualTo(UPDATED_YEAR);
+//        assertThat(testYoRC.getMonth()).isEqualTo(UPDATED_MONTH);
+//        assertThat(testYoRC.getWeek()).isEqualTo(UPDATED_WEEK);
+//        assertThat(testYoRC.getDay()).isEqualTo(UPDATED_DAY);
+//        assertThat(testYoRC.getHour()).isEqualTo(UPDATED_HOUR);
+//        assertThat(testYoRC.getServerPort()).isEqualTo(UPDATED_SERVER_PORT);
+//        assertThat(testYoRC.getAuthenticationType()).isEqualTo(UPDATED_AUTHENTICATION_TYPE);
+//        assertThat(testYoRC.getCacheProvider()).isEqualTo(UPDATED_CACHE_PROVIDER);
+//        assertThat(testYoRC.isEnableHibernateCache()).isEqualTo(UPDATED_ENABLE_HIBERNATE_CACHE);
+//        assertThat(testYoRC.isWebsocket()).isEqualTo(UPDATED_WEBSOCKET);
+//        assertThat(testYoRC.getDatabaseType()).isEqualTo(UPDATED_DATABASE_TYPE);
+//        assertThat(testYoRC.getDevDatabaseType()).isEqualTo(UPDATED_DEV_DATABASE_TYPE);
+//        assertThat(testYoRC.getProdDatabaseType()).isEqualTo(UPDATED_PROD_DATABASE_TYPE);
+//        assertThat(testYoRC.isSearchEngine()).isEqualTo(UPDATED_SEARCH_ENGINE);
+//        assertThat(testYoRC.isMessageBroker()).isEqualTo(UPDATED_MESSAGE_BROKER);
+//        assertThat(testYoRC.isServiceDiscoveryType()).isEqualTo(UPDATED_SERVICE_DISCOVERY_TYPE);
+//        assertThat(testYoRC.getBuildTool()).isEqualTo(UPDATED_BUILD_TOOL);
+//        assertThat(testYoRC.isEnableSwaggerCodegen()).isEqualTo(UPDATED_ENABLE_SWAGGER_CODEGEN);
+//        assertThat(testYoRC.getClientFramework()).isEqualTo(UPDATED_CLIENT_FRAMEWORK);
+//        assertThat(testYoRC.isUseSass()).isEqualTo(UPDATED_USE_SASS);
+//        assertThat(testYoRC.getClientPackageManager()).isEqualTo(UPDATED_CLIENT_PACKAGE_MANAGER);
+//        assertThat(testYoRC.getApplicationType()).isEqualTo(UPDATED_APPLICATION_TYPE);
+//        assertThat(testYoRC.getJhiPrefix()).isEqualTo(UPDATED_JHI_PREFIX);
+//        assertThat(testYoRC.isEnableTranslation()).isEqualTo(UPDATED_ENABLE_TRANSLATION);
+//        assertThat(testYoRC.getNativeLanguage()).isEqualTo(UPDATED_NATIVE_LANGUAGE);
+//        assertThat(testYoRC.isHasProtractor()).isEqualTo(UPDATED_HAS_PROTRACTOR);
+//        assertThat(testYoRC.isHasGatling()).isEqualTo(UPDATED_HAS_GATLING);
+//        assertThat(testYoRC.isHasCucumber()).isEqualTo(UPDATED_HAS_CUCUMBER);
+//    }
+//
+//    @Test
+//    @Transactional
+//    public void updateNonExistingYoRC() throws Exception {
+//        int databaseSizeBeforeUpdate = yoRCRepository.findAll().size();
+//
+//        // Create the YoRC
+//
+//        // If the entity doesn't have an ID, it will be created instead of just being updated
+//        restYoRCMockMvc.perform(put("/api/yo-rcs")
+//            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+//            .content(TestUtil.convertObjectToJsonBytes(yoRC)))
+//            .andExpect(status().isBadRequest());
+//
+//        // Validate the YoRC in the database
+//        List<YoRC> yoRCList = yoRCRepository.findAll();
+//        assertThat(yoRCList).hasSize(databaseSizeBeforeUpdate);
+//    }
 
     @Test
     @Transactional

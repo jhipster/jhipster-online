@@ -3,9 +3,12 @@ package io.github.jhipster.online.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.web.rest.util.StatisticsResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +20,6 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.*;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/s")
@@ -43,31 +45,36 @@ public class StatisticsResource {
         this.generatorIdentityService = generatorIdentityService;
     }
 
-    @GetMapping("/count-yorc/yearly")
+
+    @GetMapping("/count-yo/{frequency}")
     @Timed
-    public List<TemporalCountDTO> getCountAllByYear() {
-        return yoRCService.getCount(Instant.ofEpochMilli(0), TemporalValueType.YEAR);
+    public ResponseEntity<List<TemporalCountDTO>> getCount(@PathVariable String frequency) {
+        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
+        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
+
+        if (frequencyInstant == null || temporalValueType == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(yoRCService.getCount(frequencyInstant, temporalValueType), HttpStatus.OK);
+        }
     }
 
-    @GetMapping("/count-yorc/monthly")
-    @Timed
-    public List<TemporalCountDTO>  getCountAllByMonth() {
-        return yoRCService.getCount(Instant.now().minus(Duration.ofDays(365*2)),  TemporalValueType.MONTH);
+    @GetMapping("/yo/{field}/{frequency}")
+    public ResponseEntity<List<TemporalDistributionDTO>> getFieldCount(@PathVariable String field, @PathVariable String frequency) {
+        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
+        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
+        YoRCColumn column = StatisticsResourceUtil.getColumnFromField(field);
+
+        if (frequencyInstant == null || temporalValueType == null || column == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(yoRCService.getFieldCount(frequencyInstant, column, temporalValueType), HttpStatus.OK);
+        }
     }
 
-    @GetMapping("/count-yorc/daily")
+    @GetMapping("/count-yo")
     @Timed
-    public  List<TemporalCountDTO>  getCountAllByDay() {
-        Instant aMonthAgo = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
-        return yoRCService.getCount(aMonthAgo, TemporalValueType.MONTH);
-    }
-
-//    @GetMapping("/client-framework")
-//    @Timed
-//    public List<TemporalDistributionDTO> countAllByClientFramework() {
-//        Instant aYearAgo = Instant.now().minus(Duration.ofDays(365));
-//        return yoRCService.countAllByClientFrameworkByMonth(aYearAgo);
-//    }
+    public long getYoRCCount() { return yoRCService.countAll(); }
 
     @GetMapping("/count-jdl")
     @Timed

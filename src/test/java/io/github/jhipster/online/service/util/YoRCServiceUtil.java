@@ -1,7 +1,6 @@
 package io.github.jhipster.online.service.util;
 
 import io.github.jhipster.online.domain.YoRC;
-import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
 import org.joda.time.*;
 
@@ -60,7 +59,7 @@ public class YoRCServiceUtil {
             Instant createdDate = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
 
             DateTime ldtNow = new DateTime(createdDate.toEpochMilli());
-            DateTime epoch = new DateTime(0, 1, 1, 0, 0);
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
 
             int year = ldtNow.getYear();
             int month = Months.monthsBetween(epoch.toInstant(), ldtNow.toInstant()).getMonths();

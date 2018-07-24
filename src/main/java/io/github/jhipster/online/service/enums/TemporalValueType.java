@@ -1,5 +1,8 @@
 package io.github.jhipster.online.service.enums;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 public enum TemporalValueType {
@@ -31,5 +34,26 @@ public enum TemporalValueType {
 
     public int getDayMultiplier() {
         return dayMultiplier;
+    }
+
+    public static LocalDateTime absoluteMomentToLocalDateTime(Long value, TemporalValueType valueType) {
+        switch (valueType) {
+            case YEAR:
+                return LocalDateTime.of(value.intValue(), 1, 1, 1, 1);
+            case MONTH:
+                return LocalDateTime.of(1970 + (value.intValue() / 12), (value.intValue() % 12) + 1, 1, 1, 1);
+            case WEEK:
+            case DAY:
+                return LocalDateTime
+                    .ofEpochSecond(0, 0, ZoneOffset.UTC)
+                    .plus(Duration.of((value * valueType.getDayMultiplier()), ChronoUnit.DAYS));
+            case HOUR:
+                return LocalDateTime
+                    .ofEpochSecond(0, 0, ZoneOffset.UTC)
+                    .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()));
+                default:
+                    // Shouldn't happen
+                    return null;
+        }
     }
 }

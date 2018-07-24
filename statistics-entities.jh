@@ -11,7 +11,7 @@ entity YoRC {
     memory String,
     userLanguage String,
 
-    //
+    // Date stuff
     year Integer,
     month Integer,
     week Integer,
@@ -45,10 +45,17 @@ entity YoRC {
 }
 
 entity SubGenEvent {
+    // Date stuff
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
     source String,
     type String,
     event String,
-    moment Instant
+    date Instant
 }
 
 entity EntityStats {
@@ -58,7 +65,7 @@ entity EntityStats {
     dto String,
     service String,
     fluentMethods Boolean,
-    moment Instant
+    date Instant
 }
 
 entity Language {
@@ -72,15 +79,6 @@ entity OwnerIdentity {
 entity GeneratorIdentity {
     host String,
     guid String
-}
-
-entity CrashReport {
-    moment Instant,
-    source String,
-    env String,
-    stack String,
-    yorc String,
-    jdl String
 }
 
 relationship ManyToOne {
@@ -104,4 +102,3 @@ service Language with serviceClass
 service GeneratorIdentity with serviceClass
 service SubGenEvent with serviceClass
 service EntityStats with serviceClass
-service CrashReport with serviceClass

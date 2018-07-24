@@ -24,6 +24,21 @@ public class SubGenEvent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "jhi_year")
+    private Integer year;
+
+    @Column(name = "month")
+    private Integer month;
+
+    @Column(name = "week")
+    private Integer week;
+
+    @Column(name = "day")
+    private Integer day;
+
+    @Column(name = "hour")
+    private Integer hour;
+
     @Column(name = "source")
     private String source;
 
@@ -47,6 +62,71 @@ public class SubGenEvent implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public SubGenEvent year(Integer year) {
+        this.year = year;
+        return this;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public SubGenEvent month(Integer month) {
+        this.month = month;
+        return this;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public SubGenEvent week(Integer week) {
+        this.week = week;
+        return this;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public SubGenEvent day(Integer day) {
+        this.day = day;
+        return this;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+
+    public Integer getHour() {
+        return hour;
+    }
+
+    public SubGenEvent hour(Integer hour) {
+        this.hour = hour;
+        return this;
+    }
+
+    public void setHour(Integer hour) {
+        this.hour = hour;
     }
 
     public String getSource() {
@@ -139,6 +219,11 @@ public class SubGenEvent implements Serializable {
     public String toString() {
         return "SubGenEvent{" +
             "id=" + getId() +
+            ", year=" + getYear() +
+            ", month=" + getMonth() +
+            ", week=" + getWeek() +
+            ", day=" + getDay() +
+            ", hour=" + getHour() +
             ", source='" + getSource() + "'" +
             ", type='" + getType() + "'" +
             ", event='" + getEvent() + "'" +

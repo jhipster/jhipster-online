@@ -1,7 +1,16 @@
 package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.SubGenEvent_;
+import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
 import io.github.jhipster.online.repository.SubGenEventRepository;
+import io.github.jhipster.online.repository.YoRCRepository;
+import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,8 +18,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing SubGenEvent.
  */
@@ -22,8 +40,11 @@ public class SubGenEventService {
 
     private final SubGenEventRepository subGenEventRepository;
 
-    public SubGenEventService(SubGenEventRepository subGenEventRepository) {
+    private final EntityManager entityManager;
+
+    public SubGenEventService(SubGenEventRepository subGenEventRepository, EntityManager entityManager) {
         this.subGenEventRepository = subGenEventRepository;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -69,5 +90,25 @@ public class SubGenEventService {
     public void delete(Long id) {
         log.debug("Request to delete SubGenEvent : {}", id);
         subGenEventRepository.deleteById(id);
+    }
+
+    public List<TemporalCountDTO> getFieldCount(Instant after, SubGenEventType field, TemporalValueType dbTemporalFunction) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
+        Root<SubGenEvent> root = query.from(SubGenEvent.class);
+        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, "date");
+
+        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(SubGenEvent_.type), builder.count(root)))
+            .where(builder.greaterThan(root.get(SubGenEvent_.date).as(Instant.class), parameter), builder.equal(root.get(SubGenEvent_.type), field.getDatabaseValue()))
+            .groupBy(root.get(SubGenEvent_.type), root.get(dbTemporalFunction.getFieldName()));
+
+        return entityManager
+            .createQuery(query)
+            .setParameter("date", after)
+            .getResultList()
+            .stream()
+            .map(entry ->
+                new TemporalCountDTO(TemporalValueType.absoluteMomentToLocalDateTime(entry.getMoment().longValue(), dbTemporalFunction), entry.getCount())
+            ).collect(Collectors.toList());
     }
 }

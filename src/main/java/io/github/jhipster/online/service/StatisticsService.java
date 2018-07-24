@@ -59,7 +59,7 @@ public class StatisticsService {
 
 
         DateTime now = DateTime.now();
-        DateTime epoch = new DateTime(0, 0, 0, 0, 0);
+        DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
         int year = now.getYear();
         int month = Months.monthsBetween(epoch.toInstant(), now.toInstant()).getMonths();
         int week = Weeks.weeksBetween(epoch.toInstant(), now.toInstant()).getWeeks();

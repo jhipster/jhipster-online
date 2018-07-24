@@ -10,7 +10,6 @@ import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +25,6 @@ import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.ArrayList;
 
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,6 +41,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = JhonlineApp.class)
 public class SubGenEventResourceIntTest {
 
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
+
+    private static final Integer DEFAULT_MONTH = 1;
+    private static final Integer UPDATED_MONTH = 2;
+
+    private static final Integer DEFAULT_WEEK = 1;
+    private static final Integer UPDATED_WEEK = 2;
+
+    private static final Integer DEFAULT_DAY = 1;
+    private static final Integer UPDATED_DAY = 2;
+
+    private static final Integer DEFAULT_HOUR = 1;
+    private static final Integer UPDATED_HOUR = 2;
+
     private static final String DEFAULT_SOURCE = "AAAAAAAAAA";
     private static final String UPDATED_SOURCE = "BBBBBBBBBB";
 
@@ -58,7 +71,7 @@ public class SubGenEventResourceIntTest {
     @Autowired
     private SubGenEventRepository subGenEventRepository;
 
-    
+
 
     @Autowired
     private SubGenEventService subGenEventService;
@@ -98,6 +111,11 @@ public class SubGenEventResourceIntTest {
      */
     public static SubGenEvent createEntity(EntityManager em) {
         SubGenEvent subGenEvent = new SubGenEvent()
+            .year(DEFAULT_YEAR)
+            .month(DEFAULT_MONTH)
+            .week(DEFAULT_WEEK)
+            .day(DEFAULT_DAY)
+            .hour(DEFAULT_HOUR)
             .source(DEFAULT_SOURCE)
             .type(DEFAULT_TYPE)
             .event(DEFAULT_EVENT)
@@ -125,6 +143,11 @@ public class SubGenEventResourceIntTest {
         List<SubGenEvent> subGenEventList = subGenEventRepository.findAll();
         assertThat(subGenEventList).hasSize(databaseSizeBeforeCreate + 1);
         SubGenEvent testSubGenEvent = subGenEventList.get(subGenEventList.size() - 1);
+        assertThat(testSubGenEvent.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testSubGenEvent.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(testSubGenEvent.getWeek()).isEqualTo(DEFAULT_WEEK);
+        assertThat(testSubGenEvent.getDay()).isEqualTo(DEFAULT_DAY);
+        assertThat(testSubGenEvent.getHour()).isEqualTo(DEFAULT_HOUR);
         assertThat(testSubGenEvent.getSource()).isEqualTo(DEFAULT_SOURCE);
         assertThat(testSubGenEvent.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testSubGenEvent.getEvent()).isEqualTo(DEFAULT_EVENT);
@@ -161,12 +184,17 @@ public class SubGenEventResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subGenEvent.getId().intValue())))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
+            .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
+            .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
+            .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT.toString())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-    
+
 
     @Test
     @Transactional
@@ -179,6 +207,11 @@ public class SubGenEventResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(subGenEvent.getId().intValue()))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
+            .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
+            .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
+            .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.event").value(DEFAULT_EVENT.toString()))
@@ -205,6 +238,11 @@ public class SubGenEventResourceIntTest {
         // Disconnect from session so that the updates on updatedSubGenEvent are not directly saved in db
         em.detach(updatedSubGenEvent);
         updatedSubGenEvent
+            .year(UPDATED_YEAR)
+            .month(UPDATED_MONTH)
+            .week(UPDATED_WEEK)
+            .day(UPDATED_DAY)
+            .hour(UPDATED_HOUR)
             .source(UPDATED_SOURCE)
             .type(UPDATED_TYPE)
             .event(UPDATED_EVENT)
@@ -219,6 +257,11 @@ public class SubGenEventResourceIntTest {
         List<SubGenEvent> subGenEventList = subGenEventRepository.findAll();
         assertThat(subGenEventList).hasSize(databaseSizeBeforeUpdate);
         SubGenEvent testSubGenEvent = subGenEventList.get(subGenEventList.size() - 1);
+        assertThat(testSubGenEvent.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testSubGenEvent.getMonth()).isEqualTo(UPDATED_MONTH);
+        assertThat(testSubGenEvent.getWeek()).isEqualTo(UPDATED_WEEK);
+        assertThat(testSubGenEvent.getDay()).isEqualTo(UPDATED_DAY);
+        assertThat(testSubGenEvent.getHour()).isEqualTo(UPDATED_HOUR);
         assertThat(testSubGenEvent.getSource()).isEqualTo(UPDATED_SOURCE);
         assertThat(testSubGenEvent.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testSubGenEvent.getEvent()).isEqualTo(UPDATED_EVENT);

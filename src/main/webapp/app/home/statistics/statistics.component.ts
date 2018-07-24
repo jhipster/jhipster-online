@@ -53,18 +53,20 @@ export class StatisticsComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this.countJdl = this.statisticsService.countJdl();
-        this.countYoRc = this.statisticsService.countYoRC();
+        this.countYoRc = this.statisticsService.countYos();
 
-        this.statisticsService.countYoRCByYears().subscribe(data => {
+        this.statisticsService.getCount('yearly').subscribe(data => {
             const lineChart3 = new LineChart(this.echartsService, lineChart(data), this.chart1, null).build();
         });
-        this.statisticsService.countYoRCByMonths().subscribe(data => {
+        this.statisticsService.getCount('monthly').subscribe(data => {
             const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart2, null).build();
         });
-        // this.statisticsService.countYoRCByDays().subscribe(data => {
-        //     const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
-        // });
-        this.statisticsService.countAllByClientFramework().subscribe(data => {
+
+        this.statisticsService.getCount('daily').subscribe(data => {
+            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
+        });
+
+        this.statisticsService.getFieldCount('clientFramework', 'yearly').subscribe(data => {
             data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
             const linechart2 = new LineChart(this.echartsService, comparingLineChart(data, 'Date', 'Amount'), this.chart4, null).build();
             const pieChartData = data.reduce((acc, current) => {
@@ -76,10 +78,8 @@ export class StatisticsComponent implements AfterViewInit {
             }, {});
             const lineChart3 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chart5, null).build();
 
-            console.log(data);
             this.updateRelatedBasicChartOf(data, linechart2.chartInstance, lineChart3);
         });
-        this.statisticsService.countYoRCByDays().subscribe(data => data);
     }
 
     public onSelectTimeScale() {

@@ -24,8 +24,8 @@ import { Observable } from 'rxjs';
 export class StatisticsService {
     constructor(private http: HttpClient) {}
 
-    countYoRC(): Observable<any> {
-        return this.http.get(`/api/yo-rcs/count`);
+    countYos(): Observable<any> {
+        return this.http.get(`/api/s/count-yo`, { responseType: 'text' });
     }
 
     countUsers(): Observable<string> {
@@ -36,23 +36,11 @@ export class StatisticsService {
         return this.http.get(`/api/s/count-jdl`, { responseType: 'text' });
     }
 
-    getYoRCs(): Observable<any> {
-        return this.http.get(`/api/yo-rcs`);
+    getCount(frequency: string): Observable<any> {
+        return this.http.get(`/api/s/count-yo/${frequency}`);
     }
 
-    countYoRCByYears(): Observable<any> {
-        return this.http.get(`/api/s/count-yorc/yearly`);
-    }
-
-    countYoRCByMonths(): Observable<any> {
-        return this.http.get(`/api/s/count-yorc/monthly`);
-    }
-
-    countYoRCByDays(): Observable<any> {
-        return this.http.get(`/api/s/count-yorc/daily`);
-    }
-
-    countAllByClientFramework(): Observable<any> {
-        return this.http.get(`/api/s/client-framework`);
+    getFieldCount(field: string, frequency: string): Observable<any> {
+        return this.http.get(`/api/s/yo/${field}/${frequency}`);
     }
 }
