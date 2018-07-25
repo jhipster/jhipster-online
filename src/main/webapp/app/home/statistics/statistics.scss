@@ -1,0 +1,19 @@
+/* ==========================================================================
+Statistics page styles
+========================================================================== */
+
+select {
+    background: none;
+    border: none;
+    font-size: 140%;
+}
+
+select:hover {
+    border-radius: 15px;
+}
+
+.chart {
+    margin-bottom: 5%;
+    border-radius: 2%;
+    box-shadow: 5px 5px #353d47;
+}

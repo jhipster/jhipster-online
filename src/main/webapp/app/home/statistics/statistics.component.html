@@ -37,42 +37,134 @@
         </div>
     </div>
     &nbsp;
-    <h4>Trend</h4>
+    <div>
+        <label for="time"><h4>Select time scale :</h4></label>
+        <select id="time" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
+            <option value="all">General overview</option>
+            <option value="days">Last 24h</option>
+            <option value="weeks">Past week</option>
+            <option value="months">Past Month</option>
+            <option value="years">Past Year</option>
+        </select>
+    </div>
     <hr />
-    <div class="row">
-        <div class="col-md-12">
-            <div style="background-color: #fff;">
-                <div>
-                    <label for="time"></label>
-                    <select id="time" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
-                        <option value="days">Days</option>
-                        <option value="months">Months</option>
-                        <option value="years">Years</option>
-                    </select>
+    <div [ngStyle]="{'display': generalOverview ? 'block' : 'none'}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light">
+                    <h5>From launch</h5>
+                    <hr />
+                    <div #chartTrend1 style="height: 300px;" ></div>
                 </div>
-                <div #chart1 style="height: 300px;"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light">
+                    <h5>Past year</h5>
+                    <hr />
+                    <div #chartTrend2 style="height: 300px;"></div>
+                </div>
             </div>
         </div>
-    </div>
-    &nbsp;
-    <h4>React/Angular distribution</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <div #chart3 style="height: 300px;"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light">
+                    <h5>Last month</h5>
+                    <hr />
+                    <div #chartTrend3 style="height: 300px;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light">
+                    <h5>Last 24 hours</h5>
+                    <hr />
+                    <div #chartTrend4 style="height: 300px;"></div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <div #chart2 style="height: 300px;"></div>
-        </div>
+        &nbsp;
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div #chart4 style="height: 300px;"></div>
+    <div [ngStyle]="{'display': generalOverview ? 'none' : 'block'}">
+        <h4>React/Angular distribution</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-7">
+                <div #chartFrameworkLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-5">
+                <div #chartFrameworkPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div #chart5 style="height: 300px;"></div>
+        &nbsp;
+        <h4>Maven/Gradel distribution</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <div #chartBuildtoolPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-7">
+                <div #chartBuildtoolLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        &nbsp;
+        <h4>Deployment tool used</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div #chartDeploymentLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-6">
+                <div #chartDeploymentPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        <h4>Production database distribution</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <div #chartDBProdPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-7">
+                <div #chartDBProdLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        <h4>Cache provider</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-7">
+                <div #chartCacheLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-5">
+                <div #chartCachePie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        <h4>JHipster version used for creation</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div #chartVersionPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-6">
+                <div #chartVersionLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        <h4>Type of app created</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-7">
+                <div #chartAppTypeLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-5">
+                <div #chartAppTypePie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+        </div>
+        <h4>Number of JDL entities</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <div #chartJDLPie style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
+            <div class="col-md-7">
+                <div #chartJDLLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
+            </div>
         </div>
     </div>
 </div>

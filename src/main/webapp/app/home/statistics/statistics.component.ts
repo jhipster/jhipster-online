@@ -23,29 +23,46 @@ import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
 import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
-import { comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
+import { barChart, comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
 // import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
 
 @Component({
     selector: 'jhi-statistics',
-    templateUrl: './statistics.component.html'
+    templateUrl: './statistics.component.html',
+    styleUrls: ['statistics.scss']
 })
 export class StatisticsComponent implements AfterViewInit {
     dataFromDb = [];
     charts = [];
 
-    @ViewChild('chart1') chart1: ElementRef;
-    @ViewChild('chart2') chart2: ElementRef;
-    @ViewChild('chart3') chart3: ElementRef;
-    @ViewChild('chart4') chart4: ElementRef;
-    @ViewChild('chart5') chart5: ElementRef;
+    @ViewChild('chartTrend1') chartTrend1: ElementRef;
+    @ViewChild('chartTrend2') chartTrend2: ElementRef;
+    @ViewChild('chartTrend3') chartTrend3: ElementRef;
+    @ViewChild('chartTrend4') chartTrend4: ElementRef;
+    @ViewChild('chartFrameworkLine') chartFrameworkLine: ElementRef;
+    @ViewChild('chartFrameworkPie') chartFrameworkPie: ElementRef;
+    @ViewChild('chartBuildtoolLine') chartBuildtoolLine: ElementRef;
+    @ViewChild('chartBuildtoolPie') chartBuildtoolPie: ElementRef;
+    @ViewChild('chartDeploymentLine') chartDeploymentLine: ElementRef;
+    @ViewChild('chartDeploymentPie') chartDeploymentPie: ElementRef;
+    @ViewChild('chartDBProdLine') chartDBProdLine: ElementRef;
+    @ViewChild('chartDBProdPie') chartDBProdPie: ElementRef;
+    @ViewChild('chartCacheLine') chartCacheLine: ElementRef;
+    @ViewChild('chartCachePie') chartCachePie: ElementRef;
+    @ViewChild('chartVersionLine') chartVersionLine: ElementRef;
+    @ViewChild('chartVersionPie') chartVersionPie: ElementRef;
+    @ViewChild('chartAppTypeLine') chartAppTypeLine: ElementRef;
+    @ViewChild('chartAppTypePie') chartAppTypePie: ElementRef;
+    @ViewChild('chartJDLLine') chartJDLLine: ElementRef;
+    @ViewChild('chartJDLPie') chartJDLPie: ElementRef;
 
     countJdl: Observable<string>;
     countYoRc: Observable<string>;
     countUser: Observable<string>; // user/owner ?
     countYoRcByDate: Observable<string>;
 
-    timeScale: string;
+    timeScale = 'all';
+    generalOverview = true;
 
     yorcByDateList: any;
 
@@ -54,21 +71,52 @@ export class StatisticsComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.countJdl = this.statisticsService.countJdl();
         this.countYoRc = this.statisticsService.countYos();
+        this.onSelectTimeScale();
+    }
 
-        this.statisticsService.getCount('yearly').subscribe(data => {
-            const lineChart3 = new LineChart(this.echartsService, lineChart(data), this.chart1, null).build();
-        });
-        this.statisticsService.getCount('monthly').subscribe(data => {
-            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart2, null).build();
-        });
+    public onSelectTimeScale() {
+        switch (this.timeScale) {
+            case 'all':
+                this.generalOverview = true;
+                this.displayTrend('yearly', this.chartTrend1);
+                this.displayTrend('monthly', this.chartTrend2);
+                this.displayTrend('daily', this.chartTrend3);
+                this.displayTrend('hourly', this.chartTrend4);
+                break;
+            case 'years':
+                this.displayCharts('monthly');
+                break;
+            case 'months':
+                this.displayCharts('daily');
+                break;
+            case 'weeks':
+                break;
+            case 'days':
+                this.displayCharts('hourly');
+                break;
+            default:
+                break;
+        }
+    }
 
-        this.statisticsService.getCount('daily').subscribe(data => {
-            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
+    private displayTrend(frequency: string, chart: any) {
+        this.statisticsService.getCount(frequency).subscribe(data => {
+            new LineChart(this.echartsService, barChart(data), chart, null).build();
         });
+    }
 
-        this.statisticsService.getFieldCount('clientFramework', 'yearly').subscribe(data => {
+    private displayCharts(frequency: string) {
+        this.generalOverview = false;
+
+        // Client framework
+        this.statisticsService.getFieldCount('clientFramework', frequency).subscribe(data => {
             data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
-            const linechart2 = new LineChart(this.echartsService, comparingLineChart(data, 'Date', 'Amount'), this.chart4, null).build();
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartFrameworkLine,
+                null
+            ).build();
             const pieChartData = data.reduce((acc, current) => {
                 Object.keys(current.values).forEach(e => {
                     const currentSum = acc[e] || 0;
@@ -76,20 +124,149 @@ export class StatisticsComponent implements AfterViewInit {
                 });
                 return acc;
             }, {});
-            const lineChart3 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chart5, null).build();
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartFrameworkPie, null).build();
 
-            this.updateRelatedBasicChartOf(data, linechart2.chartInstance, lineChart3);
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
         });
-    }
 
-    public onSelectTimeScale() {
-        switch (this.timeScale) {
-            case 'years':
-                // this.charts[0].generatedProjectsLineChart.chartInstance.setOption(lineChartOptions(this.computeByYear(this.yorcByDateList)));
-                break;
-            default:
-                break;
-        }
+        // Buildtool
+        this.statisticsService.getFieldCount('buildTool', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartBuildtoolLine,
+                null
+            ).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartBuildtoolPie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });
+
+        // Deployment
+        /*
+        this.statisticsService.getFieldCount('buildTool', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(this.echartsService, comparingLineChart(data, 'Date', 'Amount'), this.chartDeploymentLine, null).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartDeploymentPie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });*/
+
+        // Production database
+        this.statisticsService.getFieldCount('prodDatabaseType', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartDBProdLine,
+                null
+            ).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartDBProdPie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });
+
+        // Cache provider
+        this.statisticsService.getFieldCount('cacheProvider', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartCacheLine,
+                null
+            ).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartCachePie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });
+
+        // JHipster Version
+        this.statisticsService.getFieldCount('jhipsterVersion', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartVersionLine,
+                null
+            ).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartVersionPie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });
+
+        // Type of app
+        this.statisticsService.getFieldCount('applicationType', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(
+                this.echartsService,
+                comparingLineChart(data, 'Date', 'Amount'),
+                this.chartAppTypeLine,
+                null
+            ).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartAppTypePie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });
+
+        // JDL entities
+        /*
+        this.statisticsService.getFieldCount('', frequency).subscribe(data => {
+            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+            const linechartCompared1 = new LineChart(this.echartsService, comparingLineChart(data, 'Date', 'Amount'), this.chartJDLLine, null).build();
+            const pieChartData = data.reduce((acc, current) => {
+                Object.keys(current.values).forEach(e => {
+                    const currentSum = acc[e] || 0;
+                    acc[e] = currentSum + current.values[e];
+                });
+                return acc;
+            }, {});
+            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), this.chartJDLPie, null).build();
+
+            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        });*/
     }
 
     private updateRelatedBasicChartOf(data: any, chartInstance: any, basicChartInstance: BasicChart) {

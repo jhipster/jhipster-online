@@ -33,7 +33,7 @@ public class StatisticsResourceUtil {
                 return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
             case HOURLY:
                 DateTime nowMinusTwentyFourHour = DateTime.now().minusHours(24);
-                Instant.ofEpochMilli(nowMinusTwentyFourHour.toInstant().getMillis());
+                return Instant.ofEpochMilli(nowMinusTwentyFourHour.toInstant().getMillis());
             default:
                 return null;
         }
