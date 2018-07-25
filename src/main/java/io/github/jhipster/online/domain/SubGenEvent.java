@@ -1,6 +1,7 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sub_gen_event")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SubGenEvent implements Serializable {
+public class SubGenEvent implements Serializable, CompleteDate {
 
     private static final long serialVersionUID = 1L;
 

@@ -3,6 +3,7 @@ package io.github.jhipster.online.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
 @Table(name = "yo_rc")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonDeserialize(using = YoRCDeserializer.class)
-public class YoRC implements Serializable {
+public class YoRC implements Serializable, CompleteDate {
 
     private static final long serialVersionUID = 1L;
 

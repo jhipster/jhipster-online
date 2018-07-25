@@ -3,6 +3,7 @@ package io.github.jhipster.online.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.service.util.StatisticsUtil;
 import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,18 +56,15 @@ public class StatisticsService {
         log.info("Adding an entry for generator {}.", generatorGuid);
 
         DateTime now = DateTime.now();
-        DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
-        int year = now.getYear();
-        int month = Months.monthsBetween(epoch.toInstant(), now.toInstant()).getMonths();
-        int week = Weeks.weeksBetween(epoch.toInstant(), now.toInstant()).getWeeks();
-        int day = Days.daysBetween(epoch.toInstant(), now.toInstant()).getDays();
-        int hour = Hours.hoursBetween(epoch.toInstant(), now.toInstant()).getHours();
 
         GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
         generatorIdentityService.save(generatorIdentity.host(host));
-        OwnerIdentity owner = generatorIdentity.getOwner();
 
+        OwnerIdentity owner = generatorIdentity.getOwner();
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
+
+        StatisticsUtil.setAbsoluteDate(yorc, now);
+
         yorc.jhipsterVersion(generatorVersion)
             .gitProvider(gitProvider)
             .nodeVersion(nodeVersion)
@@ -77,23 +75,28 @@ public class StatisticsService {
             .memory(memory)
             .userLanguage(userLanguage)
             .owner(owner)
-            .year(year)
-            .month(month)
-            .week(week)
-            .day(day)
-            .hour(hour)
             .creationDate(Instant.ofEpochMilli(now.getMillis()));
         yoRCService.save(yorc);
         yorc.getSelectedLanguages().forEach(languageService::save);
     }
 
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorId)  {
-        subGenEvent.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+        DateTime now = DateTime.now();
+        StatisticsUtil.setAbsoluteDate(subGenEvent, now);
+
+        subGenEvent
+            .date(Instant.ofEpochMilli(now.getMillis()))
+            .owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         subGenEventService.save(subGenEvent);
     }
 
     public void addEntityStats(EntityStats entityStats, String generatorId)  {
-        entityStats.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+        DateTime now = DateTime.now();
+        StatisticsUtil.setAbsoluteDate(entityStats, now);
+
+        entityStats
+            .date(Instant.now())
+            .owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         entityStatsService.save(entityStats);
     }
 }

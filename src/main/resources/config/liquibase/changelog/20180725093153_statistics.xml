@@ -54,7 +54,7 @@
             </column>
             <column name="jhi_date" type="timestamp"/>
             <column name="day" type="INT"/>
-            <column name="event" type="VARCHAR(255)"/>
+            <column name="event" type="VARCHAR(2047)"/>
             <column name="hour" type="INT"/>
             <column name="month" type="INT"/>
             <column name="source" type="VARCHAR(255)"/>
