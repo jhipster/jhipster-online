@@ -22,7 +22,7 @@ import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
-import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
+import { BasicChart, Frequency, LineChart } from 'app/home/statistics/statistics.model';
 import { comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
 // import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
 
@@ -39,10 +39,11 @@ export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chart3') chart3: ElementRef;
     @ViewChild('chart4') chart4: ElementRef;
     @ViewChild('chart5') chart5: ElementRef;
+    @ViewChild('chart6') chart6: ElementRef;
 
     countJdl: Observable<string>;
     countYoRc: Observable<string>;
-    countUser: Observable<string>; // user/owner ?
+    countUser: Observable<string>;
     countYoRcByDate: Observable<string>;
 
     timeScale: string;
@@ -55,15 +56,19 @@ export class StatisticsComponent implements AfterViewInit {
         this.countJdl = this.statisticsService.countJdl();
         this.countYoRc = this.statisticsService.countYos();
 
-        this.statisticsService.getCount('yearly').subscribe(data => {
-            const lineChart3 = new LineChart(this.echartsService, lineChart(data), this.chart1, null).build();
+        this.statisticsService.getCount(Frequency.YEARLY).subscribe(data => {
+            const lineChart3 = new LineChart(this.echartsService, lineChart(data, Frequency.YEARLY), this.chart1, null).build();
         });
-        this.statisticsService.getCount('monthly').subscribe(data => {
-            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart2, null).build();
+        this.statisticsService.getCount(Frequency.MONTHLY).subscribe(data => {
+            const lineChart2 = new LineChart(this.echartsService, lineChart(data, Frequency.MONTHLY), this.chart2, null).build();
         });
 
-        this.statisticsService.getCount('daily').subscribe(data => {
-            const lineChart2 = new LineChart(this.echartsService, lineChart(data), this.chart3, null).build();
+        this.statisticsService.getCount(Frequency.DAILY).subscribe(data => {
+            const lineChart2 = new LineChart(this.echartsService, lineChart(data, Frequency.DAILY), this.chart3, null).build();
+        });
+
+        this.statisticsService.getCount(Frequency.HOURLY).subscribe(data => {
+            const lineChart2 = new LineChart(this.echartsService, lineChart(data, Frequency.HOURLY), this.chart6, null).build();
         });
 
         this.statisticsService.getFieldCount('clientFramework', 'yearly').subscribe(data => {
@@ -109,52 +114,5 @@ export class StatisticsComponent implements AfterViewInit {
                 basicChartInstance.chartInstance.setOption(pieChart(arr));
             });
         });
-    }
-
-    private computeByYear(data: any) {
-        return Object.keys(data).reduce((acc, key) => {
-            const year = moment(new Date(key)).year();
-            const filteredDataByYear = this.filterDataByKey(data, key => moment(new Date(key)).year() === year);
-            acc[year] = Object.keys(filteredDataByYear).reduce((acc, current) => {
-                return filteredDataByYear[current].length + acc;
-            }, 0);
-            return acc;
-        }, {});
-    }
-
-    private groupDataBy(data: any, property: string) {
-        return data.reduce((acc, current) => {
-            const key = current[property];
-            if (!acc[key]) {
-                acc[key] = [];
-            }
-            acc[key].push(current);
-            return acc;
-        }, {});
-    }
-
-    private filterDataByKey(data: any, predicate: Function) {
-        return Object.keys(data)
-            .filter(key => predicate(key))
-            .reduce((res, key) => {
-                res[key] = data[key];
-                return res;
-            }, {});
-    }
-
-    private filterDataByValue(data: any, predicate: Function) {
-        return Object.keys(data)
-            .filter(key => predicate(data[key]))
-            .reduce((res, key) => {
-                res[key] = data[key];
-                return res;
-            }, {});
-    }
-
-    private filterDataByArrayValue(data: any, predicate: Function) {
-        return Object.keys(data).reduce((res, key) => {
-            res[key] = data[key].filter(predicate);
-            return res;
-        }, {});
     }
 }

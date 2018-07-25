@@ -59,6 +59,13 @@ entity SubGenEvent {
 }
 
 entity EntityStats {
+    // Date stuff
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
     fields Integer,
     relationships Integer,
     pagination String,

@@ -6,7 +6,7 @@ import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.YoRCServiceUtil;
+import io.github.jhipster.online.service.util.DataGenerationUtil;
 import org.joda.time.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,8 +56,8 @@ public class YoRCServiceCountsIntTest {
         epochInstant = new Instant(epoch.toInstant().toEpochMilli());
         fiveYearsAgoInstant = new Instant(fiveYearsAgo.toInstant().toEpochMilli());
 
-        YoRCServiceUtil.clearDatabase(yoRCRepository);
-        yos = YoRCServiceUtil.addFakeData(300, fiveYearsAgo, calendar, yoRCRepository);
+        DataGenerationUtil.clearYoRcTable(yoRCRepository);
+        yos = DataGenerationUtil.addYosToDatabase(300, fiveYearsAgo, calendar, yoRCRepository);
     }
 
     @Test

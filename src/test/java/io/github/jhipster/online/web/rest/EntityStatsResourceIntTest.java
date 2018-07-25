@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -40,6 +41,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)
 public class EntityStatsResourceIntTest {
+
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
+
+    private static final Integer DEFAULT_MONTH = 1;
+    private static final Integer UPDATED_MONTH = 2;
+
+    private static final Integer DEFAULT_WEEK = 1;
+    private static final Integer UPDATED_WEEK = 2;
+
+    private static final Integer DEFAULT_DAY = 1;
+    private static final Integer UPDATED_DAY = 2;
+
+    private static final Integer DEFAULT_HOUR = 1;
+    private static final Integer UPDATED_HOUR = 2;
 
     private static final Integer DEFAULT_FIELDS = 1;
     private static final Integer UPDATED_FIELDS = 2;
@@ -65,7 +81,7 @@ public class EntityStatsResourceIntTest {
     @Autowired
     private EntityStatsRepository entityStatsRepository;
 
-
+    
 
     @Autowired
     private EntityStatsService entityStatsService;
@@ -105,6 +121,11 @@ public class EntityStatsResourceIntTest {
      */
     public static EntityStats createEntity(EntityManager em) {
         EntityStats entityStats = new EntityStats()
+            .year(DEFAULT_YEAR)
+            .month(DEFAULT_MONTH)
+            .week(DEFAULT_WEEK)
+            .day(DEFAULT_DAY)
+            .hour(DEFAULT_HOUR)
             .fields(DEFAULT_FIELDS)
             .relationships(DEFAULT_RELATIONSHIPS)
             .pagination(DEFAULT_PAGINATION)
@@ -135,6 +156,11 @@ public class EntityStatsResourceIntTest {
         List<EntityStats> entityStatsList = entityStatsRepository.findAll();
         assertThat(entityStatsList).hasSize(databaseSizeBeforeCreate + 1);
         EntityStats testEntityStats = entityStatsList.get(entityStatsList.size() - 1);
+        assertThat(testEntityStats.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testEntityStats.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(testEntityStats.getWeek()).isEqualTo(DEFAULT_WEEK);
+        assertThat(testEntityStats.getDay()).isEqualTo(DEFAULT_DAY);
+        assertThat(testEntityStats.getHour()).isEqualTo(DEFAULT_HOUR);
         assertThat(testEntityStats.getFields()).isEqualTo(DEFAULT_FIELDS);
         assertThat(testEntityStats.getRelationships()).isEqualTo(DEFAULT_RELATIONSHIPS);
         assertThat(testEntityStats.getPagination()).isEqualTo(DEFAULT_PAGINATION);
@@ -174,6 +200,11 @@ public class EntityStatsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(entityStats.getId().intValue())))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
+            .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
+            .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
+            .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].fields").value(hasItem(DEFAULT_FIELDS)))
             .andExpect(jsonPath("$.[*].relationships").value(hasItem(DEFAULT_RELATIONSHIPS)))
             .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION.toString())))
@@ -182,7 +213,7 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-
+    
 
     @Test
     @Transactional
@@ -195,6 +226,11 @@ public class EntityStatsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(entityStats.getId().intValue()))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
+            .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
+            .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
+            .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.fields").value(DEFAULT_FIELDS))
             .andExpect(jsonPath("$.relationships").value(DEFAULT_RELATIONSHIPS))
             .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION.toString()))
@@ -224,6 +260,11 @@ public class EntityStatsResourceIntTest {
         // Disconnect from session so that the updates on updatedEntityStats are not directly saved in db
         em.detach(updatedEntityStats);
         updatedEntityStats
+            .year(UPDATED_YEAR)
+            .month(UPDATED_MONTH)
+            .week(UPDATED_WEEK)
+            .day(UPDATED_DAY)
+            .hour(UPDATED_HOUR)
             .fields(UPDATED_FIELDS)
             .relationships(UPDATED_RELATIONSHIPS)
             .pagination(UPDATED_PAGINATION)
@@ -241,6 +282,11 @@ public class EntityStatsResourceIntTest {
         List<EntityStats> entityStatsList = entityStatsRepository.findAll();
         assertThat(entityStatsList).hasSize(databaseSizeBeforeUpdate);
         EntityStats testEntityStats = entityStatsList.get(entityStatsList.size() - 1);
+        assertThat(testEntityStats.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testEntityStats.getMonth()).isEqualTo(UPDATED_MONTH);
+        assertThat(testEntityStats.getWeek()).isEqualTo(UPDATED_WEEK);
+        assertThat(testEntityStats.getDay()).isEqualTo(UPDATED_DAY);
+        assertThat(testEntityStats.getHour()).isEqualTo(UPDATED_HOUR);
         assertThat(testEntityStats.getFields()).isEqualTo(UPDATED_FIELDS);
         assertThat(testEntityStats.getRelationships()).isEqualTo(UPDATED_RELATIONSHIPS);
         assertThat(testEntityStats.getPagination()).isEqualTo(UPDATED_PAGINATION);

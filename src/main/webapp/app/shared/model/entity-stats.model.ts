@@ -3,6 +3,11 @@ import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
 
 export interface IEntityStats {
     id?: number;
+    year?: number;
+    month?: number;
+    week?: number;
+    day?: number;
+    hour?: number;
     fields?: number;
     relationships?: number;
     pagination?: string;
@@ -16,6 +21,11 @@ export interface IEntityStats {
 export class EntityStats implements IEntityStats {
     constructor(
         public id?: number,
+        public year?: number,
+        public month?: number,
+        public week?: number,
+        public day?: number,
+        public hour?: number,
         public fields?: number,
         public relationships?: number,
         public pagination?: string,

@@ -1,8 +1,30 @@
 import * as moment from 'moment';
 
-export const prettifyDate = (date: string): string => moment(new Date(date)).format('L');
+import { Frequency } from 'app/home/statistics/statistics.model';
 
-export const lineChart = (data: any) => {
+export const prettifyDate = (date: string, frequency?: Frequency): string => {
+    let format = '';
+    switch (frequency) {
+        case Frequency.YEARLY:
+            format = 'YYYY';
+            break;
+        case Frequency.MONTHLY:
+            format = 'MMMM YYYY';
+            break;
+        case Frequency.HOURLY:
+            format = 'HH:00';
+            break;
+        case Frequency.WEEKLY:
+        case Frequency.DAILY:
+        default:
+            format = 'L';
+            break;
+    }
+
+    return moment(new Date(date)).format(format);
+};
+
+export const lineChart = (data: any, frenquency: Frequency) => {
     return {
         tooltip: {
             trigger: 'axis'
@@ -10,7 +32,7 @@ export const lineChart = (data: any) => {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: data.map(obj => prettifyDate(obj.date))
+            data: data.map(obj => prettifyDate(obj.date, frenquency))
         },
         yAxis: {
             type: 'value'

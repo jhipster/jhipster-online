@@ -33,7 +33,7 @@ public class StatisticsResourceUtil {
                 return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
             case HOURLY:
                 DateTime nowMinusTwentyFourHour = DateTime.now().minusHours(24);
-                Instant.ofEpochMilli(nowMinusTwentyFourHour.toInstant().getMillis());
+                return Instant.ofEpochMilli(nowMinusTwentyFourHour.toInstant().getMillis());
             default:
                 return null;
         }
@@ -59,7 +59,7 @@ public class StatisticsResourceUtil {
     public static YoRCColumn getColumnFromField(String field) {
         return Arrays
             .stream(YoRCColumn.values())
-            .filter(c -> c.getValue().equals(field))
+            .filter(c -> c.getDatabaseValue().equals(field))
             .findFirst()
             .orElse(null);
     }

@@ -6,7 +6,7 @@ import io.github.jhipster.online.domain.enums.SubGenEventType;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.SubGenEventUtil;
+import io.github.jhipster.online.service.util.DataGenerationUtil;
 import org.joda.time.Days;
 import org.joda.time.Hours;
 import org.joda.time.Instant;
@@ -59,8 +59,8 @@ public class SubGenEventIntTest {
         epochInstant = new Instant(epoch.toInstant().toEpochMilli());
         fiveYearsAgoInstant = new Instant(threeYearsAgo.toInstant().toEpochMilli());
 
-        SubGenEventUtil.clearDatabase(subGenEventRepository);
-        sgeList = SubGenEventUtil.addFakeData(300, threeYearsAgo, calendar, subGenEventRepository);
+        DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
+        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(300, threeYearsAgo, calendar, subGenEventRepository);
     }
 
     @Test

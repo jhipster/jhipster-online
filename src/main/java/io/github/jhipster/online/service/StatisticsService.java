@@ -26,19 +26,16 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
-    private final CrashReportService crashReportService;
-
     public StatisticsService(YoRCService yoRCService,
                              LanguageService languageService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService, CrashReportService crashReportService) {
+                             EntityStatsService entityStatsService) {
         this.yoRCService = yoRCService;
         this.languageService = languageService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
-        this.crashReportService = crashReportService;
     }
 
     public void addEntry(String entry, String host) throws IOException {
@@ -56,7 +53,6 @@ public class StatisticsService {
         String memory = jsonNodeRoot.get("memory").asText();
         String userLanguage = jsonNodeRoot.get("user-language").asText();
         log.info("Adding an entry for generator {}.", generatorGuid);
-
 
         DateTime now = DateTime.now();
         DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
@@ -99,10 +95,5 @@ public class StatisticsService {
     public void addEntityStats(EntityStats entityStats, String generatorId)  {
         entityStats.date(Instant.now()).owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         entityStatsService.save(entityStats);
-    }
-
-    public void submitCrashReport(CrashReport report) {
-        report.date(Instant.now());
-        crashReportService.save(report);
     }
 }

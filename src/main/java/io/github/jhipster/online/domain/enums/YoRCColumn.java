@@ -1,6 +1,8 @@
 package io.github.jhipster.online.domain.enums;
 
-public enum YoRCColumn {
+import io.github.jhipster.online.domain.interfaces.DatabaseColumn;
+
+public enum YoRCColumn implements DatabaseColumn {
     SERVER_PORT("serverPort"),
     AUTHENTICATION_TYPE("authenticationType"),
     CACHE_PROVIDER("cacheProvider"),
@@ -19,11 +21,12 @@ public enum YoRCColumn {
 
     private String value;
 
-    private YoRCColumn(String value) {
+    YoRCColumn(String value) {
         this.value = value;
     }
 
-    public String getValue() {
+    @Override
+    public String getDatabaseValue() {
         return value;
     }
 }

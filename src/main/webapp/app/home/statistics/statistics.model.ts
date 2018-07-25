@@ -1,6 +1,14 @@
 import { ElementRef } from '@angular/core';
 import { NgxEchartsService } from 'ngx-echarts';
 
+export enum Frequency {
+    YEARLY = 'yearly',
+    MONTHLY = 'monthly',
+    WEEKLY = 'weekly',
+    DAILY = 'daily',
+    HOURLY = 'hourly'
+}
+
 export class BasicChart {
     public chartInstance;
 
