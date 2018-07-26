@@ -135,7 +135,7 @@ export class JhiGitProviderComponent implements OnInit {
             this.data.availableGitProviders.push('GitHub');
             this.data.selectedGitProvider = 'GitHub';
         }
-        this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider);
+        this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider || '');
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
