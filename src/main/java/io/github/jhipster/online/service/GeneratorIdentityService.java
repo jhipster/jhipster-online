@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -102,27 +101,34 @@ public class GeneratorIdentityService {
      */
     @Transactional
     public GeneratorIdentity findOrCreateOneByGuid(String guid) {
-            Optional<GeneratorIdentity> maybeResult = generatorIdentityRepository.findFirstByGuidEquals(guid);
-            if (!maybeResult.isPresent()) {
-                return generatorIdentityRepository.save(new GeneratorIdentity().guid(guid));
-            } else {
-                return maybeResult.get();
-            }
+        GeneratorIdentity result = generatorIdentityRepository.findFirstByGuidEquals(guid)
+            .orElseGet(() -> generatorIdentityRepository.save(new GeneratorIdentity().guid(guid)));
+
+        OwnerIdentity owner = result.getOwner();
+        if (owner == null) {
+            owner = ownerIdentityService.save(new OwnerIdentity());
+            result.setOwner(owner);
+        }
+
+        return result;
     }
 
-    public boolean bindCurrentUserToGenerator(User user, String guid) {
-        Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
 
-        if(maybeGeneratorIdentity.isPresent() && maybeGeneratorIdentity.get().getOwner() != null && maybeGeneratorIdentity.get().getOwner().getOwner() != null) {
+    @Transactional
+    public boolean bindCurrentUserToGenerator(User user, String guid) {
+        GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
+
+        // Check if the generator has already an owner
+        if(generatorIdentity.getOwner().getOwner() != null) {
             return false;
         }
 
-        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(user);
-        save(findOrCreateOneByGuid(guid).owner(ownerIdentity));
+        generatorIdentity.getOwner().owner(user);
 
         return true;
     }
 
+    @Transactional
     public boolean unbindCurrentUserFromGenerator(User user, String guid) {
         Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
 
@@ -135,9 +141,7 @@ public class GeneratorIdentityService {
             return false;
         }
 
-        maybeGeneratorIdentity.get().setOwner(null);
-        generatorIdentityRepository.save(maybeGeneratorIdentity.get());
-
+        maybeGeneratorIdentity.get().getOwner().setOwner(null);
         return true;
     }
 }
