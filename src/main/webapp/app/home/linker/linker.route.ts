@@ -22,6 +22,7 @@ import { UserRouteAccessService } from 'app/core';
 
 import { LinkerComponent } from 'app/home/linker/linker.component';
 import { GeneratorIdentityUnbindDialogComponent } from 'app/home/linker/linker-unbind-dialog.component';
+import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class GuidResolve implements Resolve<string> {
@@ -40,13 +41,25 @@ export const LinkerRoute: Route = {
     canActivate: [UserRouteAccessService]
 };
 
-export const LinkerDialogueRoute: Route = {
-    path: 'linker/unbind',
-    component: GeneratorIdentityUnbindDialogComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Unbind a generator'
+export const LinkerDialogueRoutes: Routes = [
+    {
+        path: 'linker/unbind',
+        component: GeneratorIdentityUnbindDialogComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Unbind a generator'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-};
+    {
+        path: 'linker/delete-statistics',
+        component: DataDeletionDialogComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Delete all user statistics'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
+];

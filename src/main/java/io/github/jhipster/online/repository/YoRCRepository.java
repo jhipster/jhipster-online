@@ -1,5 +1,6 @@
 package io.github.jhipster.online.repository;
 
+import io.github.jhipster.online.domain.OwnerIdentity;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +16,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface YoRCRepository extends JpaRepository<YoRC, Long> {
+
+    void deleteAllByOwner(OwnerIdentity owner);
 
 }

@@ -8,31 +8,35 @@
     <p>In this page is displayed every generator that is bound to your account.</p>
     <ngb-alert [dismissible]="false" type="info" >
         <fa-icon [icon]="'lightbulb'"></fa-icon>
-        <span>You can obtain your generator ID by using the command: <b>jhipster link-account --guid</b>.</span>
+        <span>You can obtain your generator ID by using the command: <b>jhipster login --guid</b>.</span>
     </ngb-alert>
+    <button class="btn btn-danger" (click)="openDataDeletionModal()">
+        <fa-icon [icon]="'skull'"></fa-icon>
+        <span class="">Delete all my statistics</span>
+    </button>
     <jhi-alert></jhi-alert>
-    <br/>
-        <div class="table-responsive" *ngIf="generatorIdentities">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th><span>Generator ID</span></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let generatorIdentity of generatorIdentities; trackBy: trackId">
-                    <td>{{generatorIdentity.guid}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button class="btn btn-danger btn-sm" (click)="openUnbindModal(generatorIdentity.guid)">
-                                <fa-icon [icon]="'times'"></fa-icon>
-                                <span class="d-none d-md-inline">Unbind</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <br />
+    <div class="table-responsive" *ngIf="generatorIdentities">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span>Generator ID</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let generatorIdentity of generatorIdentities; trackBy: trackId">
+                <td>{{generatorIdentity.guid}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button class="btn btn-danger btn-sm" (click)="openUnbindModal(generatorIdentity.guid)">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Unbind</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

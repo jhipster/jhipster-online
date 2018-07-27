@@ -3,12 +3,14 @@ package io.github.jhipster.online.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.service.GeneratorIdentityService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,8 +32,11 @@ public class GeneratorIdentityResource {
 
     private final GeneratorIdentityService generatorIdentityService;
 
-    public GeneratorIdentityResource(GeneratorIdentityService generatorIdentityService) {
+    private final UserService userService;
+
+    public GeneratorIdentityResource(GeneratorIdentityService generatorIdentityService,UserService userService) {
         this.generatorIdentityService = generatorIdentityService;
+        this.userService = userService;
     }
 
     /**
@@ -125,7 +130,7 @@ public class GeneratorIdentityResource {
     @Timed
     public List<GeneratorIdentity> getAllOwnedGeneratorIdentities() {
         log.debug("REST request to get all owned GeneratorIdentities");
-        return generatorIdentityService.findAllOwned();
+        return generatorIdentityService.findAllOwned(userService.getUser());
     }
 
 }

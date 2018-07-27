@@ -1,6 +1,7 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -26,7 +27,7 @@ public class GeneratorIdentity implements Serializable {
     @Column(name = "host")
     private String host;
 
-    @Column(name = "guid")
+    @Column(name = "guid", unique = true)
     private String guid;
 
     @ManyToOne

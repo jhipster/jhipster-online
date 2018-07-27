@@ -27,6 +27,7 @@ import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
 import { GeneratorIdentityUnbindDialogComponent } from 'app/home/linker/linker-unbind-dialog.component';
+import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @Component({
     selector: 'jhi-linker',
@@ -68,11 +69,14 @@ export class LinkerComponent implements OnInit, OnDestroy {
     }
 
     openUnbindModal(generatorId: string) {
-        console.log('ok');
         const modalRef = this.modalService.open(GeneratorIdentityUnbindDialogComponent, { size: 'lg', backdrop: 'static' })
             .componentInstance;
 
         modalRef.generatorId = generatorId;
+    }
+
+    openDataDeletionModal() {
+        this.modalService.open(DataDeletionDialogComponent, { size: 'lg', backdrop: 'static' });
     }
 
     trackId(index: number, item: IGeneratorIdentity) {

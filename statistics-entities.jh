@@ -75,10 +75,6 @@ entity EntityStats {
     date Instant
 }
 
-entity Language {
-    isoCode String
-}
-
 entity OwnerIdentity {
 
 }

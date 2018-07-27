@@ -46,4 +46,8 @@ export class GeneratorIdentityService {
     unbind(generatorId: string): Observable<HttpResponse<any>> {
         return this.http.delete(`${SERVER_API_URL}api/s/link/${generatorId}`, { observe: 'response' });
     }
+
+    deleteStatistics(): Observable<any> {
+        return this.http.delete(`${SERVER_API_URL}api/s/data`);
+    }
 }

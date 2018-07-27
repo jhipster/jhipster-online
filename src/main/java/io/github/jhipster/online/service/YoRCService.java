@@ -3,6 +3,7 @@ package io.github.jhipster.online.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.jhipster.online.domain.OwnerIdentity;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.domain.YoRC_;
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
@@ -47,15 +48,16 @@ public class YoRCService {
 
     private final OwnerIdentityService ownerIdentityService;
 
-    private final LanguageService languageService;
 
     private final EntityManager entityManager;
 
-    public YoRCService(YoRCRepository yoRCRepository, OwnerIdentityService ownerIdentityService, UserRepository userRepository, LanguageService languageService, EntityManager entityManager) {
+    public YoRCService(YoRCRepository yoRCRepository,
+                       OwnerIdentityService ownerIdentityService,
+                       UserRepository userRepository,
+                       EntityManager entityManager) {
         this.yoRCRepository = yoRCRepository;
         this.ownerIdentityService = ownerIdentityService;
         this.userRepository = userRepository;
-        this.languageService = languageService;
         this.entityManager = entityManager;
     }
 
@@ -103,6 +105,11 @@ public class YoRCService {
         yoRCRepository.deleteById(id);
     }
 
+    public void deleteByOwnerIdentity(OwnerIdentity ownerIdentity) {
+        log.debug("Request to delete by OwnerIdentity : {}", ownerIdentity);
+        yoRCRepository.deleteAllByOwner(ownerIdentity);
+    }
+
     public long countAll() {
         return yoRCRepository.count();
     }
@@ -117,7 +124,6 @@ public class YoRCService {
             yorc.setOwner(ownerIdentityService.findOrCreateUser(
                 userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null)).orElse(null)));
             save(yorc);
-            yorc.getSelectedLanguages().forEach(languageService::save);
             log.debug("Parsed json:\n{}", yorc);
         } catch (IOException e) {
             e.printStackTrace();

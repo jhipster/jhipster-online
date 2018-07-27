@@ -19,7 +19,6 @@ public class StatisticsService {
 
     private final YoRCService yoRCService;
 
-    private final LanguageService languageService;
 
     private final GeneratorIdentityService generatorIdentityService;
 
@@ -27,16 +26,18 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
+    private final OwnerIdentityService ownerIdentityService;
+
     public StatisticsService(YoRCService yoRCService,
-                             LanguageService languageService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService) {
+                             EntityStatsService entityStatsService,
+                             OwnerIdentityService ownerIdentityService) {
         this.yoRCService = yoRCService;
-        this.languageService = languageService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
+        this.ownerIdentityService = ownerIdentityService;
     }
 
     public void addEntry(String entry, String host) throws IOException {
@@ -77,7 +78,6 @@ public class StatisticsService {
             .owner(owner)
             .creationDate(Instant.ofEpochMilli(now.getMillis()));
         yoRCService.save(yorc);
-        yorc.getSelectedLanguages().forEach(languageService::save);
     }
 
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorId)  {
@@ -98,5 +98,20 @@ public class StatisticsService {
             .date(Instant.now())
             .owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
         entityStatsService.save(entityStats);
+    }
+
+    public void deleteStatistics(User owner) {
+        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(owner);
+        log.debug("Statistics data deletion requested for : {} ({}) ", owner.getLogin(), ownerIdentity.getId());
+
+        log.debug("Deleting yos");
+        yoRCService.deleteByOwnerIdentity(ownerIdentity);
+
+        log.debug("Deleting sub generator events");
+        subGenEventService.deleteByOwner(ownerIdentity);
+
+        log.debug("Deleting entity statistics");
+        entityStatsService.deleteByOwner(ownerIdentity);
+
     }
 }

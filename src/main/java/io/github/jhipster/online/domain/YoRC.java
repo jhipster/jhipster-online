@@ -144,9 +144,9 @@ public class YoRC implements Serializable, CompleteDate {
     @Column(name = "has_cucumber")
     private Boolean hasCucumber;
 
-    @OneToMany(mappedBy = "yoRC")
+    @ElementCollection
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Language> selectedLanguages = new HashSet<>();
+    private Set<String> selectedLanguages = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("")
@@ -655,28 +655,26 @@ public class YoRC implements Serializable, CompleteDate {
         this.hasCucumber = hasCucumber;
     }
 
-    public Set<Language> getSelectedLanguages() {
+    public Set<String> getSelectedLanguages() {
         return selectedLanguages;
     }
 
-    public YoRC selectedLanguages(Set<Language> languages) {
+    public YoRC selectedLanguages(Set<String> languages) {
         this.selectedLanguages = languages;
         return this;
     }
 
-    public YoRC addSelectedLanguages(Language language) {
+    public YoRC addSelectedLanguages(String language) {
         this.selectedLanguages.add(language);
-        language.setYoRC(this);
         return this;
     }
 
-    public YoRC removeSelectedLanguages(Language language) {
+    public YoRC removeSelectedLanguages(String language) {
         this.selectedLanguages.remove(language);
-        language.setYoRC(null);
         return this;
     }
 
-    public void setSelectedLanguages(Set<Language> languages) {
+    public void setSelectedLanguages(Set<String> languages) {
         this.selectedLanguages = languages;
     }
 
