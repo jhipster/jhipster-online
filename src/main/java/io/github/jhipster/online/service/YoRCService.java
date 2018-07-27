@@ -15,6 +15,7 @@ import io.github.jhipster.online.service.dto.RawSQLField;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.QueryUtil;
 import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,7 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing YoRC.
@@ -347,53 +346,6 @@ public class YoRCService {
         return yoRCRepository.count();
     }
 
-
-    public List<TemporalCountDTO> getCount(Instant after, TemporalValueType dbTemporalFunction) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<RawSQL> query = builder.createQuery(RawSQL.class);
-        Root<YoRC> root = query.from(YoRC.class);
-        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, "date");
-        query.select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
-            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
-            .groupBy(root.get(dbTemporalFunction.getFieldName()));
-
-        return entityManager
-            .createQuery(query)
-            .setParameter("date", after)
-            .getResultList()
-            .stream()
-            .map(item ->
-                new TemporalCountDTO(TemporalValueType.absoluteMomentToLocalDateTime(item.getMoment().longValue(), dbTemporalFunction), item.getCount()))
-            .sorted(TemporalCountDTO::compareTo)
-            .collect(Collectors.toList());
-    }
-
-    public List<TemporalDistributionDTO> getFieldCount(Instant after, YoRCColumn field, TemporalValueType dbTemporalFunction) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
-        Root<YoRC> root = query.from(YoRC.class);
-        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, "date");
-
-        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getValue()), builder.count(root)))
-            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
-            .groupBy(root.get(field.getValue()), root.get(dbTemporalFunction.getFieldName()));
-
-        return entityManager
-            .createQuery(query)
-            .setParameter("date", after)
-            .getResultList()
-            .stream()
-            .collect(Collectors.groupingBy(RawSQLField::getMoment))
-            .entrySet()
-            .stream()
-            .map(entry -> {
-                LocalDateTime localDate = TemporalValueType.absoluteMomentToLocalDateTime(entry.getKey().longValue(), dbTemporalFunction);
-                Map<String, Long> values = new HashMap<>();
-                entry.getValue().forEach(e -> values.put(e.getField(), e.getCount()));
-                return new TemporalDistributionDTO(localDate, values);
-            }).collect(Collectors.toList());
-    }
-
     public void save(String applicationConfiguration) {
         ObjectMapper mapper = new ObjectMapper();
         log.debug("Application configuration:\n{}", applicationConfiguration);
@@ -411,4 +363,29 @@ public class YoRCService {
         }
     }
 
+    public List<TemporalCountDTO> getCount(Instant after, TemporalValueType dbTemporalFunction) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RawSQL> query = builder.createQuery(RawSQL.class);
+        Root<YoRC> root = query.from(YoRC.class);
+        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
+
+        query.select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
+            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
+            .groupBy(root.get(dbTemporalFunction.getFieldName()));
+
+        return QueryUtil.createCountQueryAndCollectData(after, dbTemporalFunction, query, entityManager);
+    }
+
+    public List<TemporalDistributionDTO> getFieldCount(Instant after, YoRCColumn field, TemporalValueType dbTemporalFunction) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
+        Root<YoRC> root = query.from(YoRC.class);
+        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
+
+        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getDatabaseValue()), builder.count(root)))
+            .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
+            .groupBy(root.get(field.getDatabaseValue()), root.get(dbTemporalFunction.getFieldName()));
+
+        return QueryUtil.createDistributionQueryAndCollectData(after, dbTemporalFunction, query, entityManager);
+    }
 }

@@ -42,24 +42,24 @@
         <select id="time" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
             <option value="all">General overview</option>
             <option value="days">Last 24h</option>
-            <option value="weeks">Past week</option>
-            <option value="months">Past Month</option>
-            <option value="years">Past Year</option>
+            <option value="weeks">Last Month</option>
+            <option value="months">This Year</option>
+            <option value="years">From launch</option>
         </select>
     </div>
     <hr />
     <div [ngStyle]="{'display': generalOverview ? 'block' : 'none'}">
         <div class="row">
             <div class="col-md-6">
-                <div class="chart card card-body text-center text-dark bg-light">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale='years'; onSelectTimeScale();">
                     <h5>From launch</h5>
                     <hr />
                     <div #chartTrend1 style="height: 300px;" ></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="chart card card-body text-center text-dark bg-light">
-                    <h5>Past year</h5>
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale='months'; onSelectTimeScale();">
+                    <h5>This year</h5>
                     <hr />
                     <div #chartTrend2 style="height: 300px;"></div>
                 </div>
@@ -67,14 +67,14 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="chart card card-body text-center text-dark bg-light">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale='weeks'; onSelectTimeScale();">
                     <h5>Last month</h5>
                     <hr />
                     <div #chartTrend3 style="height: 300px;"></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="chart card card-body text-center text-dark bg-light">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale='days'; onSelectTimeScale();">
                     <h5>Last 24 hours</h5>
                     <hr />
                     <div #chartTrend4 style="height: 300px;"></div>
@@ -165,6 +165,11 @@
             <div class="col-md-7">
                 <div #chartJDLLine style="height: 300px;" class="chart card card-body text-center text-dark bg-light"></div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div #chart6 style="height: 300px;"></div>
         </div>
     </div>
 </div>

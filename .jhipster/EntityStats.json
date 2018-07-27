@@ -2,6 +2,26 @@
     "name": "EntityStats",
     "fields": [
         {
+            "fieldName": "year",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "week",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hour",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "fields",
             "fieldType": "Integer"
         },

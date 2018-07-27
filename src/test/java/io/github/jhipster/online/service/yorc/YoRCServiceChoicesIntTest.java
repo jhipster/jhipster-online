@@ -6,7 +6,7 @@ import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.YoRCServiceUtil;
+import io.github.jhipster.online.service.util.DataGenerationUtil;
 import org.joda.time.Days;
 import org.joda.time.Hours;
 import org.joda.time.Instant;
@@ -60,8 +60,8 @@ public class YoRCServiceChoicesIntTest {
         epochInstant = new Instant(epoch.toInstant().toEpochMilli());
         fiveYearsAgoInstant = new Instant(threeYearsAgo.toInstant().toEpochMilli());
 
-        YoRCServiceUtil.clearDatabase(yoRCRepository);
-        yos = YoRCServiceUtil.addFakeData(300, threeYearsAgo, calendar, yoRCRepository);
+        DataGenerationUtil.clearYoRcTable(yoRCRepository);
+        yos = DataGenerationUtil.addYosToDatabase(300, threeYearsAgo, calendar, yoRCRepository);
     }
 
     @Test

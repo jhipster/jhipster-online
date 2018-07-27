@@ -21,7 +21,7 @@ public class AbsoluteLocalDateTimeUnitTest {
     @Test
     public void assertThatMonthsAreCorrectlySet() {
         long numberOfMonth = 45;
-        long numberOfYear = numberOfMonth / 12;
+        long numberOfYear = numberOfMonth / 12 + 1970;
         long monthOfTheYear = numberOfMonth % 12 + 1;
 
         LocalDateTime toTest = TemporalValueType.absoluteMomentToLocalDateTime(numberOfMonth, TemporalValueType.MONTH);

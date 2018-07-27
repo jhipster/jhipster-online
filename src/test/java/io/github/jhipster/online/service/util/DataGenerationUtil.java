@@ -1,6 +1,11 @@
 package io.github.jhipster.online.service.util;
 
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
+import io.github.jhipster.online.repository.EntityStatsRepository;
+import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
 import org.joda.time.*;
 
@@ -9,14 +14,64 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class YoRCServiceUtil {
+public class DataGenerationUtil {
+    public static void clearSubGenVentTable(SubGenEventRepository subGenEventRepository) {
+        subGenEventRepository.deleteAll();
+    }
 
-    public static void clearDatabase(YoRCRepository yoRCRepository) {
+    public static void clearYoRcTable(YoRCRepository yoRCRepository) {
         yoRCRepository.deleteAll();
     }
 
-    public static List<YoRC> addFakeData(int nbData, Calendar start, Calendar end, YoRCRepository yoRCRepository) {
+    public static void clearEntityStatsTable(EntityStatsRepository entityStatsRepository) {
+        entityStatsRepository.deleteAll();
+    }
+
+    public static List<SubGenEvent> addSubGenEventsToDatabase(int nbData, Calendar start, Calendar end, SubGenEventRepository subGenEventRepository) {
+        List<SubGenEvent> list = new ArrayList<>();
+        String source = "generator";
+        String type;
+        String event = "";
+        Instant date;
+
+        for (int i = 0; i < nbData; i++) {
+            SubGenEvent sge = new SubGenEvent();
+            Duration between = Duration.between(start.toInstant(), end.toInstant());
+            date = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
+
+            DateTime ldtNow = new DateTime(date.toEpochMilli());
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
+
+            int year = ldtNow.getYear();
+            int month = Months.monthsBetween(epoch.toInstant(), ldtNow.toInstant()).getMonths();
+            int week = Weeks.weeksBetween(epoch.toInstant(), ldtNow.toInstant()).getWeeks();
+            int day = Days.daysBetween(epoch.toInstant(), ldtNow.toInstant()).getDays();
+            int hour = Hours.hoursBetween(epoch.toInstant(), ldtNow.toInstant()).getHours();
+
+            SubGenEventType[] arr = SubGenEventType.values();
+            type = arr[(int)(Math.random() * arr.length)].getDatabaseValue();
+
+            sge
+                .year(year)
+                .month(month)
+                .week(week)
+                .day(day)
+                .hour(hour)
+                .type(type)
+                .source(source)
+                .event(event);
+
+            subGenEventRepository.save(sge);
+        }
+
+        return list;
+    }
+
+    public static List<YoRC> addYosToDatabase(int nbData, Calendar start, Calendar end, YoRCRepository yoRCRepository) {
         List<YoRC> ret = new ArrayList<>();
 
         String jhipsterVersion = "5.0.2";
@@ -249,4 +304,40 @@ public class YoRCServiceUtil {
         }
         return ret;
     }
+
+    public static List<EntityStats> addEntityStatsToDatabase(int nbData, Calendar start, Calendar end, EntityStatsRepository entityStatsRepository) {
+        String[] dtoChoices = {"no", "mapstruct"};
+        String[] paginationChoices = {"no", "infinite-scroll", "links"};
+        Random rng = new Random();
+        return IntStream.range(0, nbData).mapToObj(i -> {
+            Duration between = Duration.between(start.toInstant(), end.toInstant());
+            Instant date = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
+
+            DateTime ldtNow = new DateTime(date.toEpochMilli());
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
+
+            int year = ldtNow.getYear();
+            int month = Months.monthsBetween(epoch.toInstant(), ldtNow.toInstant()).getMonths();
+            int week = Weeks.weeksBetween(epoch.toInstant(), ldtNow.toInstant()).getWeeks();
+            int day = Days.daysBetween(epoch.toInstant(), ldtNow.toInstant()).getDays();
+            int hour = Hours.hoursBetween(epoch.toInstant(), ldtNow.toInstant()).getHours();
+
+
+            return entityStatsRepository.save(
+                new EntityStats()
+                    .date(date)
+                    .dto(dtoChoices[rng.nextInt(dtoChoices.length)])
+                    .fields(rng.nextInt(10))
+                    .fluentMethods(rng.nextBoolean())
+                    .relationships(rng.nextInt(10))
+                    .pagination(paginationChoices[rng.nextInt(paginationChoices.length)])
+                    .year(year)
+                    .month(month)
+                    .week(week)
+                    .day(day)
+                    .hour(hour)
+            );
+        }).collect(Collectors.toList());
+    }
+
 }

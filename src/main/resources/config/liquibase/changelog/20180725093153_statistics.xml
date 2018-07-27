@@ -1,34 +1,26 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="jhipster" id="1532441628462-1">
-        <createTable tableName="crash_report">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="crash_reportPK"/>
-            </column>
-            <column name="jhi_date" type="TINYBLOB"/>
-            <column name="env" type="VARCHAR(255)"/>
-            <column name="jdl" type="VARCHAR(255)"/>
-            <column name="source" type="VARCHAR(255)"/>
-            <column name="stack" type="VARCHAR(255)"/>
-            <column name="yorc" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="jhipster" id="1532441628462-2">
+    <changeSet author="jhipster" id="1532511116572-2">
         <createTable tableName="entity_stats">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
             </column>
-            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="jhi_date" type="timestamp"/>
+            <column name="day" type="INT"/>
             <column name="dto" type="VARCHAR(255)"/>
             <column name="fields" type="INT"/>
             <column name="fluent_methods" type="BIT"/>
+            <column name="hour" type="INT"/>
+            <column name="month" type="INT"/>
             <column name="pagination" type="VARCHAR(255)"/>
             <column name="relationships" type="INT"/>
             <column name="service" type="VARCHAR(255)"/>
+            <column name="week" type="INT"/>
+            <column name="jhi_year" type="INT"/>
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-3">
+    <changeSet author="jhipster" id="1532511116572-3">
         <createTable tableName="generator_identity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="generator_identityPK"/>
@@ -38,7 +30,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-4">
+    <changeSet author="jhipster" id="1532511116572-4">
         <createTable tableName="language">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="languagePK"/>
@@ -47,7 +39,7 @@
             <column name="yorc_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-5">
+    <changeSet author="jhipster" id="1532511116572-5">
         <createTable tableName="owner_identity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="owner_identityPK"/>
@@ -55,12 +47,12 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-6">
+    <changeSet author="jhipster" id="1532511116572-6">
         <createTable tableName="sub_gen_event">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
             </column>
-            <column name="jhi_date" type="TINYBLOB"/>
+            <column name="jhi_date" type="timestamp"/>
             <column name="day" type="INT"/>
             <column name="event" type="VARCHAR(255)"/>
             <column name="hour" type="INT"/>
@@ -72,7 +64,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-7">
+    <changeSet author="jhipster" id="1532511116572-7">
         <createTable tableName="yo_rc">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="yo_rcPK"/>
@@ -86,7 +78,7 @@
             <column name="client_package_manager" type="VARCHAR(255)"/>
             <column name="cores" type="VARCHAR(255)"/>
             <column name="cpu" type="VARCHAR(255)"/>
-            <column name="creation_date" type="TINYBLOB"/>
+            <column name="creation_date" type="timestamp"/>
             <column name="database_type" type="VARCHAR(255)"/>
             <column name="day" type="INT"/>
             <column name="dev_database_type" type="VARCHAR(255)"/>
@@ -118,25 +110,28 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-8">
+    <changeSet author="jhipster" id="1532511116572-8">
         <addUniqueConstraint columnNames="owner_id" constraintName="UC_OWNER_IDENTITYOWNER_ID_COL" tableName="owner_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-10">
+    <changeSet author="jhipster" id="1532511116572-10">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="owner_identity" constraintName="FK2jhvj3o1gxdap3j7j6fbub33n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-11">
+    <changeSet author="jhipster" id="1532511116572-11">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FK2s3ro4k55fj08yf02eb7giag" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-12">
+    <changeSet author="jhipster" id="1532511116572-12">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FK6jdlrp17gudamkl05dkotw1i5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-13">
+    <changeSet author="jhipster" id="1532511116572-13">
         <addForeignKeyConstraint baseColumnNames="yorc_id" baseTableName="language" constraintName="FK6o445s9yvlyfor8xnkt9ww3kc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="yo_rc"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-14">
+    <changeSet author="jhipster" id="1532511116572-14">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKfjjqne1y380ehskbaiuat3qdc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532441628462-15">
+    <changeSet author="jhipster" id="1532511116572-15">
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKndhe4ndo6wp3xlfmew7ma6dg6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532511116572-16">
+        <addUniqueConstraint columnNames="jdl_metadata_id" constraintName="UK_89yq1d6xidffms3719h4lsu6t" tableName="jdl"/>
     </changeSet>
 </databaseChangeLog>
