@@ -35,6 +35,7 @@ import { JhonlineSharedModule } from 'app/shared';
 import { HOME_ROUTE, HomeComponent } from './';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
 import { LinkerComponent } from 'app/home/linker/linker.component';
+import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @NgModule({
     imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
@@ -53,13 +54,15 @@ import { LinkerComponent } from 'app/home/linker/linker.component';
         StatisticsComponent,
         LinkerComponent,
         CiCdOutputDialogComponent,
-        GeneratorIdentityUnbindDialogComponent
+        GeneratorIdentityUnbindDialogComponent,
+        DataDeletionDialogComponent
     ],
     entryComponents: [
         GeneratorOutputDialogComponent,
         JdlOutputDialogComponent,
         CiCdOutputDialogComponent,
-        GeneratorIdentityUnbindDialogComponent
+        GeneratorIdentityUnbindDialogComponent,
+        DataDeletionDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

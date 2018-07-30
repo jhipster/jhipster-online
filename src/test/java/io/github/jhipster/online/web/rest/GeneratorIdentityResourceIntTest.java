@@ -5,12 +5,12 @@ import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.service.GeneratorIdentityService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.ArrayList;
 
 import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +49,8 @@ public class GeneratorIdentityResourceIntTest {
     @Autowired
     private GeneratorIdentityRepository generatorIdentityRepository;
 
-    
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private GeneratorIdentityService generatorIdentityService;
@@ -74,7 +74,7 @@ public class GeneratorIdentityResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final GeneratorIdentityResource generatorIdentityResource = new GeneratorIdentityResource(generatorIdentityService);
+        final GeneratorIdentityResource generatorIdentityResource = new GeneratorIdentityResource(generatorIdentityService, userService);
         this.restGeneratorIdentityMockMvc = MockMvcBuilders.standaloneSetup(generatorIdentityResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -152,7 +152,7 @@ public class GeneratorIdentityResourceIntTest {
             .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
             .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
     }
-    
+
 
     @Test
     @Transactional

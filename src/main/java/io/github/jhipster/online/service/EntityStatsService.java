@@ -2,6 +2,8 @@ package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.EntityStats_;
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.dto.RawSQL;
@@ -38,7 +40,7 @@ public class EntityStatsService {
 
     private final EntityManager entityManager;
 
-    public EntityStatsService(EntityStatsRepository entityStatsRepository, EntityManager entityManager) {
+    public EntityStatsService(EntityStatsRepository entityStatsRepository, GeneratorIdentityService generatorIdentityService, EntityManager entityManager) {
         this.entityStatsRepository = entityStatsRepository;
         this.entityManager = entityManager;
     }
@@ -86,6 +88,11 @@ public class EntityStatsService {
     public void delete(Long id) {
         log.debug("Request to delete EntityStats : {}", id);
         entityStatsRepository.deleteById(id);
+    }
+
+    public void deleteByOwner(GeneratorIdentity owner) {
+        log.debug("Request to delete EntityStats by owner: {}", owner);
+        entityStatsRepository.deleteAllByOwner(owner);
     }
 
     public List<TemporalCountDTO> getCount(Instant after, TemporalValueType dbTemporalFunction) {

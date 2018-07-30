@@ -3,6 +3,7 @@ package io.github.jhipster.online.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.service.GeneratorIdentityService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -30,8 +31,11 @@ public class GeneratorIdentityResource {
 
     private final GeneratorIdentityService generatorIdentityService;
 
-    public GeneratorIdentityResource(GeneratorIdentityService generatorIdentityService) {
+    private final UserService userService;
+
+    public GeneratorIdentityResource(GeneratorIdentityService generatorIdentityService, UserService userService) {
         this.generatorIdentityService = generatorIdentityService;
+        this.userService = userService;
     }
 
     /**
@@ -125,7 +129,7 @@ public class GeneratorIdentityResource {
     @Timed
     public List<GeneratorIdentity> getAllOwnedGeneratorIdentities() {
         log.debug("REST request to get all owned GeneratorIdentities");
-        return generatorIdentityService.findAllOwned();
+        return generatorIdentityService.findAllOwned(userService.getUser());
     }
 
 }

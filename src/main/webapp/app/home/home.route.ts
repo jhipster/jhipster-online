@@ -27,7 +27,7 @@ import { GITHUB_CALLBACK_ROUTE } from 'app/home/git/callback/callback.route';
 import { jdlMetadataRoute } from 'app/home/jdl-metadata/jdl-metadata.route';
 import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from 'app/home/ci-cd/ci-cd.route';
 import { STATISTICS_ROUTE } from 'app/home/statistics/statistics.route';
-import { LinkerRoute, LinkerDialogueRoute } from 'app/home/linker/linker.route';
+import { LinkerRoute, LinkerDialogueRoutes } from 'app/home/linker/linker.route';
 
 export const HOME_ROUTE: Route = {
     path: '',
@@ -45,6 +45,7 @@ export const HOME_ROUTE: Route = {
         CI_CD_ROUTE,
         STATISTICS_ROUTE,
         LinkerRoute,
+        ...LinkerDialogueRoutes,
         CI_CD_OUTPUT_ROUTE,
         ...jdlMetadataRoute
     ]

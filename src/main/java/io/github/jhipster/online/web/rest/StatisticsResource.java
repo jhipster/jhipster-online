@@ -3,6 +3,7 @@ package io.github.jhipster.online.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
@@ -117,7 +118,7 @@ public class StatisticsResource {
     public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Binding current user to generator {}", generatorId);
 
-        if (generatorIdentityService.bindCurrentUserToGenerator(generatorId)) {
+        if (generatorIdentityService.bindCurrentUserToGenerator(userService.getUser(), generatorId)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("It seems that this generator is already bound to a user.", HttpStatus.CONFLICT);
@@ -126,13 +127,22 @@ public class StatisticsResource {
 
     @DeleteMapping("/link/{generatorId}")
     @Timed
-    public ResponseEntity UnlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
+    public ResponseEntity unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Unbinding current user to generator {}", generatorId);
 
-        if (generatorIdentityService.unbindCurrentUserFromGenerator(generatorId)) {
+        if (generatorIdentityService.unbindCurrentUserFromGenerator(userService.getUser(), generatorId)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("This generator doesn't exist or you don't own it.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/data")
+    @Timed
+    public void deleteStatisticsData() {
+        User user = userService.getUser();
+
+        log.info("Deleting statistics data of {}", user.getLogin());
+        statisticsService.deleteStatistics(user);
     }
 }
