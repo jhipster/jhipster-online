@@ -77,6 +77,7 @@ public class OwnerIdentityService {
      *
      * @param user user
      */
+    @Transactional
     public OwnerIdentity findOrCreateUser(User user) {
         return ownerIdentityRepository.findByOwner(user).orElseGet(() -> ownerIdentityRepository.save(new OwnerIdentity().owner(user)));
     }

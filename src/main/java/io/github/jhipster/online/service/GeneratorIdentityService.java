@@ -7,6 +7,7 @@ import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,18 +102,19 @@ public class GeneratorIdentityService {
      */
     @Transactional
     public GeneratorIdentity findOrCreateOneByGuid(String guid) {
-        GeneratorIdentity result = generatorIdentityRepository.findFirstByGuidEquals(guid)
-            .orElseGet(() -> generatorIdentityRepository.save(new GeneratorIdentity().guid(guid)));
+        GeneratorIdentity result;
 
-        OwnerIdentity owner = result.getOwner();
-        if (owner == null) {
-            owner = ownerIdentityService.save(new OwnerIdentity());
-            result.setOwner(owner);
-        }
+        result = generatorIdentityRepository.findFirstByGuidEquals(guid).orElseGet(() -> save(new GeneratorIdentity().guid(guid)));
+
+        getOrCreateOwnerIdentity(result);
 
         return result;
     }
 
+    @Transactional
+    public GeneratorIdentity handleDataDuplication(String guid) {
+        return generatorIdentityRepository.findFirstByGuidEquals(guid).orElse(null);
+    }
 
     @Transactional
     public boolean bindCurrentUserToGenerator(User user, String guid) {

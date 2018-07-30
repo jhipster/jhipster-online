@@ -7,7 +7,9 @@ import io.github.jhipster.online.service.util.StatisticsUtil;
 import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -58,8 +60,14 @@ public class StatisticsService {
 
         DateTime now = DateTime.now();
 
-        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
-        generatorIdentityService.save(generatorIdentity.host(host));
+        GeneratorIdentity generatorIdentity;
+        try {
+            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
+        } catch (DataIntegrityViolationException e) {
+            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorGuid);
+        }
+
+        generatorIdentity.host(host);
 
         OwnerIdentity owner = generatorIdentity.getOwner();
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
@@ -84,9 +92,16 @@ public class StatisticsService {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(subGenEvent, now);
 
+        GeneratorIdentity generatorIdentity;
+        try {
+            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorId);
+        } catch (DataIntegrityViolationException e) {
+            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorId);
+        }
+
         subGenEvent
             .date(Instant.ofEpochMilli(now.getMillis()))
-            .owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+            .owner(generatorIdentity.getOwner());
         subGenEventService.save(subGenEvent);
     }
 
@@ -94,12 +109,20 @@ public class StatisticsService {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(entityStats, now);
 
+        GeneratorIdentity generatorIdentity;
+        try {
+            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorId);
+        } catch (DataIntegrityViolationException e) {
+            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorId);
+        }
+
         entityStats
             .date(Instant.now())
-            .owner(generatorIdentityService.findOrCreateOneByGuid(generatorId).getOwner());
+            .owner(generatorIdentity.getOwner());
         entityStatsService.save(entityStats);
     }
 
+    @Transactional
     public void deleteStatistics(User owner) {
         OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(owner);
         log.debug("Statistics data deletion requested for : {} ({}) ", owner.getLogin(), ownerIdentity.getId());
