@@ -116,7 +116,7 @@ public class YoRCService {
             // -> Optout settings
             // -> What should be the guid for such case ?
             // yorc.setOwner( ### );
-            // save(yorc);
+            save(yorc);
 
             log.debug("Parsed json:\n{}", yorc);
         } catch (IOException e) {
