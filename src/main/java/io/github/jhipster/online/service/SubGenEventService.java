@@ -1,6 +1,6 @@
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.domain.OwnerIdentity;
+import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.domain.SubGenEvent_;
 import io.github.jhipster.online.domain.enums.SubGenEventType;
@@ -87,9 +87,9 @@ public class SubGenEventService {
         subGenEventRepository.deleteById(id);
     }
 
-    public void deleteByOwner(OwnerIdentity ownerIdentity) {
-        log.debug("Request to delete SubGenEvent by owner : {}", ownerIdentity);
-        subGenEventRepository.deleteAllByOwner(ownerIdentity);
+    public void deleteByOwner(GeneratorIdentity owner) {
+        log.debug("Request to delete SubGenEvent by owner : {}", owner);
+        subGenEventRepository.deleteAllByOwner(owner);
     }
 
     public List<TemporalCountDTO> getFieldCount(Instant after, SubGenEventType field, TemporalValueType dbTemporalFunction) {

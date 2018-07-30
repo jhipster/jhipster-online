@@ -1,7 +1,6 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,7 +31,7 @@ public class GeneratorIdentity implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("")
-    private OwnerIdentity owner;
+    private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -69,17 +68,17 @@ public class GeneratorIdentity implements Serializable {
         this.guid = guid;
     }
 
-    public OwnerIdentity getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public GeneratorIdentity owner(OwnerIdentity ownerIdentity) {
-        this.owner = ownerIdentity;
+    public GeneratorIdentity owner(User user) {
+        this.owner = user;
         return this;
     }
 
-    public void setOwner(OwnerIdentity ownerIdentity) {
-        this.owner = ownerIdentity;
+    public void setOwner(User user) {
+        this.owner = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

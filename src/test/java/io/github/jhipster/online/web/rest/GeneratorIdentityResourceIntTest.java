@@ -152,7 +152,7 @@ public class GeneratorIdentityResourceIntTest {
             .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
             .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
     }
-    
+
 
     @Test
     @Transactional

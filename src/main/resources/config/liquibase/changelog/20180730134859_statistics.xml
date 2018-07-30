@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="jhipster" id="1532944839799-1">
+    <changeSet author="jhipster" id="1532958542865-1">
         <createTable tableName="entity_stats">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
@@ -20,7 +20,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-2">
+    <changeSet author="jhipster" id="1532958542865-2">
         <createTable tableName="generator_identity">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="generator_identityPK"/>
@@ -30,22 +30,14 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-3">
-        <createTable tableName="owner_identity">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="owner_identityPK"/>
-            </column>
-            <column name="owner_id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="jhipster" id="1532944839799-4">
+    <changeSet author="jhipster" id="1532958542865-3">
         <createTable tableName="sub_gen_event">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
             </column>
             <column name="jhi_date" type="TIMESTAMP"/>
             <column name="day" type="INT"/>
-            <column name="event" type="VARCHAR(255)"/>
+            <column name="event" type="VARCHAR(4065)"/>
             <column name="hour" type="INT"/>
             <column name="month" type="INT"/>
             <column name="source" type="VARCHAR(255)"/>
@@ -55,7 +47,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-5">
+    <changeSet author="jhipster" id="1532958542865-4">
         <createTable tableName="yo_rc">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="yo_rcPK"/>
@@ -101,7 +93,7 @@
             <column name="owner_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-6">
+    <changeSet author="jhipster" id="1532958542865-5">
         <createTable tableName="yorc_selected_languages">
             <column name="yorc_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -109,25 +101,22 @@
             <column name="selected_languages" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-7">
+    <changeSet author="jhipster" id="1532958542865-6">
         <addUniqueConstraint columnNames="guid" constraintName="UC_GENERATOR_IDENTITYGUID_COL" tableName="generator_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-9">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="owner_identity" constraintName="FK2jhvj3o1gxdap3j7j6fbub33n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    <changeSet author="jhipster" id="1532958542865-8">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKgq3phc3u58yocei0vjyaokfce" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-10">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FK2s3ro4k55fj08yf02eb7giag" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    <changeSet author="jhipster" id="1532958542865-9">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FKkb13kis1scfunlks8lx1i6ngt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-11">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FK6jdlrp17gudamkl05dkotw1i5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    <changeSet author="jhipster" id="1532958542865-10">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FKnnfwmyo5hx7rra02wjw42hx8l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-12">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKfjjqne1y380ehskbaiuat3qdc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
+    <changeSet author="jhipster" id="1532958542865-11">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKonhto43h6mn6r8mhnrid03iqh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
-    <changeSet author="jhipster" id="1532944839799-13">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKndhe4ndo6wp3xlfmew7ma6dg6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="owner_identity"/>
-    </changeSet>
-    <changeSet author="jhipster" id="1532944839799-14">
+    <changeSet author="jhipster" id="1532958542865-12">
         <addForeignKeyConstraint baseColumnNames="yorc_id" baseTableName="yorc_selected_languages" constraintName="FKr07x0f4a0p8s2v4mtrhb7r0bx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="yo_rc"/>
     </changeSet>
 </databaseChangeLog>

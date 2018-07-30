@@ -1,12 +1,10 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.OwnerIdentity;
-import org.springframework.data.repository.query.Param;
+import io.github.jhipster.online.domain.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
-import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +16,8 @@ import java.util.Optional;
 public interface GeneratorIdentityRepository extends JpaRepository<GeneratorIdentity, Long> {
     Optional<GeneratorIdentity> findFirstByGuidEquals(String guid);
 
-    List<GeneratorIdentity> findAllByOwner(OwnerIdentity owner);
+    List<GeneratorIdentity> findAllByOwner(User owner);
+
+    @Query("select generator_identity from GeneratorIdentity generator_identity where generator_identity.owner.login = ?#{principal.username}")
+    List<GeneratorIdentity> findByOwnerIsCurrentUser();
 }

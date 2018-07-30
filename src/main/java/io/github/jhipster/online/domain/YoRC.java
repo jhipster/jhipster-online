@@ -150,7 +150,7 @@ public class YoRC implements Serializable, CompleteDate {
 
     @ManyToOne
     @JsonIgnoreProperties("")
-    private OwnerIdentity owner;
+    private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -678,16 +678,16 @@ public class YoRC implements Serializable, CompleteDate {
         this.selectedLanguages = languages;
     }
 
-    public OwnerIdentity getOwner() {
+    public GeneratorIdentity getOwner() {
         return owner;
     }
 
-    public YoRC owner(OwnerIdentity ownerIdentity) {
+    public YoRC owner(GeneratorIdentity ownerIdentity) {
         this.owner = ownerIdentity;
         return this;
     }
 
-    public void setOwner(OwnerIdentity ownerIdentity) {
+    public void setOwner(GeneratorIdentity ownerIdentity) {
         this.owner = ownerIdentity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

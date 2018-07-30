@@ -1,6 +1,5 @@
 import { Moment } from 'moment';
-import { ILanguage } from 'app/shared/model//language.model';
-import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
+import { IGeneratorIdentity } from 'app/shared/model//generator-identity.model';
 
 export interface IYoRC {
     id?: number;
@@ -42,8 +41,7 @@ export interface IYoRC {
     hasProtractor?: boolean;
     hasGatling?: boolean;
     hasCucumber?: boolean;
-    selectedLanguages?: ILanguage[];
-    owner?: IOwnerIdentity;
+    owner?: IGeneratorIdentity;
 }
 
 export class YoRC implements IYoRC {
@@ -87,8 +85,7 @@ export class YoRC implements IYoRC {
         public hasProtractor?: boolean,
         public hasGatling?: boolean,
         public hasCucumber?: boolean,
-        public selectedLanguages?: ILanguage[],
-        public owner?: IOwnerIdentity
+        public owner?: IGeneratorIdentity
     ) {
         this.enableHibernateCache = false;
         this.websocket = false;

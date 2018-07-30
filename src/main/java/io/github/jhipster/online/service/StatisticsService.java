@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class StatisticsService {
@@ -28,18 +29,15 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
-    private final OwnerIdentityService ownerIdentityService;
 
     public StatisticsService(YoRCService yoRCService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService,
-                             OwnerIdentityService ownerIdentityService) {
+                             EntityStatsService entityStatsService) {
         this.yoRCService = yoRCService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
-        this.ownerIdentityService = ownerIdentityService;
     }
 
     public void addEntry(String entry, String host) throws IOException {
@@ -68,10 +66,7 @@ public class StatisticsService {
         }
 
         generatorIdentity.host(host);
-
-        OwnerIdentity owner = generatorIdentity.getOwner();
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
-
         StatisticsUtil.setAbsoluteDate(yorc, now);
 
         yorc.jhipsterVersion(generatorVersion)
@@ -83,7 +78,7 @@ public class StatisticsService {
             .cores(cores)
             .memory(memory)
             .userLanguage(userLanguage)
-            .owner(owner)
+            .owner(generatorIdentity)
             .creationDate(Instant.ofEpochMilli(now.getMillis()));
         yoRCService.save(yorc);
     }
@@ -101,7 +96,7 @@ public class StatisticsService {
 
         subGenEvent
             .date(Instant.ofEpochMilli(now.getMillis()))
-            .owner(generatorIdentity.getOwner());
+            .owner(generatorIdentity);
         subGenEventService.save(subGenEvent);
     }
 
@@ -118,23 +113,22 @@ public class StatisticsService {
 
         entityStats
             .date(Instant.now())
-            .owner(generatorIdentity.getOwner());
+            .owner(generatorIdentity);
         entityStatsService.save(entityStats);
     }
 
     @Transactional
     public void deleteStatistics(User owner) {
-        OwnerIdentity ownerIdentity = ownerIdentityService.findOrCreateUser(owner);
-        log.debug("Statistics data deletion requested for : {} ({}) ", owner.getLogin(), ownerIdentity.getId());
+        List<GeneratorIdentity> generators = generatorIdentityService.findAllOwned(owner);
+
+        log.debug("Statistics data deletion requested for : {} ({} generator(s)) ", owner.getLogin(), generators.size());
 
         log.debug("Deleting yos");
-        yoRCService.deleteByOwnerIdentity(ownerIdentity);
-
+        generators.forEach(yoRCService::deleteByOwnerIdentity);
         log.debug("Deleting sub generator events");
-        subGenEventService.deleteByOwner(ownerIdentity);
-
+        generators.forEach(subGenEventService::deleteByOwner);
         log.debug("Deleting entity statistics");
-        entityStatsService.deleteByOwner(ownerIdentity);
+        generators.forEach(entityStatsService::deleteByOwner);
 
     }
 }

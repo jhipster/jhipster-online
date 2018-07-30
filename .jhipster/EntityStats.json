@@ -54,7 +54,7 @@
         {
             "relationshipType": "many-to-one",
             "relationshipName": "owner",
-            "otherEntityName": "ownerIdentity",
+            "otherEntityName": "generatorIdentity",
             "otherEntityField": "id"
         }
     ],

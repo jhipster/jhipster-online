@@ -1,18 +1,15 @@
 package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.OwnerIdentity;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -26,11 +23,9 @@ public class GeneratorIdentityService {
 
     private final GeneratorIdentityRepository generatorIdentityRepository;
 
-    private final OwnerIdentityService ownerIdentityService;
 
-    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository, OwnerIdentityService ownerIdentityService) {
+    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository) {
         this.generatorIdentityRepository = generatorIdentityRepository;
-        this.ownerIdentityService = ownerIdentityService;
     }
 
     /**
@@ -63,13 +58,8 @@ public class GeneratorIdentityService {
     @Transactional(readOnly = true)
     public List<GeneratorIdentity> findAllOwned(User user) {
         log.debug("Request to get all GeneratorIdentities");
-        Optional<OwnerIdentity> ownerIdentity = ownerIdentityService.findByUser(user);
 
-        if (ownerIdentity.isPresent()) {
-            return generatorIdentityRepository.findAllByOwner(ownerIdentity.get());
-        } else {
-            return new ArrayList<>();
-        }
+            return generatorIdentityRepository.findAllByOwner(user);
     }
 
 
@@ -119,11 +109,11 @@ public class GeneratorIdentityService {
         GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
 
         // Check if the generator has already an owner
-        if(generatorIdentity.getOwner() != null && generatorIdentity.getOwner().getOwner() != null) {
+        if(generatorIdentity.getOwner() != null) {
             return false;
         }
 
-        generatorIdentity.owner(ownerIdentityService.findOrCreateUser(user));
+        generatorIdentity.owner(user);
 
         return true;
     }
@@ -132,12 +122,12 @@ public class GeneratorIdentityService {
     public boolean unbindCurrentUserFromGenerator(User user, String guid) {
         Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
 
-        if (!maybeGeneratorIdentity.isPresent() ) {
+        if (!maybeGeneratorIdentity.isPresent()) {
             return false;
         }
 
-        OwnerIdentity owner  = maybeGeneratorIdentity.get().getOwner();
-        if (owner == null || !owner.getOwner().getId().equals(user.getId())) {
+        User owner  = maybeGeneratorIdentity.get().getOwner();
+        if (owner == null || !owner.equals(user)) {
             return false;
         }
 

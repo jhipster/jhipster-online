@@ -63,7 +63,7 @@ public class EntityStats implements Serializable, CompleteDate {
 
     @ManyToOne
     @JsonIgnoreProperties("")
-    private OwnerIdentity owner;
+    private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -230,17 +230,17 @@ public class EntityStats implements Serializable, CompleteDate {
         this.date = date;
     }
 
-    public OwnerIdentity getOwner() {
+    public GeneratorIdentity getOwner() {
         return owner;
     }
 
-    public EntityStats owner(OwnerIdentity ownerIdentity) {
-        this.owner = ownerIdentity;
+    public EntityStats owner(GeneratorIdentity generatorIdentity) {
+        this.owner = generatorIdentity;
         return this;
     }
 
-    public void setOwner(OwnerIdentity ownerIdentity) {
-        this.owner = ownerIdentity;
+    public void setOwner(GeneratorIdentity generatorIdentity) {
+        this.owner = generatorIdentity;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

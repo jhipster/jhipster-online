@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
+import { IGeneratorIdentity } from 'app/shared/model//generator-identity.model';
 
 export interface ISubGenEvent {
     id?: number;
@@ -12,7 +12,7 @@ export interface ISubGenEvent {
     type?: string;
     event?: string;
     date?: Moment;
-    owner?: IOwnerIdentity;
+    owner?: IGeneratorIdentity;
 }
 
 export class SubGenEvent implements ISubGenEvent {
@@ -27,6 +27,6 @@ export class SubGenEvent implements ISubGenEvent {
         public type?: string,
         public event?: string,
         public date?: Moment,
-        public owner?: IOwnerIdentity
+        public owner?: IGeneratorIdentity
     ) {}
 }

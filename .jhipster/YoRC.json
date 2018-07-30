@@ -156,15 +156,9 @@
     ],
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "selectedLanguages",
-            "otherEntityName": "language",
-            "otherEntityRelationshipName": "yoRC"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "owner",
-            "otherEntityName": "ownerIdentity",
+            "otherEntityName": "generatorIdentity",
             "otherEntityField": "id"
         }
     ],

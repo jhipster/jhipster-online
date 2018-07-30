@@ -1,7 +1,7 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.domain.OwnerIdentity;
+import io.github.jhipster.online.domain.GeneratorIdentity;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EntityStatsRepository extends JpaRepository<EntityStats, Long> {
-    void deleteAllByOwner(OwnerIdentity ownerIdentity);
+    void deleteAllByOwner(GeneratorIdentity ownerIdentity);
 }

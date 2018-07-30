@@ -1,6 +1,6 @@
 package io.github.jhipster.online.repository;
 
-import io.github.jhipster.online.domain.OwnerIdentity;
+import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.SubGenEvent;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SubGenEventRepository extends JpaRepository<SubGenEvent, Long> {
-    void deleteAllByOwner(OwnerIdentity owner);
+    void deleteAllByOwner(GeneratorIdentity owner);
 }

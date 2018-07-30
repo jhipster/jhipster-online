@@ -65,7 +65,6 @@ public class CacheConfiguration {
             cm.createCache(io.github.jhipster.online.domain.GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".languages", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.OwnerIdentity.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.GeneratorIdentity.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".testFrameworks", jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".selectedLanguages", jcacheConfiguration);

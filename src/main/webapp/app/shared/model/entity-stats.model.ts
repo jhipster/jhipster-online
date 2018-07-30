@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { IOwnerIdentity } from 'app/shared/model//owner-identity.model';
+import { IGeneratorIdentity } from 'app/shared/model//generator-identity.model';
 
 export interface IEntityStats {
     id?: number;
@@ -15,7 +15,7 @@ export interface IEntityStats {
     service?: string;
     fluentMethods?: boolean;
     date?: Moment;
-    owner?: IOwnerIdentity;
+    owner?: IGeneratorIdentity;
 }
 
 export class EntityStats implements IEntityStats {
@@ -33,7 +33,7 @@ export class EntityStats implements IEntityStats {
         public service?: string,
         public fluentMethods?: boolean,
         public date?: Moment,
-        public owner?: IOwnerIdentity
+        public owner?: IGeneratorIdentity
     ) {
         this.fluentMethods = false;
     }
