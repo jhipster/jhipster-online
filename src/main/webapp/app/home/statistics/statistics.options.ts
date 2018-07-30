@@ -52,6 +52,27 @@ export const lineChart = (data: any, frenquency: Frequency) => {
     };
 };
 
+export const barChart = (data: any) => {
+    return {
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: data.map(obj => prettifyDate(obj.date))
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: data.map(obj => obj.count),
+                type: 'bar'
+            }
+        ]
+    };
+};
+
 export const comparingLineChart = (data: any, xAxis: string, yAxis: string) => {
     const series = data
         .map(e => Object.keys(e.values))
@@ -67,7 +88,6 @@ export const comparingLineChart = (data: any, xAxis: string, yAxis: string) => {
         .map(k => ({
             name: k,
             type: 'line',
-            stack: 'mainStack',
             data: data.map(e => e.values[k])
         }));
 

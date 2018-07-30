@@ -11,6 +11,7 @@ public enum YoRCColumn implements DatabaseColumn {
     DATABASE_TYPE("databaseType"),
     PROD_DATABASE_TYPE("prodDatabaseType"),
     SEARCH_ENGINE("searchEngine"),
+    JHIPSTER_VERSION("jhipsterVersion"),
     BUILD_TOOL("buildTool"),
     CLIENT_FRAMEWORK("clientFramework"),
     USE_SASS("useSass"),
