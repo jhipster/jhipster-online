@@ -37,6 +37,7 @@ import { JhonlineAccountModule } from './account/account.module';
 import { JhonlineEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { HomeService } from './home/home.service';
 
 export function setupGitConfiguration(gitConfigurationService: GitConfigurationService) {
     return () => gitConfigurationService.setupGitConfiguration();
@@ -87,7 +88,8 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
             useFactory: setupGitConfiguration,
             deps: [GitConfigurationService],
             multi: true
-        }
+        },
+        HomeService
     ],
     bootstrap: [JhiMainComponent]
 })

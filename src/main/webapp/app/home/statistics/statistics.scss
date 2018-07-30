@@ -14,6 +14,38 @@ select:hover {
 
 .chart {
     margin-bottom: 5%;
-    border-radius: 2%;
     box-shadow: 5px 5px #353d47;
+}
+
+/* ==========================================================================
+Full screen mode
+========================================================================== */
+
+.fullScreen {
+    padding: 1%;
+    width: 100%;
+}
+
+.numbersCard {
+    height: 150px;
+    padding-top: 25px;
+    width: 100%;
+}
+
+.margin-top {
+    margin-top: 50px;
+}
+
+.chartBox {
+    height: 350px;
+}
+
+.chartBoxContainer {
+    margin: auto;
+}
+
+.categoryChart {
+    background-color: #e0e0e0;
+    margin-bottom: 5%;
+    padding: 1%;
 }

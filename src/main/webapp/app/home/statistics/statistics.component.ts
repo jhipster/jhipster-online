@@ -16,12 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as moment from 'moment';
 import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
+import { HomeService } from '../home.service';
 import { BasicChart, Frequency, LineChart } from 'app/home/statistics/statistics.model';
 import { barChart, comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
 // import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
@@ -31,7 +32,7 @@ import { barChart, comparingLineChart, lineChart, pieChart, prettifyDate } from 
     templateUrl: './statistics.component.html',
     styleUrls: ['statistics.scss']
 })
-export class StatisticsComponent implements AfterViewInit {
+export class StatisticsComponent implements AfterViewInit, OnDestroy {
     dataFromDb = [];
     charts = [];
 
@@ -39,6 +40,10 @@ export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chartTrend2') chartTrend2: ElementRef;
     @ViewChild('chartTrend3') chartTrend3: ElementRef;
     @ViewChild('chartTrend4') chartTrend4: ElementRef;
+    @ViewChild('chartTrendFull1') chartTrendFull1: ElementRef;
+    @ViewChild('chartTrendFull2') chartTrendFull2: ElementRef;
+    @ViewChild('chartTrendFull3') chartTrendFull3: ElementRef;
+    @ViewChild('chartTrendFull4') chartTrendFull4: ElementRef;
     @ViewChild('chartFrameworkLine') chartFrameworkLine: ElementRef;
     @ViewChild('chartFrameworkPie') chartFrameworkPie: ElementRef;
     @ViewChild('chartBuildtoolLine') chartBuildtoolLine: ElementRef;
@@ -53,8 +58,7 @@ export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chartVersionPie') chartVersionPie: ElementRef;
     @ViewChild('chartAppTypeLine') chartAppTypeLine: ElementRef;
     @ViewChild('chartAppTypePie') chartAppTypePie: ElementRef;
-    @ViewChild('chartJDLLine') chartJDLLine: ElementRef;
-    @ViewChild('chartJDLPie') chartJDLPie: ElementRef;
+    @ViewChild('chartJDL') chartJDL: ElementRef;
 
     countJdl: Observable<string>;
     countYoRc: Observable<string>;
@@ -62,11 +66,15 @@ export class StatisticsComponent implements AfterViewInit {
     countYoRcByDate: Observable<string>;
 
     timeScale = 'all';
-    generalOverview = true;
+    generatedApps = true;
 
     yorcByDateList: any;
 
-    constructor(private statisticsService: StatisticsService, private echartsService: NgxEchartsService) {}
+    constructor(
+        private statisticsService: StatisticsService,
+        private echartsService: NgxEchartsService,
+        private homeService: HomeService
+    ) {}
 
     ngAfterViewInit() {
         this.countJdl = this.statisticsService.countJdl();
@@ -77,14 +85,22 @@ export class StatisticsComponent implements AfterViewInit {
     public onSelectTimeScale() {
         switch (this.timeScale) {
             case 'all':
-                this.generalOverview = true;
-                this.displayTrend('yearly', this.chartTrend1);
-                this.displayTrend('monthly', this.chartTrend2);
-                this.displayTrend('daily', this.chartTrend3);
-                this.displayTrend('hourly', this.chartTrend4);
+                this.generatedApps = true;
+                if (this.isFullScreen()) {
+                    this.displayTrend('yearly', this.chartTrendFull1);
+                    this.displayTrend('monthly', this.chartTrendFull2);
+                    this.displayTrend('daily', this.chartTrendFull3);
+                    this.displayTrend('hourly', this.chartTrendFull4);
+                } else {
+                    this.displayTrend('yearly', this.chartTrend1);
+                    this.displayTrend('monthly', this.chartTrend2);
+                    this.displayTrend('daily', this.chartTrend3);
+                    this.displayTrend('hourly', this.chartTrend4);
+                }
                 break;
             case 'years':
                 this.displayCharts('monthly');
+                this.displayTrend('yearly', this.chartJDL);
                 break;
             case 'months':
                 this.displayCharts('weekly');
@@ -129,7 +145,7 @@ export class StatisticsComponent implements AfterViewInit {
     }
 
     private displayCharts(frequency: string) {
-        this.generalOverview = false;
+        this.generatedApps = false;
 
         this.displayChart(frequency, 'clientFramework', this.chartFrameworkLine, this.chartFrameworkPie);
         this.displayChart(frequency, 'buildTool', this.chartBuildtoolLine, this.chartBuildtoolPie);
@@ -158,5 +174,21 @@ export class StatisticsComponent implements AfterViewInit {
                 basicChartInstance.chartInstance.setOption(pieChart(arr));
             });
         });
+    }
+
+    public toggleFullscreen() {
+        this.homeService.toggleFullScreen();
+    }
+
+    public isFullScreen() {
+        return this.homeService.isFullScreen();
+    }
+
+    public exitFullScreen() {
+        this.homeService.exitFullScreen();
+    }
+
+    ngOnDestroy() {
+        this.exitFullScreen();
     }
 }
