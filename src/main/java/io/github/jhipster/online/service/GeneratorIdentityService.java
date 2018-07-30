@@ -106,8 +106,6 @@ public class GeneratorIdentityService {
 
         result = generatorIdentityRepository.findFirstByGuidEquals(guid).orElseGet(() -> save(new GeneratorIdentity().guid(guid)));
 
-        getOrCreateOwnerIdentity(result);
-
         return result;
     }
 
@@ -116,31 +114,16 @@ public class GeneratorIdentityService {
         return generatorIdentityRepository.findFirstByGuidEquals(guid).orElse(null);
     }
 
-    private OwnerIdentity getOrCreateOwnerIdentity(GeneratorIdentity generatorIdentity) {
-        OwnerIdentity result;
-        generatorIdentity = generatorIdentityRepository.findById(generatorIdentity.getId()).get();
-        if (generatorIdentity.getOwner() == null) {
-            result = new OwnerIdentity();
-            generatorIdentity.owner(ownerIdentityService.save(result));
-
-        } else {
-            result = generatorIdentity.getOwner();
-        }
-
-        return result;
-    }
-
-
     @Transactional
     public boolean bindCurrentUserToGenerator(User user, String guid) {
         GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
 
         // Check if the generator has already an owner
-        if(generatorIdentity.getOwner().getOwner() != null) {
+        if(generatorIdentity.getOwner() != null && generatorIdentity.getOwner().getOwner() != null) {
             return false;
         }
 
-        generatorIdentity.getOwner().owner(user);
+        generatorIdentity.owner(ownerIdentityService.findOrCreateUser(user));
 
         return true;
     }
@@ -158,7 +141,7 @@ public class GeneratorIdentityService {
             return false;
         }
 
-        maybeGeneratorIdentity.get().getOwner().setOwner(null);
+        maybeGeneratorIdentity.get().owner(null);
         return true;
     }
 }

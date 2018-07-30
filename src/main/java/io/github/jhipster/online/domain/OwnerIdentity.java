@@ -22,8 +22,8 @@ public class OwnerIdentity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JoinColumn
     private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
