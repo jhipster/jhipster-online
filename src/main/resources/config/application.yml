@@ -55,6 +55,21 @@ spring:
     thymeleaf:
         mode: HTML
         excluded-view-names: /jdl-studio/*
+    cache:
+        jcache:
+            config: classpath:ehcache.xml
+
+bucket4j:
+    enabled: true
+    filters:
+    - cache-name: buckets
+      url: /api/s/*
+      rate-limits:
+      - filter-key-type: ip
+        bandwidths:
+        - capacity: 5
+          time: 10
+          unit: seconds
 
 server:
     servlet:

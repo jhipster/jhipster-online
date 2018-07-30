@@ -18,6 +18,7 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 import { GitComponent } from './git/git.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -27,13 +28,17 @@ import { JdlMetadataComponent } from './jdl-metadata/jdl-metadata.component';
 import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-metadata/jdl-studio.component';
 import { JdlOutputDialogComponent } from './jdl-metadata/jdl.output.component';
 import { CiCdComponent } from './ci-cd/ci-cd.component';
+import { StatisticsComponent } from 'app/home/statistics/statistics.component';
 import { CiCdOutputDialogComponent } from './ci-cd/ci-cd.output.component';
+import { GeneratorIdentityUnbindDialogComponent } from './linker/linker-unbind-dialog.component';
 import { JhonlineSharedModule } from 'app/shared';
 import { HOME_ROUTE, HomeComponent } from './';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
+import { LinkerComponent } from 'app/home/linker/linker.component';
+import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @NgModule({
-    imports: [JhonlineSharedModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
+    imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
     declarations: [
         HomeComponent,
         GeneratorComponent,
@@ -46,9 +51,19 @@ import { GeneratorComponent } from 'app/home/generator/generator.component';
         ApplyJdlStudioComponent,
         JdlOutputDialogComponent,
         CiCdComponent,
-        CiCdOutputDialogComponent
+        StatisticsComponent,
+        LinkerComponent,
+        CiCdOutputDialogComponent,
+        GeneratorIdentityUnbindDialogComponent,
+        DataDeletionDialogComponent
     ],
-    entryComponents: [GeneratorOutputDialogComponent, JdlOutputDialogComponent, CiCdOutputDialogComponent],
+    entryComponents: [
+        GeneratorOutputDialogComponent,
+        JdlOutputDialogComponent,
+        CiCdOutputDialogComponent,
+        GeneratorIdentityUnbindDialogComponent,
+        DataDeletionDialogComponent
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineHomeModule {}

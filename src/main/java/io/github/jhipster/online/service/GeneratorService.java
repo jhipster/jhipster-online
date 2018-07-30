@@ -1,15 +1,15 @@
 /**
  * Copyright 2017-2018 the original author or authors from the JHipster Online project.
- *
+ * <p>
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,13 +47,15 @@ public class GeneratorService {
 
     private final LogsService logsService;
 
+    private final YoRCService yoRCService;
+
     public GeneratorService(ApplicationProperties applicationProperties, GitService gitService, JHipsterService
-        jHipsterService, LogsService
-        logsService) {
+        jHipsterService, LogsService logsService, YoRCService yoRCService) {
         this.applicationProperties = applicationProperties;
         this.gitService = gitService;
         this.jHipsterService = jHipsterService;
         this.logsService = logsService;
+        this.yoRCService = yoRCService;
     }
 
     public String generateZippedApplication(String applicationId, String applicationConfiguration) throws IOException {
@@ -94,6 +96,7 @@ public class GeneratorService {
             PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", "UTF-8");
             writer.print(applicationConfiguration);
             writer.close();
+            yoRCService.save(applicationConfiguration);
         } catch (IOException ioe) {
             log.error("Error creating file .yo-rc.json", ioe);
             throw ioe;

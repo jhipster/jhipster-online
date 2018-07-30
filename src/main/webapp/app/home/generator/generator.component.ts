@@ -46,6 +46,8 @@ export class GeneratorComponent implements OnInit {
 
     gitConfig: GitConfigurationModel;
 
+    isStatsEnabled = false;
+
     /**
      * get all the languages options supported by JHipster - copied from the generator.
      */

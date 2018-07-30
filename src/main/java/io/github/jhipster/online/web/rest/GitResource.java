@@ -60,9 +60,9 @@ public class GitResource {
     private final GitlabService gitlabService;
 
     public GitResource(ApplicationProperties applicationProperties,
-        UserService userService,
-        GithubService githubService,
-        GitlabService gitlabService) {
+                       UserService userService,
+                       GithubService githubService,
+                       GitlabService gitlabService) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;

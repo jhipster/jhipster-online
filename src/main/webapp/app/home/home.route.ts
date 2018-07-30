@@ -20,12 +20,14 @@ import { Route } from '@angular/router';
 
 import { HomeComponent } from './';
 import { UserRouteAccessService } from 'app/core/';
-import { GENERATOR_ROUTE } from './generator/generator.route';
-import { GIT_ROUTE } from './git/git.route';
-import { WELCOME_ROUTE } from './welcome/welcome.route';
-import { GITHUB_CALLBACK_ROUTE } from './git/callback/callback.route';
-import { jdlMetadataRoute } from './jdl-metadata/jdl-metadata.route';
-import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from './ci-cd/ci-cd.route';
+import { GENERATOR_ROUTE } from 'app/home/generator/generator.route';
+import { GIT_ROUTE } from 'app/home/git/git.route';
+import { WELCOME_ROUTE } from 'app/home/welcome/welcome.route';
+import { GITHUB_CALLBACK_ROUTE } from 'app/home/git/callback/callback.route';
+import { jdlMetadataRoute } from 'app/home/jdl-metadata/jdl-metadata.route';
+import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from 'app/home/ci-cd/ci-cd.route';
+import { STATISTICS_ROUTE } from 'app/home/statistics/statistics.route';
+import { LinkerRoute, LinkerDialogueRoutes } from 'app/home/linker/linker.route';
 
 export const HOME_ROUTE: Route = {
     path: '',
@@ -35,5 +37,16 @@ export const HOME_ROUTE: Route = {
         pageTitle: 'JHipster Online'
     },
     canActivate: [UserRouteAccessService],
-    children: [GENERATOR_ROUTE, WELCOME_ROUTE, GIT_ROUTE, GITHUB_CALLBACK_ROUTE, CI_CD_ROUTE, CI_CD_OUTPUT_ROUTE, ...jdlMetadataRoute]
+    children: [
+        GENERATOR_ROUTE,
+        WELCOME_ROUTE,
+        GIT_ROUTE,
+        GITHUB_CALLBACK_ROUTE,
+        CI_CD_ROUTE,
+        STATISTICS_ROUTE,
+        LinkerRoute,
+        ...LinkerDialogueRoutes,
+        CI_CD_OUTPUT_ROUTE,
+        ...jdlMetadataRoute
+    ]
 };

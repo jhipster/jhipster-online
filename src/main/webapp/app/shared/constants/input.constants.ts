@@ -1,4 +1,4 @@
-/**
+/**</span>
  * Copyright 2017-2018 the original author or authors from the JHipster Online project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
