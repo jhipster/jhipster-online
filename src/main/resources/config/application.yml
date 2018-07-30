@@ -55,6 +55,21 @@ spring:
     thymeleaf:
         mode: HTML
         excluded-view-names: /jdl-studio/*
+    cache:
+        jcache:
+            config: classpath:ehcache.xml
+
+bucket4j:
+    enabled: true
+    filters:
+    - cache-name: buckets
+      url: /api/s/*
+      rate-limits:
+      - filter-key-type: ip
+        bandwidths:
+        - capacity: 5
+          time: 10
+          unit: seconds
 
 server:
     servlet:
@@ -74,13 +89,6 @@ info:
 # ===================================================================
 
 jhipster:
-    gateway:
-        rate-limiting:
-            enabled: true
-            limit: 0
-            duration-in-seconds: 3600
-        authorized-microservices-endpoints: # Access Control Policy, if left empty for a route, all endpoints will be accessible
-            app1: /api,/v2/api-docs # recommended dev configuration
     async:
         core-pool-size: 2
         max-pool-size: 50
