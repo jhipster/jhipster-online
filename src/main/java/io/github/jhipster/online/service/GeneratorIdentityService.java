@@ -116,6 +116,21 @@ public class GeneratorIdentityService {
         return generatorIdentityRepository.findFirstByGuidEquals(guid).orElse(null);
     }
 
+    private OwnerIdentity getOrCreateOwnerIdentity(GeneratorIdentity generatorIdentity) {
+        OwnerIdentity result;
+        generatorIdentity = generatorIdentityRepository.findById(generatorIdentity.getId()).get();
+        if (generatorIdentity.getOwner() == null) {
+            result = new OwnerIdentity();
+            generatorIdentity.owner(ownerIdentityService.save(result));
+
+        } else {
+            result = generatorIdentity.getOwner();
+        }
+
+        return result;
+    }
+
+
     @Transactional
     public boolean bindCurrentUserToGenerator(User user, String guid) {
         GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
