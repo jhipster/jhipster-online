@@ -49,7 +49,7 @@ public class EntityStatsIntTest {
         twoYearsAgoInstant = java.time.Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearEntityStatsTable(entityStatsRepository);
-        list = DataGenerationUtil.addEntityStatsToDatabase(50_000, twoYearsAgoInstant, Instant.now(), entityStatsRepository);
+        list = DataGenerationUtil.addEntityStatsToDatabase(1_000, twoYearsAgoInstant, Instant.now(), entityStatsRepository);
     }
 
     @Test

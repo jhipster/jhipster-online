@@ -46,7 +46,7 @@ public class SubGenEventIntTest {
         twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
-        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(50_000, twoYearsAgoInstant, Instant.now(), subGenEventRepository);
+        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(1_000, twoYearsAgoInstant, Instant.now(), subGenEventRepository);
     }
 
     @Test

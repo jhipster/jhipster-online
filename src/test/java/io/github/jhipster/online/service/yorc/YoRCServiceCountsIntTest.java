@@ -46,7 +46,7 @@ public class YoRCServiceCountsIntTest {
         twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearYoRcTable(yoRCRepository);
-        yos = DataGenerationUtil.addYosToDatabase(50_000, twoYearsAgoInstant, Instant.now(), yoRCRepository);
+        yos = DataGenerationUtil.addYosToDatabase(1_000, twoYearsAgoInstant, Instant.now(), yoRCRepository);
     }
 
     @Test

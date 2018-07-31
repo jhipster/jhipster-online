@@ -98,8 +98,9 @@ public class StatisticsServiceIntTest {
 
     @Before
     public void init() {
-        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
+        DataGenerationUtil.clearYoRcTable(yoRCRepository);
+        DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
+        DataGenerationUtil.clearEntityStatsTable(entityStatsRepository);
 
         yos = DataGenerationUtil.addYosToDatabase(100, Instant.now(), Instant.now().plus(365, ChronoUnit.DAYS), yoRCRepository);
         subs = DataGenerationUtil.addSubGenEventsToDatabase(100, Instant.now(), Instant.now().plus(365, ChronoUnit.DAYS), subGenEventRepository);
