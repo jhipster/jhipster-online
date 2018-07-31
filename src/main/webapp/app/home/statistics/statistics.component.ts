@@ -16,16 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
-import * as moment from 'moment';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
 import { HomeService } from '../home.service';
-import { BasicChart, Frequency, LineChart } from 'app/home/statistics/statistics.model';
-import { barChart, comparingLineChart, lineChart, pieChart, prettifyDate } from 'app/home/statistics/statistics.options';
-// import { lineChartOptions, pieChartOptions, stackedAreaChartOptions } from 'app/home/statistics/statistics.options';
+import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
+import { barChart, comparingLineChart, pieChart } from 'app/home/statistics/statistics.options';
 
 @Component({
     selector: 'jhi-statistics',
@@ -33,9 +31,6 @@ import { barChart, comparingLineChart, lineChart, pieChart, prettifyDate } from 
     styleUrls: ['statistics.scss']
 })
 export class StatisticsComponent implements AfterViewInit, OnDestroy {
-    dataFromDb = [];
-    charts = [];
-
     @ViewChild('chartTrend1') chartTrend1: ElementRef;
     @ViewChild('chartTrend2') chartTrend2: ElementRef;
     @ViewChild('chartTrend3') chartTrend3: ElementRef;

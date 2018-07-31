@@ -65,7 +65,7 @@ public class DataGenerationUtil {
                 .source(source)
                 .event(event);
 
-            subGenEventRepository.save(sge);
+            list.add(subGenEventRepository.save(sge));
         }
 
         return list;

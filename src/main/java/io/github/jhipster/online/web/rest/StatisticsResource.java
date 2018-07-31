@@ -118,7 +118,7 @@ public class StatisticsResource {
     public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Binding current user to generator {}", generatorId);
 
-        if (generatorIdentityService.bindCurrentUserToGenerator(userService.getUser(), generatorId)) {
+        if (generatorIdentityService.bindUserToGenerator(userService.getUser(), generatorId)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("It seems that this generator is already bound to a user.", HttpStatus.CONFLICT);
@@ -130,7 +130,7 @@ public class StatisticsResource {
     public ResponseEntity unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Unbinding current user to generator {}", generatorId);
 
-        if (generatorIdentityService.unbindCurrentUserFromGenerator(userService.getUser(), generatorId)) {
+        if (generatorIdentityService.unbindUserFromGenerator(userService.getUser(), generatorId)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>("This generator doesn't exist or you don't own it.", HttpStatus.BAD_REQUEST);

@@ -2,19 +2,9 @@
 Statistics page styles
 ========================================================================== */
 
-select {
-    background: none;
-    border: none;
-    font-size: 140%;
-}
-
-select:hover {
-    border-radius: 15px;
-}
-
 .chart {
     margin-bottom: 5%;
-    box-shadow: 5px 5px #353d47;
+    box-shadow: 5px 5px rgba(53, 61, 71, 0.2);
 }
 
 /* ==========================================================================
