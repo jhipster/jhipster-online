@@ -11,11 +11,11 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="row" class="form-group">
         &nbsp;
-        <div class="col-md-12" style="text-align: center">
-            <label for="fullScreentime"><h4>Select time scale :</h4></label>
-            <select id="fullScreentime" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
+        <div class="col-md-6">
+            <h4 class="form-control-label"><label for="fullScreentime">Time scale:</label></h4>
+            <select id="fullScreentime" class="form-control" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
                 <option value="all">Generated apps</option>
                 <option value="days">Last 24h</option>
                 <option value="weeks">Last Month</option>
@@ -250,15 +250,17 @@
             </div>
         </div>
         &nbsp;
-        <div>
-            <label for="time"><h4>Select time scale :</h4></label>
-            <select id="time" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
-                <option value="all">Generated apps</option>
-                <option value="days">Last 24h</option>
-                <option value="weeks">Last Month</option>
-                <option value="months">This Year</option>
-                <option value="years">From launch</option>
-            </select>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <h4><label for="time" class="form-control-label">Time scale:</label></h4>
+                <select id="time" class="form-control" [(ngModel)]="timeScale" (ngModelChange)="onSelectTimeScale()">
+                    <option value="all">Generated apps</option>
+                    <option value="days">Last 24h</option>
+                    <option value="weeks">Last Month</option>
+                    <option value="months">This Year</option>
+                    <option value="years">From launch</option>
+                </select>
+            </div>
         </div>
         <hr />
         <div [ngStyle]="{'display': generatedApps ? 'block' : 'none'}">

@@ -59,7 +59,7 @@ public class GeneratorIdentityService {
     public List<GeneratorIdentity> findAllOwned(User user) {
         log.debug("Request to get all GeneratorIdentities");
 
-            return generatorIdentityRepository.findAllByOwner(user);
+        return generatorIdentityRepository.findAllByOwner(user);
     }
 
 
@@ -105,7 +105,7 @@ public class GeneratorIdentityService {
     }
 
     @Transactional
-    public boolean bindCurrentUserToGenerator(User user, String guid) {
+    public boolean bindUserToGenerator(User user, String guid) {
         GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
 
         // Check if the generator has already an owner
@@ -119,7 +119,7 @@ public class GeneratorIdentityService {
     }
 
     @Transactional
-    public boolean unbindCurrentUserFromGenerator(User user, String guid) {
+    public boolean unbindUserFromGenerator(User user, String guid) {
         Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
 
         if (!maybeGeneratorIdentity.isPresent()) {

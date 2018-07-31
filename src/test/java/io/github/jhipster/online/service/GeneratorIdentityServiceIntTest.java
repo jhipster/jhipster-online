@@ -2,7 +2,9 @@ package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
+import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +28,19 @@ public class GeneratorIdentityServiceIntTest {
     @Autowired
     private GeneratorIdentityService generatorIdentityService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private List<GeneratorIdentity> gids;
+
+    private User user;
 
     @Before
     public void init() {
         generatorIdentityRepository.deleteAll();
         gids = DataGenerationUtil.addGeneratorIdentitiesToDatabase(100, generatorIdentityRepository);
+
+        user = userRepository.findAll().get((int) (Math.random() * userRepository.count()));
     }
 
     @Test
@@ -61,5 +69,25 @@ public class GeneratorIdentityServiceIntTest {
         assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
         assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
         assertThat(generatorIdentityRepository.findAll().size()).isEqualTo(gids.size());
+    }
+
+    @Test
+    public void assertThatAUserCanBeBoundToAGeneratorIdentity() {
+        GeneratorIdentity toTest = gids.get((int) (Math.random() * gids.size()));
+        generatorIdentityRepository.save(toTest.owner(null));
+
+        generatorIdentityService.bindUserToGenerator(user, toTest.getGuid());
+
+        assertThat(generatorIdentityRepository.findById(toTest.getId()).get().getOwner()).isEqualTo(user);
+    }
+
+    @Test
+    public void assertThatAUserCanBeUnboundFromAGeneratorIdentity() {
+        GeneratorIdentity toTest = gids.get((int) (Math.random() * gids.size()));
+        generatorIdentityRepository.save(toTest.owner(user));
+
+        generatorIdentityService.unbindUserFromGenerator(user, toTest.getGuid());
+
+        assertThat(generatorIdentityRepository.findById(toTest.getId()).get().getOwner()).isEqualTo(null);
     }
 }
