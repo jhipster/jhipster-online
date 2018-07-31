@@ -12,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -96,17 +98,12 @@ public class StatisticsServiceIntTest {
 
     @Before
     public void init() {
-        Calendar now = Calendar.getInstance();
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1);
+        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
 
-        DataGenerationUtil.clearYoRcTable(yoRCRepository);
-        DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
-        DataGenerationUtil.clearEntityStatsTable(entityStatsRepository);
-
-        yos = DataGenerationUtil.addYosToDatabase(100, now, nextYear, yoRCRepository);
-        subs = DataGenerationUtil.addSubGenEventsToDatabase(100, now, nextYear, subGenEventRepository);
-        entities = DataGenerationUtil.addEntityStatsToDatabase(100, now, nextYear, entityStatsRepository);
+        yos = DataGenerationUtil.addYosToDatabase(100, Instant.now(), Instant.now().plus(365, ChronoUnit.DAYS), yoRCRepository);
+        subs = DataGenerationUtil.addSubGenEventsToDatabase(100, Instant.now(), Instant.now().plus(365, ChronoUnit.DAYS), subGenEventRepository);
+        entities = DataGenerationUtil.addEntityStatsToDatabase(100, Instant.now(), Instant.now().plus(365, ChronoUnit.DAYS), entityStatsRepository);
 
         user = userRepository.findAll().get((int) (Math.random() * userRepository.count()));
     }
@@ -149,7 +146,7 @@ public class StatisticsServiceIntTest {
         });
 
         GeneratorIdentity generatorIdentity = generatorIdentityRepository.save(
-            generatorIdentityRepository.findFirstByGuidEquals(generatorId).get().owner(user)
+            generatorIdentityRepository.findFirstByGuidEquals(generatorId).orElse(null).owner(user)
         );
 
         statisticsService.deleteStatistics(user);
