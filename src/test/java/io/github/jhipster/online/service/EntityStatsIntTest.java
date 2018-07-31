@@ -7,10 +7,6 @@ import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.joda.time.Days;
-import org.joda.time.Hours;
-import org.joda.time.Instant;
-import org.joda.time.Weeks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -34,39 +32,30 @@ public class EntityStatsIntTest {
     @Autowired
     private EntityStatsService entityStatsService;
 
+    private static final String INFINITE_SCROLL = "infinite-scroll";
+
     private List<EntityStats> list;
-
-    private Calendar calendar = Calendar.getInstance();
-
-    private Calendar threeYearsAgo;
-
-    private Calendar threeYearsAgoPlusOneYear;
 
     private Instant epochInstant;
 
-    private Instant threeYearsAgoInstant;
+    private Instant twoYearsAgoInstant;
 
     @Before
     public void init() {
-        threeYearsAgo = Calendar.getInstance();
-        threeYearsAgo.add(Calendar.YEAR, -3);
+        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
 
-        threeYearsAgoPlusOneYear = (Calendar) threeYearsAgo.clone();
-        threeYearsAgoPlusOneYear.add(Calendar.YEAR, 1);
+        epochInstant = java.time.Instant.ofEpochSecond(epoch.getSecond());
+        twoYearsAgoInstant = java.time.Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
-        Calendar epoch = Calendar.getInstance();
-        epoch.set(1970, 1, 1);
-
-        epochInstant = new Instant(epoch.toInstant().toEpochMilli());
-        threeYearsAgoInstant = new Instant(threeYearsAgo.toInstant().toEpochMilli());
         DataGenerationUtil.clearEntityStatsTable(entityStatsRepository);
-        list = DataGenerationUtil.addEntityStatsToDatabase(3000, threeYearsAgo, calendar, entityStatsRepository);
+        list = DataGenerationUtil.addEntityStatsToDatabase(50_000, twoYearsAgoInstant, Instant.now(), entityStatsRepository);
     }
 
     @Test
     public void assertThatYearlyCountIsNotOmittingAnyData() {
         assertThat(list.size())
-            .isEqualTo(entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.YEAR)
+            .isEqualTo(entityStatsService.getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -75,7 +64,7 @@ public class EntityStatsIntTest {
     @Test
     public void assertThatMonthlyCountIsNotOmittingAnyData() {
         assertThat(list.size())
-            .isEqualTo(entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.MONTH)
+            .isEqualTo(entityStatsService.getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -84,7 +73,7 @@ public class EntityStatsIntTest {
     @Test
     public void assertThatWeeklyCountIsNotOmittingAnyData() {
         assertThat(list.size())
-            .isEqualTo(entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.WEEK)
+            .isEqualTo(entityStatsService.getCount(twoYearsAgoInstant, TemporalValueType.WEEK)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -93,7 +82,7 @@ public class EntityStatsIntTest {
     @Test
     public void assertThatDailyCountIsNotOmittingAnyData() {
         assertThat(list.size())
-            .isEqualTo(entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.DAY)
+            .isEqualTo(entityStatsService.getCount(twoYearsAgoInstant, TemporalValueType.DAY)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -102,7 +91,7 @@ public class EntityStatsIntTest {
     @Test
     public void assertThatHourlyCountIsNotOmittingAnyData() {
         assertThat(list.size())
-            .isEqualTo(entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.HOUR)
+            .isEqualTo(entityStatsService.getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -110,15 +99,17 @@ public class EntityStatsIntTest {
 
     @Test
     public void assertThatAYearCountIsCorrect() {
-        int yearWeAreLookingFor = threeYearsAgoPlusOneYear.get(Calendar.YEAR);
+        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
+
         assertThat(
-            list.stream().filter(yo ->
-                yo.getYear().equals(yearWeAreLookingFor))
-                .count()
+            list.stream().filter(yo -> yo.getYear() == yearWeAreLookingFor).count()
         ).isEqualTo(
-            entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.YEAR).get(yearWeAreLookingFor - threeYearsAgo.get(Calendar.YEAR))
-                .getCount()
-        );
+            entityStatsService
+                .getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
+                .stream()
+                .filter(item -> item.getDate().getYear() == yearWeAreLookingFor)
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
@@ -132,49 +123,54 @@ public class EntityStatsIntTest {
                 .filter(yo -> yo.getMonth() == monthWeAreLookingFor)
                 .count()
         ).isEqualTo(
-            entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.MONTH).stream()
+            entityStatsService
+                .getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
+                .stream()
                 .filter(item ->
                     item.getDate().getYear() == numberOfYear + 1970 && item.getDate().getMonth().getValue() == monthOfTheYear)
-                .findFirst()
-                .orElse(null)
-                .getCount()
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum()
         );
     }
 
     @Test
     public void assertThatAWeekCountIsCorrect() {
-        long weekWeAreLookingFor = Weeks.weeksBetween(epochInstant, threeYearsAgoInstant).getWeeks()+52;
+        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
 
         assertThat(
             list.stream()
                 .filter(yo -> yo.getWeek() == weekWeAreLookingFor)
                 .count()
         ).isEqualTo(
-            entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.WEEK).stream()
+            entityStatsService
+                .getCount(twoYearsAgoInstant, TemporalValueType.WEEK)
+                .stream()
                 .filter(e ->
                     e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
-                .mapToLong(e -> e.getCount())
-                .sum()
-        );
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatADayCountIsCorrect() {
-        long dayWeAreLookingFor = Days.daysBetween(epochInstant, threeYearsAgoInstant).getDays()+1;
+        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
 
         assertThat(
             list.stream().filter(yo -> yo.getDay() == dayWeAreLookingFor)
                 .count()
         ).isEqualTo(
-            entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.DAY).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
-                .count()
-        );
+            entityStatsService
+                .getCount(twoYearsAgoInstant, TemporalValueType.DAY)
+                .stream()
+                .filter(e ->
+                    e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatAHourCountIsCorrect() {
-        long hourWeAreLookingFor = Hours.hoursBetween(epochInstant, threeYearsAgoInstant).getHours()+1;
+        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
 
         assertThat(
             list.stream()
@@ -182,11 +178,13 @@ public class EntityStatsIntTest {
                     yo.getHour() == hourWeAreLookingFor)
                 .count()
         ).isEqualTo(
-            entityStatsService.getCount(threeYearsAgo.toInstant(), TemporalValueType.HOUR).stream()
+            entityStatsService
+                .getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
+                .stream()
                 .filter(e ->
                     e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
-                .count()
-        );
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
@@ -194,89 +192,93 @@ public class EntityStatsIntTest {
         assertThat(
             list.stream()
                 .filter(entity ->
-                    entity.getPagination().equals("infinite-scroll"))
+                    entity.getPagination().equals(INFINITE_SCROLL))
                 .count()
-        ).isEqualTo(entityStatsService.getFieldCount(threeYearsAgo.toInstant(), EntityStatColumn.PAGINATION, TemporalValueType.YEAR).stream()
+        ).isEqualTo(entityStatsService.getFieldCount(twoYearsAgoInstant, EntityStatColumn.PAGINATION, TemporalValueType.YEAR).stream()
             .mapToLong(item ->
                 item.getValues().entrySet().stream()
                     .filter(entry ->
-                        entry.getKey().equals("infinite-scroll")).mapToLong(Map.Entry::getValue)
+                        entry.getKey().equals(INFINITE_SCROLL)).mapToLong(Map.Entry::getValue)
                     .sum())
             .sum());
     }
 
     @Test
     public void assertThatYearlyProportionsAreCorrect() {
-        int yearWeAreLookingFor = threeYearsAgoPlusOneYear.get(Calendar.YEAR);
+        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
+
         assertThat(
             list.stream()
                 .filter(entity ->
-                    entity.getPagination().equals("infinite-scroll") && entity.getYear() == yearWeAreLookingFor)
+                    entity.getPagination().equals(INFINITE_SCROLL) && entity.getYear() == yearWeAreLookingFor)
                 .count()
-        ).isEqualTo(entityStatsService.getFieldCount(threeYearsAgo.toInstant(), EntityStatColumn.PAGINATION, TemporalValueType.YEAR).stream()
+        ).isEqualTo(entityStatsService.getFieldCount(twoYearsAgoInstant, EntityStatColumn.PAGINATION, TemporalValueType.YEAR).stream()
             .filter(item ->
                 item.getDate().getYear() == yearWeAreLookingFor)
             .mapToLong(item ->
                 item.getValues().entrySet().stream()
                     .filter(entry ->
-                        entry.getKey().equals("infinite-scroll")).mapToLong(Map.Entry::getValue)
+                        entry.getKey().equals(INFINITE_SCROLL)).mapToLong(Map.Entry::getValue)
                     .sum())
             .sum());
     }
 
     @Test
     public void assertThatWeeklyProportionsAreCorrect() {
-        long weekWeAreLookingFor = Weeks.weeksBetween(epochInstant, threeYearsAgoInstant).getWeeks() + 1;
+        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
+
         assertThat(
             list.stream()
                 .filter(entity ->
-                    entity.getPagination().equals("infinite-scroll") && entity.getWeek() == weekWeAreLookingFor)
+                    entity.getPagination().equals(INFINITE_SCROLL) && entity.getWeek() == weekWeAreLookingFor)
                 .count()
-        ).isEqualTo(entityStatsService.getFieldCount(threeYearsAgo.toInstant(), EntityStatColumn.PAGINATION, TemporalValueType.WEEK).stream()
+        ).isEqualTo(entityStatsService.getFieldCount(twoYearsAgoInstant, EntityStatColumn.PAGINATION, TemporalValueType.WEEK).stream()
             .filter(item ->
                 item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
             .mapToLong(item ->
                 item.getValues().entrySet().stream()
                     .filter(entry ->
-                        entry.getKey().equals("infinite-scroll")).mapToLong(Map.Entry::getValue)
+                        entry.getKey().equals(INFINITE_SCROLL)).mapToLong(Map.Entry::getValue)
                     .sum())
             .sum());
     }
 
     @Test
     public void assertThatDailyProportionsAreCorrect() {
-        long dayWeAreLookingFor = Days.daysBetween(epochInstant, threeYearsAgoInstant).getDays() + 1;
+        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
+
         assertThat(
             list.stream()
                 .filter(entity ->
-                    entity.getPagination().equals("infinite-scroll") && entity.getDay() == dayWeAreLookingFor)
+                    entity.getPagination().equals(INFINITE_SCROLL) && entity.getDay() == dayWeAreLookingFor)
                 .count()
-        ).isEqualTo(entityStatsService.getFieldCount(threeYearsAgo.toInstant(), EntityStatColumn.PAGINATION, TemporalValueType.DAY).stream()
+        ).isEqualTo(entityStatsService.getFieldCount(twoYearsAgoInstant, EntityStatColumn.PAGINATION, TemporalValueType.DAY).stream()
             .filter(item ->
                 item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
             .mapToLong(item ->
                 item.getValues().entrySet().stream()
                     .filter(entry ->
-                        entry.getKey().equals("infinite-scroll")).mapToLong(Map.Entry::getValue)
+                        entry.getKey().equals(INFINITE_SCROLL)).mapToLong(Map.Entry::getValue)
                     .sum())
             .sum());
     }
 
     @Test
     public void assertThatHourlyProportionsAreCorrect() {
-        long hourWeAreLookingFor = Hours.hoursBetween(epochInstant, threeYearsAgoInstant).getHours() + 1;
+        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
+
         assertThat(
             list.stream()
                 .filter(entity ->
-                    entity.getPagination().equals("infinite-scroll") && entity.getHour() == hourWeAreLookingFor)
+                    entity.getPagination().equals(INFINITE_SCROLL) && entity.getHour() == hourWeAreLookingFor)
                 .count()
-        ).isEqualTo(entityStatsService.getFieldCount(threeYearsAgo.toInstant(), EntityStatColumn.PAGINATION, TemporalValueType.HOUR).stream()
+        ).isEqualTo(entityStatsService.getFieldCount(twoYearsAgoInstant, EntityStatColumn.PAGINATION, TemporalValueType.HOUR).stream()
             .filter(item ->
                 item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
             .mapToLong(item ->
                 item.getValues().entrySet().stream()
                     .filter(entry ->
-                        entry.getKey().equals("infinite-scroll")).mapToLong(Map.Entry::getValue)
+                        entry.getKey().equals(INFINITE_SCROLL)).mapToLong(Map.Entry::getValue)
                     .sum())
             .sum());
     }

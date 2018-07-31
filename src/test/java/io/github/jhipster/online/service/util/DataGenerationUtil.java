@@ -9,7 +9,6 @@ import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.repository.YoRCRepository;
-import org.hibernate.id.GUIDGenerator;
 import org.joda.time.*;
 
 import java.time.Duration;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class DataGenerationUtil {
+
     public static void clearSubGenVentTable(SubGenEventRepository subGenEventRepository) {
         subGenEventRepository.deleteAll();
     }
@@ -31,7 +31,7 @@ public class DataGenerationUtil {
         entityStatsRepository.deleteAll();
     }
 
-    public static List<SubGenEvent> addSubGenEventsToDatabase(int nbData, Calendar start, Calendar end, SubGenEventRepository subGenEventRepository) {
+    public static List<SubGenEvent> addSubGenEventsToDatabase(int nbData, Instant start, Instant end, SubGenEventRepository subGenEventRepository) {
         List<SubGenEvent> list = new ArrayList<>();
         String source = "generator";
         String type;
@@ -40,8 +40,8 @@ public class DataGenerationUtil {
 
         for (int i = 0; i < nbData; i++) {
             SubGenEvent sge = new SubGenEvent();
-            Duration between = Duration.between(start.toInstant(), end.toInstant());
-            date = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
+            Duration between = Duration.between(start, end);
+            date = end.minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
 
             DateTime ldtNow = new DateTime(date.toEpochMilli());
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
@@ -71,7 +71,7 @@ public class DataGenerationUtil {
         return list;
     }
 
-    public static List<YoRC> addYosToDatabase(int nbData, Calendar start, Calendar end, YoRCRepository yoRCRepository) {
+    public static List<YoRC> addYosToDatabase(int nbData, Instant start, Instant end, YoRCRepository yoRCRepository) {
         List<YoRC> ret = new ArrayList<>();
 
         String jhipsterVersion = "5.0.2";
@@ -110,8 +110,8 @@ public class DataGenerationUtil {
         for (int i = 0; i < nbData; i++) {
             YoRC yorc = new YoRC();
 
-            Duration between = Duration.between(start.toInstant(), end.toInstant());
-            Instant createdDate = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
+            Duration between = Duration.between(start, end);
+            Instant createdDate = end.minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
 
             DateTime ldtNow = new DateTime(createdDate.toEpochMilli());
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0);
@@ -305,13 +305,13 @@ public class DataGenerationUtil {
         return ret;
     }
 
-    public static List<EntityStats> addEntityStatsToDatabase(int nbData, Calendar start, Calendar end, EntityStatsRepository entityStatsRepository) {
-        String[] dtoChoices = {"no", "mapstruct"};
-        String[] paginationChoices = {"no", "infinite-scroll", "links"};
+    public static List<EntityStats> addEntityStatsToDatabase(int nbData, Instant start, Instant end, EntityStatsRepository entityStatsRepository) {
+        String[] dtoChoices = { "no", "mapstruct" };
+        String[] paginationChoices = { "no", "infinite-scroll", "links" };
         Random rng = new Random();
         return IntStream.range(0, nbData).mapToObj(i -> {
-            Duration between = Duration.between(start.toInstant(), end.toInstant());
-            Instant date = end.toInstant().minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
+            Duration between = Duration.between(start, end);
+            Instant date = end.minus(Duration.ofSeconds((int) (Math.random() * between.getSeconds())));
 
             DateTime ldtNow = new DateTime(date.toEpochMilli());
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0);

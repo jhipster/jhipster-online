@@ -51,9 +51,8 @@ public enum TemporalValueType {
                 return LocalDateTime
                     .ofEpochSecond(0, 0, ZoneOffset.UTC)
                     .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()));
-                default:
-                    // Shouldn't happen
-                    return null;
+            default:
+                return null;
         }
     }
 }

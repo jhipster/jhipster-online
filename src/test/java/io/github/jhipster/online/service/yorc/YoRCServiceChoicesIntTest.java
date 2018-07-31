@@ -7,10 +7,6 @@ import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.joda.time.Days;
-import org.joda.time.Hours;
-import org.joda.time.Instant;
-import org.joda.time.Weeks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -34,34 +32,24 @@ public class YoRCServiceChoicesIntTest {
     @Autowired
     private YoRCService yoRCService;
 
+    private static final String CLIENT_FRAMEWORK = "react";
+
     private List<YoRC> yos;
-
-    private final Calendar calendar = Calendar.getInstance();
-
-    private Calendar threeYearsAgo;
-
-    private Calendar threeYearsAgoPlusOneYear;
 
     private Instant epochInstant;
 
-    private Instant fiveYearsAgoInstant;
+    private Instant twoYearsAgoInstant;
 
     @Before
     public void init() {
-        threeYearsAgo = Calendar.getInstance();
-        threeYearsAgo.add(Calendar.YEAR, -3);
+        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
 
-        threeYearsAgoPlusOneYear = (Calendar) threeYearsAgo.clone();
-        threeYearsAgoPlusOneYear.add(Calendar.YEAR, 1);
-
-        Calendar epoch = Calendar.getInstance();
-        epoch.set(1970, 1, 1);
-
-        epochInstant = new Instant(epoch.toInstant().toEpochMilli());
-        fiveYearsAgoInstant = new Instant(threeYearsAgo.toInstant().toEpochMilli());
+        epochInstant = Instant.ofEpochSecond(epoch.getSecond());
+        twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearYoRcTable(yoRCRepository);
-        yos = DataGenerationUtil.addYosToDatabase(300, threeYearsAgo, calendar, yoRCRepository);
+        yos = DataGenerationUtil.addYosToDatabase(50_000, twoYearsAgoInstant, Instant.now(), yoRCRepository);
     }
 
     @Test
@@ -69,15 +57,15 @@ public class YoRCServiceChoicesIntTest {
         assertThat(
             yos.stream()
                 .filter(yo ->
-                    yo.getClientFramework().equals("react"))
+                    yo.getClientFramework().equals(CLIENT_FRAMEWORK))
                 .count()
-        ).isEqualTo(yoRCService.getFieldCount(threeYearsAgo.toInstant(), YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.YEAR).stream()
+        ).isEqualTo(yoRCService.getFieldCount(twoYearsAgoInstant, YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.YEAR).stream()
             .mapToLong(item ->
                 item.getValues()
                     .entrySet()
                     .stream()
                     .filter(obj ->
-                        obj.getKey().equals("react"))
+                        obj.getKey().equals(CLIENT_FRAMEWORK))
                     .mapToLong(Map.Entry::getValue)
                     .sum()
             ).sum());
@@ -85,14 +73,15 @@ public class YoRCServiceChoicesIntTest {
 
     @Test
     public void assertThatYearlyProportionsAreCorrect() {
-        int yearWeAreLookingFor = threeYearsAgoPlusOneYear.get(Calendar.YEAR);
+        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
+
         assertThat(
             yos.stream()
                 .filter(yo ->
-                    yo.getYear().equals(yearWeAreLookingFor) && yo.getClientFramework().equals("react"))
+                    yo.getYear() == yearWeAreLookingFor && yo.getClientFramework().equals(CLIENT_FRAMEWORK))
                 .count()
         ).isEqualTo(
-            yoRCService.getFieldCount(threeYearsAgo.toInstant(), YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.YEAR).stream()
+            yoRCService.getFieldCount(twoYearsAgoInstant, YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.YEAR).stream()
                 .filter(item ->
                     item.getDate().getYear() == yearWeAreLookingFor)
                 .mapToLong(item ->
@@ -100,7 +89,7 @@ public class YoRCServiceChoicesIntTest {
                         .entrySet()
                         .stream()
                         .filter(obj ->
-                            obj.getKey().equals("react"))
+                            obj.getKey().equals(CLIENT_FRAMEWORK))
                         .mapToLong(Map.Entry::getValue)
                         .sum()
             ).sum()
@@ -109,14 +98,15 @@ public class YoRCServiceChoicesIntTest {
 
     @Test
     public void assertThatWeeklyProportionsAreCorrect() {
-        long weekWeAreLookingFor = Weeks.weeksBetween(epochInstant, fiveYearsAgoInstant).getWeeks()+1;
+        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
+
         assertThat(
             yos.stream()
                 .filter(yo ->
-                    yo.getYear().equals(weekWeAreLookingFor) && yo.getClientFramework().equals("react"))
+                    yo.getWeek() == weekWeAreLookingFor && yo.getClientFramework().equals(CLIENT_FRAMEWORK))
                 .count()
         ).isEqualTo(
-            yoRCService.getFieldCount(threeYearsAgo.toInstant(), YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.WEEK).stream()
+            yoRCService.getFieldCount(twoYearsAgoInstant, YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.WEEK).stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
                 .mapToLong(item ->
@@ -124,7 +114,7 @@ public class YoRCServiceChoicesIntTest {
                         .entrySet()
                         .stream()
                         .filter(obj ->
-                            obj.getKey().equals("react"))
+                            obj.getKey().equals(CLIENT_FRAMEWORK))
                         .mapToLong(Map.Entry::getValue)
                         .sum()
                 ).sum()
@@ -133,14 +123,15 @@ public class YoRCServiceChoicesIntTest {
 
     @Test
     public void assertThatDailyProportionsAreCorrect() {
-        long dayWeAreLookingFor = Days.daysBetween(epochInstant, fiveYearsAgoInstant).getDays()+1;
+        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
+
         assertThat(
             yos.stream()
                 .filter(yo ->
-                    yo.getYear().equals(dayWeAreLookingFor) && yo.getClientFramework().equals("react"))
+                    yo.getDay() == dayWeAreLookingFor && yo.getClientFramework().equals(CLIENT_FRAMEWORK))
                 .count()
         ).isEqualTo(
-            yoRCService.getFieldCount(threeYearsAgo.toInstant(), YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.DAY).stream()
+            yoRCService.getFieldCount(twoYearsAgoInstant, YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.DAY).stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
                 .mapToLong(item ->
@@ -148,7 +139,7 @@ public class YoRCServiceChoicesIntTest {
                         .entrySet()
                         .stream()
                         .filter(obj ->
-                            obj.getKey().equals("react"))
+                            obj.getKey().equals(CLIENT_FRAMEWORK))
                         .mapToLong(Map.Entry::getValue)
                         .sum()
                 ).sum()
@@ -157,14 +148,15 @@ public class YoRCServiceChoicesIntTest {
 
     @Test
     public void assertThatHourlyProportionsAreCorrect() {
-        long hourWeAreLookingFor = Hours.hoursBetween(epochInstant, fiveYearsAgoInstant).getHours()+1;
+        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
+
         assertThat(
             yos.stream()
                 .filter(yo ->
-                    yo.getYear().equals(hourWeAreLookingFor) && yo.getClientFramework().equals("react"))
+                    yo.getHour() == hourWeAreLookingFor && yo.getClientFramework().equals(CLIENT_FRAMEWORK))
                 .count()
         ).isEqualTo(
-            yoRCService.getFieldCount(threeYearsAgo.toInstant(), YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.HOUR).stream()
+            yoRCService.getFieldCount(twoYearsAgoInstant, YoRCColumn.CLIENT_FRAMEWORK, TemporalValueType.HOUR).stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
                 .mapToLong(item ->
@@ -172,7 +164,7 @@ public class YoRCServiceChoicesIntTest {
                         .entrySet()
                         .stream()
                         .filter(obj ->
-                            obj.getKey().equals("react"))
+                            obj.getKey().equals(CLIENT_FRAMEWORK))
                         .mapToLong(Map.Entry::getValue)
                         .sum()
                 ).sum()

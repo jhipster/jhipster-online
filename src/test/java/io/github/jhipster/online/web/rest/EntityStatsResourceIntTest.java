@@ -81,8 +81,6 @@ public class EntityStatsResourceIntTest {
     @Autowired
     private EntityStatsRepository entityStatsRepository;
 
-    
-
     @Autowired
     private EntityStatsService entityStatsService;
 
@@ -213,7 +211,6 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
-    
 
     @Test
     @Transactional
@@ -239,6 +236,7 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingEntityStats() throws Exception {

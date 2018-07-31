@@ -43,7 +43,8 @@ public class GeneratorIdentityServiceIntTest {
     @Test
     public void assertThatAGIIsFindableById() {
         GeneratorIdentity giToTest = gids.get((int) (Math.random() * gids.size()));
-        assertThat(generatorIdentityRepository.findFirstByGuidEquals(giToTest.getGuid()).get()).isEqualTo(giToTest);
+
+        assertThat(generatorIdentityRepository.findFirstByGuidEquals(giToTest.getGuid()).orElse(null)).isEqualTo(giToTest);
     }
 
     @Test
@@ -56,6 +57,7 @@ public class GeneratorIdentityServiceIntTest {
     @Test
     public void assertThatFindOrCreateOneByGuidWillNotCreateOne() {
         GeneratorIdentity giToTest = gids.get((int) (Math.random() * gids.size()));
+
         assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
         assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
         assertThat(generatorIdentityRepository.findAll().size()).isEqualTo(gids.size());

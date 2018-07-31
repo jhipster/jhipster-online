@@ -7,10 +7,6 @@ import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.joda.time.Days;
-import org.joda.time.Hours;
-import org.joda.time.Instant;
-import org.joda.time.Weeks;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,33 +32,21 @@ public class SubGenEventIntTest {
     private SubGenEventService subGenEventService;
 
     private List<SubGenEvent> sgeList;
-
-    private final Calendar calendar = Calendar.getInstance();
-
-    private Calendar threeYearsAgo;
-
-    private Calendar threeYearsAgoPlusOneYear;
-
+    
     private Instant epochInstant;
 
-    private Instant fiveYearsAgoInstant;
+    private Instant twoYearsAgoInstant;
 
     @Before
     public void init() {
-        threeYearsAgo = Calendar.getInstance();
-        threeYearsAgo.add(Calendar.YEAR, -3);
+        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
 
-        threeYearsAgoPlusOneYear = (Calendar) threeYearsAgo.clone();
-        threeYearsAgoPlusOneYear.add(Calendar.YEAR, 1);
-
-        Calendar epoch = Calendar.getInstance();
-        epoch.set(1970, 1, 1);
-
-        epochInstant = new Instant(epoch.toInstant().toEpochMilli());
-        fiveYearsAgoInstant = new Instant(threeYearsAgo.toInstant().toEpochMilli());
+        epochInstant = Instant.ofEpochSecond(epoch.getSecond());
+        twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
-        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(300, threeYearsAgo, calendar, subGenEventRepository);
+        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(50_000, twoYearsAgoInstant, Instant.now(), subGenEventRepository);
     }
 
     @Test
@@ -69,22 +55,25 @@ public class SubGenEventIntTest {
             sgeList.stream()
                 .filter(sge ->
                     sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
-                .count()
-            ).isEqualTo(subGenEventService.getFieldCount(threeYearsAgo.toInstant(), SubGenEventType.HEROKU, TemporalValueType.YEAR).stream()
-            .mapToLong(TemporalCountDTO::getCount)
-            .sum());
+                .count())
+            .isEqualTo(subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.YEAR)
+                .stream()
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatYearlyProportionsAreCorrect() {
-        int yearWeAreLookingFor = threeYearsAgoPlusOneYear.get(Calendar.YEAR);
+        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
+
         assertThat(
             sgeList.stream()
                 .filter(sge ->
                     sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
                 .count()
         ).isEqualTo(
-            subGenEventService.getFieldCount(threeYearsAgo.toInstant(), SubGenEventType.HEROKU, TemporalValueType.YEAR).stream()
+            subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.YEAR)
+                .stream()
                 .filter(item ->
                     item.getDate().getYear() == yearWeAreLookingFor)
                 .mapToLong(TemporalCountDTO::getCount)
@@ -94,14 +83,16 @@ public class SubGenEventIntTest {
 
     @Test
     public void assertThatWeeklyProportionsAreCorrect() {
-        long weekWeAreLookingFor = Weeks.weeksBetween(epochInstant, fiveYearsAgoInstant).getWeeks()+1;
+        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
+
         assertThat(
             sgeList.stream()
                 .filter(sge ->
                     sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
                 .count()
         ).isEqualTo(
-            subGenEventService.getFieldCount(threeYearsAgo.toInstant(), SubGenEventType.HEROKU, TemporalValueType.WEEK).stream()
+            subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.WEEK)
+                .stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
                 .mapToLong(TemporalCountDTO::getCount)
@@ -111,14 +102,16 @@ public class SubGenEventIntTest {
 
     @Test
     public void assertThatDailyProportionsAreCorrect() {
-        long dayWeAreLookingFor = Days.daysBetween(epochInstant, fiveYearsAgoInstant).getDays()+1;
+        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
+
         assertThat(
             sgeList.stream()
                 .filter(sge ->
                     sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
                 .count()
         ).isEqualTo(
-            subGenEventService.getFieldCount(threeYearsAgo.toInstant(), SubGenEventType.HEROKU, TemporalValueType.DAY).stream()
+            subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.DAY)
+                .stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
                 .mapToLong(TemporalCountDTO::getCount)
@@ -128,14 +121,16 @@ public class SubGenEventIntTest {
 
     @Test
     public void assertThatHourlyProportionsAreCorrect() {
-        long hourWeAreLookingFor = Hours.hoursBetween(epochInstant, fiveYearsAgoInstant).getHours()+1;
+        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
+
         assertThat(
             sgeList.stream()
                 .filter(sge ->
                     sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
                 .count()
         ).isEqualTo(
-            subGenEventService.getFieldCount(threeYearsAgo.toInstant(), SubGenEventType.HEROKU, TemporalValueType.HOUR).stream()
+            subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.HOUR)
+                .stream()
                 .filter(item ->
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
                 .mapToLong(TemporalCountDTO::getCount)

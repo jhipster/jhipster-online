@@ -7,7 +7,6 @@ import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.joda.time.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -32,44 +33,32 @@ public class YoRCServiceCountsIntTest {
 
     private List<YoRC> yos;
 
-    private final Calendar calendar = Calendar.getInstance();
-
-    private Calendar fiveYearsAgo;
-
-    private Calendar fiveYearsAgoPlusOneYear;
-
     private Instant epochInstant;
 
-    private Instant fiveYearsAgoInstant;
+    private Instant twoYearsAgoInstant;
 
     @Before
     public void init() {
-        fiveYearsAgo = Calendar.getInstance();
-        fiveYearsAgo.add(Calendar.YEAR, -5);
+        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
 
-        fiveYearsAgoPlusOneYear = (Calendar) fiveYearsAgo.clone();
-        fiveYearsAgoPlusOneYear.add(Calendar.YEAR, 1);
-
-        Calendar epoch = Calendar.getInstance();
-        epoch.set(1970, 1, 1);
-
-        epochInstant = new Instant(epoch.toInstant().toEpochMilli());
-        fiveYearsAgoInstant = new Instant(fiveYearsAgo.toInstant().toEpochMilli());
+        epochInstant = Instant.ofEpochSecond(epoch.getSecond());
+        twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearYoRcTable(yoRCRepository);
-        yos = DataGenerationUtil.addYosToDatabase(300, fiveYearsAgo, calendar, yoRCRepository);
+        yos = DataGenerationUtil.addYosToDatabase(50_000, twoYearsAgoInstant, Instant.now(), yoRCRepository);
     }
 
     @Test
     public void assertThatCountDoesNotOmitAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(yoRCService.countAll());
+        assertThat(yos.size()).isEqualTo(yoRCService.countAll());
     }
 
     @Test
     public void assertThatYearlyCountIsNotOmittingAnyData() {
         assertThat(yos.size())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.YEAR)
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -78,7 +67,8 @@ public class YoRCServiceCountsIntTest {
     @Test
     public void assertThatMonthlyCountIsNotOmittingAnyData() {
         assertThat(yos.size())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.MONTH)
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -87,7 +77,8 @@ public class YoRCServiceCountsIntTest {
     @Test
     public void assertThatWeeklyCountIsNotOmittingAnyData() {
         assertThat(yos.size())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.WEEK)
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.WEEK)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -96,7 +87,8 @@ public class YoRCServiceCountsIntTest {
     @Test
     public void assertThatDailyCountIsNotOmittingAnyData() {
         assertThat(yos.size())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.DAY)
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.DAY)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -105,7 +97,8 @@ public class YoRCServiceCountsIntTest {
     @Test
     public void assertThatHourlyCountIsNotOmittingAnyData() {
         assertThat(yos.size())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.HOUR)
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
                 .stream()
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum());
@@ -113,10 +106,15 @@ public class YoRCServiceCountsIntTest {
 
     @Test
     public void assertThatAYearCountIsCorrect() {
-        int yearWeAreLookingFor = fiveYearsAgoPlusOneYear.get(Calendar.YEAR);
-        assertThat(yos.stream().filter(yo -> yo.getYear().equals(yearWeAreLookingFor)).count())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.YEAR)
-                .get(yearWeAreLookingFor - fiveYearsAgo.get(Calendar.YEAR)).getCount());
+        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
+        assertThat(
+            yos.stream().filter(yo -> yo.getYear() == yearWeAreLookingFor).count())
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
+                .stream()
+                .filter(item -> item.getDate().getYear() == yearWeAreLookingFor)
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
@@ -125,40 +123,51 @@ public class YoRCServiceCountsIntTest {
         long numberOfYear = monthWeAreLookingFor / 12;
         long monthOfTheYear = monthWeAreLookingFor % 12 + 1;
 
-        assertThat(
-            yos.stream()
-                .filter(yo -> yo.getMonth() == monthWeAreLookingFor)
-                .count()
-        ).isEqualTo(
-            yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.MONTH).stream().filter(item ->
-                item.getDate().getYear() == numberOfYear + 1970 && item.getDate().getMonth().getValue() == monthOfTheYear).findFirst().orElse(null).getCount()
-        );
+        assertThat(yos.stream().filter(yo -> yo.getMonth() == monthWeAreLookingFor).count())
+            .isEqualTo(
+                yoRCService
+                .getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
+                .stream()
+                .filter(item -> item.getDate().getYear() == numberOfYear + 1970 && item.getDate().getMonth().getValue() == monthOfTheYear)
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatAWeekCountIsCorrect() {
-        long weekWeAreLookingFor = Weeks.weeksBetween(epochInstant, fiveYearsAgoInstant).getWeeks()+1;
+        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
 
-        assertThat(yos.stream().filter(yo -> yo.getWeek().equals(weekWeAreLookingFor)).count())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.WEEK).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK))).count());
+        assertThat(yos.stream().filter(yo -> yo.getWeek() == weekWeAreLookingFor).count())
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.WEEK).stream()
+                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatADayCountIsCorrect() {
-        long dayWeAreLookingFor = Days.daysBetween(epochInstant, fiveYearsAgoInstant).getDays()+1;
+        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
 
-        assertThat(yos.stream().filter(yo -> yo.getDay().equals(dayWeAreLookingFor)).count())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.DAY).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY))).count());
+        assertThat(yos.stream()
+            .filter(yo -> yo.getDay() == dayWeAreLookingFor).count())
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.DAY).stream()
+                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 
     @Test
     public void assertThatAHourCountIsCorrect() {
-        long hourWeAreLookingFor = Hours.hoursBetween(epochInstant, fiveYearsAgoInstant).getHours()+1;
+        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
 
-        assertThat(yos.stream().filter(yo -> yo.getHour().equals(hourWeAreLookingFor)).count())
-            .isEqualTo(yoRCService.getCount(fiveYearsAgo.toInstant(), TemporalValueType.HOUR).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR))).count());
+        assertThat(yos.stream().filter(yo -> yo.getHour() == hourWeAreLookingFor).count())
+            .isEqualTo(
+                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
+                .stream()
+                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
+                .mapToLong(TemporalCountDTO::getCount)
+                .sum());
     }
 }
