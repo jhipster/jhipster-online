@@ -4,7 +4,6 @@ import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.*;
 import io.github.jhipster.online.repository.*;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -88,8 +87,12 @@ public class StatisticsServiceIntTest {
     private UserRepository userRepository;
 
     private List<YoRC> yos;
+
     private List<SubGenEvent> subs;
+
     private List<EntityStats> entities;
+
+    private User user;
 
     @Before
     public void init() {
@@ -104,8 +107,9 @@ public class StatisticsServiceIntTest {
         yos = DataGenerationUtil.addYosToDatabase(100, now, nextYear, yoRCRepository);
         subs = DataGenerationUtil.addSubGenEventsToDatabase(100, now, nextYear, subGenEventRepository);
         entities = DataGenerationUtil.addEntityStatsToDatabase(100, now, nextYear, entityStatsRepository);
-    }
 
+        user = userRepository.findAll().get((int) (Math.random() * userRepository.count()));
+    }
 
     @Test
     public void assertThatAddingAYoWorks() {
@@ -133,11 +137,6 @@ public class StatisticsServiceIntTest {
 
     @Test
     public void assertThatStatisticsCanBeDeleted() {
-        User user = new User();
-        user.setLogin("johndoe");
-        user.setPassword(RandomStringUtils.random(60));
-        userRepository.save(user);
-
         IntStream.range(0, 10).forEach(i -> {
             statisticsService.addSubGenEvent(new SubGenEvent(), generatorId);
             statisticsService.addEntityStats(new EntityStats(), generatorId);

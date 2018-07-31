@@ -6,7 +6,6 @@ import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.service.util.DataGenerationUtil;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +33,14 @@ public class GeneratorIdentityServiceIntTest {
 
     private List<GeneratorIdentity> gids;
 
+    private User user;
+
     @Before
     public void init() {
         generatorIdentityRepository.deleteAll();
         gids = DataGenerationUtil.addGeneratorIdentitiesToDatabase(100, generatorIdentityRepository);
+
+        user = userRepository.findAll().get((int) (Math.random() * userRepository.count()));
     }
 
     @Test
@@ -68,11 +71,6 @@ public class GeneratorIdentityServiceIntTest {
 
     @Test
     public void assertThatAUserCanBeBoundToAGeneratorIdentity() {
-        User user = new User();
-        user.setLogin("johndoe");
-        user.setPassword(RandomStringUtils.random(60));
-        userRepository.save(user);
-
         GeneratorIdentity toTest = gids.get((int) (Math.random() * gids.size()));
         generatorIdentityRepository.save(toTest.owner(null));
 
@@ -83,11 +81,6 @@ public class GeneratorIdentityServiceIntTest {
 
     @Test
     public void assertThatAUserCanBeUnboundFromAGeneratorIdentity() {
-        User user = new User();
-        user.setLogin("johndoe");
-        user.setPassword(RandomStringUtils.random(60));
-        userRepository.save(user);
-
         GeneratorIdentity toTest = gids.get((int) (Math.random() * gids.size()));
         generatorIdentityRepository.save(toTest.owner(user));
 
