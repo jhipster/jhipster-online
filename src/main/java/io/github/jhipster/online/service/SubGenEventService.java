@@ -7,6 +7,7 @@ import io.github.jhipster.online.domain.enums.SubGenEventType;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.dto.RawSQLField;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
@@ -112,5 +113,32 @@ public class SubGenEventService {
             .map(entry ->
                 new TemporalCountDTO(TemporalValueType.absoluteMomentToLocalDateTime(entry.getMoment().longValue(), dbTemporalFunction), entry.getCount())
             ).collect(Collectors.toList());
+    }
+
+    public List<TemporalDistributionDTO> getDeploymentToolDistribution(Instant after, TemporalValueType dbTemporalFunction) {
+        Map<SubGenEventType, List<TemporalCountDTO>> entries = Arrays.stream(SubGenEventType.getDeploymentTools())
+            .map(deploymentTool ->
+                new AbstractMap.SimpleEntry<>(deploymentTool, getFieldCount(after, deploymentTool, dbTemporalFunction))
+            ).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+        List<TemporalDistributionDTO> result = new ArrayList<>();
+        for (Map.Entry<SubGenEventType, List<TemporalCountDTO>> entry: entries.entrySet()) {
+            for (TemporalCountDTO count: entry.getValue()) {
+                Optional<TemporalDistributionDTO> maybeDistribution = result.stream()
+                    .filter(td -> td.getDate().equals(count.getDate()))
+                    .findFirst();
+                TemporalDistributionDTO distributionDTO;
+                if (maybeDistribution.isPresent()) {
+                    distributionDTO = maybeDistribution.get();
+                } else {
+                    distributionDTO = new TemporalDistributionDTO(count.getDate());
+                    result.add(distributionDTO);
+                }
+
+                distributionDTO.getValues().put(entry.getKey().getDatabaseValue(), count.getCount());
+            }
+        }
+
+        return result;
     }
 }

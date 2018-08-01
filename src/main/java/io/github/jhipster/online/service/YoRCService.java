@@ -15,7 +15,6 @@ import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.util.QueryUtil;
-import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
