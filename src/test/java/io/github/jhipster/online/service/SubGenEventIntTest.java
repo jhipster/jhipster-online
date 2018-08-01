@@ -46,7 +46,7 @@ public class SubGenEventIntTest {
         twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
 
         DataGenerationUtil.clearSubGenVentTable(subGenEventRepository);
-        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(1_000, twoYearsAgoInstant, Instant.now(), subGenEventRepository);
+        sgeList = DataGenerationUtil.addSubGenEventsToDatabase(10_000, twoYearsAgoInstant, Instant.now(), subGenEventRepository);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SubGenEventIntTest {
         assertThat(
             sgeList.stream()
                 .filter(sge ->
-                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
+                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()) && sge.getYear() == yearWeAreLookingFor)
                 .count()
         ).isEqualTo(
             subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.YEAR)
@@ -88,7 +88,7 @@ public class SubGenEventIntTest {
         assertThat(
             sgeList.stream()
                 .filter(sge ->
-                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
+                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()) && sge.getWeek() == weekWeAreLookingFor)
                 .count()
         ).isEqualTo(
             subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.WEEK)
@@ -107,7 +107,7 @@ public class SubGenEventIntTest {
         assertThat(
             sgeList.stream()
                 .filter(sge ->
-                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
+                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()) && sge.getDay() == dayWeAreLookingFor)
                 .count()
         ).isEqualTo(
             subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.DAY)
@@ -126,7 +126,7 @@ public class SubGenEventIntTest {
         assertThat(
             sgeList.stream()
                 .filter(sge ->
-                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()))
+                    sge.getType().equals(SubGenEventType.HEROKU.getDatabaseValue()) && sge.getHour() == hourWeAreLookingFor)
                 .count()
         ).isEqualTo(
             subGenEventService.getFieldCount(twoYearsAgoInstant, SubGenEventType.HEROKU, TemporalValueType.HOUR)

@@ -56,6 +56,7 @@ public class DataGenerationUtil {
             type = arr[(int)(Math.random() * arr.length)].getDatabaseValue();
 
             sge
+                .date(date)
                 .year(year)
                 .month(month)
                 .week(week)

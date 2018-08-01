@@ -96,15 +96,17 @@ public class SubGenEventService {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
         Root<SubGenEvent> root = query.from(SubGenEvent.class);
-        ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
+        ParameterExpression<Instant> dateParameter = builder.parameter(Instant.class, QueryUtil.DATE);
+        ParameterExpression<String> typeParameter = builder.parameter(String.class, QueryUtil.TYPE);
 
         query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(SubGenEvent_.type), builder.count(root)))
-            .where(builder.greaterThan(root.get(SubGenEvent_.date).as(Instant.class), parameter), builder.equal(root.get(SubGenEvent_.type), field.getDatabaseValue()))
+            .where(builder.greaterThan(root.get(SubGenEvent_.date).as(Instant.class), dateParameter), builder.equal(root.get(SubGenEvent_.type), typeParameter))
             .groupBy(root.get(SubGenEvent_.type), root.get(dbTemporalFunction.getFieldName()));
 
         return entityManager
             .createQuery(query)
             .setParameter(QueryUtil.DATE, after)
+            .setParameter(QueryUtil.TYPE, field.getDatabaseValue())
             .getResultList()
             .stream()
             .map(entry ->

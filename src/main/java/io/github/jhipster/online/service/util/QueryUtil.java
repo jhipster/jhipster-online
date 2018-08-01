@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public final class QueryUtil {
 
     public static final String DATE = "date";
+    public static final String TYPE = "type";
 
     public static List<TemporalDistributionDTO> createDistributionQueryAndCollectData(Instant after, TemporalValueType dbTemporalFunction, CriteriaQuery<RawSQLField> query, EntityManager entityManager) {
         return entityManager
