@@ -4,6 +4,7 @@ export class HomeService {
     isFullScreen() {
         return this.fullScreen;
     }
+
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
     }

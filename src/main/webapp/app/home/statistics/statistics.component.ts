@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
-import { StatisticsService } from './statistics.service';
-import { HomeService } from '../home.service';
-import { BasicChart, LineChart } from 'app/home/statistics/statistics.model';
-import { barChart, comparingLineChart, pieChart } from 'app/home/statistics/statistics.options';
+import { StatisticsService } from 'app/home/statistics/statistics.service';
+import { HomeService } from 'app/home/home.service';
+import { Chart, Frequency } from 'app/home/statistics/statistics.model';
+import { barChartOptions, comparingLineChartOptions, pieChartOptions } from 'app/home/statistics/statistics.options';
 
 @Component({
     selector: 'jhi-statistics',
@@ -60,72 +60,89 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     countUser: Observable<string>;
     countYoRcByDate: Observable<string>;
 
-    timeScale = 'all';
+    timeScale: string = Frequency.DEFAULT;
     generatedApps = true;
-
-    yorcByDateList: any;
 
     constructor(
         private statisticsService: StatisticsService,
-        private echartsService: NgxEchartsService,
-        private homeService: HomeService
+        private homeService: HomeService,
+        private echartsService: NgxEchartsService
     ) {}
 
     ngAfterViewInit() {
         this.countJdl = this.statisticsService.countJdl();
         this.countYoRc = this.statisticsService.countYos();
-        this.onSelectTimeScale();
+        this.onSelectTimeScale(Frequency.DEFAULT);
     }
 
-    public onSelectTimeScale() {
+    public setTimeScale() {
+        this.onSelectTimeScale(this.timeScale);
+    }
+
+    public toggleFullscreen() {
+        this.homeService.toggleFullScreen();
+    }
+
+    public isFullScreen() {
+        return this.homeService.isFullScreen();
+    }
+
+    public exitFullScreen() {
+        this.homeService.exitFullScreen();
+    }
+
+    public onSelectTimeScale(event) {
+        if (event === undefined) {
+            return;
+        }
+        if (event) {
+            this.timeScale = event;
+        }
+
         switch (this.timeScale) {
-            case 'all':
+            case 'yearly':
+                this.displayCharts(Frequency.MONTHLY);
+                this.displayTrend(Frequency.YEARLY, this.chartJDL);
+                break;
+            case 'monthly':
+                this.displayCharts(Frequency.WEEKLY);
+                break;
+            case 'weekly':
+                this.displayCharts(Frequency.DAILY);
+                break;
+            case 'daily':
+                this.displayCharts(Frequency.HOURLY);
+                break;
+            case 'default':
+            default:
                 this.generatedApps = true;
                 if (this.isFullScreen()) {
-                    this.displayTrend('yearly', this.chartTrendFull1);
-                    this.displayTrend('monthly', this.chartTrendFull2);
-                    this.displayTrend('daily', this.chartTrendFull3);
-                    this.displayTrend('hourly', this.chartTrendFull4);
+                    this.displayTrend(Frequency.YEARLY, this.chartTrendFull1);
+                    this.displayTrend(Frequency.MONTHLY, this.chartTrendFull2);
+                    this.displayTrend(Frequency.DAILY, this.chartTrendFull3);
+                    this.displayTrend(Frequency.HOURLY, this.chartTrendFull4);
                 } else {
-                    this.displayTrend('yearly', this.chartTrend1);
-                    this.displayTrend('monthly', this.chartTrend2);
-                    this.displayTrend('daily', this.chartTrend3);
-                    this.displayTrend('hourly', this.chartTrend4);
+                    this.displayTrend(Frequency.YEARLY, this.chartTrend1);
+                    this.displayTrend(Frequency.MONTHLY, this.chartTrend2);
+                    this.displayTrend(Frequency.DAILY, this.chartTrend3);
+                    this.displayTrend(Frequency.HOURLY, this.chartTrend4);
                 }
-                break;
-            case 'years':
-                this.displayCharts('monthly');
-                this.displayTrend('yearly', this.chartJDL);
-                break;
-            case 'months':
-                this.displayCharts('weekly');
-                break;
-            case 'weeks':
-                this.displayCharts('daily');
-                break;
-            case 'days':
-                this.displayCharts('hourly');
-                break;
-            default:
                 break;
         }
     }
 
     private displayTrend(frequency: string, chart: any) {
         this.statisticsService.getCount(frequency).subscribe(data => {
-            new LineChart(this.echartsService, barChart(data), chart, null).build();
+            new Chart(this.echartsService, barChartOptions(data), chart).build();
         });
     }
 
     private displayChart(frequency: string, field: string, chartLine: any, chartPie: any) {
         this.statisticsService.getFieldCount(field, frequency).subscribe(data => {
             data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
-            const linechartCompared1 = new LineChart(
-                this.echartsService,
-                comparingLineChart(data, 'Date', 'Amount'),
-                chartLine,
-                null
-            ).build();
+
+            const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), chartLine).build();
+
             const pieChartData = data.reduce((acc, current) => {
                 Object.keys(current.values).forEach(e => {
                     const currentSum = acc[e] || 0;
@@ -133,8 +150,8 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
                 });
                 return acc;
             }, {});
-            const lineChartCompared2 = new BasicChart(this.echartsService, pieChart(pieChartData), chartPie, null).build();
 
+            const lineChartCompared2 = new Chart(this.echartsService, pieChartOptions(pieChartData), chartPie).build();
             this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
         });
     }
@@ -152,7 +169,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
         // JDL this.displayChart(frequency, '', this.chartJDLLine, this.chartJDLPie);
     }
 
-    private updateRelatedBasicChartOf(data: any, chartInstance: any, basicChartInstance: BasicChart) {
+    private updateRelatedBasicChartOf(data: any, chartInstance: any, basicChartInstance: Chart) {
         chartInstance.on('dataZoom', () => {
             const minDate = data[chartInstance.getOption().dataZoom[0].startValue].date;
             const maxDate = data[chartInstance.getOption().dataZoom[0].endValue].date;
@@ -166,21 +183,9 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
             }, {});
 
             timer(250).subscribe(() => {
-                basicChartInstance.chartInstance.setOption(pieChart(arr));
+                basicChartInstance.chartInstance.setOption(pieChartOptions(arr));
             });
         });
-    }
-
-    public toggleFullscreen() {
-        this.homeService.toggleFullScreen();
-    }
-
-    public isFullScreen() {
-        return this.homeService.isFullScreen();
-    }
-
-    public exitFullScreen() {
-        this.homeService.exitFullScreen();
     }
 
     ngOnDestroy() {
