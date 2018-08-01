@@ -2,6 +2,7 @@ import { ElementRef } from '@angular/core';
 import { NgxEchartsService } from 'ngx-echarts';
 
 export enum Frequency {
+    DEFAULT = 'default',
     YEARLY = 'yearly',
     MONTHLY = 'monthly',
     WEEKLY = 'weekly',
@@ -9,7 +10,7 @@ export enum Frequency {
     HOURLY = 'hourly'
 }
 
-export class BasicChart {
+export class Chart {
     public chartInstance;
 
     constructor(
@@ -18,18 +19,6 @@ export class BasicChart {
         protected elementRef: ElementRef,
         protected data?: any
     ) {}
-
-    build() {
-        this.chartInstance = this.echartsService.init(this.elementRef.nativeElement);
-        this.chartInstance.setOption(this.chartOptions);
-        return this;
-    }
-}
-
-export class LineChart extends BasicChart {
-    constructor(echartsService: NgxEchartsService, chartOptions: ChartOptions, elementRef: ElementRef, data: any) {
-        super(echartsService, chartOptions, elementRef, data);
-    }
 
     build() {
         this.chartInstance = this.echartsService.init(this.elementRef.nativeElement);
@@ -60,7 +49,6 @@ export interface ChartSeries {
     name?: string;
     type?: string;
 
-    // pie
     radius?: string;
     center?: string[];
     selectedMode?: string;

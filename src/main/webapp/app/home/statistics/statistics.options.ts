@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 import { Frequency } from 'app/home/statistics/statistics.model';
 
-export const prettifyDate = (date: string, frequency?: Frequency): string => {
+const prettifyDate = (date: string, frequency?: Frequency): string => {
     let format = '';
     switch (frequency) {
         case Frequency.YEARLY:
@@ -24,7 +24,7 @@ export const prettifyDate = (date: string, frequency?: Frequency): string => {
     return moment(new Date(date)).format(format);
 };
 
-export const lineChart = (data: any, frenquency: Frequency) => {
+export const lineChartOptions = (data: any, frequency: Frequency) => {
     return {
         tooltip: {
             trigger: 'axis'
@@ -32,7 +32,7 @@ export const lineChart = (data: any, frenquency: Frequency) => {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: data.map(obj => prettifyDate(obj.date, frenquency))
+            data: data.map(obj => prettifyDate(obj.date, frequency))
         },
         yAxis: {
             type: 'value'
@@ -52,7 +52,7 @@ export const lineChart = (data: any, frenquency: Frequency) => {
     };
 };
 
-export const barChart = (data: any) => {
+export const barChartOptions = (data: any) => {
     return {
         tooltip: {
             trigger: 'axis'
@@ -73,7 +73,7 @@ export const barChart = (data: any) => {
     };
 };
 
-export const comparingLineChart = (data: any, xAxis: string, yAxis: string) => {
+export const comparingLineChartOptions = (data: any, xAxis: string, yAxis: string) => {
     const series = data
         .map(e => Object.keys(e.values))
         .reduce((acc, current) => {
@@ -114,7 +114,7 @@ export const comparingLineChart = (data: any, xAxis: string, yAxis: string) => {
     };
 };
 
-export const pieChart = (data: any) => {
+export const pieChartOptions = (data: any) => {
     return {
         tooltip: {
             trigger: 'item',
