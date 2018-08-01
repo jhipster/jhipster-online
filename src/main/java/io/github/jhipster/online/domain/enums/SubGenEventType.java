@@ -1,5 +1,7 @@
 package io.github.jhipster.online.domain.enums;
 
+import java.util.Calendar;
+
 public enum SubGenEventType {
     HEROKU("heroku"),
     CLOUDFOUNDRY("cloudfoundry"),
@@ -25,5 +27,15 @@ public enum SubGenEventType {
 
     public String getDatabaseValue() {
         return databaseValue;
+    }
+
+    public static SubGenEventType[] getDeploymentTools() {
+        return new SubGenEventType[]{
+            HEROKU,
+            CLOUDFOUNDRY,
+            AWS,
+            OPENSHIFT,
+            KUBERNETES
+        };
     }
 }

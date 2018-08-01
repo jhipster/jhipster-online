@@ -1,6 +1,7 @@
 package io.github.jhipster.online.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TemporalDistributionDTO {
@@ -12,6 +13,11 @@ public class TemporalDistributionDTO {
     public TemporalDistributionDTO(LocalDateTime date, Map<String, Long> values) {
         this.date = date;
         this.values = values;
+    }
+
+    public TemporalDistributionDTO(LocalDateTime date) {
+        this.date = date;
+        this.values = new HashMap<>();
     }
 
     public LocalDateTime getDate() {
