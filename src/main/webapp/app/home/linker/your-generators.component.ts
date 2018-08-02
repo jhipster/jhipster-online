@@ -26,15 +26,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
-import { GeneratorIdentityUnbindDialogComponent } from 'app/home/linker/linker-unbind-dialog.component';
+import { RemoveGeneratorDialogComponent } from 'app/home/linker/remove-generator-dialog.component';
 import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @Component({
     selector: 'jhi-linker',
-    templateUrl: './linker.component.html',
-    styleUrls: ['linker.scss']
+    templateUrl: './your-generators.component.html',
+    styleUrls: ['your-generators.scss']
 })
-export class LinkerComponent implements OnInit, OnDestroy {
+export class YourGeneratorsComponent implements OnInit, OnDestroy {
     generatorIdentities: IGeneratorIdentity[];
     currentAccount: any;
     eventSubscriber: Subscription;
@@ -69,8 +69,7 @@ export class LinkerComponent implements OnInit, OnDestroy {
     }
 
     openUnbindModal(generatorId: string) {
-        const modalRef = this.modalService.open(GeneratorIdentityUnbindDialogComponent, { size: 'lg', backdrop: 'static' })
-            .componentInstance;
+        const modalRef = this.modalService.open(RemoveGeneratorDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
         modalRef.generatorId = generatorId;
     }

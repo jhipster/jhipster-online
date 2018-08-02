@@ -17,7 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -135,6 +137,86 @@ public class SubGenEventIntTest {
                     item.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
                 .mapToLong(TemporalCountDTO::getCount)
                 .sum()
+        );
+    }
+
+    @Test
+    public void assertThatDeploymentToolsMonthlyTotalDistributionIsCorrect() {
+        assertThat(
+            subGenEventService.getDeploymentToolDistribution(twoYearsAgoInstant, TemporalValueType.MONTH).stream()
+            .mapToLong(distribution ->
+                distribution.getValues().entrySet().stream()
+                    .mapToLong(Map.Entry::getValue)
+                    .sum())
+            .sum()
+        ).isEqualTo(
+            sgeList.stream()
+                .filter(sub ->
+                    Arrays.stream(SubGenEventType.getDeploymentTools())
+                        .anyMatch(type ->
+                            type.getDatabaseValue().equalsIgnoreCase(sub.getType())
+                        )
+                ).count()
+        );
+    }
+
+    @Test
+    public void assertThatDeploymentToolsWeeklyTotalDistributionIsCorrect() {
+        assertThat(
+            subGenEventService.getDeploymentToolDistribution(twoYearsAgoInstant, TemporalValueType.WEEK).stream()
+                .mapToLong(distribution ->
+                    distribution.getValues().entrySet().stream()
+                        .mapToLong(Map.Entry::getValue)
+                        .sum())
+                .sum()
+        ).isEqualTo(
+            sgeList.stream()
+                .filter(sub ->
+                    Arrays.stream(SubGenEventType.getDeploymentTools())
+                        .anyMatch(type ->
+                            type.getDatabaseValue().equalsIgnoreCase(sub.getType())
+                        )
+                ).count()
+        );
+    }
+
+    @Test
+    public void assertThatDeploymentToolsDailyTotalDistributionIsCorrect() {
+        assertThat(
+            subGenEventService.getDeploymentToolDistribution(twoYearsAgoInstant, TemporalValueType.DAY).stream()
+                .mapToLong(distribution ->
+                    distribution.getValues().entrySet().stream()
+                        .mapToLong(Map.Entry::getValue)
+                        .sum())
+                .sum()
+        ).isEqualTo(
+            sgeList.stream()
+                .filter(sub ->
+                    Arrays.stream(SubGenEventType.getDeploymentTools())
+                        .anyMatch(type ->
+                            type.getDatabaseValue().equalsIgnoreCase(sub.getType())
+                        )
+                ).count()
+        );
+    }
+
+    @Test
+    public void assertThatDeploymentToolsHourlyTotalDistributionIsCorrect() {
+        assertThat(
+            subGenEventService.getDeploymentToolDistribution(twoYearsAgoInstant, TemporalValueType.HOUR).stream()
+                .mapToLong(distribution ->
+                    distribution.getValues().entrySet().stream()
+                        .mapToLong(Map.Entry::getValue)
+                        .sum())
+                .sum()
+        ).isEqualTo(
+            sgeList.stream()
+                .filter(sub ->
+                    Arrays.stream(SubGenEventType.getDeploymentTools())
+                        .anyMatch(type ->
+                            type.getDatabaseValue().equalsIgnoreCase(sub.getType())
+                        )
+                ).count()
         );
     }
 }

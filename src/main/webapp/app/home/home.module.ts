@@ -30,11 +30,11 @@ import { JdlOutputDialogComponent } from './jdl-metadata/jdl.output.component';
 import { CiCdComponent } from './ci-cd/ci-cd.component';
 import { StatisticsComponent } from 'app/home/statistics/statistics.component';
 import { CiCdOutputDialogComponent } from './ci-cd/ci-cd.output.component';
-import { GeneratorIdentityUnbindDialogComponent } from './linker/linker-unbind-dialog.component';
+import { RemoveGeneratorDialogComponent } from './linker/remove-generator-dialog.component';
 import { JhonlineSharedModule } from 'app/shared';
 import { HOME_ROUTE, HomeComponent } from './';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
-import { LinkerComponent } from 'app/home/linker/linker.component';
+import { YourGeneratorsComponent } from 'app/home/linker/your-generators.component';
 import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @NgModule({
@@ -52,16 +52,16 @@ import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialo
         JdlOutputDialogComponent,
         CiCdComponent,
         StatisticsComponent,
-        LinkerComponent,
+        YourGeneratorsComponent,
         CiCdOutputDialogComponent,
-        GeneratorIdentityUnbindDialogComponent,
+        RemoveGeneratorDialogComponent,
         DataDeletionDialogComponent
     ],
     entryComponents: [
         GeneratorOutputDialogComponent,
         JdlOutputDialogComponent,
         CiCdOutputDialogComponent,
-        GeneratorIdentityUnbindDialogComponent,
+        RemoveGeneratorDialogComponent,
         DataDeletionDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

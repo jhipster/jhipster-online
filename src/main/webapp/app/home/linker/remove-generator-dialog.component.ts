@@ -24,10 +24,10 @@ import { JhiEventManager } from 'ng-jhipster';
 import { GeneratorIdentityService } from './generator-identity.service';
 
 @Component({
-    selector: 'jhi-generator-unbind-dialog',
-    templateUrl: './linker-unbind-dialog.component.html'
+    selector: 'jhi-remove-generator-dialog',
+    templateUrl: './remove-generator-dialog.component.html'
 })
-export class GeneratorIdentityUnbindDialogComponent {
+export class RemoveGeneratorDialogComponent {
     generatorId: string;
 
     constructor(
@@ -40,7 +40,7 @@ export class GeneratorIdentityUnbindDialogComponent {
         this.generatorIdentityService.unbind(this.generatorId).subscribe(() => {
             this.eventManager.broadcast({
                 name: 'generatorIdentityListModification',
-                content: 'Unlink a generatorIdentity'
+                content: 'Remove a generatorIdentity'
             });
             this.activeModal.close();
         });

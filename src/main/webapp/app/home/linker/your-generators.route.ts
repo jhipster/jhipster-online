@@ -20,8 +20,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, Route } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
 
-import { LinkerComponent } from 'app/home/linker/linker.component';
-import { GeneratorIdentityUnbindDialogComponent } from 'app/home/linker/linker-unbind-dialog.component';
+import { YourGeneratorsComponent } from 'app/home/linker/your-generators.component';
+import { RemoveGeneratorDialogComponent } from 'app/home/linker/remove-generator-dialog.component';
 import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
 
 @Injectable({ providedIn: 'root' })
@@ -32,8 +32,8 @@ export class GuidResolve implements Resolve<string> {
 }
 
 export const LinkerRoute: Route = {
-    path: 'linker',
-    component: LinkerComponent,
+    path: 'your-generators',
+    component: YourGeneratorsComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'Bound Generators'
@@ -43,17 +43,17 @@ export const LinkerRoute: Route = {
 
 export const LinkerDialogueRoutes: Routes = [
     {
-        path: 'linker/unbind',
-        component: GeneratorIdentityUnbindDialogComponent,
+        path: 'your-generators/remove',
+        component: RemoveGeneratorDialogComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'Unbind a generator'
+            pageTitle: 'Remove a generator'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
-        path: 'linker/delete-statistics',
+        path: 'your-generators/delete-statistics',
         component: DataDeletionDialogComponent,
         data: {
             authorities: ['ROLE_USER'],
