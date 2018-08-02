@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 import { Frequency } from 'app/home/statistics/statistics.model';
+import { StatisticsUtils } from 'app/home/statistics/statistics.utils';
 
 const prettifyDate = (date: string, frequency?: Frequency): string => {
     let format = '';
@@ -86,7 +87,7 @@ export const comparingLineChartOptions = (data: any, xAxis: string, yAxis: strin
             return acc;
         }, [])
         .map(k => ({
-            name: k,
+            name: StatisticsUtils.getDisplayName(k),
             type: 'line',
             data: data.map(e => e.values[k])
         }));
@@ -132,7 +133,7 @@ export const pieChartOptions = (data: any) => {
                 radius: '55%',
                 center: ['50%', '60%'],
                 data: Object.keys(data).map(k => ({
-                    name: k,
+                    name: StatisticsUtils.getDisplayName(k),
                     value: data[k]
                 }))
             }

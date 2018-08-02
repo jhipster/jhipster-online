@@ -137,23 +137,31 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
         });
     }
 
+    private displayData(data: any, lineChart, pieChart) {
+        data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+
+        const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), lineChart).build();
+
+        const pieChartData = data.reduce((acc, current) => {
+            Object.keys(current.values).forEach(e => {
+                const currentSum = acc[e] || 0;
+                acc[e] = currentSum + current.values[e];
+            });
+            return acc;
+        }, {});
+
+        const lineChartCompared2 = new Chart(this.echartsService, pieChartOptions(pieChartData), pieChart).build();
+        this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+    }
+
     private displayChart(frequency: string, field: string, chartLine: any, chartPie: any) {
         this.statisticsService.getFieldCount(field, frequency).subscribe(data => {
-            data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
-
-            const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), chartLine).build();
-
-            const pieChartData = data.reduce((acc, current) => {
-                Object.keys(current.values).forEach(e => {
-                    const currentSum = acc[e] || 0;
-                    acc[e] = currentSum + current.values[e];
-                });
-                return acc;
-            }, {});
-
-            const lineChartCompared2 = new Chart(this.echartsService, pieChartOptions(pieChartData), chartPie).build();
-            this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+            this.displayData(data, chartLine, chartPie);
         });
+    }
+
+    private displayDeploymentTools(frequency: string, lineChart, pieChart) {
+        this.statisticsService.getDeploymentToolsCount(frequency).subscribe((data: any) => this.displayData(data, lineChart, pieChart));
     }
 
     private displayCharts(frequency: string) {
@@ -161,7 +169,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
 
         this.displayChart(frequency, 'clientFramework', this.chartFrameworkLine, this.chartFrameworkPie);
         this.displayChart(frequency, 'buildTool', this.chartBuildtoolLine, this.chartBuildtoolPie);
-        // Deployement this.displayChart(frequency, '', this.chartDeploymentLine, this.chartDeploymentPie);
+        this.displayDeploymentTools(frequency, this.chartDeploymentLine, this.chartDeploymentPie);
         this.displayChart(frequency, 'prodDatabaseType', this.chartDBProdLine, this.chartDBProdPie);
         this.displayChart(frequency, 'cacheProvider', this.chartCacheLine, this.chartCachePie);
         this.displayChart(frequency, 'jhipsterVersion', this.chartVersionLine, this.chartVersionPie);
