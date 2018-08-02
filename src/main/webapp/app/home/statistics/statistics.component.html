@@ -1,6 +1,6 @@
 <!-- Full screen dashboard display -->
 
-<div *ngIf="isFullScreen()" class="fullScreen bg-light" (mouseup)="onSelectTimeScale()">
+<div *ngIf="isFullScreen()" class="fullScreen bg-light">
     <div class="row">
         <div class="col-md-10">
             <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
@@ -204,7 +204,7 @@
 
 <!-- Normal display -->
 
-<div *ngIf="!isFullScreen()" class="row" (mouseup)="onSelectTimeScale()">
+<div *ngIf="!isFullScreen()" class="row">
     <div class="col-md-10">
         <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
     </div>
