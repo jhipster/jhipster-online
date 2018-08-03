@@ -19,7 +19,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
     }
 
     @Override
-    public YoRC deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public YoRC deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         YoRC result = new YoRC();
         JsonNode node = jp.getCodec().readTree(jp);
 

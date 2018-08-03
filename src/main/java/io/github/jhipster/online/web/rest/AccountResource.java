@@ -56,19 +56,10 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    private final JdlMetadataService jdlMetadataService;
-
-    public AccountResource(UserRepository userRepository,
-        UserService userService,
-        MailService mailService,
-        JdlMetadataService jdlMetadataService,
-        JdlService jdlService,
-        GithubService githubService,
-        GitlabService gitlabService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.jdlMetadataService = jdlMetadataService;
     }
 
     /**

@@ -39,7 +39,7 @@ public enum YoRCColumn implements DatabaseColumn {
     ENABLE_TRANSLATION("enableTranslation"),
     NATIVE_LANGUAGE("nativeLanguage");
 
-    private String value;
+    private final String value;
 
     YoRCColumn(String value) {
         this.value = value;

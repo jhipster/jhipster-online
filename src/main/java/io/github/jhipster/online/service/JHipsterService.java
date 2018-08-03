@@ -35,21 +35,18 @@ public class JHipsterService {
 
     private final LogsService logsService;
 
-    private final ApplicationProperties applicationProperties;
-
     private final Executor taskExecutor;
 
-    private String jhipsterCommand;
+    private final String jhipsterCommand;
 
-    private Integer timeout;
+    private final Integer timeout;
 
     public JHipsterService(LogsService logsService, ApplicationProperties applicationProperties, Executor taskExecutor) {
         this.logsService = logsService;
-        this.applicationProperties = applicationProperties;
         this.taskExecutor = taskExecutor;
 
-        jhipsterCommand = this.applicationProperties.getJhipsterCmd().getCmd();
-        timeout = this.applicationProperties.getJhipsterCmd().getTimeout();
+        jhipsterCommand = applicationProperties.getJhipsterCmd().getCmd();
+        timeout = applicationProperties.getJhipsterCmd().getTimeout();
 
         log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
     }

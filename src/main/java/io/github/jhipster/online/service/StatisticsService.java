@@ -48,7 +48,6 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
-
     public StatisticsService(YoRCService yoRCService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,

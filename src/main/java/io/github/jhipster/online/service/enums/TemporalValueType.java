@@ -31,11 +31,11 @@ public enum TemporalValueType {
     DAY("day", ChronoUnit.DAYS, 1),
     HOUR("hour", ChronoUnit.HOURS, 1);
 
-    private ChronoUnit unit;
+    private final ChronoUnit unit;
 
-    private String fieldName;
+    private final String fieldName;
 
-    private int dayMultiplier;
+    private final int dayMultiplier;
 
     TemporalValueType(String fieldName, ChronoUnit unit, Integer dayMultiplier) {
         this.fieldName = fieldName;

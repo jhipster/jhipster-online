@@ -279,10 +279,9 @@ public class GitResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
-        if (!maybeGitProvider.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(this.userService.getProjects(companyName, maybeGitProvider.get()), HttpStatus.OK);
+        return maybeGitProvider.<ResponseEntity>map(gitProvider1 ->
+            new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)).orElseGet(() ->
+                new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/git/config")

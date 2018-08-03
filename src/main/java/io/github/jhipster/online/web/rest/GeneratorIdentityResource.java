@@ -88,7 +88,7 @@ public class GeneratorIdentityResource {
      */
     @PutMapping("/generator-identities")
     @Timed
-    public ResponseEntity<GeneratorIdentity> updateGeneratorIdentity(@RequestBody GeneratorIdentity generatorIdentity) throws URISyntaxException {
+    public ResponseEntity<GeneratorIdentity> updateGeneratorIdentity(@RequestBody GeneratorIdentity generatorIdentity) {
         log.debug("REST request to update GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

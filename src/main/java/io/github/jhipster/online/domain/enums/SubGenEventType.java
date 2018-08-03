@@ -36,7 +36,7 @@ public enum SubGenEventType {
     SPRING_CONTROLLER("spring-controller"),
     UPGRADE("upgrade");
 
-    private String databaseValue;
+    private final String databaseValue;
 
     SubGenEventType(String databaseValue) {
         this.databaseValue = databaseValue;

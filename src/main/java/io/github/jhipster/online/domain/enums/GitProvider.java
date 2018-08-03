@@ -26,7 +26,7 @@ public enum GitProvider {
 
     GITHUB("github"), GITLAB("gitlab");
 
-    private String value;
+    private final String value;
 
     GitProvider(String value) {
         this.value = value;

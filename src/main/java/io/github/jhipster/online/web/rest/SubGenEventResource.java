@@ -84,7 +84,7 @@ public class SubGenEventResource {
      */
     @PutMapping("/sub-gen-events")
     @Timed
-    public ResponseEntity<SubGenEvent> updateSubGenEvent(@RequestBody SubGenEvent subGenEvent) throws URISyntaxException {
+    public ResponseEntity<SubGenEvent> updateSubGenEvent(@RequestBody SubGenEvent subGenEvent) {
         log.debug("REST request to update SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

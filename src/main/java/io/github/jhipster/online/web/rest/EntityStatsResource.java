@@ -84,7 +84,7 @@ public class EntityStatsResource {
      */
     @PutMapping("/entity-stats")
     @Timed
-    public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) throws URISyntaxException {
+    public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) {
         log.debug("REST request to update EntityStats : {}", entityStats);
         if (entityStats.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

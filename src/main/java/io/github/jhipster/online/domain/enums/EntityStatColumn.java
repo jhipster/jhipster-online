@@ -31,7 +31,7 @@ public enum EntityStatColumn implements DatabaseColumn {
     FLUENT_METHODS("fluentMethods"),
     DATE("date");
 
-    private String databaseValue;
+    private final String databaseValue;
 
     EntityStatColumn(String databaseValue) {
         this.databaseValue = databaseValue;

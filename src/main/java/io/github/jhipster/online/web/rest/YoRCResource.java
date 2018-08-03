@@ -84,7 +84,7 @@ public class YoRCResource {
      */
     @PutMapping("/yo-rcs")
     @Timed
-    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

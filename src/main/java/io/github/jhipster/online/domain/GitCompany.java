@@ -45,7 +45,7 @@ public class GitCompany implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 0, max = 50)
+    @Size(max = 50)
     @Column(length = 50)
     private String name;
 
