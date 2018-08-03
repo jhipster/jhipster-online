@@ -27,7 +27,7 @@ import { GITHUB_CALLBACK_ROUTE } from 'app/home/git/callback/callback.route';
 import { jdlMetadataRoute } from 'app/home/jdl-metadata/jdl-metadata.route';
 import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from 'app/home/ci-cd/ci-cd.route';
 import { STATISTICS_ROUTE } from 'app/home/statistics/statistics.route';
-import { YourGeneratorsRoute, YourGeneratorsDialogueRoutes } from 'app/home/your-generators/your-generators.route';
+import { LinkerRoute, LinkerDialogueRoutes } from 'app/home/your-generators/your-generators.route';
 
 export const HOME_ROUTE: Route = {
     path: '',
@@ -44,8 +44,8 @@ export const HOME_ROUTE: Route = {
         GITHUB_CALLBACK_ROUTE,
         CI_CD_ROUTE,
         STATISTICS_ROUTE,
-        YourGeneratorsRoute,
-        ...YourGeneratorsDialogueRoutes,
+        LinkerRoute,
+        ...LinkerDialogueRoutes,
         CI_CD_OUTPUT_ROUTE,
         ...jdlMetadataRoute
     ]

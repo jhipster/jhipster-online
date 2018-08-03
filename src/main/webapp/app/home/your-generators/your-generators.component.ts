@@ -30,7 +30,7 @@ import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @Component({
-    selector: 'jhi-you-generators',
+    selector: 'jhi-linker',
     templateUrl: './your-generators.component.html',
     styleUrls: ['your-generators.scss']
 })
