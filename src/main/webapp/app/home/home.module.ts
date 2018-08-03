@@ -34,8 +34,8 @@ import { RemoveGeneratorDialogComponent } from './linker/remove-generator-dialog
 import { JhonlineSharedModule } from 'app/shared';
 import { HOME_ROUTE, HomeComponent } from './';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
-import { YourGeneratorsComponent } from 'app/home/linker/your-generators.component';
-import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
+import { YourGeneratorsComponent } from 'app/home/your-generators/your-generators.component';
+import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @NgModule({
     imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],

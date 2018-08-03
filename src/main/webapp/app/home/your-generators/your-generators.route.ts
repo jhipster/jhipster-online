@@ -20,9 +20,9 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, Route } from '@angular/router';
 import { UserRouteAccessService } from 'app/core';
 
-import { YourGeneratorsComponent } from 'app/home/linker/your-generators.component';
-import { RemoveGeneratorDialogComponent } from 'app/home/linker/remove-generator-dialog.component';
-import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
+import { YourGeneratorsComponent } from 'app/home/your-generators/your-generators.component';
+import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-generator-dialog.component';
+import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class GuidResolve implements Resolve<string> {

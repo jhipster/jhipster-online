@@ -26,8 +26,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
-import { RemoveGeneratorDialogComponent } from 'app/home/linker/remove-generator-dialog.component';
-import { DataDeletionDialogComponent } from 'app/home/linker/data-deletion-dialog.component';
+import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-generator-dialog.component';
+import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @Component({
     selector: 'jhi-linker',
