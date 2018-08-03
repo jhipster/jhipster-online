@@ -3,7 +3,6 @@ package io.github.jhipster.online.service;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.EntityStats_;
 import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.dto.RawSQL;
@@ -40,7 +39,7 @@ public class EntityStatsService {
 
     private final EntityManager entityManager;
 
-    public EntityStatsService(EntityStatsRepository entityStatsRepository, GeneratorIdentityService generatorIdentityService, EntityManager entityManager) {
+    public EntityStatsService(EntityStatsRepository entityStatsRepository, EntityManager entityManager) {
         this.entityStatsRepository = entityStatsRepository;
         this.entityManager = entityManager;
     }
@@ -114,7 +113,7 @@ public class EntityStatsService {
         Root<EntityStats> root = query.from(EntityStats.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
 
-        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getDatabaseValue()), builder.count(root)))
+        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getDatabaseValue()).as(String.class), builder.count(root)))
             .where(builder.greaterThan(root.get(EntityStats_.date).as(Instant.class), parameter))
             .groupBy(root.get(field.getDatabaseValue()), root.get(dbTemporalFunction.getFieldName()));
 
