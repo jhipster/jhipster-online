@@ -89,7 +89,7 @@ export const comparingLineChartOptions = (data: any, xAxis: string, yAxis: strin
         .map(k => ({
             name: StatisticsUtils.getDisplayName(k),
             type: 'line',
-            data: data.map(e => e.values[k])
+            data: data.map(e => (e.values[k] ? e.values[k] : 0))
         }));
 
     return {
