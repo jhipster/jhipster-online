@@ -31,7 +31,7 @@ export class GuidResolve implements Resolve<string> {
     }
 }
 
-export const LinkerRoute: Route = {
+export const YourGeneratorsRoute: Route = {
     path: 'your-generators',
     component: YourGeneratorsComponent,
     data: {
@@ -41,7 +41,7 @@ export const LinkerRoute: Route = {
     canActivate: [UserRouteAccessService]
 };
 
-export const LinkerDialogueRoutes: Routes = [
+export const YourGeneratorsDialogueRoutes: Routes = [
     {
         path: 'your-generators/remove',
         component: RemoveGeneratorDialogComponent,
