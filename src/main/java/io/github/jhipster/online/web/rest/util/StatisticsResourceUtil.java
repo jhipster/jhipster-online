@@ -1,5 +1,6 @@
 package io.github.jhipster.online.web.rest.util;
 
+import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import org.joda.time.DateTime;
@@ -56,9 +57,17 @@ public class StatisticsResourceUtil {
         }
     }
 
-    public static YoRCColumn getColumnFromField(String field) {
+    public static YoRCColumn getYoColumnFromField(String field) {
         return Arrays
             .stream(YoRCColumn.values())
+            .filter(c -> c.getDatabaseValue().equals(field))
+            .findFirst()
+            .orElse(null);
+    }
+
+    public static EntityStatColumn getEntityColumnFromField(String field) {
+        return Arrays
+            .stream(EntityStatColumn.values())
             .filter(c -> c.getDatabaseValue().equals(field))
             .findFirst()
             .orElse(null);

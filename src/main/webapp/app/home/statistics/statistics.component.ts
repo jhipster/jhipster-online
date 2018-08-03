@@ -53,7 +53,8 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     @ViewChild('chartVersionPie') chartVersionPie: ElementRef;
     @ViewChild('chartAppTypeLine') chartAppTypeLine: ElementRef;
     @ViewChild('chartAppTypePie') chartAppTypePie: ElementRef;
-    @ViewChild('chartJDL') chartJDL: ElementRef;
+    @ViewChild('chartJDLLine') chartJDLLine: ElementRef;
+    @ViewChild('chartJDLPie') chartJDLPie: ElementRef;
 
     countJdl: Observable<string>;
     countYoRc: Observable<string>;
@@ -99,10 +100,14 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
             this.timeScale = event;
         }
 
+        this.refreshData();
+    }
+
+    public refreshData() {
         switch (this.timeScale) {
             case 'yearly':
                 this.displayCharts(Frequency.MONTHLY);
-                this.displayTrend(Frequency.YEARLY, this.chartJDL);
+                // this.displayGenerationCount(Frequency.YEARLY, this.chartJDL);
                 break;
             case 'monthly':
                 this.displayCharts(Frequency.WEEKLY);
@@ -117,24 +122,26 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
             default:
                 this.generatedApps = true;
                 if (this.isFullScreen()) {
-                    this.displayTrend(Frequency.YEARLY, this.chartTrendFull1);
-                    this.displayTrend(Frequency.MONTHLY, this.chartTrendFull2);
-                    this.displayTrend(Frequency.DAILY, this.chartTrendFull3);
-                    this.displayTrend(Frequency.HOURLY, this.chartTrendFull4);
+                    this.displayGenerationCount(Frequency.YEARLY, this.chartTrendFull1);
+                    this.displayGenerationCount(Frequency.MONTHLY, this.chartTrendFull2);
+                    this.displayGenerationCount(Frequency.DAILY, this.chartTrendFull3);
+                    this.displayGenerationCount(Frequency.HOURLY, this.chartTrendFull4);
                 } else {
-                    this.displayTrend(Frequency.YEARLY, this.chartTrend1);
-                    this.displayTrend(Frequency.MONTHLY, this.chartTrend2);
-                    this.displayTrend(Frequency.DAILY, this.chartTrend3);
-                    this.displayTrend(Frequency.HOURLY, this.chartTrend4);
+                    this.displayGenerationCount(Frequency.YEARLY, this.chartTrend1);
+                    this.displayGenerationCount(Frequency.MONTHLY, this.chartTrend2);
+                    this.displayGenerationCount(Frequency.DAILY, this.chartTrend3);
+                    this.displayGenerationCount(Frequency.HOURLY, this.chartTrend4);
                 }
                 break;
         }
     }
 
-    private displayTrend(frequency: string, chart: any) {
-        this.statisticsService.getCount(frequency).subscribe(data => {
-            new Chart(this.echartsService, barChartOptions(data), chart).build();
-        });
+    private displayGenerationCount(frequency: string, chart: any) {
+        this.statisticsService.getCount(frequency).subscribe(data => new Chart(this.echartsService, barChartOptions(data), chart).build());
+    }
+
+    private displayEntityGenerationStats(frequency: string, field: string, lineChar: any, pieChart: any) {
+        this.statisticsService.getEntityFieldCount(field, frequency).subscribe((data: any) => this.displayData(data, lineChar, pieChart));
     }
 
     private displayData(data: any, lineChart, pieChart) {
@@ -174,7 +181,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
         this.displayChart(frequency, 'cacheProvider', this.chartCacheLine, this.chartCachePie);
         this.displayChart(frequency, 'jhipsterVersion', this.chartVersionLine, this.chartVersionPie);
         this.displayChart(frequency, 'applicationType', this.chartAppTypeLine, this.chartAppTypePie);
-        // JDL this.displayChart(frequency, '', this.chartJDLLine, this.chartJDLPie);
+        this.displayEntityGenerationStats(frequency, 'fields', this.chartJDLLine, this.chartJDLPie);
     }
 
     private updateRelatedBasicChartOf(data: any, chartInstance: any, basicChartInstance: Chart) {

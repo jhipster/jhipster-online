@@ -205,13 +205,23 @@
 <!-- Normal display -->
 
 <div *ngIf="!isFullScreen()" class="row">
-    <div class="col-md-10">
+    <div class="col-md-9">
         <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
     </div>
-    <div class="col-md-2">
-        <button (mousedown)="toggleFullscreen();" class="btn bg-secondary text-white fullscreenBtn">
-            Enter fullscreen mode
-        </button>
+
+    <div class="col-xs-2">
+        <div class="row">
+            <div class="col-xs-2">
+                <button class="btn btn-primary" (click)="refreshData()">
+                    <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button (mousedown)="toggleFullscreen();" class="btn bg-secondary text-white fullscreenBtn">
+                    <fa-icon [icon]="'expand'"></fa-icon> <span>Enter fullscreen mode</span>
+                </button>
+            </div>
+        </div>
     </div>
     <div class="container">
         <p>&nbsp;</p>
@@ -266,14 +276,14 @@
         <div [ngStyle]="{'display': generatedApps ? 'block' : 'none'}">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'yearly'; setTimeScale()">
+                    <div class="chart card card-body text-center text-dark bg-light hand" (click)="timeScale = 'yearly'; setTimeScale()">
                         <h5>From launch</h5>
                         <hr />
                         <div #chartTrend1 style="height: 300px;" ></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'monthly'; setTimeScale()">
+                    <div class="chart card card-body text-center text-dark bg-light hand" (click)="timeScale = 'monthly'; setTimeScale()">
                         <h5>This year</h5>
                         <hr />
                         <div #chartTrend2 style="height: 300px;"></div>
@@ -282,14 +292,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'weekly'; setTimeScale()">
+                    <div class="chart card card-body text-center text-dark bg-light hand" (click)="timeScale = 'weekly'; setTimeScale()">
                         <h5>Last month</h5>
                         <hr />
                         <div #chartTrend3 style="height: 300px;"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'daily'; setTimeScale()">
+                    <div class="chart card card-body text-center text-dark bg-light hand" (click)="timeScale = 'daily'; setTimeScale()">
                         <h5>Last 24 hours</h5>
                         <hr />
                         <div #chartTrend4 style="height: 300px;"></div>

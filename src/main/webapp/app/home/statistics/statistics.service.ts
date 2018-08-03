@@ -47,4 +47,12 @@ export class StatisticsService {
     getDeploymentToolsCount(frequency: string): Observable<any> {
         return this.http.get(`/api/s/sub-gen-event/deployment/${frequency}`);
     }
+
+    getEntityGenerationCount(frequency: string): Observable<any> {
+        return this.http.get(`/api/s/entity/${frequency}`);
+    }
+
+    getEntityFieldCount(field: string, frequency: string): Observable<any> {
+        return this.http.get(`/api/s/entity/${field}/${frequency}`);
+    }
 }
