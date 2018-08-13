@@ -55,9 +55,6 @@ spring:
     thymeleaf:
         mode: HTML
         excluded-view-names: /jdl-studio/*
-    cache:
-        jcache:
-            config: classpath:ehcache.xml
 
 server:
     servlet:
