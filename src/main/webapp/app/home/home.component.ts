@@ -21,6 +21,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
+import { HomeService } from './home.service';
 
 @Component({
     selector: 'jhi-home',
@@ -37,7 +38,8 @@ export class HomeComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private gitConfigurationService: GitConfigurationService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private homeService: HomeService
     ) {}
 
     ngOnInit() {
@@ -65,5 +67,9 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    isFullScreen() {
+        return this.homeService.isFullScreen();
     }
 }

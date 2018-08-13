@@ -1,0 +1,30 @@
+{
+    "name": "GeneratorIdentity",
+    "fields": [
+        {
+            "fieldName": "host",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "guid",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180615143404",
+    "entityTableName": "generator_identity",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

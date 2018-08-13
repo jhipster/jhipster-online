@@ -22,6 +22,7 @@ import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
@@ -36,6 +37,7 @@ import { JhonlineAccountModule } from './account/account.module';
 import { JhonlineEntityModule } from './entities/entity.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { HomeService } from './home/home.service';
 
 export function setupGitConfiguration(gitConfigurationService: GitConfigurationService) {
     return () => gitConfigurationService.setupGitConfiguration();
@@ -50,7 +52,8 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
         JhonlineCoreModule,
         JhonlineHomeModule,
         JhonlineAccountModule,
-        JhonlineEntityModule
+        JhonlineEntityModule,
+        NgxEchartsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
@@ -85,7 +88,8 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
             useFactory: setupGitConfiguration,
             deps: [GitConfigurationService],
             multi: true
-        }
+        },
+        HomeService
     ],
     bootstrap: [JhiMainComponent]
 })

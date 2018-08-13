@@ -1,0 +1,70 @@
+{
+    "name": "EntityStats",
+    "fields": [
+        {
+            "fieldName": "year",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "week",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hour",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fields",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "relationships",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "pagination",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dto",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "service",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fluentMethods",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "generatorIdentity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180615143401",
+    "entityTableName": "entity_stats",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

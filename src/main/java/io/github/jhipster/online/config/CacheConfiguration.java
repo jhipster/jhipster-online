@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.github.jhipster.online.config;
 
 import java.time.Duration;
@@ -63,6 +64,13 @@ public class CacheConfiguration {
             cm.createCache(io.github.jhipster.online.domain.JdlMetadata.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.GitCompany.class.getName(), jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".languages", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.GeneratorIdentity.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".testFrameworks", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".selectedLanguages", jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.SubGenEvent.class.getName(), jcacheConfiguration);
+            cm.createCache(io.github.jhipster.online.domain.EntityStats.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

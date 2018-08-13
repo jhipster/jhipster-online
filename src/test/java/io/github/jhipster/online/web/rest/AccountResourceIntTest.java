@@ -92,18 +92,6 @@ public class AccountResourceIntTest {
     @Mock
     private MailService mockMailService;
 
-    @Mock
-    private JdlMetadataService mockJdlMetadataService;
-
-    @Mock
-    private JdlService mockJdlService;
-
-    @Mock
-    private GithubService mockGithubService;
-
-    @Mock
-    private GitlabService mockGitlabService;
-
     private MockMvc restMvc;
 
     private MockMvc restUserMockMvc;
@@ -114,10 +102,10 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail(any());
 
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService, mockJdlMetadataService, mockJdlService, mockGithubService, mockGitlabService);
+            new AccountResource(userRepository, userService, mockMailService);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService, mockJdlMetadataService, mockJdlService, mockGithubService, mockGitlabService);
+            new AccountResource(userRepository, mockUserService, mockMailService);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)
