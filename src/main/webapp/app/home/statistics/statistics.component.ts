@@ -56,10 +56,10 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     @ViewChild('chartJDLLine') chartJDLLine: ElementRef;
     @ViewChild('chartJDLPie') chartJDLPie: ElementRef;
 
-    countJdl: Observable<string>;
-    countYoRc: Observable<string>;
-    countUser: Observable<string>;
     countYoRcByDate: Observable<string>;
+    countYos: Observable<string>;
+    countJdls: Observable<string>;
+    countUsers: Observable<string>;
 
     timeScale: string = Frequency.DEFAULT;
     generatedApps = true;
@@ -71,8 +71,9 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     ) {}
 
     ngAfterViewInit() {
-        this.countJdl = this.statisticsService.countJdl();
-        this.countYoRc = this.statisticsService.countYos();
+        this.countYos = this.statisticsService.countYos();
+        this.countJdls = this.statisticsService.countJdls();
+        this.countUsers = this.statisticsService.countUsers();
         this.onSelectTimeScale(Frequency.DEFAULT);
     }
 

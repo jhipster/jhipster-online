@@ -31,16 +31,8 @@
                 <div class="row margin-top">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">210</h4>
-                            <strong>DAILY VISITS</strong>
-                        </div>
-                    </div>
-                </div>
-                <div class="row margin-top">
-                    <div class="card text-center text-white bg-secondary mb-3 numbersCard">
-                        <div class="card-body">
-                            <h4 class="card-text">{{countYoRc | async}}</h4>
-                            <strong>GENERATED PROJECTS</strong>
+                            <h4 class="card-text">{{countYos | async}}</h4>
+                            <strong>Total projects</strong>
                         </div>
                     </div>
                 </div>
@@ -88,16 +80,16 @@
                 <div class="row margin-top">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">{{countJdl | async}}</h4>
-                            <strong>JDLs CREATED</strong>
+                            <h4 class="card-text">{{countJdls | async}}</h4>
+                            <strong>Total JDLs</strong>
                         </div>
                     </div>
                 </div>
                 <div class="row margin-top">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">12,867</h4>
-                            <strong>USERS</strong>
+                            <h4 class="card-text">{{countUsers | async}}</h4>
+                            <strong>Total users</strong>
                         </div>
                     </div>
                 </div>
@@ -226,35 +218,27 @@
     <div class="container">
         <p>&nbsp;</p>
         <div class="row">
-            <div class="col-md-3">
-                <div class="card text-center text-white bg-secondary mb-3">
+            <div class="col-md-4">
+                <div class="card text-center text-white bg-secondary mb-4">
                     <div class="card-body">
-                        <h4 class="card-text">210</h4>
-                        <strong>DAILY VISITS</strong>
+                        <h4 class="card-text">{{countYos | async}}</h4>
+                        <strong>Total projects</strong>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card text-center text-white bg-secondary mb-3">
+            <div class="col-md-4">
+                <div class="card text-center text-white bg-secondary mb-4">
                     <div class="card-body">
-                        <h4 class="card-text">{{countYoRc | async}}</h4>
-                        <strong>GENERATED PROJECTS</strong>
+                        <h4 class="card-text">{{countJdls | async}}</h4>
+                        <strong>Total JDLs</strong>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card text-center text-white bg-secondary mb-3">
+            <div class="col-md-4">
+                <div class="card text-center text-white bg-secondary mb-4">
                     <div class="card-body">
-                        <h4 class="card-text">{{countJdl | async}}</h4>
-                        <strong>JDLs CREATED</strong>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center text-white bg-secondary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-text">12,867</h4>
-                        <strong>USERS</strong>
+                        <h4 class="card-text">{{countUsers | async}}</h4>
+                        <strong>Total users</strong>
                     </div>
                 </div>
             </div>

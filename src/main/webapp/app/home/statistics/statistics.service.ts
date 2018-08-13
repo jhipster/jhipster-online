@@ -32,7 +32,7 @@ export class StatisticsService {
         return this.http.get(`/api/s/count-user`, { responseType: 'text' });
     }
 
-    countJdl(): Observable<string> {
+    countJdls(): Observable<string> {
         return this.http.get(`/api/s/count-jdl`, { responseType: 'text' });
     }
 
