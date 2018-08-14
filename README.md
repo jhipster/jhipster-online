@@ -92,7 +92,7 @@ but it might be a good idea to configure them once the application is in product
 To configure e-mail sending, you need to configure the `jhipster.mail` keys (see [JHipster common application properties](https://www.jhipster.tech/common-application-properties/)),
 and the Spring Boot standard `spring.mail` keys.
 
-When running the app with the dev profile, make sure to start the dev mailserver with:
+When running the app with the `dev` profile, make sure to start the development mail server with:
 ```
 docker-compose -f src/main/docker/mailserver.yml up -d
 ```
