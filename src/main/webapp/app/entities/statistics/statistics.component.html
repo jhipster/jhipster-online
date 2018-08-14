@@ -16,18 +16,18 @@
     <div class="row" class="form-group">
         &nbsp;
         <div class="col-md-6">
-            <h4><label for="reviewFullScreen" class="form-control-label">Review :</label></h4>
+            <h4><label for="reviewFullScreen" class="form-control-label">Report :</label></h4>
             <select id="reviewFullScreen" class="form-control" [ngModel]="timeScale" (ngModelChange)="onSelectTimeScale($event)">
                 <optgroup label="Global overviews">
-                    <option value="default">Generated apps</option>
-                    <option value="clientFramework">Angular VS React</option>
-                    <option value="buildTool">Maven VS Gradle</option>
+                    <option value="default">Generated applications</option>
+                    <option value="clientFramework">Angular vs. React</option>
+                    <option value="buildTool">Maven vs. Gradle</option>
                 </optgroup>
                 <optgroup label="Time scale">
                     <option value="daily">Last 24h</option>
                     <option value="weekly">Last month</option>
-                    <option value="monthly">This year</option>
-                    <option value="yearly">From start</option>
+                    <option value="monthly">Last year</option>
+                    <option value="yearly">From the beginning</option>
                 </optgroup>
             </select>
         </div>
@@ -83,14 +83,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'monthly'; setTimeScale()">
-                    <h5>This year</h5>
+                    <h5>Last year</h5>
                     <hr />
                     <div #chartTrendFull2 class="chartBox"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'yearly'; setTimeScale()">
-                    <h5>From start</h5>
+                    <h5>From the beginning</h5>
                     <hr />
                     <div #chartTrendFull1 class="chartBox" ></div>
                 </div>
@@ -167,8 +167,8 @@
         </div>
         <div class="categoryChart">
             <div class="row">
-                <div class="col-md-6"><h4>JHipster version used for creation</h4></div>
-                <div class="col-md-6"><h4 style="text-align: end">Type of app created</h4></div>
+                <div class="col-md-6"><h4>JHipster version used</h4></div>
+                <div class="col-md-6"><h4 style="text-align: end">Type of application</h4></div>
             </div>
             <hr />
             <div class="row">
