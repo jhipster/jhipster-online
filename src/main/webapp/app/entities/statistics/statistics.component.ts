@@ -136,7 +136,7 @@ export class StatisticsComponent implements AfterViewInit {
 
     private displayOverviewData(data: any, lineChart) {
         data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
-        new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), lineChart).build();
+        new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Total'), lineChart).build();
     }
 
     private displayGenerationCount(frequency: string, chart: any) {
@@ -150,7 +150,7 @@ export class StatisticsComponent implements AfterViewInit {
     private displayData(data: any, lineChart, pieChart) {
         data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
 
-        const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), lineChart).build();
+        const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Total'), lineChart).build();
 
         const pieChartData = data.reduce((acc, current) => {
             Object.keys(current.values).forEach(e => {
