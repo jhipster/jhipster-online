@@ -25,8 +25,11 @@ const displayNames = {
     cloudfoundry: 'Cloud Foundry',
     openshift: 'OpenShift',
     postgresql: 'PostgreSQL',
+    oracle: 'Oracle',
     mysql: 'MySQL',
     mariadb: 'MariaDB',
+    cassandra: 'Cassandra',
+    couchbase: 'Couchbase',
     no: 'None'
 };
 
