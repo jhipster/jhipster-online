@@ -1,4 +1,4 @@
-<div (mouseup)="refreshData()" class="fullScreen bg-light">
+<div class="fullScreen bg-light">
     <div class="row">
         <div class="col-md-4">
             <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">{{countYos | async}}</h4>
+                            <h4 class="card-text">{{countYos}}</h4>
                             <strong>Total projects</strong>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">{{countJdls | async}}</h4>
+                            <h4 class="card-text">{{countJdls}}</h4>
                             <strong>Total JDLs</strong>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
-                            <h4 class="card-text">{{countUsers | async}}</h4>
+                            <h4 class="card-text">{{countUsers}}</h4>
                             <strong>Total users</strong>
                         </div>
                     </div>

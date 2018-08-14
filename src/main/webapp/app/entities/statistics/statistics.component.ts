@@ -56,9 +56,9 @@ export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chartJDLPie') chartJDLPie: ElementRef;
 
     countYoRcByDate: Observable<string>;
-    countYos: Observable<string>;
-    countJdls: Observable<string>;
-    countUsers: Observable<string>;
+    countYos: number;
+    countJdls: number;
+    countUsers: number;
 
     timeScale: string = Frequency.DEFAULT;
     overview = true;
@@ -66,9 +66,6 @@ export class StatisticsComponent implements AfterViewInit {
     constructor(private statisticsService: StatisticsService, private echartsService: NgxEchartsService) {}
 
     ngAfterViewInit() {
-        this.countYos = this.statisticsService.countYos();
-        this.countJdls = this.statisticsService.countJdls();
-        this.countUsers = this.statisticsService.countUsers();
         this.onSelectTimeScale(Frequency.DEFAULT);
     }
 
@@ -88,6 +85,9 @@ export class StatisticsComponent implements AfterViewInit {
     }
 
     public refreshData() {
+        this.statisticsService.countYos().subscribe(countYos => (this.countYos = countYos));
+        this.statisticsService.countJdls().subscribe(countJdls => (this.countJdls = countJdls));
+        this.statisticsService.countUsers().subscribe(countUsers => (this.countUsers = countUsers));
         switch (this.timeScale) {
             case 'yearly':
                 this.displayCharts(Frequency.MONTHLY);
