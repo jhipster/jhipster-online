@@ -41,7 +41,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String clientPackageManager = node.get("clientPackageManager").asText();
         String applicationType = node.get("applicationType").asText();
         boolean enableTranslation = node.get("enableTranslation").asBoolean();
-        String nativeLanguage = node.get("nativeLanguage").asText();
+        String nativeLanguage = getDefaultIfNull(node.get("nativeLanguage"), "");
         boolean hasProtractor = false;
         boolean hasGatling = false;
         boolean hasCucumber = false;
