@@ -24,16 +24,16 @@ import { Observable } from 'rxjs';
 export class StatisticsService {
     constructor(private http: HttpClient) {}
 
-    countYos(): Observable<any> {
-        return this.http.get(`/api/s/count-yo`, { responseType: 'text' });
+    countYos(): Observable<number> {
+        return this.http.get<number>(`/api/s/count-yo`);
     }
 
-    countUsers(): Observable<string> {
-        return this.http.get(`/api/s/count-user`, { responseType: 'text' });
+    countUsers(): Observable<number> {
+        return this.http.get<number>(`/api/s/count-user`);
     }
 
-    countJdls(): Observable<string> {
-        return this.http.get(`/api/s/count-jdl`, { responseType: 'text' });
+    countJdls(): Observable<number> {
+        return this.http.get<number>(`/api/s/count-jdl`);
     }
 
     getCount(frequency: string): Observable<any> {
