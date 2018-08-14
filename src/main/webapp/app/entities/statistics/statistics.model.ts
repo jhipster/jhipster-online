@@ -21,7 +21,6 @@ import { NgxEchartsService } from 'ngx-echarts';
 
 export enum Frequency {
     DEFAULT = 'default',
-    YEARLY = 'yearly',
     MONTHLY = 'monthly',
     WEEKLY = 'weekly',
     DAILY = 'daily',

@@ -27,7 +27,6 @@
                     <option value="daily">Last 24h</option>
                     <option value="weekly">Last month</option>
                     <option value="monthly">Last year</option>
-                    <option value="yearly">From the beginning</option>
                 </optgroup>
             </select>
         </div>
@@ -63,18 +62,11 @@
             </div>
             <div class="col-md-10">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'daily'; setTimeScale()">
                             <h5>Last 24 hours</h5>
                             <hr />
                             <div #chartTrendFull4 class="chartBox"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'weekly'; setTimeScale()">
-                            <h5>Last month</h5>
-                            <hr />
-                            <div #chartTrendFull3 class="chartBox"></div>
                         </div>
                     </div>
                 </div>
@@ -82,17 +74,17 @@
         </div>
         <div class="row">
             <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'weekly'; setTimeScale()">
+                    <h5>Last month</h5>
+                    <hr />
+                    <div #chartTrendFull3 class="chartBox"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'monthly'; setTimeScale()">
                     <h5>Last year</h5>
                     <hr />
                     <div #chartTrendFull2 class="chartBox"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'yearly'; setTimeScale()">
-                    <h5>From the beginning</h5>
-                    <hr />
-                    <div #chartTrendFull1 class="chartBox" ></div>
                 </div>
             </div>
         </div>

@@ -34,7 +34,6 @@ export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chartTrend2') chartTrend2: ElementRef;
     @ViewChild('chartTrend3') chartTrend3: ElementRef;
     @ViewChild('chartTrend4') chartTrend4: ElementRef;
-    @ViewChild('chartTrendFull1') chartTrendFull1: ElementRef;
     @ViewChild('chartTrendFull2') chartTrendFull2: ElementRef;
     @ViewChild('chartTrendFull3') chartTrendFull3: ElementRef;
     @ViewChild('chartTrendFull4') chartTrendFull4: ElementRef;
@@ -113,7 +112,6 @@ export class StatisticsComponent implements AfterViewInit {
             case 'default':
             default:
                 this.overview = true;
-                this.displayGenerationCount(Frequency.YEARLY, this.chartTrendFull1);
                 this.displayGenerationCount(Frequency.MONTHLY, this.chartTrendFull2);
                 this.displayGenerationCount(Frequency.DAILY, this.chartTrendFull3);
                 this.displayGenerationCount(Frequency.HOURLY, this.chartTrendFull4);
@@ -122,7 +120,6 @@ export class StatisticsComponent implements AfterViewInit {
     }
 
     private displayOverview(field: string) {
-        this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrendFull1);
         this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrendFull2);
         this.displayOverviewChart(field, Frequency.DAILY, this.chartTrendFull3);
         this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrendFull4);

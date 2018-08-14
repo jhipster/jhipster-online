@@ -6,9 +6,6 @@ import { StatisticsUtils } from './statistics.utils';
 const prettifyDate = (date: string, frequency?: Frequency): string => {
     let format = '';
     switch (frequency) {
-        case Frequency.YEARLY:
-            format = 'YYYY';
-            break;
         case Frequency.MONTHLY:
             format = 'MMMM YYYY';
             break;
