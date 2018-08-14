@@ -22,7 +22,7 @@ logging:
 spring:
     profiles:
         active: dev
-        include: swagger
+        #include: swagger
     devtools:
         restart:
             enabled: true
@@ -56,7 +56,7 @@ spring:
         contexts: dev
     mail:
         host: localhost
-        port: 25
+        port: 1025
         username:
         password:
     messages:
