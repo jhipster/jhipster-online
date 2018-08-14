@@ -25,7 +25,7 @@ export const STATISTICS_ROUTE: Route = {
     path: 'statistics',
     component: StatisticsComponent,
     data: {
-        authorities: ['ROLE_USER'],
+        authorities: [],
         pageTitle: 'Statistics'
     },
     canActivate: [UserRouteAccessService]

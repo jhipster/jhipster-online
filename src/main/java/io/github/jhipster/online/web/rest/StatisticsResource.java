@@ -121,7 +121,7 @@ public class StatisticsResource {
     }
 
 
-        @GetMapping("/sub-gen-event/deployment/{frequency}")
+    @GetMapping("/sub-gen-event/deployment/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getDeploymentToolsDistribution(@NotNull @PathVariable String frequency) {
         Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
@@ -149,7 +149,9 @@ public class StatisticsResource {
 
     @GetMapping("/count-yo")
     @Timed
-    public long getYoRCCount() { return yoRCService.countAll(); }
+    public long getYoRCCount() {
+        return yoRCService.countAll();
+    }
 
     @GetMapping("/count-jdl")
     @Timed
@@ -159,7 +161,9 @@ public class StatisticsResource {
 
     @GetMapping("/count-user")
     @Timed
-    public long getUserCount() { return userService.countAll(); }
+    public long getUserCount() {
+        return userService.countAll();
+    }
 
     @PostMapping("/entry")
     @Timed

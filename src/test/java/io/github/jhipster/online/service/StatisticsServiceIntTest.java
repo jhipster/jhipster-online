@@ -187,5 +187,4 @@ public class StatisticsServiceIntTest {
                     entity.getOwner().equals(generatorIdentity))
         ).isTrue();
     }
-
 }

@@ -1,5 +1,5 @@
 <div class="row">
-    <div *ngIf="!isFullScreen()" class="col-md-3 side-menu">
+    <div class="col-md-3 side-menu">
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <nav class="navbar navbar-light">
@@ -50,17 +50,17 @@
                                 <span class="btn-rounded align-middle">
                                     <fa-icon [icon]="'chart-line'" [size]="'2x'"></fa-icon>
                                 </span>
-                                <span class="align-middle h5">Statistics</span>
+                                <span class="align-middle h5">JHipster Statistics </span><span class="badge badge-danger">new</span>
                             </a>
                         </li>
-                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+<!--                        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                             <a class="nav-link text-primary mt-3" routerLink="/your-generators">
                                 <span class="btn-rounded align-middle">
                                     <fa-icon [icon]="'link'" [size]="'2x'"></fa-icon>
                                 </span>
                                 <span class="align-middle h5">Your Generators</span>
                             </a>
-                        </li>
+                        </li>-->
                     </ul>
                 </nav>
             </div>
@@ -74,9 +74,14 @@
                     No more command line: fill an easy-to-use Web form, JHipster Online generates a complete <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> application on your GitHub account.
                 </div>
             </div>
+            <div *ngSwitchCase="false">
+                <div class="alert alert-success" role="alert">
+                    <span class="badge badge-danger">new</span> Check out our <a routerLink="/statistics">JHipster statistics</a>.
+                </div>
+            </div>
         </div>
     </div>
-    <div [ngClass]="{'col-md-12': isFullScreen(), 'col-md-9': !isFullScreen()}">
+    <div class="col-md-9">
         <router-outlet></router-outlet>
         <router-outlet name="popup"></router-outlet>
             <div>
