@@ -20,17 +20,16 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@ang
 import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
-import { StatisticsService } from 'app/home/statistics/statistics.service';
-import { HomeService } from 'app/home/home.service';
-import { Chart, Frequency } from 'app/home/statistics/statistics.model';
-import { barChartOptions, comparingLineChartOptions, pieChartOptions } from 'app/home/statistics/statistics.options';
+import { StatisticsService } from './statistics.service';
+import { Chart, Frequency } from './statistics.model';
+import { barChartOptions, comparingLineChartOptions, pieChartOptions } from './statistics.options';
 
 @Component({
     selector: 'jhi-statistics',
     templateUrl: './statistics.component.html',
     styleUrls: ['statistics.scss']
 })
-export class StatisticsComponent implements AfterViewInit, OnDestroy {
+export class StatisticsComponent implements AfterViewInit {
     @ViewChild('chartTrend1') chartTrend1: ElementRef;
     @ViewChild('chartTrend2') chartTrend2: ElementRef;
     @ViewChild('chartTrend3') chartTrend3: ElementRef;
@@ -64,11 +63,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     timeScale: string = Frequency.DEFAULT;
     overview = true;
 
-    constructor(
-        private statisticsService: StatisticsService,
-        private homeService: HomeService,
-        private echartsService: NgxEchartsService
-    ) {}
+    constructor(private statisticsService: StatisticsService, private echartsService: NgxEchartsService) {}
 
     ngAfterViewInit() {
         this.countYos = this.statisticsService.countYos();
@@ -79,18 +74,6 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
 
     public setTimeScale() {
         this.onSelectTimeScale(this.timeScale);
-    }
-
-    public toggleFullscreen() {
-        this.homeService.toggleFullScreen();
-    }
-
-    public isFullScreen() {
-        return this.homeService.isFullScreen();
-    }
-
-    public exitFullScreen() {
-        this.homeService.exitFullScreen();
     }
 
     public onSelectTimeScale(event) {
@@ -130,33 +113,19 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
             case 'default':
             default:
                 this.overview = true;
-                if (this.isFullScreen()) {
-                    this.displayGenerationCount(Frequency.YEARLY, this.chartTrendFull1);
-                    this.displayGenerationCount(Frequency.MONTHLY, this.chartTrendFull2);
-                    this.displayGenerationCount(Frequency.DAILY, this.chartTrendFull3);
-                    this.displayGenerationCount(Frequency.HOURLY, this.chartTrendFull4);
-                } else {
-                    this.displayGenerationCount(Frequency.YEARLY, this.chartTrend1);
-                    this.displayGenerationCount(Frequency.MONTHLY, this.chartTrend2);
-                    this.displayGenerationCount(Frequency.DAILY, this.chartTrend3);
-                    this.displayGenerationCount(Frequency.HOURLY, this.chartTrend4);
-                }
+                this.displayGenerationCount(Frequency.YEARLY, this.chartTrendFull1);
+                this.displayGenerationCount(Frequency.MONTHLY, this.chartTrendFull2);
+                this.displayGenerationCount(Frequency.DAILY, this.chartTrendFull3);
+                this.displayGenerationCount(Frequency.HOURLY, this.chartTrendFull4);
                 break;
         }
     }
 
     private displayOverview(field: string) {
-        if (this.isFullScreen()) {
-            this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrendFull1);
-            this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrendFull2);
-            this.displayOverviewChart(field, Frequency.DAILY, this.chartTrendFull3);
-            this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrendFull4);
-        } else {
-            this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrend1);
-            this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrend2);
-            this.displayOverviewChart(field, Frequency.DAILY, this.chartTrend3);
-            this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrend4);
-        }
+        this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrendFull1);
+        this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrendFull2);
+        this.displayOverviewChart(field, Frequency.DAILY, this.chartTrendFull3);
+        this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrendFull4);
     }
 
     private displayOverviewChart(field: string, frequency: string, lineChart: any) {
@@ -235,9 +204,5 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
                 basicChartInstance.chartInstance.setOption(pieChartOptions(arr));
             });
         });
-    }
-
-    ngOnDestroy() {
-        this.exitFullScreen();
     }
 }

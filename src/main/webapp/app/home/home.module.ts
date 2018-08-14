@@ -28,7 +28,6 @@ import { JdlMetadataComponent } from './jdl-metadata/jdl-metadata.component';
 import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-metadata/jdl-studio.component';
 import { JdlOutputDialogComponent } from './jdl-metadata/jdl.output.component';
 import { CiCdComponent } from './ci-cd/ci-cd.component';
-import { StatisticsComponent } from 'app/home/statistics/statistics.component';
 import { CiCdOutputDialogComponent } from './ci-cd/ci-cd.output.component';
 import { RemoveGeneratorDialogComponent } from './your-generators/remove-generator-dialog.component';
 import { JhonlineSharedModule } from 'app/shared';
@@ -51,7 +50,6 @@ import { DataDeletionDialogComponent } from 'app/home/your-generators/data-delet
         ApplyJdlStudioComponent,
         JdlOutputDialogComponent,
         CiCdComponent,
-        StatisticsComponent,
         YourGeneratorsComponent,
         CiCdOutputDialogComponent,
         RemoveGeneratorDialogComponent,

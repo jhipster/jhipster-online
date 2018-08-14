@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 
-import { Frequency } from 'app/home/statistics/statistics.model';
-import { StatisticsUtils } from 'app/home/statistics/statistics.utils';
+import { Frequency } from './statistics.model';
+import { StatisticsUtils } from './statistics.utils';
 
 const prettifyDate = (date: string, frequency?: Frequency): string => {
     let format = '';
