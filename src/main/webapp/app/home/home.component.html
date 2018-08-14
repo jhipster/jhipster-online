@@ -1,5 +1,5 @@
 <div class="row">
-    <div *ngIf="!isFullScreen()" class="col-md-3 side-menu">
+    <div class="col-md-3 side-menu">
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <nav class="navbar navbar-light">
@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="{'col-md-12': isFullScreen(), 'col-md-9': !isFullScreen()}">
+    <div class="col-md-9">
         <router-outlet></router-outlet>
         <router-outlet name="popup"></router-outlet>
             <div>
