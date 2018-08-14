@@ -62,7 +62,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     countUsers: Observable<string>;
 
     timeScale: string = Frequency.DEFAULT;
-    generatedApps = true;
+    overview = true;
 
     constructor(
         private statisticsService: StatisticsService,
@@ -119,9 +119,17 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
             case 'daily':
                 this.displayCharts(Frequency.HOURLY);
                 break;
+            case 'clientFramework':
+                this.overview = true;
+                this.displayOverview('clientFramework');
+                break;
+            case 'buildTool':
+                this.overview = true;
+                this.displayOverview('buildTool');
+                break;
             case 'default':
             default:
-                this.generatedApps = true;
+                this.overview = true;
                 if (this.isFullScreen()) {
                     this.displayGenerationCount(Frequency.YEARLY, this.chartTrendFull1);
                     this.displayGenerationCount(Frequency.MONTHLY, this.chartTrendFull2);
@@ -135,6 +143,31 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
                 }
                 break;
         }
+    }
+
+    private displayOverview(field: string) {
+        if (this.isFullScreen()) {
+            this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrendFull1);
+            this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrendFull2);
+            this.displayOverviewChart(field, Frequency.DAILY, this.chartTrendFull3);
+            this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrendFull4);
+        } else {
+            this.displayOverviewChart(field, Frequency.YEARLY, this.chartTrend1);
+            this.displayOverviewChart(field, Frequency.MONTHLY, this.chartTrend2);
+            this.displayOverviewChart(field, Frequency.DAILY, this.chartTrend3);
+            this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrend4);
+        }
+    }
+
+    private displayOverviewChart(field: string, frequency: string, lineChart: any) {
+        this.statisticsService.getFieldCount(field, frequency).subscribe(data => {
+            this.displayOverviewData(data, lineChart);
+        });
+    }
+
+    private displayOverviewData(data: any, lineChart) {
+        data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
+        new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Amount'), lineChart).build();
     }
 
     private displayGenerationCount(frequency: string, chart: any) {
@@ -173,7 +206,7 @@ export class StatisticsComponent implements AfterViewInit, OnDestroy {
     }
 
     private displayCharts(frequency: string) {
-        this.generatedApps = false;
+        this.overview = false;
 
         this.displayChart(frequency, 'clientFramework', this.chartFrameworkLine, this.chartFrameworkPie);
         this.displayChart(frequency, 'buildTool', this.chartBuildtoolLine, this.chartBuildtoolPie);
