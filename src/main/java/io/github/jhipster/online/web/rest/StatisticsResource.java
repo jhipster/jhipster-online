@@ -25,6 +25,7 @@ import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
+import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
@@ -34,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -217,6 +219,7 @@ public class StatisticsResource {
 
     @DeleteMapping("/data")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public void deleteStatisticsData() {
         User user = userService.getUser();
 
