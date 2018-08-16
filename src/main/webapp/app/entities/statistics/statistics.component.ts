@@ -125,29 +125,37 @@ export class StatisticsComponent implements AfterViewInit {
         this.displayOverviewChart(field, Frequency.HOURLY, this.chartTrendFull4);
     }
 
-    private displayOverviewChart(field: string, frequency: string, lineChart: any) {
+    private displayOverviewChart(field: string, frequency: Frequency, lineChart: any) {
         this.statisticsService.getFieldCount(field, frequency).subscribe(data => {
-            this.displayOverviewData(data, lineChart);
+            this.displayOverviewData(data, lineChart, frequency);
         });
     }
 
-    private displayOverviewData(data: any, lineChart) {
+    private displayOverviewData(data: any, lineChart, frequency: Frequency) {
         data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
-        new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Total'), lineChart).build();
+        new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Total', frequency), lineChart).build();
     }
 
-    private displayGenerationCount(frequency: string, chart: any) {
-        this.statisticsService.getCount(frequency).subscribe(data => new Chart(this.echartsService, barChartOptions(data), chart).build());
+    private displayGenerationCount(frequency: Frequency, chart: any) {
+        this.statisticsService
+            .getCount(frequency)
+            .subscribe(data => new Chart(this.echartsService, barChartOptions(data, frequency), chart).build());
     }
 
-    private displayEntityGenerationStats(frequency: string, field: string, lineChar: any, pieChart: any) {
-        this.statisticsService.getEntityFieldCount(field, frequency).subscribe((data: any) => this.displayData(data, lineChar, pieChart));
+    private displayEntityGenerationStats(frequency: Frequency, field: string, lineChar: any, pieChart: any) {
+        this.statisticsService
+            .getEntityFieldCount(field, frequency)
+            .subscribe((data: any) => this.displayData(data, lineChar, pieChart, frequency));
     }
 
-    private displayData(data: any, lineChart, pieChart) {
+    private displayData(data: any, lineChart, pieChart, frequency: Frequency) {
         data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
 
-        const linechartCompared1 = new Chart(this.echartsService, comparingLineChartOptions(data, 'Date', 'Total'), lineChart).build();
+        const linechartCompared1 = new Chart(
+            this.echartsService,
+            comparingLineChartOptions(data, 'Date', 'Total', frequency),
+            lineChart
+        ).build();
 
         const pieChartData = data.reduce((acc, current) => {
             Object.keys(current.values).forEach(e => {
@@ -161,17 +169,19 @@ export class StatisticsComponent implements AfterViewInit {
         this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
     }
 
-    private displayChart(frequency: string, field: string, chartLine: any, chartPie: any) {
+    private displayChart(frequency: Frequency, field: string, chartLine: any, chartPie: any) {
         this.statisticsService.getFieldCount(field, frequency).subscribe(data => {
-            this.displayData(data, chartLine, chartPie);
+            this.displayData(data, chartLine, chartPie, frequency);
         });
     }
 
-    private displayDeploymentTools(frequency: string, lineChart, pieChart) {
-        this.statisticsService.getDeploymentToolsCount(frequency).subscribe((data: any) => this.displayData(data, lineChart, pieChart));
+    private displayDeploymentTools(frequency: Frequency, lineChart, pieChart) {
+        this.statisticsService
+            .getDeploymentToolsCount(frequency)
+            .subscribe((data: any) => this.displayData(data, lineChart, pieChart, frequency));
     }
 
-    private displayCharts(frequency: string) {
+    private displayCharts(frequency: Frequency) {
         this.overview = false;
 
         this.displayChart(frequency, 'clientFramework', this.chartFrameworkLine, this.chartFrameworkPie);
