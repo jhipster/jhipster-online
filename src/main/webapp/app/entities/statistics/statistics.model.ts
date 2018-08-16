@@ -39,6 +39,7 @@ export class Chart {
 
     build() {
         this.chartInstance = this.echartsService.init(this.elementRef.nativeElement);
+        this.chartInstance.clear();
         this.chartInstance.setOption(this.chartOptions);
         return this;
     }
