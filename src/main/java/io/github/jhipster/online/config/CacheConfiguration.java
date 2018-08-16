@@ -40,6 +40,12 @@ public class CacheConfiguration {
 
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
+    private final javax.cache.configuration.Configuration<Object, Object> statisticsJcacheConfiguration;
+
+    public static final String STATISTICS_YORC_COUNT = "statisticsYorcCount";
+    public static final String STATISTICS_JDL_COUNT = "statisticsJdlCount";
+    public static final String STATISTICS_USERS_COUNT = "statisticsUsersCount";
+
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
         JHipsterProperties.Cache.Ehcache ehcache =
             jHipsterProperties.getCache().getEhcache();
@@ -49,11 +55,21 @@ public class CacheConfiguration {
                 ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
                 .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
                 .build());
+
+        statisticsJcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
+                ResourcePoolsBuilder.heap(100L))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(5)))
+                .build());
     }
 
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
+            cm.createCache(STATISTICS_YORC_COUNT, statisticsJcacheConfiguration);
+            cm.createCache(STATISTICS_JDL_COUNT, statisticsJcacheConfiguration);
+            cm.createCache(STATISTICS_USERS_COUNT, statisticsJcacheConfiguration);
+
             cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             cm.createCache(io.github.jhipster.online.domain.User.class.getName(), jcacheConfiguration);

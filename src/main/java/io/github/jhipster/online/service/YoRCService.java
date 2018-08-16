@@ -22,6 +22,8 @@ package io.github.jhipster.online.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import io.github.jhipster.online.config.CacheConfiguration;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.domain.YoRC_;
@@ -37,6 +39,7 @@ import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +121,7 @@ public class YoRCService {
         yoRCRepository.deleteAllByOwner(ownerIdentity);
     }
 
+    @Cacheable(cacheNames = CacheConfiguration.STATISTICS_YORC_COUNT)
     public long countAll() {
         return yoRCRepository.count();
     }

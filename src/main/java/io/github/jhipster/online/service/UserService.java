@@ -30,6 +30,7 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.online.config.CacheConfiguration;
 import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.*;
 import io.github.jhipster.online.domain.enums.GitProvider;
@@ -391,6 +393,7 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
+    @Cacheable(cacheNames = CacheConfiguration.STATISTICS_USERS_COUNT)
     public long countAll() {
         return userRepository.count();
     }
