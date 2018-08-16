@@ -97,6 +97,7 @@ export const comparingLineChartOptions = (data: any, xAxis: string, yAxis: strin
         xAxis: {
             name: xAxis,
             type: 'category',
+            connectNullData: true,
             boundaryGap: false,
             data: data.map(obj => prettifyDate(obj.date, frequency))
         },
