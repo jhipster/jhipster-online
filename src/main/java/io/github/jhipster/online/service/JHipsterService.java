@@ -58,7 +58,7 @@ public class JHipsterService {
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
-        this.runProcess(generationId, workingDir, jhipsterCommand + " --no-insight --skip-checks " +
+        this.runProcess(generationId, workingDir, jhipsterCommand + " --skip-checks " +
             "--skip-install --skip-cache --skip-git");
     }
 
@@ -66,7 +66,7 @@ public class JHipsterService {
         this.logsService.addLog(generationId, "Running `jhipster import-jdl");
         this.runProcess(generationId, workingDir, jhipsterCommand + " import-jdl " +
             jdlFileName + ".jh " +
-            "--no-insight --skip-checks --skip-install --force ");
+            "--skip-checks --skip-install --force ");
     }
 
     public void addCiCdTravis(String generationId, File workingDir, String ciCdTool) throws Exception {
@@ -76,7 +76,7 @@ public class JHipsterService {
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
         this.runProcess(generationId, workingDir, jhipsterCommand + " ci-cd " +
-            "--autoconfigure-" + ciCdTool + " --no-insight --skip-checks --skip-install --force ");
+            "--autoconfigure-" + ciCdTool + " --skip-checks --skip-install --force ");
     }
 
     private void runProcess(String generationId, File workingDir, String command) throws IOException {
