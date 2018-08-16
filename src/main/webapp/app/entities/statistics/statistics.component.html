@@ -157,30 +157,31 @@
                 </div>
             </div>
         </div>
-        <div class="categoryChart">
-            <div class="row">
-                <div class="col-md-6"><h4>JHipster version used</h4></div>
-                <div class="col-md-6"><h4 style="text-align: end">Type of application</h4></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>JHipster version used</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartVersionLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartVersionPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
+                </div>
             </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-6">
-                    <div #chartVersionLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
-                </div>
-                <div class="col-md-6">
-                    <div #chartAppTypeLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div #chartVersionPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
-                </div>
-                <div class="chartBox chart card card-body text-center text-dark bg-light col-md-4">
-                    <h4>Number of JDL entities</h4>
-                    <div #chartJDL style="height: 300px;" ></div>
-                </div>
-                <div class="col-md-4">
-                    <div #chartAppTypePie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>Type of application</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartAppTypeLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartAppTypePie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
                 </div>
             </div>
         </div>
