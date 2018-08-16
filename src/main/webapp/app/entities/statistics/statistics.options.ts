@@ -50,14 +50,14 @@ export const lineChartOptions = (data: any, frequency: Frequency) => {
     };
 };
 
-export const barChartOptions = (data: any, frequecy: Frequency) => {
+export const barChartOptions = (data: any, frequency: Frequency) => {
     return {
         tooltip: {
             trigger: 'axis'
         },
         xAxis: {
             type: 'category',
-            data: data.map(obj => prettifyDate(obj.date, frequecy))
+            data: data.map(obj => prettifyDate(obj.date, frequency))
         },
         yAxis: {
             type: 'value'
@@ -98,7 +98,6 @@ export const comparingLineChartOptions = (data: any, xAxis: string, yAxis: strin
             name: xAxis,
             type: 'category',
             boundaryGap: false,
-            connectNullData: true,
             data: data.map(obj => prettifyDate(obj.date, frequency))
         },
         yAxis: {
