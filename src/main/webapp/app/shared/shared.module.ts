@@ -21,6 +21,8 @@ import { RouterModule } from '@angular/router';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbDateMomentAdapter } from './util/datepicker-adapter';
+import { GoogleAnalyticsEventsService } from './ga/google-analytics-events.service';
+
 import {
     JhonlineSharedLibsModule,
     JhiGitProviderComponent,
@@ -33,7 +35,7 @@ import {
 @NgModule({
     imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule, RouterModule],
     declarations: [JhiLoginModalComponent, JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective],
-    providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }],
+    providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }, GoogleAnalyticsEventsService],
     entryComponents: [JhiLoginModalComponent],
     exports: [
         JhonlineSharedCommonModule,

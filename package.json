@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "5.2",
     "@ng-bootstrap/ng-bootstrap": "2.0.0",
     "bootstrap": "4.1.2",
+    "@types/google.analytics": "0.0.34",
     "core-js": "2.5.3",
     "echarts": "4.1.0",
     "jquery": "3.3.1",
