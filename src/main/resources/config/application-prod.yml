@@ -57,18 +57,6 @@ spring:
     thymeleaf:
         cache: true
 
-bucket4j:
-    enabled: true
-    filters:
-    - cache-name: buckets
-      url: /api/s/*
-      rate-limits:
-      - filter-key-type: ip
-        bandwidths:
-        - capacity: 5000
-          time: 1
-          unit: hours
-
 # ===================================================================
 # To enable SSL, generate a certificate using:
 # keytool -genkey -alias jhonline -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
