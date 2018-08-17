@@ -60,6 +60,7 @@ public class StatisticsService {
         this.entityStatsService = entityStatsService;
     }
 
+    @Transactional
     public void addEntry(String entry, String host) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNodeRoot = mapper.readTree(entry);
@@ -82,6 +83,7 @@ public class StatisticsService {
         try {
             generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
         } catch (DataIntegrityViolationException e) {
+            log.info("GUID duplication when adding a YoRc.", e);
             generatorIdentity = generatorIdentityService.handleDataDuplication(generatorGuid);
         }
 
@@ -100,9 +102,11 @@ public class StatisticsService {
             .userLanguage(userLanguage)
             .owner(generatorIdentity)
             .creationDate(Instant.ofEpochMilli(now.getMillis()));
+
         yoRCService.save(yorc);
     }
 
+    @Transactional
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorId)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(subGenEvent, now);
@@ -120,6 +124,7 @@ public class StatisticsService {
         subGenEventService.save(subGenEvent);
     }
 
+    @Transactional
     public void addEntityStats(EntityStats entityStats, String generatorId)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(entityStats, now);

@@ -35,6 +35,7 @@ import io.github.jhipster.online.domain.User;
 @SuppressWarnings("unused")
 @Repository
 public interface GeneratorIdentityRepository extends JpaRepository<GeneratorIdentity, Long> {
+
     Optional<GeneratorIdentity> findFirstByGuidEquals(String guid);
 
     List<GeneratorIdentity> findAllByOwner(User owner);
