@@ -29,9 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class QueryUtil {
@@ -50,7 +48,7 @@ public final class QueryUtil {
             .stream()
             .map(entry -> {
                 LocalDateTime localDate = TemporalValueType.absoluteMomentToLocalDateTime(entry.getKey().longValue(), dbTemporalFunction);
-                Map<String, Long> values = new HashMap<>();
+                Map<String, Long> values = new TreeMap<>();
                 entry.getValue().forEach(e -> values.put(e.getField(), e.getCount()));
                 return new TemporalDistributionDTO(localDate, values);
             }).collect(Collectors.toList());
