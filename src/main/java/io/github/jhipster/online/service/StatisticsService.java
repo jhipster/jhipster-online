@@ -22,6 +22,7 @@ package io.github.jhipster.online.service;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -79,13 +80,7 @@ public class StatisticsService {
 
         DateTime now = DateTime.now();
 
-        GeneratorIdentity generatorIdentity;
-        try {
-            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
-        } catch (DataIntegrityViolationException e) {
-            log.info("GUID duplication when adding a YoRc.", e);
-            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorGuid);
-        }
+        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
 
         generatorIdentity.host(host);
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
@@ -107,16 +102,11 @@ public class StatisticsService {
     }
 
     @Transactional
-    public void addSubGenEvent(SubGenEvent subGenEvent, String generatorId)  {
+    public void addSubGenEvent(SubGenEvent subGenEvent, String generatorGuid)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(subGenEvent, now);
 
-        GeneratorIdentity generatorIdentity;
-        try {
-            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorId);
-        } catch (DataIntegrityViolationException e) {
-            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorId);
-        }
+        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
 
         subGenEvent
             .date(Instant.ofEpochMilli(now.getMillis()))
@@ -125,17 +115,11 @@ public class StatisticsService {
     }
 
     @Transactional
-    public void addEntityStats(EntityStats entityStats, String generatorId)  {
+    public void addEntityStats(EntityStats entityStats, String generatorGuid)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(entityStats, now);
 
-        GeneratorIdentity generatorIdentity;
-        try {
-            generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorId);
-        } catch (DataIntegrityViolationException e) {
-            generatorIdentity = generatorIdentityService.handleDataDuplication(generatorId);
-        }
-
+        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
         entityStats
             .date(Instant.now())
             .owner(generatorIdentity);

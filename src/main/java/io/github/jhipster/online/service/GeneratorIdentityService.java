@@ -110,16 +110,12 @@ public class GeneratorIdentityService {
      */
     @Transactional
     public GeneratorIdentity findOrCreateOneByGuid(String guid) {
-        GeneratorIdentity result;
-
-        result = generatorIdentityRepository.findFirstByGuidEquals(guid).orElseGet(() -> save(new GeneratorIdentity().guid(guid)));
-
-        return result;
-    }
-
-    @Transactional
-    public GeneratorIdentity handleDataDuplication(String guid) {
-        return generatorIdentityRepository.findFirstByGuidEquals(guid).orElse(null);
+        Optional<GeneratorIdentity> generatorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
+        if (generatorIdentity.isPresent()) {
+            return generatorIdentity.get();
+        } else {
+            return save(new GeneratorIdentity().guid(guid));
+        }
     }
 
     @Transactional
