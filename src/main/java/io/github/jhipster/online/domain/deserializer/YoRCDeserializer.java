@@ -26,7 +26,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String serverPort = node.get("serverPort").asText();
         String authenticationType = node.get("authenticationType").asText();
         String cacheProvider = node.get("cacheProvider").asText();
-        boolean enableHibernateCache = node.get("enableHibernateCache").asBoolean();
+        boolean enableHibernateCache = getDefaultIfNull(node.get("enableHibernateCache"), false);
         boolean webSocket = node.get("websocket").asBoolean();
         String databaseType = node.get("databaseType").asText();
         String devDatabaseType = node.get("devDatabaseType").asText();
