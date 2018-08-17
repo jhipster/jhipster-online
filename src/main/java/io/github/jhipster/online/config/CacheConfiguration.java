@@ -23,14 +23,14 @@ import java.time.Duration;
 
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.github.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableCaching

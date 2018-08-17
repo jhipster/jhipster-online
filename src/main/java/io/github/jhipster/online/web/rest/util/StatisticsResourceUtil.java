@@ -19,16 +19,14 @@
 
 package io.github.jhipster.online.web.rest.util;
 
+import java.time.*;
+import java.util.Arrays;
+
+import org.joda.time.DateTime;
+
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import org.joda.time.DateTime;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Arrays;
 
 public class StatisticsResourceUtil {
 

@@ -19,23 +19,24 @@
 
 package io.github.jhipster.online.web.rest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
+
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.service.GeneratorIdentityService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing GeneratorIdentity.

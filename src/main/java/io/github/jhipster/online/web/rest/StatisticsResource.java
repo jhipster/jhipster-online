@@ -19,10 +19,22 @@
 
 package io.github.jhipster.online.web.rest;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
 import com.codahale.metrics.annotation.Timed;
-import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.domain.User;
+
+import io.github.jhipster.online.domain.*;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.security.AuthoritiesConstants;
@@ -31,18 +43,6 @@ import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.web.rest.util.StatisticsResourceUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.time.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/s")

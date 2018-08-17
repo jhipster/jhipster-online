@@ -22,7 +22,6 @@ package io.github.jhipster.online.service;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 
 import org.kohsuke.github.*;

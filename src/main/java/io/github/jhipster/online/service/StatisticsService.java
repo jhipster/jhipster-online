@@ -19,20 +19,22 @@
 
 package io.github.jhipster.online.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.service.util.StatisticsUtil;
-import org.joda.time.*;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.service.util.StatisticsUtil;
 
 @Service
 public class StatisticsService {

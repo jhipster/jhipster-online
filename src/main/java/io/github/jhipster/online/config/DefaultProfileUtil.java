@@ -18,12 +18,13 @@
  */
 package io.github.jhipster.online.config;
 
-import io.github.jhipster.config.JHipsterConstants;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.Environment;
 
-import java.util.*;
+import io.github.jhipster.config.JHipsterConstants;
 
 /**
  * Utility class to load a Spring profile to be used as default

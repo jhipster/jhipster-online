@@ -19,20 +19,19 @@
 
 package io.github.jhipster.online.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
-import io.github.jhipster.online.domain.interfaces.CompleteDate;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.*;
+import javax.persistence.*;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 
 /**
  * A YoRC.

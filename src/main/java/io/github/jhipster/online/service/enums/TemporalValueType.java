@@ -19,9 +19,7 @@
 
 package io.github.jhipster.online.service.enums;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 
 public enum TemporalValueType {

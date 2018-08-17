@@ -19,18 +19,15 @@
 
 package io.github.jhipster.online.service.util;
 
-import io.github.jhipster.online.service.dto.RawSQL;
-import io.github.jhipster.online.service.dto.RawSQLField;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaQuery;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+
+import io.github.jhipster.online.service.dto.*;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 
 public final class QueryUtil {
 

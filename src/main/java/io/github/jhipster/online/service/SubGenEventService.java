@@ -19,30 +19,23 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.domain.SubGenEvent_;
-import io.github.jhipster.online.domain.enums.SubGenEventType;
-import io.github.jhipster.online.repository.SubGenEventRepository;
-import io.github.jhipster.online.service.dto.RawSQLField;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.QueryUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
+import io.github.jhipster.online.repository.SubGenEventRepository;
+import io.github.jhipster.online.service.dto.*;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.QueryUtil;
 
 /**
  * Service Implementation for managing SubGenEvent.

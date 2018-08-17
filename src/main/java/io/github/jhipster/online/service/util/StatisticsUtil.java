@@ -19,8 +19,9 @@
 
 package io.github.jhipster.online.service.util;
 
-import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import org.joda.time.*;
+
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 
 public class StatisticsUtil {
 

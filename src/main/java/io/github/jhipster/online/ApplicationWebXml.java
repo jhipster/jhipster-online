@@ -18,9 +18,10 @@
  */
 package io.github.jhipster.online;
 
-import io.github.jhipster.online.config.DefaultProfileUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
+import io.github.jhipster.online.config.DefaultProfileUtil;
 
 /**
  * This is a helper Java class that provides an alternative to creating a web.xml.

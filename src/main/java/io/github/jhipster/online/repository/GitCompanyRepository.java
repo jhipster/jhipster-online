@@ -19,12 +19,13 @@
 
 package io.github.jhipster.online.repository;
 
-import io.github.jhipster.online.domain.GitCompany;
-import io.github.jhipster.online.domain.User;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import io.github.jhipster.online.domain.GitCompany;
+import io.github.jhipster.online.domain.User;
 
 /**
  * Spring Data JPA repository for the GitCompany entity.

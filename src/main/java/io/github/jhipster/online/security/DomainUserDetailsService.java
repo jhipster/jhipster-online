@@ -18,21 +18,20 @@
  */
 package io.github.jhipster.online.security;
 
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.UserRepository;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.UserRepository;
 
 /**
  * Authenticate a user from the database.
