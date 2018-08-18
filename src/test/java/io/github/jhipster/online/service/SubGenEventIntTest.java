@@ -19,13 +19,13 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.domain.enums.SubGenEventType;
-import io.github.jhipster.online.repository.SubGenEventRepository;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.DataGenerationUtil;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +33,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
+import io.github.jhipster.online.repository.SubGenEventRepository;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.DataGenerationUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)

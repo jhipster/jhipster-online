@@ -1,11 +1,17 @@
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.JhonlineApp;
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import io.github.jhipster.online.domain.YoRC;
-import io.github.jhipster.online.repository.YoRCRepository;
-import io.github.jhipster.online.service.YoRCService;
-import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.util.List;
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,15 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.repository.YoRCRepository;
+import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the YoRCResource REST controller.

@@ -19,12 +19,11 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.GeneratorIdentityRepository;
-import io.github.jhipster.online.repository.UserRepository;
-import io.github.jhipster.online.service.util.DataGenerationUtil;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,10 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.GeneratorIdentityRepository;
+import io.github.jhipster.online.repository.UserRepository;
+import io.github.jhipster.online.service.util.DataGenerationUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)

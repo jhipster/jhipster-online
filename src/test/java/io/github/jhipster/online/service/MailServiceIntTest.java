@@ -17,21 +17,24 @@
  * limitations under the License.
  */
 package io.github.jhipster.online.service;
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.config.Constants;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.online.service.enums.TemporalValueType;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import javax.mail.Multipart;
+import javax.mail.internet.*;
+
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
@@ -40,17 +43,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)

@@ -18,22 +18,21 @@
  */
 package io.github.jhipster.online.security.jwt;
 
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.config.JHipsterProperties;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockFilterChain;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.online.security.AuthoritiesConstants;
 
 public class JWTFilterTest {
 

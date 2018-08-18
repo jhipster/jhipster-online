@@ -18,9 +18,9 @@
  */
 package io.github.jhipster.online.security;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Locale;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -28,15 +28,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.UserRepository;
 
 /**
  * Test class for DomainUserDetailsService.

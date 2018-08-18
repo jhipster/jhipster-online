@@ -19,22 +19,17 @@
 
 package io.github.jhipster.online.service.util;
 
-import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.domain.YoRC;
-import io.github.jhipster.online.domain.enums.SubGenEventType;
-import io.github.jhipster.online.repository.EntityStatsRepository;
-import io.github.jhipster.online.repository.GeneratorIdentityRepository;
-import io.github.jhipster.online.repository.SubGenEventRepository;
-import io.github.jhipster.online.repository.YoRCRepository;
-import org.joda.time.*;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.joda.time.*;
+
+import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
+import io.github.jhipster.online.repository.*;
 
 public class DataGenerationUtil {
 
