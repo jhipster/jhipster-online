@@ -22,14 +22,18 @@ package io.github.jhipster.online.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
+
 /**
  * Service Implementation for managing GeneratorIdentity.
  */
@@ -40,7 +44,6 @@ public class GeneratorIdentityService {
     private final Logger log = LoggerFactory.getLogger(GeneratorIdentityService.class);
 
     private final GeneratorIdentityRepository generatorIdentityRepository;
-
 
     public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository) {
         this.generatorIdentityRepository = generatorIdentityRepository;
@@ -104,31 +107,40 @@ public class GeneratorIdentityService {
     }
 
     /**
-     * Find a GeneratorIdentity. Create one if can't be found.
+     * Try to create a new GeneratorIdentity.
      *
-     * @param guid Generator you're looking for.
+     * @param guid The guid of the new GeneratorIdentity.
      */
-    @Transactional
-    public GeneratorIdentity findOrCreateOneByGuid(String guid) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void tryToCreateGeneratorIdentity(String guid) {
         Optional<GeneratorIdentity> generatorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
-        if (generatorIdentity.isPresent()) {
-            return generatorIdentity.get();
-        } else {
-            return save(new GeneratorIdentity().guid(guid));
+        if (!generatorIdentity.isPresent()) {
+            // Try to create the GeneratorIdentity in a separate transaction, to manage concurrent access issues
+            try {
+                save(new GeneratorIdentity().guid(guid));;
+            } catch (DataIntegrityViolationException dve) {
+                log.info("Could not create GeneratorIdentity {} - it was already created", guid);
+            }
         }
     }
 
     @Transactional
-    public boolean bindUserToGenerator(User user, String guid) {
-        GeneratorIdentity generatorIdentity = findOrCreateOneByGuid(guid);
+    public Optional<GeneratorIdentity> findOneByGuid(String generatorGuid) {
+        return generatorIdentityRepository.findFirstByGuidEquals(generatorGuid);
+    }
 
-        // Check if the generator has already an owner
-        if(generatorIdentity.getOwner() != null) {
+    @Transactional
+    public boolean bindUserToGenerator(User user, String guid) {
+        Optional<GeneratorIdentity> generatorIdentity = findOneByGuid(guid);
+        if (!generatorIdentity.isPresent()) {
+            log.info("GeneratorIdentity {} does not exist", guid);
             return false;
         }
-
-        generatorIdentity.owner(user);
-
+        // Check if the generator has already an owner
+        if(generatorIdentity.get().getOwner() != null) {
+            return false;
+        }
+        generatorIdentity.get().owner(user);
         return true;
     }
 

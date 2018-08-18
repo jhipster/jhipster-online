@@ -76,14 +76,9 @@ public class StatisticsService {
         String cores = jsonNodeRoot.get("cores").asText();
         String memory = jsonNodeRoot.get("memory").asText();
         String userLanguage = jsonNodeRoot.get("user-language").asText();
-        log.info("Adding an entry for generator {}.", generatorGuid);
 
-        DateTime now = DateTime.now();
-
-        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
-
-        generatorIdentity.host(host);
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
+        DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(yorc, now);
 
         yorc.jhipsterVersion(generatorVersion)
@@ -95,8 +90,19 @@ public class StatisticsService {
             .cores(cores)
             .memory(memory)
             .userLanguage(userLanguage)
-            .owner(generatorIdentity)
             .creationDate(Instant.ofEpochMilli(now.getMillis()));
+
+        log.info("Adding an entry for generator {}.", generatorGuid);
+        this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
+
+        Optional<GeneratorIdentity> generatorIdentity = generatorIdentityService.findOneByGuid(generatorGuid);
+
+        if (generatorIdentity.isPresent()) {
+            generatorIdentity.get().host(host);
+            yorc.owner(generatorIdentity.get());
+        } else {
+            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+        }
 
         yoRCService.save(yorc);
     }
@@ -106,11 +112,15 @@ public class StatisticsService {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(subGenEvent, now);
 
-        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
+        this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
+        Optional<GeneratorIdentity> generatorIdentity = generatorIdentityService.findOneByGuid(generatorGuid);
 
-        subGenEvent
-            .date(Instant.ofEpochMilli(now.getMillis()))
-            .owner(generatorIdentity);
+        subGenEvent.date(Instant.ofEpochMilli(now.getMillis()));
+        if (generatorIdentity.isPresent()) {
+            subGenEvent.owner(generatorIdentity.get());
+        } else {
+            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+        }
         subGenEventService.save(subGenEvent);
     }
 
@@ -119,10 +129,15 @@ public class StatisticsService {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(entityStats, now);
 
-        GeneratorIdentity generatorIdentity = generatorIdentityService.findOrCreateOneByGuid(generatorGuid);
-        entityStats
-            .date(Instant.now())
-            .owner(generatorIdentity);
+        this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
+        Optional<GeneratorIdentity> generatorIdentity = generatorIdentityService.findOneByGuid(generatorGuid);
+
+        entityStats.date(Instant.now());
+        if (generatorIdentity.isPresent()) {
+            entityStats.owner(generatorIdentity.get());
+        } else {
+            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+        }
         entityStatsService.save(entityStats);
     }
 
@@ -139,5 +154,13 @@ public class StatisticsService {
         log.debug("Deleting entity statistics");
         generators.forEach(entityStatsService::deleteByOwner);
 
+    }
+
+    public void tryToCreateGeneratorIdentityAndIgnoreErrors(String generatorGuid) {
+        try {
+            generatorIdentityService.tryToCreateGeneratorIdentity(generatorGuid);
+        } catch (RuntimeException re) {
+            log.debug("GeneratorIdentity {} could not be created, ignoring", generatorGuid);
+        }
     }
 }

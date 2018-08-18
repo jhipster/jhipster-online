@@ -75,8 +75,8 @@ public class GeneratorIdentityServiceIntTest {
     }
 
     @Test
-    public void assertThatFindOrCreateOneByGuidWillCreateOne() {
-        generatorIdentityService.findOrCreateOneByGuid(UUID.randomUUID().toString());
+    public void assertThatTryToCreateGeneratorWillCreateOne() {
+        generatorIdentityService.tryToCreateGeneratorIdentity(UUID.randomUUID().toString());
 
         assertThat(generatorIdentityRepository.findAll().size()).isEqualTo(gids.size() + 1);
     }
@@ -85,8 +85,9 @@ public class GeneratorIdentityServiceIntTest {
     public void assertThatFindOrCreateOneByGuidWillNotCreateOne() {
         GeneratorIdentity giToTest = gids.get((int) (Math.random() * gids.size()));
 
-        assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
-        assertThat(generatorIdentityService.findOrCreateOneByGuid(giToTest.getGuid()).getGuid()).isEqualTo(giToTest.getGuid());
+        generatorIdentityService.tryToCreateGeneratorIdentity(giToTest.getGuid());
+        generatorIdentityService.tryToCreateGeneratorIdentity(giToTest.getGuid());
+
         assertThat(generatorIdentityRepository.findAll().size()).isEqualTo(gids.size());
     }
 
