@@ -110,7 +110,7 @@ public class GeneratorIdentityService {
      *
      * @param guid The guid of the new GeneratorIdentity.
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 5)
     public void tryToCreateGeneratorIdentity(String guid) {
         Optional<GeneratorIdentity> generatorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
         if (!generatorIdentity.isPresent()) {
