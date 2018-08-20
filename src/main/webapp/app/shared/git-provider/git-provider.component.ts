@@ -139,6 +139,9 @@ export class JhiGitProviderComponent implements OnInit {
     }
 
     refreshGitCompanyListByGitProvider(gitProvider: string) {
+        if (gitProvider.length === 0) {
+            return;
+        }
         this.data.gitCompanyListRefresh = true;
         this.gitConfigurationService.gitProviderService.getCompanies(gitProvider.toLowerCase()).subscribe(
             companies => {
