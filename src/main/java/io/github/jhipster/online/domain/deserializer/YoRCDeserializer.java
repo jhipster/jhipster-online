@@ -98,8 +98,9 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
 
     private Set<String> getLanguagesFromArrayNode(ArrayNode languagesNode) {
         Set<String> result = new HashSet<>();
-        languagesNode.forEach(e -> result.add(e.asText()));
-
+        if (languagesNode != null) {
+            languagesNode.forEach(e -> result.add(e.asText()));
+        }
         return result;
     }
 }
