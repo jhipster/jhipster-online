@@ -27,6 +27,7 @@ import java.util.Optional;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +62,7 @@ public class StatisticsService {
     }
 
     @Transactional
+    @Async("statisticsExecutor")
     public void addEntry(String entry, String host) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNodeRoot = mapper.readTree(entry);
@@ -107,6 +109,7 @@ public class StatisticsService {
     }
 
     @Transactional
+    @Async("statisticsExecutor")
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorGuid)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(subGenEvent, now);
@@ -124,6 +127,7 @@ public class StatisticsService {
     }
 
     @Transactional
+    @Async("statisticsExecutor")
     public void addEntityStats(EntityStats entityStats, String generatorGuid)  {
         DateTime now = DateTime.now();
         StatisticsUtil.setAbsoluteDate(entityStats, now);

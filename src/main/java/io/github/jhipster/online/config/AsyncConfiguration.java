@@ -57,6 +57,17 @@ public class AsyncConfiguration implements AsyncConfigurer {
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
 
+    @Bean(name = "statisticsExecutor")
+    public Executor getStatisticsExecutor() {
+        log.debug("Creating Statistics Task Executor");
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
+        executor.setQueueCapacity(1000);
+        executor.setThreadNamePrefix("jhonline-statistics-");
+        return new ExceptionHandlingAsyncTaskExecutor(executor);
+    }
+
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new SimpleAsyncUncaughtExceptionHandler();
