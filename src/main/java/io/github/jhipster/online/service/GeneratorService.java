@@ -96,7 +96,6 @@ public class GeneratorService {
             PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", "UTF-8");
             writer.print(applicationConfiguration);
             writer.close();
-            yoRCService.save(applicationConfiguration);
         } catch (IOException ioe) {
             log.error("Error creating file .yo-rc.json", ioe);
             throw ioe;
