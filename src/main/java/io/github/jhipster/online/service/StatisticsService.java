@@ -155,7 +155,7 @@ public class StatisticsService {
 
     }
 
-    public synchronized void tryToCreateGeneratorIdentityAndIgnoreErrors(String generatorGuid) {
+    public void tryToCreateGeneratorIdentityAndIgnoreErrors(String generatorGuid) {
         try {
             generatorIdentityService.tryToCreateGeneratorIdentity(generatorGuid);
         } catch (RuntimeException re) {
