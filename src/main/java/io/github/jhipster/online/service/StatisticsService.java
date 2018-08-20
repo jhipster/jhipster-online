@@ -39,7 +39,7 @@ import io.github.jhipster.online.service.util.StatisticsUtil;
 @Service
 public class StatisticsService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(StatisticsService.class);
 
     private final YoRCService yoRCService;
 
