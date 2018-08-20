@@ -1,20 +1,14 @@
 <div class="fullScreen bg-light">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
-        </div>
-        <div class="col-md-7">
-            <div class="row justify-content-end">
-                <div class="col-xs-2">
-                    <button class="btn btn-primary" (click)="refreshData()">
-                        <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
-                    </button>
-                </div>
-            </div>
+            <p>
+            <i>JHipster statistics are gathered anonymouly, either from JHipster Online or from people who agreed to send
+                their statistics when installing the JHipster command line.</i>
+            </p>
         </div>
     </div>
-    <div class="row" class="form-group">
-        &nbsp;
+    <div class="row">
         <div class="col-md-6">
             <h4><label for="reviewFullScreen" class="form-control-label">Report :</label></h4>
             <select id="reviewFullScreen" class="form-control" [ngModel]="timeScale" (ngModelChange)="onSelectTimeScale($event)">
@@ -30,8 +24,14 @@
                 </optgroup>
             </select>
         </div>
-        <hr />
+        <div class="col-md-6 text-center">
+            <br/>
+            <button class="btn btn-primary" (click)="refreshData()">
+                  <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
+            </button>
+        </div>
     </div>
+    <hr />
     <div [ngStyle]="{'display': overview ? 'block' : 'none'}">
         <div class="row">
             <div class="col-md-2">
@@ -39,7 +39,7 @@
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
                             <h4 class="card-text">{{countYos}}</h4>
-                            <strong>Total projects</strong>
+                            <strong>Projects used for statistics</strong>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
                             <h4 class="card-text">{{countJdls}}</h4>
-                            <strong>Total JDLs</strong>
+                            <strong>JDLs managed by JHipster Online</strong>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     <div class="card text-center text-white bg-secondary mb-3 numbersCard">
                         <div class="card-body">
                             <h4 class="card-text">{{countUsers}}</h4>
-                            <strong>Total users</strong>
+                            <strong>Registered users on JHipster Online</strong>
                         </div>
                     </div>
                 </div>
