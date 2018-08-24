@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -60,8 +61,11 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
 
     private HikariDataSource hikariDataSource;
 
-    public MetricsConfiguration(JHipsterProperties jHipsterProperties) {
+    private final CacheManager cacheManager;
+
+    public MetricsConfiguration(JHipsterProperties jHipsterProperties, CacheManager cacheManager) {
         this.jHipsterProperties = jHipsterProperties;
+        this.cacheManager = cacheManager;
     }
 
     @Autowired(required = false)
