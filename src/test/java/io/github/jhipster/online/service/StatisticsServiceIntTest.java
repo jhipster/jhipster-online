@@ -47,11 +47,11 @@ public class StatisticsServiceIntTest {
 
     private String dummyYo = "{\n" +
         "        \"generator-jhipster\": {\n" +
-        "        \"useYarn\": true,\n" +
+        "        \"useYarn\": false,\n" +
         "            \"experimental\": false,\n" +
         "            \"skipI18nQuestion\": true,\n" +
         "            \"logo\": false,\n" +
-        "            \"clientPackageManager\": \"yarn\",\n" +
+        "            \"clientPackageManager\": \"npm\",\n" +
         "            \"cacheProvider\": \"ehcache\",\n" +
         "            \"enableHibernateCache\": true,\n" +
         "            \"websocket\": false,\n" +

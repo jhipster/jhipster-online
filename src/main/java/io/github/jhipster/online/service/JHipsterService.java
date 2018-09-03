@@ -52,9 +52,9 @@ public class JHipsterService {
         log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
     }
 
-    public void installYarnDependencies(String generationId, File workingDir) throws IOException {
+    public void installNpmDependencies(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
-        this.runProcess(generationId, workingDir, "yarn install --ignore-scripts --frozen-lockfile");
+        this.runProcess(generationId, workingDir, "npm install --ignore-scripts --package-lock-only");
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {

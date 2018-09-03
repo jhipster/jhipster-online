@@ -212,7 +212,7 @@ export class GeneratorComponent implements OnInit {
             false,
             'maven',
             false,
-            'yarn',
+            'npm',
             [],
             false,
             'en',

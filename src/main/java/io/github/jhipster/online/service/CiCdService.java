@@ -89,7 +89,7 @@ public class CiCdService {
             this.gitService.createBranch(git, branchName);
 
             this.logsService.addLog(ciCdId, "Generating Continuous Integration configuration");
-            //this.jHipsterService.installYarnDependencies(ciCdId, workingDir);
+            //this.jHipsterService.installNpmDependencies(ciCdId, workingDir);
             this.jHipsterService.addCiCdTravis(ciCdId, workingDir, ciCdTool);
 
             this.gitService.addAllFilesToRepository(git, workingDir);

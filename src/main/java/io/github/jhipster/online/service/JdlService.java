@@ -102,7 +102,7 @@ public class JdlService {
                 "See https://start.jhipster.tech/jdl-studio/#!/view/" + jdlMetadata.getId());
 
             this.logsService.addLog(applyJdlId, "Generating entities from JDL Model");
-            //this.jHipsterService.installYarnDependencies(applyJdlId, workingDir);
+            //this.jHipsterService.installNpmDependencies(applyJdlId, workingDir);
             this.jHipsterService.runImportJdl(applyJdlId, workingDir, this.kebabCaseJdlName(jdlMetadata));
 
             this.gitService.addAllFilesToRepository(git, workingDir);
