@@ -20,15 +20,18 @@ Sending request to the server...
         <div class="row" *ngIf="displayApplicationUrl && githubConfigured && selectedGitProvider === 'GitHub'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b>
+                    <br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <br/>Or start working on your app with the Gitpod Online IDE: <a href="https://gitpod.io/#{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">https://gitpod.io/#{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
         <div class="row" *ngIf="displayApplicationUrl && gitlabConfigured && selectedGitProvider === 'GitLab'">
             <div class="col-md-12">
                 <div class="lead">
-
-                    <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b>
+                    <br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <!-- Uncomment when Gitpod will support GitLab <br/>Or start working on your app with the Gitpod Online IDE: <a href="https://gitpod.io/#{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">https://gitpod.io/#{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>-->
                 </div>
             </div>
         </div>
