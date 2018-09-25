@@ -39,7 +39,7 @@
                         <option value="monolith">Monolithic application (recommended for simple projects)</option>
                         <option value="microservice">Microservice application</option>
                         <option value="gateway">Microservice gateway</option>
-                        <option value="uaa">[BETA] JHipster UAA server (for microservice OAuth2 authentication)</option>
+                        <option value="uaa">JHipster UAA server (for microservice OAuth2 authentication)</option>
                     </select>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                         <option value="sql">SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)</option>
                         <option value="mongodb">MongoDB</option>
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
-                        <option value="couchbase">[BETA] Couchbase</option>
+                        <option value="couchbase">Couchbase</option>
                         <option value="no"
                                 [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
                     || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
@@ -155,7 +155,7 @@
                             class="form-control" #cacheProvider="ngModel">
                         <option value="ehcache">Yes, with ehcache (local cache, for a single node)</option>
                         <option value="hazelcast">Yes, with HazelCast (distributed cache, for multiple nodes)</option>
-                        <option value="infinispan">[BETA] Yes, with Infinispan (hybrid cache, for multiple nodes)</option>
+                        <option value="infinispan">Yes, with Infinispan (hybrid cache, for multiple nodes)</option>
                         <option value="no">No</option>
                     </select>
                 </div>
