@@ -26,6 +26,7 @@ import javax.annotation.PostConstruct;
 
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
+import org.gitlab.api.models.GitlabMergeRequest;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
 import org.slf4j.Logger;
@@ -232,9 +233,9 @@ public class GitlabService implements GitProviderService {
         log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
         int number = gitlab.getProject(group, repositoryName).getId();
-        gitlab.createMergeRequest(number, branchName, "master", null, title);
+        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
-        return number;
+        return mergeRequest.getIid();
     }
 
     @Override
