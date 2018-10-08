@@ -21,6 +21,7 @@ package io.github.jhipster.online.service;
 
 import java.io.File;
 
+import io.github.jhipster.online.service.enums.CiCdTool;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
@@ -69,7 +70,7 @@ public class CiCdService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void configureCiCd(User user, String organizationName, String projectName, String ciCdTool, String ciCdId,
+    public void configureCiCd(User user, String organizationName, String projectName, CiCdTool ciCdTool, String ciCdId,
         GitProvider gitProvider) {
         StopWatch watch = new StopWatch();
         watch.start();
@@ -84,17 +85,17 @@ public class CiCdService {
             FileUtils.forceMkdir(workingDir);
             Git git = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
-            String branchName = "jhipster-" + ciCdTool + "-" + ciCdId;
+            String branchName = ciCdTool.branchName(ciCdId);
             this.logsService.addLog(ciCdId, "Creating branch `" + branchName + "`");
             this.gitService.createBranch(git, branchName);
 
             this.logsService.addLog(ciCdId, "Generating Continuous Integration configuration");
             //this.jHipsterService.installNpmDependencies(ciCdId, workingDir);
-            this.jHipsterService.addCiCdTravis(ciCdId, workingDir, ciCdTool);
+            this.jHipsterService.addCiCd(ciCdId, workingDir, ciCdTool);
 
             this.gitService.addAllFilesToRepository(git, workingDir);
             this.gitService.commit(git, workingDir, "Configure " +
-                StringUtils.capitalize(ciCdTool) +
+                ciCdTool.capitalize() +
                 " Continuous Integration");
 
             this.logsService.addLog(ciCdId, "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " " +
@@ -103,7 +104,7 @@ public class CiCdService {
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
-            String pullRequestTitle = "Configure Continuous Integration with " + StringUtils.capitalize(ciCdTool);
+            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.capitalize();
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
             if (isGitHub) {
