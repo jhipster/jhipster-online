@@ -124,13 +124,12 @@ public class CiCdService {
                 int pullRequestNumber =
                     this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
                         branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGithub()
-                    .getHost() +
+                this.logsService.addLog(ciCdId, "Pull Request created at " + gitlabService.getHost() +
                     "/" +
                     organizationName +
                     "/" +
                     projectName +
-                    "/pull/" +
+                    "/merge_requests/" +
                     pullRequestNumber
                 );
             }
