@@ -23,6 +23,7 @@ import java.io.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+import io.github.jhipster.online.service.enums.CiCdTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,14 +71,14 @@ public class JHipsterService {
             "--force-insight --skip-checks --skip-install --force ");
     }
 
-    public void addCiCdTravis(String generationId, File workingDir, String ciCdTool) throws Exception {
-        if (ciCdTool == null || (!ciCdTool.equals("travis") && !ciCdTool.equals("jenkins"))) {
+    public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws Exception {
+        if (ciCdTool == null) {
             this.logsService.addLog(generationId, "Continuous Integration system not supported, aborting");
             throw new Exception("Invalid Continuous Integration system");
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
         this.runProcess(generationId, workingDir, jhipsterCommand + " ci-cd " +
-            "--autoconfigure-" + ciCdTool + " --force-insight --skip-checks --skip-install --force ");
+            "--autoconfigure-" + ciCdTool.command() + " --force-insight --skip-checks --skip-install --force ");
     }
 
     private void runProcess(String generationId, File workingDir, String command) throws IOException {

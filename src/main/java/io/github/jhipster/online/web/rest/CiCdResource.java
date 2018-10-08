@@ -19,6 +19,7 @@
 
 package io.github.jhipster.online.web.rest;
 
+import io.github.jhipster.online.service.enums.CiCdTool;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -63,7 +66,8 @@ public class CiCdResource {
         User user = userService.getUser();
         String ciCdId = "ci-" + System.nanoTime();
 
-        if (ciCdTool == null || (!ciCdTool.equals("travis") && !ciCdTool.equals("jenkins"))) {
+        Optional<CiCdTool> integrationTool = CiCdTool.getByName(ciCdTool);
+        if (!integrationTool.isPresent()) {
             this.logsService.addLog(ciCdId, "Continuous Integration with `" + ciCdTool + "` is not supported.");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -73,7 +77,7 @@ public class CiCdResource {
             organizationName + "/" + projectName);
 
         try {
-            this.ciCdService.configureCiCd(user, organizationName, projectName, ciCdTool,
+            this.ciCdService.configureCiCd(user, organizationName, projectName, integrationTool.get(),
                 ciCdId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {
             log.error("Error generating application", e);
