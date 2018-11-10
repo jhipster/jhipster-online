@@ -73,7 +73,8 @@ import {
     faLink,
     faLightbulb,
     faSkull,
-    faExpand
+    faExpand,
+    faProjectDiagram
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
@@ -131,4 +132,5 @@ library.add(faLink);
 library.add(faLightbulb);
 library.add(faSkull);
 library.add(faExpand);
+library.add(faProjectDiagram);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
