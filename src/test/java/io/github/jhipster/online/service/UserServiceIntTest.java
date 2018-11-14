@@ -18,12 +18,12 @@
  */
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.config.Constants;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.UserRepository;
-import io.github.jhipster.online.service.dto.UserDTO;
-import io.github.jhipster.online.service.util.RandomUtil;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -36,12 +36,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.UserRepository;
+import io.github.jhipster.online.service.dto.UserDTO;
+import io.github.jhipster.online.service.util.RandomUtil;
 
 /**
  * Test class for the UserResource REST controller.

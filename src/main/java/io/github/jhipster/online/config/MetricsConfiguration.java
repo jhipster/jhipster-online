@@ -18,28 +18,25 @@
  */
 package io.github.jhipster.online.config;
 
-import io.github.jhipster.config.JHipsterProperties;
+import java.lang.management.ManagementFactory;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
 
-import com.codahale.metrics.JmxReporter;
-import com.codahale.metrics.JvmAttributeGaugeSet;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Slf4jReporter;
+import org.slf4j.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.codahale.metrics.*;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.jcache.JCacheGaugeSet;
 import com.codahale.metrics.jvm.*;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import com.zaxxer.hikari.HikariDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.lang.management.ManagementFactory;
-import java.util.concurrent.TimeUnit;
+import io.github.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
@@ -64,8 +61,11 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
 
     private HikariDataSource hikariDataSource;
 
-    public MetricsConfiguration(JHipsterProperties jHipsterProperties) {
+    private final CacheManager cacheManager;
+
+    public MetricsConfiguration(JHipsterProperties jHipsterProperties, CacheManager cacheManager) {
         this.jHipsterProperties = jHipsterProperties;
+        this.cacheManager = cacheManager;
     }
 
     @Autowired(required = false)

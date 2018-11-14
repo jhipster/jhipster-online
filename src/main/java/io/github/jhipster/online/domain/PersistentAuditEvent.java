@@ -18,12 +18,12 @@
  */
 package io.github.jhipster.online.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Persist AuditEvent managed by the Spring Boot actuator.

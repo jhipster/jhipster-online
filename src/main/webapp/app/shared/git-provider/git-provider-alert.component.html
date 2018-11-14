@@ -1,16 +1,17 @@
+<ngb-alert [dismissible]="false" type="danger" *ngIf="isNoGitProviders()">
+    <fa-icon [icon]="'exclamation-triangle'"></fa-icon>&nbsp;
+    <span>{{noGitProvidersMessage}}</span>
+</ngb-alert>
 <ngb-alert [dismissible]="false" type="danger" *ngIf="isAlertShowing()">
     <p>
-        <span class="fas fa-exclamation-triangle"></span>&nbsp;
-        <span><strong>Warning!</strong>{{message}}</span>
+        <fa-icon [icon]="'exclamation-triangle'"></fa-icon>&nbsp;
+        <span><strong>Warning!</strong>{{warningMessage}}</span>
     </p>
     <p class="text-center">
         <a routerLink="/git" class="btn btn-primary" role="button">Configure your {{displayedGitProvider}} account</a>
     </p>
 </ngb-alert>
-<p *ngIf="isGithubConfigured || isGitlabConfigured">
-    <span class="fas fa-info-circle"></span>&nbsp;
-    <i>The <a href="https://github.com/jhipster-bot" target="_blank">JHipster Bot</a> will access your project's
-        {{displayedGitProvider}} repository and create a new branch with Continuous Integration configuration.
-        You can then decide if you want to merge this branch into your master branch.
-    </i>
+<p *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
+    <fa-icon [icon]="'info-circle'"></fa-icon>
+    <i>The JHipster bot {{infoMessage}}</i>
 </p>

@@ -18,11 +18,15 @@
  */
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.config.audit.AuditEventConverter;
-import io.github.jhipster.online.domain.PersistentAuditEvent;
-import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
-import io.github.jhipster.online.service.AuditEventService;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +42,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.config.audit.AuditEventConverter;
+import io.github.jhipster.online.domain.PersistentAuditEvent;
+import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
+import io.github.jhipster.online.service.AuditEventService;
 
 /**
  * Test class for the AuditResource REST controller.

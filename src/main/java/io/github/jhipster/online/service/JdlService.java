@@ -26,12 +26,14 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.config.CacheConfiguration;
 import io.github.jhipster.online.domain.*;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.repository.JdlRepository;
@@ -100,7 +102,7 @@ public class JdlService {
                 "See https://start.jhipster.tech/jdl-studio/#!/view/" + jdlMetadata.getId());
 
             this.logsService.addLog(applyJdlId, "Generating entities from JDL Model");
-            //this.jHipsterService.installYarnDependencies(applyJdlId, workingDir);
+            //this.jHipsterService.installNpmDependencies(applyJdlId, workingDir);
             this.jHipsterService.runImportJdl(applyJdlId, workingDir, this.kebabCaseJdlName(jdlMetadata));
 
             this.gitService.addAllFilesToRepository(git, workingDir);
@@ -175,6 +177,11 @@ public class JdlService {
 
     public String kebabCaseJdlName(JdlMetadata jdlMetadata) {
         return jdlMetadata.getName().toLowerCase().replace(" ", "-");
+    }
+
+    @Cacheable(cacheNames = CacheConfiguration.STATISTICS_JDL_COUNT)
+    public long countAll() {
+        return jdlRepository.count();
     }
 
     /**

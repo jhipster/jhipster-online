@@ -39,12 +39,14 @@ export class GeneratorComponent implements OnInit {
     selectedGitProvider: string;
     selectedGitCompany: string;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     repositoryName: string;
 
     gitConfig: GitConfigurationModel;
+
+    isStatsEnabled = false;
 
     /**
      * get all the languages options supported by JHipster - copied from the generator.
@@ -100,6 +102,12 @@ export class GeneratorComponent implements OnInit {
     ngOnInit() {
         this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
+        });
     }
 
     updateSharedData(data: any) {
@@ -166,6 +174,8 @@ export class GeneratorComponent implements OnInit {
         modalRef.repositoryName = this.repositoryName;
         modalRef.gitlabHost = this.gitConfig.gitlabHost;
         modalRef.githubHost = this.gitConfig.githubHost;
+        modalRef.gitlabConfigured = this.gitConfig.gitlabAvailable;
+        modalRef.githubConfigured = this.gitConfig.githubAvailable;
     }
 
     downloadFile(blob: Blob) {
@@ -202,7 +212,7 @@ export class GeneratorComponent implements OnInit {
             false,
             'maven',
             false,
-            'yarn',
+            'npm',
             [],
             false,
             'en',
@@ -210,7 +220,7 @@ export class GeneratorComponent implements OnInit {
             'angularX',
             'jhi'
         );
-        this.repositoryName = `${this.model.baseName}Repository`;
+        this.repositoryName = 'jhipster-sample-application';
     }
 
     changeApplicationType() {

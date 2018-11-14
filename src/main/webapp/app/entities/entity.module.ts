@@ -17,15 +17,21 @@
  * limitations under the License.
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { RouterModule } from '@angular/router';
+import { STATISTICS_ROUTE } from './statistics/statistics.route';
+import { JhonlineSharedModule } from 'app/shared';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
     // prettier-ignore
     imports: [
+        JhonlineSharedModule,
+        RouterModule.forRoot([STATISTICS_ROUTE], { useHash: true })
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
-    declarations: [],
+    declarations: [StatisticsComponent],
     entryComponents: [],
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

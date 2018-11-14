@@ -1,0 +1,93 @@
+entity YoRC {
+    // Other
+    jhipsterVersion String,
+    creationDate Instant,
+    gitProvider String,
+    nodeVersion String,
+    os String,
+    arch String,
+    cpu String,
+    cores String,
+    memory String,
+    userLanguage String,
+
+    // Date stuff
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
+    // Pure YoRc
+    serverPort String,
+    authenticationType String,
+    cacheProvider String,
+    enableHibernateCache Boolean,
+    websocket Boolean,
+    databaseType String,
+    devDatabaseType String,
+    prodDatabaseType String,
+    searchEngine Boolean,
+    messageBroker Boolean,
+    serviceDiscoveryType Boolean,
+    buildTool String,
+    enableSwaggerCodegen Boolean,
+    clientFramework String,
+    useSass Boolean,
+    clientPackageManager String,
+    applicationType String,
+    jhiPrefix String,
+    enableTranslation Boolean,
+    nativeLanguage String,
+    hasProtractor Boolean,
+    hasGatling Boolean,
+    hasCucumber Boolean
+}
+
+entity SubGenEvent {
+    // Date stuff
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
+    source String,
+    type String,
+    event String,
+    date Instant
+}
+
+entity EntityStats {
+    // Date stuff
+    year Integer,
+    month Integer,
+    week Integer,
+    day Integer,
+    hour Integer,
+
+    fields Integer,
+    relationships Integer,
+    pagination String,
+    dto String,
+    service String,
+    fluentMethods Boolean,
+    date Instant
+}
+
+entity GeneratorIdentity {
+    host String,
+    guid String
+}
+
+relationship ManyToOne {
+	YoRC{owner} to GeneratorIdentity,
+	SubGenEvent{owner} to GeneratorIdentity,
+	EntityStats{owner} to GeneratorIdentity,
+	GeneratorIdentity{owner} to User
+}
+
+service YoRC with serviceClass
+service GeneratorIdentity with serviceClass
+service SubGenEvent with serviceClass
+service EntityStats with serviceClass

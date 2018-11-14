@@ -18,12 +18,12 @@
  */
 package io.github.jhipster.online.security;
 
-import io.github.jhipster.online.config.Constants;
-
 import java.util.Optional;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
+
+import io.github.jhipster.online.config.Constants;
 
 /**
  * Implementation of AuditorAware based on Spring Security.

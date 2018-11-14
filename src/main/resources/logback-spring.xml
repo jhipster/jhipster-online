@@ -26,7 +26,7 @@
         <appender-ref ref="ASYNC"/>
     </root>
 -->
-
+    <logger name="io.github.jhipster.online" level="DEBUG"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.management.remote" level="WARN"/>

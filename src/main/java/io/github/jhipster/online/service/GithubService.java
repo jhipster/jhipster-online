@@ -21,7 +21,7 @@ package io.github.jhipster.online.service;
 
 import java.io.IOException;
 import java.util.*;
-
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.kohsuke.github.*;
@@ -114,60 +114,81 @@ public class GithubService implements GitProviderService {
     @Transactional
     @Override
     public User getSyncedUserFromGitProvider(User user) throws Exception {
-        log.info("Syncing user `{}` with GitHub", user.getLogin());
+        log.info("Syncing user `{}` with GitHub...", user.getLogin());
+        StopWatch watch = new StopWatch();
+        watch.start();
         GitHub gitHub = this.getConnection(user);
         GHMyself ghMyself = gitHub.getMyself();
+        String githubLogin = ghMyself.getLogin();
         user.setGithubUser(ghMyself.getLogin());
         user.setGithubEmail(ghMyself.getEmail());
         user.setGithubCompany(ghMyself.getCompany());
         user.setGithubLocation(ghMyself.getLocation());
-        Set<GitCompany> organizations = user.getGitCompanies();
-        GitCompany myOrganization;
+        Set<GitCompany> currentGithubCompanies =
+            user.getGitCompanies().stream().filter(c -> c.getGitProvider().equals(GitProvider.GITHUB.getValue())).collect(Collectors.toSet());
+
+        Set<GitCompany> updatedGithubCompanies = new HashSet<>();
+
+        // Sync the projects from the user's companies
+        Map<String, GHOrganization> githubOrganizations = gitHub.getMyOrganizations();
+        for (String githubOrganizationName : githubOrganizations.keySet()) {
+            log.debug("Syncing company `{}`", githubOrganizationName);
+            GitCompany company;
+            // Create company if it does not already exist
+            Optional<GitCompany> currentGitHubOrganization =
+                currentGithubCompanies.stream().filter(g -> g.getName().equals(githubOrganizationName)).findFirst();
+
+            if (!currentGitHubOrganization.isPresent()) {
+                log.debug("Saving new company `{}`", githubOrganizationName);
+                company = new GitCompany();
+                company.setName(githubOrganizationName);
+                company.setUser(user);
+                company.setGitProvider(GitProvider.GITHUB.getValue());
+                company = gitCompanyRepository.save(company);
+            } else {
+                company = currentGitHubOrganization.get();
+            }
+            log.debug("Adding company `{}` to user", company.getName());
+            updatedGithubCompanies.add(company);
+            company.setGitProjects(new ArrayList<>(githubOrganizations.get(githubOrganizationName).getRepositories().keySet()));
+        }
+
+        user.setGitCompanies(updatedGithubCompanies);
+        List<String> organizationsProjects = updatedGithubCompanies.stream()
+            .filter(o ->
+                o.getGitProvider().equals("github") && !o.getName().equals(githubLogin))
+            .flatMap(o ->
+                o.getGitProjects().stream())
+            .collect(Collectors.toList());
+
         // Sync the current user's projects
-        if (organizations.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
+        log.debug("Syncing user's projects");
+        GitCompany myOrganization;
+        if (currentGithubCompanies.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
             myOrganization = new GitCompany();
-            myOrganization.setName(ghMyself.getLogin());
+            myOrganization.setName(githubLogin);
             myOrganization.setUser(user);
             myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
             gitCompanyRepository.save(myOrganization);
         } else {
-            myOrganization = organizations.stream()
+            myOrganization = currentGithubCompanies.stream()
                 .filter(g -> g.getName().equals(ghMyself.getLogin()))
                 .findFirst()
                 .orElseThrow(Exception::new);
         }
-
         try {
-            syncCompanyGitProjects(gitHub, myOrganization);
+            List<String> ownedProjects = gitHub.getMyself().getAllRepositories().entrySet().stream()
+                .filter(entry ->
+                    organizationsProjects.stream()
+                        .noneMatch(p ->
+                            p.equals(entry.getKey())))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+            myOrganization.setGitProjects(ownedProjects);
         } catch (IOException e) {
             log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
-
-        // Sync the projects from the user's companies
-        for (String organizationName : gitHub.getMyOrganizations().keySet()) {
-            GitCompany organization = new GitCompany();
-            organization.setName(organizationName);
-            organization.setUser(user);
-            organization.setGitProvider(GitProvider.GITHUB.getValue());
-            if (organizations.stream().noneMatch(g -> g.getName().equals(organization.getName()))) {
-                gitCompanyRepository.save(organization);
-                organizations.add(organization);
-            }
-            try {
-                syncCompanyGitProjects(gitHub, organization);
-            } catch (IOException e) {
-                log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
-            }
-        }
-
-        user.setGitCompanies(organizations);
         return user;
-    }
-
-    private void syncCompanyGitProjects(GitHub gitHub, GitCompany myOrganization) throws IOException {
-        Map<String, GHRepository> projectMap = gitHub.getMyself().getAllRepositories();
-        List<String> projects = new ArrayList<>(projectMap.keySet());
-        myOrganization.setGitProjects(projects);
     }
 
     /**
@@ -219,6 +240,13 @@ public class GithubService implements GitProviderService {
 
         log.info("Pull Request created!");
         return number;
+    }
+
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGithubOAuthToken() != null;
     }
 
     /**

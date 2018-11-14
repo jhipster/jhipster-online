@@ -1,0 +1,122 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="jhipster" id="1532958542865-1">
+        <createTable tableName="entity_stats">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="entity_statsPK"/>
+            </column>
+            <column name="jhi_date" type="TIMESTAMP"/>
+            <column name="day" type="INT"/>
+            <column name="dto" type="VARCHAR(255)"/>
+            <column name="fields" type="INT"/>
+            <column name="fluent_methods" type="BIT"/>
+            <column name="hour" type="INT"/>
+            <column name="month" type="INT"/>
+            <column name="pagination" type="VARCHAR(255)"/>
+            <column name="relationships" type="INT"/>
+            <column name="service" type="VARCHAR(255)"/>
+            <column name="week" type="INT"/>
+            <column name="jhi_year" type="INT"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-2">
+        <createTable tableName="generator_identity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="generator_identityPK"/>
+            </column>
+            <column name="guid" type="VARCHAR(255)"/>
+            <column name="host" type="VARCHAR(255)"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-3">
+        <createTable tableName="sub_gen_event">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="sub_gen_eventPK"/>
+            </column>
+            <column name="jhi_date" type="TIMESTAMP"/>
+            <column name="day" type="INT"/>
+            <column name="event" type="VARCHAR(4065)"/>
+            <column name="hour" type="INT"/>
+            <column name="month" type="INT"/>
+            <column name="source" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="VARCHAR(255)"/>
+            <column name="week" type="INT"/>
+            <column name="jhi_year" type="INT"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-4">
+        <createTable tableName="yo_rc">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="yo_rcPK"/>
+            </column>
+            <column name="application_type" type="VARCHAR(255)"/>
+            <column name="arch" type="VARCHAR(255)"/>
+            <column name="authentication_type" type="VARCHAR(255)"/>
+            <column name="build_tool" type="VARCHAR(255)"/>
+            <column name="cache_provider" type="VARCHAR(255)"/>
+            <column name="client_framework" type="VARCHAR(255)"/>
+            <column name="client_package_manager" type="VARCHAR(255)"/>
+            <column name="cores" type="VARCHAR(255)"/>
+            <column name="cpu" type="VARCHAR(255)"/>
+            <column name="creation_date" type="TIMESTAMP"/>
+            <column name="database_type" type="VARCHAR(255)"/>
+            <column name="day" type="INT"/>
+            <column name="dev_database_type" type="VARCHAR(255)"/>
+            <column name="enable_hibernate_cache" type="BIT"/>
+            <column name="enable_swagger_codegen" type="BIT"/>
+            <column name="enable_translation" type="BIT"/>
+            <column name="git_provider" type="VARCHAR(255)"/>
+            <column name="has_cucumber" type="BIT"/>
+            <column name="has_gatling" type="BIT"/>
+            <column name="has_protractor" type="BIT"/>
+            <column name="hour" type="INT"/>
+            <column name="jhi_prefix" type="VARCHAR(255)"/>
+            <column name="jhipster_version" type="VARCHAR(255)"/>
+            <column name="memory" type="VARCHAR(255)"/>
+            <column name="message_broker" type="BIT"/>
+            <column name="month" type="INT"/>
+            <column name="native_language" type="VARCHAR(255)"/>
+            <column name="node_version" type="VARCHAR(255)"/>
+            <column name="os" type="VARCHAR(255)"/>
+            <column name="prod_database_type" type="VARCHAR(255)"/>
+            <column name="search_engine" type="BIT"/>
+            <column name="server_port" type="VARCHAR(255)"/>
+            <column name="service_discovery_type" type="BIT"/>
+            <column name="use_sass" type="BIT"/>
+            <column name="user_language" type="VARCHAR(255)"/>
+            <column name="websocket" type="BIT"/>
+            <column name="week" type="INT"/>
+            <column name="jhi_year" type="INT"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-5">
+        <createTable tableName="yorc_selected_languages">
+            <column name="yorc_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="selected_languages" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-6">
+        <addUniqueConstraint columnNames="guid" constraintName="UC_GENERATOR_IDENTITYGUID_COL" tableName="generator_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-8">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="sub_gen_event" constraintName="FKgq3phc3u58yocei0vjyaokfce" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-9">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="entity_stats" constraintName="FKkb13kis1scfunlks8lx1i6ngt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-10">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="yo_rc" constraintName="FKnnfwmyo5hx7rra02wjw42hx8l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="generator_identity"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-11">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="generator_identity" constraintName="FKonhto43h6mn6r8mhnrid03iqh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="jhipster" id="1532958542865-12">
+        <addForeignKeyConstraint baseColumnNames="yorc_id" baseTableName="yorc_selected_languages" constraintName="FKr07x0f4a0p8s2v4mtrhb7r0bx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="yo_rc"/>
+    </changeSet>
+</databaseChangeLog>

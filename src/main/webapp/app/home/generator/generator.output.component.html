@@ -17,16 +17,17 @@ Sending request to the server...
                 </pre>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && isGithubConfigured && selectedGitProvider === 'GitHub'">
+        <div class="row" *ngIf="displayApplicationUrl && githubConfigured && selectedGitProvider === 'GitHub'">
             <div class="col-md-12">
                 <div class="lead">
                     <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="displayApplicationUrl && isGitlabConfigured && selectedGitProvider === 'GitLab'">
+        <div class="row" *ngIf="displayApplicationUrl && gitlabConfigured && selectedGitProvider === 'GitLab'">
             <div class="col-md-12">
                 <div class="lead">
+
                     <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
@@ -35,6 +36,6 @@ Sending request to the server...
 </div>
 <div class="modal-footer">
     <button type="submit" (click)="clear()" class="btn btn-primary">
-        <span class="fas fa-times-circle"></span>&nbsp;Close this window
+        <fa-icon [icon]="'times-circle'"></fa-icon>&nbsp;Close this window
     </button>
 </div>

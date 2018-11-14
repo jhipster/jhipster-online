@@ -1,0 +1,189 @@
+<div class="fullScreen bg-light">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><span class="fas fa-chart-area"></span>&nbsp;<span>Statistics</span></h2>
+            <p>
+            <i>JHipster statistics are gathered anonymouly, either from JHipster Online or from people who agreed to send
+                their statistics when installing the JHipster command line.</i>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4><label for="reviewFullScreen" class="form-control-label">Report :</label></h4>
+            <select id="reviewFullScreen" class="form-control" [ngModel]="timeScale" (ngModelChange)="onSelectTimeScale($event)">
+                <optgroup label="Global overviews">
+                    <option value="default">Generated applications</option>
+                    <option value="clientFramework">Angular vs. React</option>
+                    <option value="buildTool">Maven vs. Gradle</option>
+                </optgroup>
+                <optgroup label="Time scale">
+                    <option value="daily">Last 24h</option>
+                    <option value="weekly">Last month</option>
+                    <option value="monthly">Last year</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="col-md-6 text-center">
+            <br/>
+            <button class="btn btn-primary" (click)="refreshData()">
+                  <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div [ngStyle]="{'display': overview ? 'block' : 'none'}">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="card text-center text-white bg-secondary mb-3 numbersCard">
+                        <div class="card-body">
+                            <h4 class="card-text">{{countYos}}</h4>
+                            <strong>Projects used for statistics</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card text-center text-white bg-secondary mb-3 numbersCard">
+                        <div class="card-body">
+                            <h4 class="card-text">{{countJdls}}</h4>
+                            <strong>JDLs managed by JHipster Online</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card text-center text-white bg-secondary mb-3 numbersCard">
+                        <div class="card-body">
+                            <h4 class="card-text">{{countUsers}}</h4>
+                            <strong>Registered users on JHipster Online</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'daily'; setTimeScale()">
+                            <h5>Last 24 hours</h5>
+                            <hr />
+                            <div #chartTrendFull4 class="chartBox"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'weekly'; setTimeScale()">
+                    <h5>Last month</h5>
+                    <hr />
+                    <div #chartTrendFull3 class="chartBox"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="chart card card-body text-center text-dark bg-light" (click)="timeScale = 'monthly'; setTimeScale()">
+                    <h5>Last year</h5>
+                    <hr />
+                    <div #chartTrendFull2 class="chartBox"></div>
+                </div>
+            </div>
+        </div>
+        &nbsp;
+    </div>
+
+
+    <div [ngStyle]="{'display': overview ? 'none' : 'block'}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>React/Angular distribution</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartFrameworkLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartFrameworkPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>Maven/Gradle distribution</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartBuildtoolLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartBuildtoolPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="categoryChart">
+            <h4 style="text-align: end">Production database distribution</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-5">
+                    <div #chartDBProdPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+                <div class="col-md-7">
+                    <div #chartDBProdLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+            </div>
+        </div>
+        <div class="categoryChart">
+            <h4>Cache provider</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-7">
+                    <div #chartCacheLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+                <div class="col-md-5">
+                    <div #chartCachePie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+            </div>
+        </div>
+        <div class="categoryChart">
+            <h4>Cloud deployment</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-6">
+                    <div #chartDeploymentLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+                <div class="col-md-6">
+                    <div #chartDeploymentPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>JHipster version used</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartVersionLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartVersionPie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="categoryChart card card-body text-center text-dark">
+                    <h4>Type of application</h4>
+                    <hr />
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartAppTypeLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    <div class="row col-md-11 chartBoxContainer">
+                        <div #chartAppTypePie class="chartBox chart card card-body text-center text-dark bg-light"></div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

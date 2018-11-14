@@ -22,11 +22,11 @@ package io.github.jhipster.online.service;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
+import org.gitlab.api.models.GitlabMergeRequest;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
 import org.slf4j.Logger;
@@ -117,49 +117,66 @@ public class GitlabService implements GitProviderService {
     @Transactional
     @Override
     public User getSyncedUserFromGitProvider(User user) throws Exception {
+        log.info("Syncing user `{}` with GitLab...", user.getLogin());
+        StopWatch watch = new StopWatch();
+        watch.start();
         GitlabAPI gitlab = getConnection(user);
         GitlabUser myself = gitlab.getUser();
         user.setGitlabUser(myself.getUsername());
         user.setGitlabEmail(myself.getEmail());
-        Set<GitCompany> groups = user.getGitCompanies();
-        GitCompany myGroup;
+        Set<GitCompany> currentGitlabCompanies =
+            user.getGitCompanies().stream().filter(c -> c.getGitProvider().equals(GitProvider.GITLAB.getValue())).collect(Collectors.toSet());
 
-        // Sync the current user's projects
-        if (groups.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
-            myGroup = new GitCompany();
-            myGroup.setName(myself.getUsername());
-            myGroup.setUser(user);
-            myGroup.setGitProvider(GitProvider.GITLAB.getValue());
-            myGroup.setGitProjects(new ArrayList<>());
-            gitCompanyRepository.save(myGroup);
+        GitCompany gitCompany;
+
+        log.debug("Syncing user's projects");
+        if (currentGitlabCompanies.stream().noneMatch(g -> g.getName().equals(myself.getUsername()))) {
+            gitCompany = new GitCompany();
+            gitCompany.setName(myself.getUsername());
+            gitCompany.setUser(user);
+            gitCompany.setGitProvider(GitProvider.GITLAB.getValue());
+            gitCompany.setGitProjects(new ArrayList<>());
+            gitCompanyRepository.save(gitCompany);
 
         } else {
-            myGroup = groups.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(
+            gitCompany = currentGitlabCompanies.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(
                 () -> new Exception("Should not happen."));
         }
 
         try {
-            List<GitlabProject> projectList = gitlab.getProjects();
+            List<GitlabProject> projectList = gitlab.getMembershipProjects().stream()
+                .filter(p ->  p.getOwner() != null && p.getOwner().getId().equals(myself.getId()))
+                .collect(Collectors.toList());
+
             List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
-            myGroup.setGitProjects(projects);
+            gitCompany.setGitProjects(projects);
         } catch (IOException e) {
             log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
-        groups.add(myGroup);
+        currentGitlabCompanies.add(gitCompany);
 
         // Sync the projects from the user's groups
+        Set<GitCompany> updatedGitlabCompanies = new HashSet<>();
         gitlab.getGroups().forEach(group -> {
-            GitCompany company = new GitCompany();
-            company.setName(group.getName());
-            company.setUser(user);
-            company.setGitProvider(GitProvider.GITLAB.getValue());
-            if (groups.stream().noneMatch(g -> g.getName().equals(company.getName()))) {
-                gitCompanyRepository.save(company);
-                groups.add(company);
-            }
+            log.debug("Syncing organization `{}`", group.getName());
+            GitCompany company;
+            Optional<GitCompany> currentGitlabCompany =
+                currentGitlabCompanies.stream().filter(g -> g.getName().equals(group.getName())).findFirst();
 
+            if (!currentGitlabCompany.isPresent()) {
+                log.debug("Saving new company `{}`", group.getName());
+                company = new GitCompany();
+                company.setName(group.getName());
+                company.setUser(user);
+                company.setGitProvider(GitProvider.GITLAB.getValue());
+                gitCompanyRepository.save(company);
+            } else {
+                company = currentGitlabCompany.get();
+            }
+            log.debug("Adding company `{}` to user", company.getName());
+            updatedGitlabCompanies.add(company);
             try {
-                List<GitlabProject> projectList = gitlab.getGroup(group.getName()).getSharedProjects();
+                List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                 List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                 company.setGitProjects(projects);
             } catch (IOException e) {
@@ -167,7 +184,9 @@ public class GitlabService implements GitProviderService {
             }
         });
 
-        user.setGitCompanies(groups);
+        user.setGitCompanies(updatedGitlabCompanies);
+        watch.stop();
+        log.info("Finished syncing user `{}` with GitLab in {} ms", user.getLogin(), watch.getTotalTimeMillis());
         return user;
     }
 
@@ -214,22 +233,32 @@ public class GitlabService implements GitProviderService {
         log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
         int number = gitlab.getProject(group, repositoryName).getId();
-        gitlab.createMergeRequest(number, branchName, "master", null, title);
+        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(number, branchName, "master", null, title);
         log.info("Merge Request created!");
-        return number;
+        return mergeRequest.getIid();
+    }
+
+    @Override
+    public boolean isConfigured() {
+        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+
+        return user.isPresent() && user.get().getGitlabOAuthToken() != null;
     }
 
     /**
      * Connect to GitLab as the current logged in user.
      */
     private GitlabAPI getConnection(User user) throws Exception {
-        log.debug("Authenticating as User `{}`", user.getGitlabUser());
+        log.debug("Authenticating user `{}` on GitLab", user.getLogin());
         if (user.getGitlabOAuthToken() == null) {
             log.info("No GitLab token configured");
             throw new Exception("GitLab is not configured.");
         }
-        return GitlabAPI.connect(applicationProperties.getGitlab().getHost(), user.getGitlabOAuthToken(), TokenType
-            .ACCESS_TOKEN);
+        GitlabAPI gitlab = GitlabAPI.connect(applicationProperties.getGitlab().getHost(), user.getGitlabOAuthToken(),
+            TokenType.ACCESS_TOKEN);
+
+        log.debug("User `{}` authenticated as `{}` on GitLab", user.getLogin(), gitlab.getUser().getUsername());
+        return gitlab;
     }
 
     /**

@@ -18,9 +18,8 @@
  */
 package io.github.jhipster.online.repository;
 
-import io.github.jhipster.online.config.Constants;
-import io.github.jhipster.online.config.audit.AuditEventConverter;
-import io.github.jhipster.online.domain.PersistentAuditEvent;
+import java.time.Instant;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.*;
+import io.github.jhipster.online.config.Constants;
+import io.github.jhipster.online.config.audit.AuditEventConverter;
+import io.github.jhipster.online.domain.PersistentAuditEvent;
 
 /**
  * An implementation of Spring Boot's AuditEventRepository.

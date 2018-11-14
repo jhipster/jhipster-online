@@ -19,14 +19,14 @@
 export class GitConfigurationModel {
     constructor(
         public availableGitProviders: any,
-        public isGithubAvailable: boolean,
-        public isAuthorizingGithub: boolean,
+        public githubAvailable: boolean,
         public githubClientId: string,
         public githubHost: string,
-        public isGitlabAvailable: boolean,
-        public isAuthorizingGitlab: boolean,
+        public gitlabAvailable: boolean,
         public gitlabRedirectUri: string,
         public gitlabClientId: string,
-        public gitlabHost: string
+        public gitlabHost: string,
+        public githubConfigured: boolean,
+        public gitlabConfigured: boolean
     ) {}
 }

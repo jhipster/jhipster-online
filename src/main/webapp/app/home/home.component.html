@@ -50,15 +50,91 @@
                 </nav>
             </div>
             <div *ngSwitchCase="false">
+        <div>
+            <div *ngIf="!isAuthenticated()">
                 <div class="alert alert-info" role="alert">
                     JHipster Online is the best place to generate <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> applications, with no installation required!
                 </div>
             </div>
-            <div *ngSwitchCase="false">
+            <div *ngIf="!isAuthenticated()">
                 <div class="alert alert-info" role="alert">
                     No more command line: fill an easy-to-use Web form, JHipster Online generates a complete <a href="https://www.jhipster.tech/" target="_blank" rel="noopener" data-translate="home.link.homepage">JHipster</a> application on your GitHub account.
                 </div>
             </div>
+            <div>
+                <div class="alert alert-success" role="alert">
+                    <span class="badge badge-danger">new</span> Check out <a routerLink="/statistics">JHipster statistics</a> to have an overview of what JHipster users are building.
+                </div>
+            </div>
+            <nav class="navbar navbar-light">
+                <ul class="navbar-nav mr-auto" [ngSwitch]="isAuthenticated()">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
+                        <a class="nav-link text-primary mt-3" routerLink="/">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="home" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                        *ngIf="(gitConfig.githubAvailable || gitConfig.gitlabAvailable) && isAuthenticated()">
+                        <a class="nav-link text-primary mt-3" routerLink="/git">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="wrench" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Configure</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
+                        <a class="nav-link text-primary mt-3" routerLink="/generate-application">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="rocket" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Create Application</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
+                        <a class="nav-link text-primary mt-3" routerLink="/design-entities">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="object-group" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Design Entities</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
+                        <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="cloud-upload-alt" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Continuous Integration</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="nav-link text-primary mt-3" routerLink="/statistics">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="chart-line" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">JHipster Statistics </span><span class="badge badge-danger">new</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary mt-3" href="jdl-studio/">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="project-diagram" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">JDL Studio</span>
+                        </a>
+                    </li>
+<!--                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
+                        <a class="nav-link text-primary mt-3" routerLink="/your-generators">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="link" size="2x"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">Your Generators</span>
+                        </a>
+                    </li>-->
+                </ul>
+            </nav>
         </div>
     </div>
     <div class="col-md-9">
@@ -71,7 +147,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <fa-icon [icon]="'sign-in-alt'"></fa-icon>
+                                    <fa-icon icon="sign-in-alt"></fa-icon>
                                     &nbsp;Authentication
                                 </div>
                                 <div class="card-body">
@@ -84,7 +160,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <fa-icon [icon]="'user-plus'"></fa-icon>
+                                    <fa-icon icon="user-plus"></fa-icon>
                                     &nbsp;Registration
                                 </div>
                                 <div class="card-body">

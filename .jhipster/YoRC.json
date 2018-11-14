@@ -1,0 +1,174 @@
+{
+    "name": "YoRC",
+    "fields": [
+        {
+            "fieldName": "jhipsterVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "creationDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "gitProvider",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nodeVersion",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "os",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "arch",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpu",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cores",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "memory",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userLanguage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "week",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hour",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "serverPort",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "authenticationType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cacheProvider",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableHibernateCache",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "websocket",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "databaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "devDatabaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "prodDatabaseType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "searchEngine",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "messageBroker",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "serviceDiscoveryType",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "buildTool",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableSwaggerCodegen",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "clientFramework",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "useSass",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "clientPackageManager",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "applicationType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jhiPrefix",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "enableTranslation",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "nativeLanguage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasProtractor",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasGatling",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasCucumber",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "owner",
+            "otherEntityName": "generatorIdentity",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180615143359",
+    "entityTableName": "yo_rc",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

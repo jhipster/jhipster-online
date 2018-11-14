@@ -28,26 +28,24 @@ import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 export class GitComponent implements OnInit {
     gitConfig: GitConfigurationModel;
 
-    isGithubConfigured: boolean = JSON.parse(localStorage.getItem('isGithubConfigured'));
-    isGitlabConfigured: boolean = JSON.parse(localStorage.getItem('isGitlabConfigured'));
+    githubConfigured = false;
+    gitlabConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+        this.githubConfigured = this.gitConfig.githubConfigured;
+        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitlabConfigured = gitConfig.gitlabConfigured;
+            this.githubConfigured = gitConfig.githubConfigured;
+        });
+
         this.gitConfig.availableGitProviders.forEach(provider => {
-            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(orgs => {
-                if (orgs.length === 0) {
-                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider).subscribe(() => {
-                        switch (provider) {
-                            case 'github':
-                                this.gitConfig = { ...this.gitConfig, isAuthorizingGithub: false };
-                                break;
-                            case 'gitlab':
-                                this.gitConfig = { ...this.gitConfig, isAuthorizingGitlab: false };
-                                break;
-                        }
-                    });
+            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(companies => {
+                if (companies.length === 0) {
+                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider);
                 }
             });
         });

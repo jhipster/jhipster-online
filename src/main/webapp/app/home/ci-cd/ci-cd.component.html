@@ -1,22 +1,19 @@
 <form #generatorForm="ngForm">
-    <h2><span class="fas fa-cloud-upload-alt"></span>&nbsp;<span>Continuous Integration</span></h2>
+    <h2><fa-icon [icon]="'cloud-upload-alt'"></fa-icon>&nbsp;<span>Continuous Integration</span></h2>
     <jhi-alert></jhi-alert>
     <hr/>
-    <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-        There is no git providers available. Contact your administrator to configure a git provider.
-    </ngb-alert>
     <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
     <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="isGithubConfigured || isGitlabConfigured">
+    <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    At the moment only <a href="https://jenkins.io/">Jenkins</a> and <a href="https://travis-ci.org/">Travis</a> configurations are supported.
+                    The following tools are supported:
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <h3>Travis</h3>
+                    <h3><a href="https://travis-ci.org/">Travis</a></h3>
                     <ul>
                         <li>A <code>.travis.yml</code> will be added to your project.</li>
                         <li>Go to your <a href="https://travis-ci.org/profile" target="_blank">Travis profile page.</a></li>
@@ -25,12 +22,27 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <h3>Jenkins</h3>
+                    <h3><a href="https://jenkins.io/">Jenkins</a></h3>
                     <ul>
                         <li>A <code>Jenkinsfile</code> will be added to your project.</li>
                         <li>Go to your Jenkins instance</li>
                         <li>Create a new job, using a `Pipeline script from SCM`</li>
                         <li>Point the SCM configuration to your GitHub or GitLab repository</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3><a href="https://gitlab.com/">Gitlab</a></h3>
+                    <ul>
+                        <li>A <code>.gitlab-ci.yml</code> will be added to your project.</li>
+                        <li>Your PR now is running using the GitLab Continuous Integration</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h3><a href="https://dev.azure.com">Azure Pipelines</a></h3>
+                    <ul>
+                        <li>A <code>azure-pipelines.yml</code> will be added to your project.</li>
+                        <li>Go to your project in your Azure DevOps organization.</li>
+                        <li>Create a new pipeline using your project</li>
                     </ul>
                 </div>
             </div>
@@ -47,6 +59,8 @@
                                 #ctrl="ngModel">
                             <option value="travis">Travis</option>
                             <option value="jenkins">Jenkins</option>
+                            <option value="gitlab">Gitlab</option>
+                            <option value="azure">Azure Pipelines</option>
                         </select>
                     </div>
                 </div>
@@ -54,7 +68,7 @@
         </div>
         <hr/>
         <p class="text-center">
-            <button class="btn btn-primary" (click)="applyCiCd()">
+            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
             <span>
             Yes, add Continuous Integration
             </span>

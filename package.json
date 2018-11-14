@@ -1,9 +1,13 @@
 {
   "name": "jhonline",
-  "version": "1.0.3",
-  "description": "Description for jhonline",
-  "private": true,
-  "license": "UNLICENSED",
+  "version": "2.3.1",
+  "description": "JHipster Online is the best place to generate JHipster applications, with no installation required!",
+  "license": "Apache-2.0",
+  "keywords": [
+    "jhipster"
+  ],
+  "homepage": "https://www.jhipster.tech/",
+  "bugs": "https://github.com/jhipster/jhipster-online/issues",
   "cacheDirectories": [
     "node_modules"
   ],
@@ -15,18 +19,21 @@
     "@angular/platform-browser": "6.0.0",
     "@angular/platform-browser-dynamic": "6.0.0",
     "@angular/router": "6.0.0",
-    "@fortawesome/angular-fontawesome": "0.1.0-9",
-    "@fortawesome/fontawesome-svg-core": "1.2.0-11",
-    "@fortawesome/free-brands-svg-icons": "5.1.0",
-    "@fortawesome/free-solid-svg-icons": "5.1.0-8",
+    "@fortawesome/angular-fontawesome": "0.1.1",
+    "@fortawesome/fontawesome-svg-core": "1.2.2",
+    "@fortawesome/free-brands-svg-icons": "5.2.0",
+    "@fortawesome/free-solid-svg-icons": "5.2",
     "@ng-bootstrap/ng-bootstrap": "2.0.0",
-    "bootstrap": "4.0.0",
+    "bootstrap": "4.1.2",
+    "@types/google.analytics": "0.0.34",
     "core-js": "2.5.3",
     "jasmine-reporters": "2.3.1",
+    "echarts": "4.1.0",
     "jquery": "3.3.1",
     "moment": "2.21.0",
     "ng-jhipster": "0.5.4",
     "ngx-cookie": "2.0.1",
+    "ngx-echarts": "3.1.0",
     "ngx-infinite-scroll": "0.5.1",
     "ngx-webstorage": "2.0.1",
     "protractor": "^5.3.2",
@@ -128,7 +135,8 @@
     "webpack:prod": "yarn run cleanup && yarn run webpack:prod:main && yarn run clean-www",
     "webpack:test": "yarn run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
+    "update-jdl-studio": "cd src/main/resources/static/jdl-studio && git pull origin gh-pages && cd .. && git add jdl-studio && git commit -m 'jdl-studio submodule updated'"
   },
   "jestSonar": {
     "reportPath": "target/test-results/jest",

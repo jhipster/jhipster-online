@@ -42,8 +42,10 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.gitConfig = this.gitConfigurationService.gitConfig;
+        this.gitConfigurationService.sharedData.subscribe(config => (this.gitConfig = config));
         this.principal.identity().then(account => {
             this.account = account;
+            this.gitConfigurationService.setupGitConfiguration();
         });
         this.registerAuthenticationSuccess();
     }

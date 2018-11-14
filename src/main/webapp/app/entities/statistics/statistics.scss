@@ -1,0 +1,37 @@
+/* ==========================================================================
+Statistics page styles
+========================================================================== */
+
+.chart {
+    margin-bottom: 5%;
+    box-shadow: 5px 5px rgba(53, 61, 71, 0.2);
+}
+
+/* ==========================================================================
+Full screen mode
+========================================================================== */
+
+.fullScreen {
+    padding: 1%;
+    width: 100%;
+}
+
+.numbersCard {
+    height: 150px;
+    padding-top: 25px;
+    width: 100%;
+}
+
+.chartBox {
+    height: 375px;
+}
+
+.chartBoxContainer {
+    margin: auto;
+}
+
+.categoryChart {
+    background-color: #e0e0e0;
+    margin-bottom: 5%;
+    padding: 1%;
+}

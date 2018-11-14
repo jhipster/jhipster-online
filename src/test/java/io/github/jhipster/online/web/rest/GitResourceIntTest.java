@@ -18,19 +18,16 @@
  */
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.service.GithubService;
-import io.github.jhipster.online.service.GitlabService;
-import io.github.jhipster.online.service.UserService;
-import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -39,9 +36,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the GitResource REST controller.

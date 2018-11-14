@@ -1,16 +1,12 @@
 <form #generatorForm="ngForm">
 
-    <h2><span class="fas fa-rocket"></span>&nbsp;<span>Application generation</span></h2>
+    <h2><fa-icon [icon]="'rocket'"></fa-icon>&nbsp;<span>Application generation</span></h2>
 
     <div class="container">
         <h4>Project configuration</h4>
         <hr />
-        <ngb-alert [dismissible]="false" type="danger" *ngIf="!gitConfig.isGithubAvailable && !gitConfig.isGitlabAvailable">
-            <span>There is no git providers available. Contact your administrator to configure a git provider.</span>
-            <span>You will only be able to download your application as a Zip file.</span>
-        </ngb-alert>
         <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
-        <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
+        <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -26,7 +22,7 @@
                 <div class="form-group">
                     <label for="repositoryName">Repository name</label>
                     <input type="text" class="form-control" id="repositoryName" [(ngModel)]="repositoryName" name="repositoryName"
-                           required pattern="^([a-zA-Z0-9]*)$">
+                           required pattern="^([a-zA-Z0-9\-_]*)$">
                 </div>
             </div>
         </div>
@@ -43,7 +39,7 @@
                         <option value="monolith">Monolithic application (recommended for simple projects)</option>
                         <option value="microservice">Microservice application</option>
                         <option value="gateway">Microservice gateway</option>
-                        <option value="uaa">[BETA] JHipster UAA server (for microservice OAuth2 authentication)</option>
+                        <option value="uaa">JHipster UAA server (for microservice OAuth2 authentication)</option>
                     </select>
                 </div>
             </div>
@@ -111,7 +107,7 @@
                         <option value="sql">SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)</option>
                         <option value="mongodb">MongoDB</option>
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
-                        <option value="couchbase">[BETA] Couchbase</option>
+                        <option value="couchbase">Couchbase</option>
                         <option value="no"
                                 [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
                     || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
@@ -159,7 +155,7 @@
                             class="form-control" #cacheProvider="ngModel">
                         <option value="ehcache">Yes, with ehcache (local cache, for a single node)</option>
                         <option value="hazelcast">Yes, with HazelCast (distributed cache, for multiple nodes)</option>
-                        <option value="infinispan">[BETA] Yes, with Infinispan (hybrid cache, for multiple nodes)</option>
+                        <option value="infinispan">Yes, with Infinispan (hybrid cache, for multiple nodes)</option>
                         <option value="no">No</option>
                     </select>
                 </div>
@@ -235,7 +231,7 @@
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular 6</option>
+                        <option value="angularX">Angular</option>
                         <option value="react">React</option>
                     </select>
                 </div>
@@ -243,7 +239,7 @@
                     <label for="useSass">Would you like to use the LibSass stylesheet preprocessor for your CSS?</label>
                     <select id="useSass" [(ngModel)]="model.useSass" name="useSass" class="form-control"
                             #useSass="ngModel">
-                        <option [ngValue]="false">No</option>
+                         <option [ngValue]="false">No</option>
                         <option [ngValue]="true">Yes</option>
                     </select>
                 </div>
@@ -284,7 +280,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="testFrameworks">Besides JUnit and Karma, which testing frameworks would you like to
+                    <label for="testFrameworks">Besides JUnit and Jest, which testing frameworks would you like to
                         use?</label>
                     <select id="testFrameworks" [(ngModel)]="model.testFrameworks" name="testFrameworks"
                             class="form-control" #testFrameworks="ngModel"
@@ -312,9 +308,8 @@
                             <button id="reset" type="button" class="btn btn-dark" (click)="newGenerator()">Reset</button>
                         </div>
                         <div *ngSwitchCase="false">
-                            <span
-                                class="fas fa-sync fa-spin"></span>
-                            <button type="submit" class="btn btn-primary" [disabled]="!submitted" *ngIf="selectedGitProvider">
+                            <fa-icon [icon]="'sync'" [spin]="true"></fa-icon>
+                            <button type="submit" class="btn btn-primary" [disabled]="true" *ngIf="selectedGitProvider">
                                 Generate on {{selectedGitProvider}}
                             </button>
                             <button type="submit" class="btn btn-info" [disabled]="true">

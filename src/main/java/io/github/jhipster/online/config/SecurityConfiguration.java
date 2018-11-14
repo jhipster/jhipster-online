@@ -18,13 +18,10 @@
  */
 package io.github.jhipster.online.config;
 
-import io.github.jhipster.online.security.*;
-import io.github.jhipster.online.security.jwt.*;
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,7 +38,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
-import javax.annotation.PostConstruct;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.security.jwt.JWTConfigurer;
+import io.github.jhipster.online.security.jwt.TokenProvider;
 
 
 @Configuration
@@ -126,6 +125,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/account/reset-password/link").hasAnyAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/api/crash-reports/*").permitAll()
+            .antMatchers("/api/s/link/*").authenticated()
+            .antMatchers(HttpMethod.GET, "/api/s/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/s/**").permitAll()
             .antMatchers("/api/git/config").permitAll()
             .antMatchers("/api/github/callback").permitAll()
             .antMatchers("/api/gitlab/callback").permitAll()

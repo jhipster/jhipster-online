@@ -22,6 +22,8 @@ import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import { NavigationEnd, Router } from '@angular/router';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
@@ -34,6 +36,7 @@ import { JhonlineHomeModule } from 'app/home';
 import { JhonlineAppRoutingModule } from './app-routing.module';
 import { JhonlineAccountModule } from './account/account.module';
 import { JhonlineEntityModule } from './entities/entity.module';
+import { GoogleAnalyticsEventsService } from './shared/ga/google-analytics-events.service';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 
@@ -50,7 +53,8 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
         JhonlineCoreModule,
         JhonlineHomeModule,
         JhonlineAccountModule,
-        JhonlineEntityModule
+        JhonlineEntityModule,
+        NgxEchartsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
@@ -89,4 +93,13 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
     ],
     bootstrap: [JhiMainComponent]
 })
-export class JhonlineAppModule {}
+export class JhonlineAppModule {
+    constructor(public router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
+        this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                ga('set', 'page', 'start' + event.urlAfterRedirects);
+                ga('send', 'pageview');
+            }
+        });
+    }
+}

@@ -48,8 +48,7 @@ public class GeneratorService {
     private final LogsService logsService;
 
     public GeneratorService(ApplicationProperties applicationProperties, GitService gitService, JHipsterService
-        jHipsterService, LogsService
-        logsService) {
+        jHipsterService, LogsService logsService, YoRCService yoRCService) {
         this.applicationProperties = applicationProperties;
         this.gitService = gitService;
         this.jHipsterService = jHipsterService;

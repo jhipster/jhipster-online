@@ -64,7 +64,17 @@ import {
     faRocket,
     faObjectGroup,
     faCopy,
-    faTrash
+    faTrash,
+    faInfoCircle,
+    faCheck,
+    faBolt,
+    faTimesCircle,
+    faChartLine,
+    faLink,
+    faLightbulb,
+    faSkull,
+    faExpand,
+    faProjectDiagram
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
@@ -113,5 +123,14 @@ library.add(faObjectGroup);
 library.add(faGitlab);
 library.add(faCopy);
 library.add(faTrash);
-
+library.add(faInfoCircle);
+library.add(faCheck);
+library.add(faBolt);
+library.add(faTimesCircle);
+library.add(faChartLine);
+library.add(faLink);
+library.add(faLightbulb);
+library.add(faSkull);
+library.add(faExpand);
+library.add(faProjectDiagram);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

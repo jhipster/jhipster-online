@@ -34,7 +34,8 @@ import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.MailService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
 import io.github.jhipster.online.service.dto.UserDTO;
 import io.github.jhipster.online.web.rest.errors.*;
@@ -56,19 +57,10 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    private final JdlMetadataService jdlMetadataService;
-
-    public AccountResource(UserRepository userRepository,
-        UserService userService,
-        MailService mailService,
-        JdlMetadataService jdlMetadataService,
-        JdlService jdlService,
-        GithubService githubService,
-        GitlabService gitlabService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.jdlMetadataService = jdlMetadataService;
     }
 
     /**
