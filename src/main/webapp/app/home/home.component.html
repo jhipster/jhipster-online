@@ -59,20 +59,20 @@
                             <span class="align-middle h5">Continuous Integration</span>
                         </a>
                     </li>
+                    <li class="nav-item" *ngSwitchCase="false">
+                        <a class="nav-link text-primary mt-3" href="jdl-studio/">
+                            <span class="btn-rounded align-middle">
+                                <fa-icon icon="project-diagram" size="2x" fixedWidth="true"></fa-icon>
+                            </span>
+                            <span class="align-middle h5">JDL Studio</span>
+                        </a>
+                    </li>
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link text-primary mt-3" routerLink="/statistics">
                             <span class="btn-rounded align-middle">
                                 <fa-icon icon="chart-line" size="2x" fixedWidth="true"></fa-icon>
                             </span>
                             <span class="align-middle h5">JHipster Statistics </span><span class="badge badge-danger">new</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-primary mt-3" href="jdl-studio/">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="project-diagram" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">JDL Studio</span>
                         </a>
                     </li>
 <!--                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
