@@ -47,6 +47,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
         this.gitlabConfigured = this.gitConfig.gitlabConfigured;
         this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitConfig = gitConfig;
             this.gitlabConfigured = gitConfig.gitlabConfigured;
             this.githubConfigured = gitConfig.githubConfigured;
         });
@@ -123,21 +124,25 @@ export class JhiGitProviderComponent implements OnInit {
         this.gitlabConfigured = this.gitConfig.gitlabConfigured;
         this.githubConfigured = this.gitConfig.githubConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
+            this.gitConfig = gitConfig;
             this.gitlabConfigured = gitConfig.gitlabConfigured;
             this.githubConfigured = gitConfig.githubConfigured;
+            this.updateAvailableProviders();
         });
+    }
 
-        if (this.gitConfig.gitlabAvailable && this.gitlabConfigured) {
+    updateAvailableProviders() {
+        if (this.gitConfig.gitlabAvailable && this.gitlabConfigured && !this.data.availableGitProviders.includes('GitLab')) {
             this.data.availableGitProviders.push('GitLab');
             this.data.selectedGitProvider = 'GitLab';
         }
-        if (this.gitConfig.githubAvailable && this.githubConfigured) {
+        if (this.gitConfig.githubAvailable && this.githubConfigured && !this.data.availableGitProviders.includes('GitHub')) {
             this.data.availableGitProviders.push('GitHub');
             this.data.selectedGitProvider = 'GitHub';
         }
+
         this.refreshGitCompanyListByGitProvider(this.data.selectedGitProvider || '');
     }
-
     refreshGitCompanyListByGitProvider(gitProvider: string) {
         if (gitProvider.length === 0) {
             return;
