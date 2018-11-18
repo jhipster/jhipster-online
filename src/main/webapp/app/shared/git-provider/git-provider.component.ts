@@ -129,6 +129,8 @@ export class JhiGitProviderComponent implements OnInit {
             this.githubConfigured = gitConfig.githubConfigured;
             this.updateAvailableProviders();
         });
+
+        this.updateAvailableProviders();
     }
 
     updateAvailableProviders() {
