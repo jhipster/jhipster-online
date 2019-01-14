@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jhonline-mysql
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jhonline-mysql
+    spec:
+      volumes:
+      - name: data
+        emptyDir: {}
+      containers:
+      - name: mysql
+        image: mysql:8.0.13
+        env:
+        - name: MYSQL_USER
+          value: root
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: 'yes'
+        - name: MYSQL_DATABASE
+          value: jhonline
+        args:
+        - --lower_case_table_names=1
+        - --skip-ssl
+        - --character_set_server=utf8mb4
+        - --explicit_defaults_for_timestamp
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jhonline-mysql
+  namespace: default
+spec:
+  selector:
+    app: jhonline-mysql
+  ports:
+  - port: 3306

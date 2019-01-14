@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jhonline
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jhonline
+      version: "v1"
+  template:
+    metadata:
+      labels:
+        app: jhonline
+        version: "v1"
+    spec:
+      initContainers:
+        - name: init-ds
+          image: busybox
+          command:
+            - '/bin/sh'
+            - '-c'
+            - |
+                while true
+                do
+                  rt=$(nc -z -w 1 jhonline-mysql 3306)
+                  if [ $? -eq 0 ]; then
+                    echo "DB is UP"
+                    break
+                  fi
+                  echo "DB is not yet reachable;sleep for 10s before retry"
+                  sleep 10
+                done
+      containers:
+      - name: jhonline-app
+        image: jhipster/jhipster-online
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: jwt-secret
+              key: secret
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://jhonline-mysql.default.svc.cluster.local:3306/jhonline?useUnicode=true&characterEncoding=utf8&useSSL=false
+        - name: JAVA_OPTS
+          value: " -Xmx256m -Xms256m"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        ports:
+        - name: http
+          containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /management/health
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /management/health
+            port: http
+          initialDelaySeconds: 120
