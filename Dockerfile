@@ -10,7 +10,8 @@ RUN \
     ./mvnw package -Pprod -DskipTests && \
     mv /code/target/*.war / && \
     apt-get clean && \
-    rm -Rf /code/ /root/.m2 /root/.cache /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    rm -Rf /code/ /root/.m2 /root/.cache /tmp/* /var/lib/apt/lists/* /var/tmp/*  && \
+    mkdir /tmp/jhispter && mkdir /tmp/jhispter/applications
 
 FROM openjdk:8-jre-alpine
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
