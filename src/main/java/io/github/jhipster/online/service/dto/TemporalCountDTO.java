@@ -19,25 +19,26 @@
 
 package io.github.jhipster.online.service.dto;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
 
-    private LocalDateTime date;
+    private Instant date;
 
     private Long count;
 
-    public TemporalCountDTO(LocalDateTime date, Long count) {
+    public TemporalCountDTO(Instant date, Long count) {
         this.date = date;
         this.count = count;
     }
 
-    public LocalDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

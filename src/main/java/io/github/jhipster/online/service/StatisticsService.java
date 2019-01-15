@@ -24,7 +24,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import org.joda.time.DateTime;
+import io.github.jhipster.online.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -35,7 +35,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.service.util.StatisticsUtil;
 
 @Service
 public class StatisticsService {
@@ -43,7 +42,6 @@ public class StatisticsService {
     private final Logger log = LoggerFactory.getLogger(StatisticsService.class);
 
     private final YoRCService yoRCService;
-
 
     private final GeneratorIdentityService generatorIdentityService;
 
@@ -79,8 +77,9 @@ public class StatisticsService {
         String userLanguage = jsonNodeRoot.get("user-language").asText();
 
         YoRC yorc = mapper.treeToValue(jsonNodeGeneratorJHipster, YoRC.class);
-        DateTime now = DateTime.now();
-        StatisticsUtil.setAbsoluteDate(yorc, now);
+
+        Instant now = Instant.now();
+        DateUtil.setAbsoluteDate(yorc, now);
 
         yorc.jhipsterVersion(generatorVersion)
             .gitProvider(gitProvider)
@@ -91,7 +90,7 @@ public class StatisticsService {
             .cores(cores)
             .memory(memory)
             .userLanguage(userLanguage)
-            .creationDate(Instant.ofEpochMilli(now.getMillis()));
+            .creationDate(now);
 
         log.info("Adding an entry for generator {}.", generatorGuid);
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
@@ -111,13 +110,13 @@ public class StatisticsService {
     @Transactional
     @Async("statisticsExecutor")
     public void addSubGenEvent(SubGenEvent subGenEvent, String generatorGuid)  {
-        DateTime now = DateTime.now();
-        StatisticsUtil.setAbsoluteDate(subGenEvent, now);
+        Instant now = Instant.now();
+        DateUtil.setAbsoluteDate(subGenEvent, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
         Optional<GeneratorIdentity> generatorIdentity = generatorIdentityService.findOneByGuid(generatorGuid);
 
-        subGenEvent.date(Instant.ofEpochMilli(now.getMillis()));
+        subGenEvent.date(now);
         if (generatorIdentity.isPresent()) {
             subGenEvent.owner(generatorIdentity.get());
         } else {
@@ -129,13 +128,13 @@ public class StatisticsService {
     @Transactional
     @Async("statisticsExecutor")
     public void addEntityStats(EntityStats entityStats, String generatorGuid)  {
-        DateTime now = DateTime.now();
-        StatisticsUtil.setAbsoluteDate(entityStats, now);
+        Instant now = Instant.now();
+        DateUtil.setAbsoluteDate(entityStats, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
         Optional<GeneratorIdentity> generatorIdentity = generatorIdentityService.findOneByGuid(generatorGuid);
 
-        entityStats.date(Instant.now());
+        entityStats.date(now);
         if (generatorIdentity.isPresent()) {
             entityStats.owner(generatorIdentity.get());
         } else {
@@ -156,7 +155,6 @@ public class StatisticsService {
         generators.forEach(subGenEventService::deleteByOwner);
         log.debug("Deleting entity statistics");
         generators.forEach(entityStatsService::deleteByOwner);
-
     }
 
     public void tryToCreateGeneratorIdentityAndIgnoreErrors(String generatorGuid) {

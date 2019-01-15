@@ -25,12 +25,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import javax.mail.Multipart;
 import javax.mail.internet.*;
 
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,10 +42,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.service.enums.TemporalValueType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)
@@ -56,9 +51,6 @@ public class MailServiceIntTest {
 
     @Autowired
     private JHipsterProperties jHipsterProperties;
-
-    @Autowired
-    private ApplicationProperties applicationProperties;
 
     @Autowired
     private MessageSource messageSource;
@@ -203,43 +195,8 @@ public class MailServiceIntTest {
     }
 
     @Test
-    public void testSendEmailWithException() throws Exception {
+    public void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
-    }
-
-    @RunWith(SpringRunner.class)
-    public static class AbsoluteLocalDateTimeUnitTest {
-
-        @Test
-        public void assertThatYearsAreCorrectlySet() {
-            AssertionsForClassTypes.assertThat(TemporalValueType.absoluteMomentToLocalDateTime(10L, TemporalValueType.YEAR).getYear()).isEqualTo(10);
-        }
-
-        @Test
-        public void assertThatMonthsAreCorrectlySet() {
-            long numberOfMonth = 45;
-            long numberOfYear = numberOfMonth / 12 + 1970;
-            long monthOfTheYear = numberOfMonth % 12 + 1;
-
-            LocalDateTime toTest = TemporalValueType.absoluteMomentToLocalDateTime(numberOfMonth, TemporalValueType.MONTH);
-            AssertionsForClassTypes.assertThat(toTest.getYear()).isEqualTo(numberOfYear);
-            AssertionsForClassTypes.assertThat(toTest.getMonth().getValue()).isEqualTo(monthOfTheYear);
-        }
-
-        @Test
-        public void assertThatWeeksAreCorrectlySet() {
-            AssertionsForClassTypes.assertThat((TemporalValueType.absoluteMomentToLocalDateTime(2013L, TemporalValueType.WEEK).toEpochSecond(ZoneOffset.UTC)/ (24*3600)) / 7).isEqualTo(2013);
-        }
-
-        @Test
-        public void assertThatDaysAreCorrectlySet() {
-            AssertionsForClassTypes.assertThat(TemporalValueType.absoluteMomentToLocalDateTime(200L, TemporalValueType.DAY).toEpochSecond(ZoneOffset.UTC)).isEqualTo(200*3600*24);
-        }
-
-        @Test
-        public void assertThatHoursAreCorrectlySet() {
-            AssertionsForClassTypes.assertThat(TemporalValueType.absoluteMomentToLocalDateTime(200L, TemporalValueType.HOUR).toEpochSecond(ZoneOffset.UTC)).isEqualTo(200*3600);
-        }
     }
 }

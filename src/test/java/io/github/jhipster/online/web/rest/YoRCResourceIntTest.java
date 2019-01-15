@@ -121,8 +121,6 @@ public class YoRCResourceIntTest {
     @Autowired
     private YoRCRepository yoRCRepository;
 
-
-
     @Autowired
     private YoRCService yoRCService;
 
