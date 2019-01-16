@@ -9,6 +9,11 @@
     <name>Jhonline</name>
 
     <repositories>
+
+        <repository>
+            <id>atlassian</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
         <!-- jhipster-needle-maven-repository -->
     </repositories>
 
