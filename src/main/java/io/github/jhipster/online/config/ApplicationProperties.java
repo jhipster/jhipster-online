@@ -35,6 +35,8 @@ public class ApplicationProperties {
 
     private final Gitlab gitlab = new Gitlab();
 
+    private final Bitbucket bitbucket = new Bitbucket();
+
     private final Mail mail = new Mail();
 
     private String tmpFolder = "/tmp";
@@ -61,6 +63,10 @@ public class ApplicationProperties {
 
     public Gitlab getGitlab() {
         return gitlab;
+    }
+
+    public Bitbucket getBitbucket() {
+        return bitbucket;
     }
 
     public Mail getMail() {
@@ -131,6 +137,45 @@ public class ApplicationProperties {
         private String clientId;
         private String clientSecret;
         private String host = "https://gitlab.com";
+        private String redirectUri;
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public void setClientId(String clientId) {
+            this.clientId = clientId;
+        }
+
+        public String getClientSecret() {
+            return clientSecret;
+        }
+
+        public void setClientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public String getRedirectUri() {
+            return redirectUri;
+        }
+
+        public void setRedirectUri(String redirectUri) {
+            this.redirectUri = redirectUri;
+        }
+    }
+
+    public static class Bitbucket {
+        private String clientId;
+        private String clientSecret;
+        private String host = "https://bitbucket.org";
         private String redirectUri;
 
         public String getClientId() {

@@ -51,6 +51,8 @@ public class GitResource {
 
     private static final String GITLAB = "gitlab";
 
+    private static final String BITBUCKET = "bitbucket";
+
     private final ApplicationProperties applicationProperties;
 
     private final UserService userService;
@@ -59,18 +61,21 @@ public class GitResource {
 
     private final GitlabService gitlabService;
 
+    private final BitbucketService bitbucketService;
+
     public GitResource(ApplicationProperties applicationProperties,
                        UserService userService,
                        GithubService githubService,
-                       GitlabService gitlabService) {
+                       GitlabService gitlabService, BitbucketService bitbucketService) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;
         this.gitlabService = gitlabService;
+        this.bitbucketService = bitbucketService;
     }
 
     /**
-     * Handles the callback code returned by the OAuth2 authentication.
+     * Handles the callback code returned by the OAuth2 authentication, for GitHub and Gitlab.
      */
     @GetMapping("/{gitProvider}/callback")
     @Timed
@@ -82,6 +87,9 @@ public class GitResource {
             case GITLAB:
                 log.debug("GitHub callback received: {}", code);
                 return new RedirectView("/#/gitlab/callback/" + code);
+            case BITBUCKET:
+                log.debug("Bitbucket callback received: {}", code);
+                return new RedirectView("/#/bitbucket/callback/" + code);
             default:
                 log.error("Unknown git provider : {}", gitProvider);
                 return null;
@@ -116,6 +124,15 @@ public class GitResource {
                     request.setClient_secret(applicationProperties.getGitlab().getClientSecret());
                     request.setGrant_type("authorization_code");
                     request.setRedirect_uri(applicationProperties.getGitlab().getRedirectUri());
+                    request.setCode(code);
+                    break;
+                case BITBUCKET:
+                    url = applicationProperties.getBitbucket().getHost() + "/site/oauth2/access_token";
+                    gitProviderEnum = GitProvider.BITBUCKET;
+                    request.setClient_id(applicationProperties.getBitbucket().getClientId());
+                    request.setClient_secret(applicationProperties.getBitbucket().getClientSecret());
+                    request.setGrant_type("authorization_code");
+                    request.setRedirect_uri(applicationProperties.getBitbucket().getRedirectUri());
                     request.setCode(code);
                     break;
                 default:
@@ -287,7 +304,7 @@ public class GitResource {
     @GetMapping("/git/config")
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getGitlabConfig() {
+    public @ResponseBody ResponseEntity getGitConfig() {
         GitConfigurationDTO result = new GitConfigurationDTO(
             githubService.getHost(),
             githubService.getClientId(),
@@ -296,8 +313,13 @@ public class GitResource {
             gitlabService.getRedirectUri(),
             gitlabService.getClientId(),
             gitlabService.isEnabled(),
+            bitbucketService.getHost(),
+            bitbucketService.getRedirectUri(),
+            bitbucketService.getClientId(),
+            bitbucketService.isEnabled(),
             githubService.isConfigured(),
-            gitlabService.isConfigured());
+            gitlabService.isConfigured(),
+            bitbucketService.isConfigured());
 
         this.log.debug("Git configuration : {}", result);
 

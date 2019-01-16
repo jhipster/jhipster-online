@@ -30,6 +30,7 @@ export class GitComponent implements OnInit {
 
     githubConfigured = false;
     gitlabConfigured = false;
+    bitbucketConfigured = false;
 
     constructor(private gitConfigurationService: GitConfigurationService) {}
 
@@ -37,9 +38,11 @@ export class GitComponent implements OnInit {
         this.gitConfig = this.gitConfigurationService.gitConfig;
         this.gitlabConfigured = this.gitConfig.gitlabConfigured;
         this.githubConfigured = this.gitConfig.githubConfigured;
+        this.bitbucketConfigured = this.gitConfig.bitbucketConfigured;
         this.gitConfigurationService.sharedData.subscribe(gitConfig => {
             this.gitlabConfigured = gitConfig.gitlabConfigured;
             this.githubConfigured = gitConfig.githubConfigured;
+            this.bitbucketConfigured = gitConfig.bitbucketConfigured;
         });
 
         this.gitConfig.availableGitProviders.forEach(provider => {

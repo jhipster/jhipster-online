@@ -112,6 +112,11 @@
             <version>4.0.0</version>
         </dependency>
         <dependency>
+            <groupId>com.atlassian.bitbucket.server</groupId>
+            <artifactId>bitbucket-api</artifactId>
+            <version>5.11.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.zeroturnaround</groupId>
             <artifactId>zt-zip</artifactId>
             <version>1.11</version>

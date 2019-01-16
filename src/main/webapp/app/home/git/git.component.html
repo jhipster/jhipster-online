@@ -80,3 +80,39 @@
         </p>
     </ng-container>
 </div>
+
+<div *ngIf="gitConfig.bitbucketAvailable">
+    <h2><fa-icon [icon]="'wrench'"></fa-icon>&nbsp;<span>Bitbucket configuration</span></h2>
+    <p>
+        If you give access to your Bitbucket account to JHipster Online, it will:
+    </p>
+    <ul>
+        <li>Create JHipster applications on your account, using <a routerLink="/generate-application">the online application
+            generator</a>.
+        </li>
+        <li>Read basic user data (your username and projects) that are necessary for generating the project</li>
+    </ul>
+
+    <div class="alert alert-info" role="alert">
+        You can revoke this access at any time in your <a href="{{gitConfig.bitbucketHost}}/profile/applications">Bitbucket</a> settings.
+    </div>
+
+    <ng-container>
+        <p class="text-center" *ngIf="!bitbucketConfigured">
+            <a class="btn btn-primary"
+               href="{{gitConfig.bitbucketHost}}/site/oauth2/authorize?client_id={{gitConfig.bitbucketClientId}}&response_type=token" role="button">
+            <span>
+                <fa-icon [icon]="['fab', 'bitbucket']"></fa-icon>
+                &nbsp;Authorize Bitbucket
+            </span>
+            </a>
+        </p>
+        <p class="text-center" *ngIf="bitbucketConfigured">
+            <a class="btn btn-warning"
+               href="{{gitConfig.bitbucketHost}}/oauth/authorize?client_id={{gitConfig.bitbucketClientId}}&redirect_uri={{gitConfig.bitbucketRedirectUri}}&response_type=code" role="button">
+                <fa-icon [icon]="['fab', 'bitbucket']"></fa-icon> &nbsp;JHipster
+                is already authorized, click here to re-synchronize your Bitbucket account
+            </a>
+        </p>
+    </ng-container>
+</div>

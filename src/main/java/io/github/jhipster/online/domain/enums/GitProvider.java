@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public enum GitProvider {
 
-    GITHUB("github"), GITLAB("gitlab");
+    GITHUB("github"), GITLAB("gitlab"), BITBUCKET("bitbucket");
 
     private final String value;
 

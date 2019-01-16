@@ -26,7 +26,12 @@ export class GitConfigurationModel {
         public gitlabRedirectUri: string,
         public gitlabClientId: string,
         public gitlabHost: string,
+        public bitbucketAvailable: boolean,
+        public bitbucketRedirectUri: string,
+        public bitbucketClientId: string,
+        public bitbucketHost: string,
         public githubConfigured: boolean,
-        public gitlabConfigured: boolean
+        public gitlabConfigured: boolean,
+        public bitbucketConfigured: boolean
     ) {}
 }

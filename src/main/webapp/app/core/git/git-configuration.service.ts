@@ -42,7 +42,23 @@ export class GitConfigurationService {
     }
 
     newGitConfig() {
-        this.gitConfig = new GitConfigurationModel([], false, null, null, false, null, null, null, false, false);
+        this.gitConfig = new GitConfigurationModel(
+            [],
+            false,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            false,
+            false,
+            false
+        );
         this.sharedData.emit(this.gitConfig);
     }
 }

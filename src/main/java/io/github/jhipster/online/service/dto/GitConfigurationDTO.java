@@ -35,9 +35,19 @@ public class GitConfigurationDTO {
 
     private boolean gitlabAvailable;
 
+    private String bitbucketHost;
+
+    private String bitbucketRedirectUri;
+
+    private String bitbucketClientId;
+
+    private boolean bitbucketAvailable;
+
     private boolean githubConfigured;
 
     private boolean gitlabConfigured;
+
+    private boolean bitbucketConfigured;
 
     public GitConfigurationDTO(String githubHost,
                                String githubClientId,
@@ -45,7 +55,14 @@ public class GitConfigurationDTO {
                                String gitlabHost,
                                String gitlabRedirectUri,
                                String gitlabClientId,
-                               boolean gitlabAvailable, boolean githubConfigured, boolean gitlabConfigured) {
+                               boolean gitlabAvailable,
+                               String bitbucketHost,
+                               String bitbucketRedirectUri,
+                               String bitbucketClientId,
+                               boolean bitbucketAvailable,
+                               boolean githubConfigured,
+                               boolean gitlabConfigured,
+                               boolean bitbucketConfigured) {
         this.githubHost = githubHost;
         this.githubClientId = githubClientId;
         this.githubAvailable = githubAvailable;
@@ -53,8 +70,13 @@ public class GitConfigurationDTO {
         this.gitlabRedirectUri = gitlabRedirectUri;
         this.gitlabClientId = gitlabClientId;
         this.gitlabAvailable = gitlabAvailable;
+        this.bitbucketHost = bitbucketHost;
+        this.bitbucketRedirectUri = bitbucketRedirectUri;
+        this.bitbucketClientId = bitbucketClientId;
+        this.bitbucketAvailable = bitbucketAvailable;
         this.githubConfigured = githubConfigured;
         this.gitlabConfigured = gitlabConfigured;
+        this.bitbucketConfigured = bitbucketConfigured;
     }
 
     public String getGithubHost() {
@@ -113,6 +135,38 @@ public class GitConfigurationDTO {
         this.githubAvailable = githubAvailable;
     }
 
+    public String getBitbucketHost() {
+        return bitbucketHost;
+    }
+
+    public void setBitbucketHost(String bitbucketHost) {
+        this.bitbucketHost = bitbucketHost;
+    }
+
+    public String getBitbucketRedirectUri() {
+        return bitbucketRedirectUri;
+    }
+
+    public void setBitbucketRedirectUri(String bitbucketRedirectUri) {
+        this.bitbucketRedirectUri = bitbucketRedirectUri;
+    }
+
+    public String getBitbucketClientId() {
+        return bitbucketClientId;
+    }
+
+    public void setBitbucketClientId(String bitbucketClientId) {
+        this.bitbucketClientId = bitbucketClientId;
+    }
+
+    public boolean isBitbucketAvailable() {
+        return bitbucketAvailable;
+    }
+
+    public void setBitbucketAvailable(boolean bitbucketAvailable) {
+        this.bitbucketAvailable = bitbucketAvailable;
+    }
+
     public boolean isGitlabAvailable() {
         return gitlabAvailable;
     }
@@ -129,33 +183,40 @@ public class GitConfigurationDTO {
         this.githubConfigured = githubConfigured;
     }
 
+    public boolean isBitbucketConfigured() {
+        return bitbucketConfigured;
+    }
+
+    public void setBitbucketConfigured(boolean bitbucketConfigured) {
+        this.bitbucketConfigured = bitbucketConfigured;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         GitConfigurationDTO that = (GitConfigurationDTO) o;
 
-        if (githubAvailable != that.githubAvailable)
-            return false;
-        if (gitlabAvailable != that.gitlabAvailable)
-            return false;
-        if (githubConfigured != that.githubConfigured)
-            return false;
-        if (gitlabConfigured != that.gitlabConfigured)
-            return false;
-        if (githubHost != null ? !githubHost.equals(that.githubHost) : that.githubHost != null)
-            return false;
+        if (githubAvailable != that.githubAvailable) return false;
+        if (gitlabAvailable != that.gitlabAvailable) return false;
+        if (bitbucketAvailable != that.bitbucketAvailable) return false;
+        if (githubConfigured != that.githubConfigured) return false;
+        if (gitlabConfigured != that.gitlabConfigured) return false;
+        if (bitbucketConfigured != that.bitbucketConfigured) return false;
+        if (githubHost != null ? !githubHost.equals(that.githubHost) : that.githubHost != null) return false;
         if (githubClientId != null ? !githubClientId.equals(that.githubClientId) : that.githubClientId != null)
             return false;
-        if (gitlabHost != null ? !gitlabHost.equals(that.gitlabHost) : that.gitlabHost != null)
+        if (gitlabHost != null ? !gitlabHost.equals(that.gitlabHost) : that.gitlabHost != null) return false;
+        if (gitlabRedirectUri != null ? !gitlabRedirectUri.equals(that.gitlabRedirectUri) : that.gitlabRedirectUri != null)
             return false;
-        if (gitlabRedirectUri != null ? !gitlabRedirectUri.equals(that.gitlabRedirectUri) : that.gitlabRedirectUri !=
-            null)
+        if (gitlabClientId != null ? !gitlabClientId.equals(that.gitlabClientId) : that.gitlabClientId != null)
             return false;
-        return gitlabClientId != null ? gitlabClientId.equals(that.gitlabClientId) : that.gitlabClientId == null;
+        if (bitbucketHost != null ? !bitbucketHost.equals(that.bitbucketHost) : that.bitbucketHost != null)
+            return false;
+        if (bitbucketRedirectUri != null ? !bitbucketRedirectUri.equals(that.bitbucketRedirectUri) : that.bitbucketRedirectUri != null)
+            return false;
+        return bitbucketClientId != null ? bitbucketClientId.equals(that.bitbucketClientId) : that.bitbucketClientId == null;
     }
 
     @Override
@@ -167,8 +228,13 @@ public class GitConfigurationDTO {
         result = 31 * result + (gitlabRedirectUri != null ? gitlabRedirectUri.hashCode() : 0);
         result = 31 * result + (gitlabClientId != null ? gitlabClientId.hashCode() : 0);
         result = 31 * result + (gitlabAvailable ? 1 : 0);
+        result = 31 * result + (bitbucketHost != null ? bitbucketHost.hashCode() : 0);
+        result = 31 * result + (bitbucketRedirectUri != null ? bitbucketRedirectUri.hashCode() : 0);
+        result = 31 * result + (bitbucketClientId != null ? bitbucketClientId.hashCode() : 0);
+        result = 31 * result + (bitbucketAvailable ? 1 : 0);
         result = 31 * result + (githubConfigured ? 1 : 0);
         result = 31 * result + (gitlabConfigured ? 1 : 0);
+        result = 31 * result + (bitbucketConfigured ? 1 : 0);
         return result;
     }
 
@@ -182,8 +248,13 @@ public class GitConfigurationDTO {
             ", gitlabRedirectUri='" + gitlabRedirectUri + '\'' +
             ", gitlabClientId='" + gitlabClientId + '\'' +
             ", gitlabAvailable=" + gitlabAvailable +
+            ", bitbucketHost='" + bitbucketHost + '\'' +
+            ", bitbucketRedirectUri='" + bitbucketRedirectUri + '\'' +
+            ", bitbucketClientId='" + bitbucketClientId + '\'' +
+            ", bitbucketAvailable=" + bitbucketAvailable +
             ", githubConfigured=" + githubConfigured +
             ", gitlabConfigured=" + gitlabConfigured +
+            ", bitbucketConfigured=" + bitbucketConfigured +
             '}';
     }
 }

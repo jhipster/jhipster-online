@@ -68,13 +68,16 @@ public class GitResourceIntTest {
     @Mock
     private GitlabService mockGitlabService;
 
+    @Mock
+    private BitbucketService mockBitbucketService;
+
     private MockMvc restMvc;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        GitResource gitResource = new GitResource(mockApplicationProperties, mockUserService, mockGithubService, mockGitlabService);
+        GitResource gitResource = new GitResource(mockApplicationProperties, mockUserService, mockGithubService, mockGitlabService, mockBitbucketService);
 
         this.restMvc = MockMvcBuilders.standaloneSetup(gitResource)
             .setMessageConverters(httpMessageConverters)
