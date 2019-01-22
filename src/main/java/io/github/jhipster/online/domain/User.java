@@ -108,16 +108,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String githubLocation = null;
 
     @JsonIgnore
-    @Column(name ="gitlab_oauth_token")
-    private String gitlabOAuthToken;
-
-    @JsonIgnore
     @Column(name ="github_oauth_token")
     private String githubOAuthToken;
-
-    @JsonIgnore
-    @Column(name ="gitlab_user")
-    private String gitlabUser;
 
     @JsonIgnore
     @Column(name ="github_user")
@@ -128,8 +120,28 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String githubEmail;
 
     @JsonIgnore
+    @Column(name ="gitlab_oauth_token")
+    private String gitlabOAuthToken;
+
+    @JsonIgnore
+    @Column(name ="gitlab_user")
+    private String gitlabUser;
+
+    @JsonIgnore
     @Column(name ="gitlab_email")
     private String gitlabEmail;
+
+    @JsonIgnore
+    @Column(name ="bitbucket_oauth_token")
+    private String bitbucketOAuthToken;
+
+    @JsonIgnore
+    @Column(name ="bitbucket_user")
+    private String bitbucketUser;
+
+    @JsonIgnore
+    @Column(name ="bitbucket_email")
+    private String bitbucketEmail;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
@@ -301,6 +313,30 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setGitlabEmail(String gitlabEmail) {
         this.gitlabEmail = gitlabEmail;
+    }
+
+    public String getBitbucketOAuthToken() {
+        return bitbucketOAuthToken;
+    }
+
+    public void setBitbucketOAuthToken(String bitbucketOAuthToken) {
+        this.bitbucketOAuthToken = bitbucketOAuthToken;
+    }
+
+    public String getBitbucketUser() {
+        return bitbucketUser;
+    }
+
+    public void setBitbucketUser(String bitbucketUser) {
+        this.bitbucketUser = bitbucketUser;
+    }
+
+    public String getBitbucketEmail() {
+        return bitbucketEmail;
+    }
+
+    public void setBitbucketEmail(String bitbucketEmail) {
+        this.bitbucketEmail = bitbucketEmail;
     }
 
     public Set<GitCompany> getGitCompanies() {

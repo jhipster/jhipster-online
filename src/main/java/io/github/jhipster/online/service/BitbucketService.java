@@ -241,22 +241,22 @@ public class BitbucketService implements GitProviderService {
     public boolean isConfigured() {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
 
-        return user.isPresent() && user.get().getGitlabOAuthToken() != null;
+        return user.isPresent() && user.get().getBitbucketOAuthToken() != null;
     }
 
     /**
-     * Connect to GitLab as the current logged in user.
+     * Connect to Bitbucket as the current logged in user.
      */
     private GitlabAPI getConnection(User user) throws Exception {
-        log.debug("Authenticating user `{}` on GitLab", user.getLogin());
-        if (user.getGitlabOAuthToken() == null) {
-            log.info("No GitLab token configured");
-            throw new Exception("GitLab is not configured.");
+        log.debug("Authenticating user `{}` on Bitbucket", user.getLogin());
+        if (user.getBitbucketOAuthToken() == null) {
+            log.info("No Bitbucket token configured");
+            throw new Exception("Bitbucket is not configured.");
         }
         GitlabAPI gitlab = GitlabAPI.connect(applicationProperties.getGitlab().getHost(), user.getGitlabOAuthToken(),
             TokenType.ACCESS_TOKEN);
 
-        log.debug("User `{}` authenticated as `{}` on GitLab", user.getLogin(), gitlab.getUser().getUsername());
+        log.debug("User `{}` authenticated as `{}` on Bitbucket", user.getLogin(), gitlab.getUser().getUsername());
         return gitlab;
     }
 
