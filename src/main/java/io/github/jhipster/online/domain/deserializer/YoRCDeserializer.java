@@ -31,7 +31,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String databaseType = node.get("databaseType").asText();
         String devDatabaseType = node.get("devDatabaseType").asText();
         String prodDatabaseType = node.get("prodDatabaseType").asText();
-        boolean searchEngine = node.get("searchEngine").asBoolean();
+        boolean searchEngine = getDefaultIfNull(node.get("searchEngine"), false);
         boolean messageBroker = node.get("messageBroker").asBoolean();
         boolean serviceDiscoveryType = node.get("serviceDiscoveryType").asBoolean();
         String buildTool = node.get("buildTool").asText();
