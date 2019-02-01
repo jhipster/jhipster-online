@@ -6,7 +6,7 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
 
 RUN apk update && \
     apk add nodejs-current yarn && \
-    yarn global add generator-jhipster@5.0.2
+    yarn global add generator-jhipster@5.8.1
 
 CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
     sleep ${JHIPSTER_SLEEP} && \
