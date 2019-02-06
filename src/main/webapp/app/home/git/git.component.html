@@ -28,7 +28,7 @@
     <ng-container>
         <p class="text-center" *ngIf="!githubConfigured">
             <a class="btn btn-primary"
-               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
+               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,repo&client_id={{gitConfig.githubClientId}}" role="button">
             <span>
                 <fa-icon [icon]="['fab', 'github']"></fa-icon>
                 &nbsp;Authorize GitHub
@@ -37,7 +37,7 @@
         </p>
         <p class="text-center" *ngIf="githubConfigured">
             <a class="btn btn-warning"
-               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,public_repo&client_id={{gitConfig.githubClientId}}" role="button">
+               href="{{gitConfig.githubHost}}/login/oauth/authorize?scope=user,repo&client_id={{gitConfig.githubClientId}}" role="button">
             <fa-icon [icon]="['fab', 'github']"></fa-icon>&nbsp;JHipster
                 is already authorized, click here to re-synchronize your GitHub account
             </a>
