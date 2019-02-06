@@ -123,7 +123,7 @@ public class SubGenEventService {
             .getResultList()
             .stream()
             .map(entry ->
-                new TemporalCountDTO(TemporalValueType.absoluteMomentToLocalDateTime(entry.getMoment().longValue(), dbTemporalFunction), entry.getCount())
+                new TemporalCountDTO(TemporalValueType.absoluteMomentToInstant(entry.getMoment().longValue(), dbTemporalFunction), entry.getCount())
             ).collect(Collectors.toList());
     }
 

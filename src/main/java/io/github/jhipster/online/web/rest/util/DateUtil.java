@@ -20,15 +20,15 @@
 package io.github.jhipster.online.web.rest.util;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-
-import org.joda.time.DateTime;
 
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 
-public class StatisticsResourceUtil {
+public class DateUtil {
 
     private final static String YEARLY = "yearly";
     private final static String MONTHLY = "monthly";
@@ -36,28 +36,37 @@ public class StatisticsResourceUtil {
     private final static String DAILY = "daily";
     private final static String HOURLY = "hourly";
 
-    private final static int MONTHLY_FREQUENCY = 365 * 2;
+    public static void setAbsoluteDate(CompleteDate datableObject, Instant now) {
+        ZonedDateTime epoch = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneId.of("Europe/Paris"));
+        ZonedDateTime createdDateZoned = ZonedDateTime.ofInstant(now, ZoneId.of("Europe/Paris"));
 
-    public static Instant getFrequencyInstant(String frequency) {
+        int year = createdDateZoned.getYear();
+        int month = (int) ChronoUnit.MONTHS.between(epoch, createdDateZoned);
+        int week = (int) ChronoUnit.WEEKS.between(epoch, createdDateZoned);
+        int day = (int) ChronoUnit.DAYS.between(epoch, createdDateZoned);
+        int hour = (int) ChronoUnit.HOURS.between(epoch, createdDateZoned);
+
+        datableObject.year(year).month(month).week(week).day(day).hour(hour);
+    }
+
+    public static Instant getFrequencyInstant(ZonedDateTime now, String frequency) {
         switch (frequency.toLowerCase()) {
             case YEARLY:
                 return Instant.ofEpochMilli(0);
             case MONTHLY:
-                return Instant.now().minus(Duration.ofDays(MONTHLY_FREQUENCY));
+                return now.minusYears(2).truncatedTo(ChronoUnit.DAYS).toInstant();
             case WEEKLY:
-                DateTime nowMinusSixMonths = DateTime.now().minusMonths(6);
-                return Instant.ofEpochMilli(nowMinusSixMonths.toInstant().getMillis());
+                return now.minusMonths(6).truncatedTo(ChronoUnit.DAYS).toInstant();
             case DAILY:
-                return LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).minusMonths(1).toInstant(ZoneOffset.UTC);
+                return now.minusMonths(1).truncatedTo(ChronoUnit.DAYS).toInstant();
             case HOURLY:
-                DateTime nowMinusTwentyFourHour = DateTime.now().minusHours(24);
-                return Instant.ofEpochMilli(nowMinusTwentyFourHour.toInstant().getMillis());
+                return now.minusDays(1).truncatedTo(ChronoUnit.DAYS).toInstant();
             default:
                 return null;
         }
     }
 
-    public static TemporalValueType getTemporalValueTypeFromfrequency(String frequency) {
+    public static TemporalValueType getTemporalValueTypeFromFrequency(String frequency) {
         switch (frequency.toLowerCase()) {
             case YEARLY:
                 return TemporalValueType.YEAR;

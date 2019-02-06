@@ -57,7 +57,6 @@ public class YoRCService {
 
     private final YoRCRepository yoRCRepository;
 
-
     private final EntityManager entityManager;
 
     public YoRCService(YoRCRepository yoRCRepository, EntityManager entityManager) {
@@ -164,4 +163,5 @@ public class YoRCService {
 
         return QueryUtil.createDistributionQueryAndCollectData(after, dbTemporalFunction, query, entityManager);
     }
+
 }

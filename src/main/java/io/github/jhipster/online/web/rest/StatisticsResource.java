@@ -21,10 +21,12 @@ package io.github.jhipster.online.web.rest;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 
+import io.github.jhipster.online.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,7 +44,6 @@ import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.web.rest.util.StatisticsResourceUtil;
 
 @RestController
 @RequestMapping("/api/s")
@@ -84,8 +85,8 @@ public class StatisticsResource {
     @GetMapping("/count-yo/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalCountDTO>> getCount(@PathVariable String frequency) {
-        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
-        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
+        Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
+        TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
 
         if (frequencyInstant == null || temporalValueType == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -97,9 +98,9 @@ public class StatisticsResource {
     @GetMapping("/yo/{field}/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getYoFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
-        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
-        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
-        YoRCColumn column = StatisticsResourceUtil.getYoColumnFromField(field);
+        Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
+        TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
+        YoRCColumn column = DateUtil.getYoColumnFromField(field);
 
         if (frequencyInstant == null || temporalValueType == null || column == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -111,9 +112,9 @@ public class StatisticsResource {
     @GetMapping("/entity/{field}/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getEntityFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
-        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
-        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
-        EntityStatColumn column = StatisticsResourceUtil.getEntityColumnFromField(field);
+        Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
+        TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
+        EntityStatColumn column = DateUtil.getEntityColumnFromField(field);
 
         if (frequencyInstant == null || temporalValueType == null || column == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -126,8 +127,8 @@ public class StatisticsResource {
     @GetMapping("/sub-gen-event/deployment/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getDeploymentToolsDistribution(@NotNull @PathVariable String frequency) {
-        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
-        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
+        Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
+        TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
 
         if (frequencyInstant == null || temporalValueType == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -139,8 +140,8 @@ public class StatisticsResource {
     @GetMapping("/entity/{frequency}")
     @Timed
     public ResponseEntity<List<TemporalCountDTO>> getEntityCount(@NotNull @PathVariable String frequency) {
-        Instant frequencyInstant = StatisticsResourceUtil.getFrequencyInstant(frequency);
-        TemporalValueType temporalValueType = StatisticsResourceUtil.getTemporalValueTypeFromfrequency(frequency);
+        Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
+        TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
 
         if (frequencyInstant == null || temporalValueType == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

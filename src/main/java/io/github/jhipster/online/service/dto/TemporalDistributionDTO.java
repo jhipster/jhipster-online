@@ -19,31 +19,32 @@
 
 package io.github.jhipster.online.service.dto;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TemporalDistributionDTO {
 
-    private LocalDateTime date;
+    private Instant date;
 
     private Map<String, Long> values;
 
-    public TemporalDistributionDTO(LocalDateTime date, Map<String, Long> values) {
+    public TemporalDistributionDTO(Instant date, Map<String, Long> values) {
         this.date = date;
         this.values = values;
     }
 
-    public TemporalDistributionDTO(LocalDateTime date) {
+    public TemporalDistributionDTO(Instant date) {
         this.date = date;
         this.values = new HashMap<>();
     }
 
-    public LocalDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

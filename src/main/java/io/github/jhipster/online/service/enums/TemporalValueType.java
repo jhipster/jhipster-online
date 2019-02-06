@@ -22,6 +22,8 @@ package io.github.jhipster.online.service.enums;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
+import static java.time.Instant.parse;
+
 public enum TemporalValueType {
     YEAR("year", ChronoUnit.DAYS, 365),
     MONTH("month",ChronoUnit.DAYS, 31),
@@ -53,21 +55,24 @@ public enum TemporalValueType {
         return dayMultiplier;
     }
 
-    public static LocalDateTime absoluteMomentToLocalDateTime(Long value, TemporalValueType valueType) {
+    public static Instant absoluteMomentToInstant(Long value, TemporalValueType valueType) {
         switch (valueType) {
             case YEAR:
-                return LocalDateTime.of(value.intValue(), 1, 1, 1, 1);
+                return parse(value + "-01-01T00:00:00.000Z");
             case MONTH:
-                return LocalDateTime.of(1970 + (value.intValue() / 12), (value.intValue() % 12) + 1, 1, 1, 1);
+                String yearFromMonthValue = String.valueOf(1970 + (value.intValue() / 12));
+                String actualMonth = String.valueOf(value.intValue() % 12 + 1);
+                actualMonth = Integer.parseInt(actualMonth) < 10 ? "0" + actualMonth : actualMonth;
+                return parse(yearFromMonthValue + "-" + actualMonth + "-01T00:00:00.000Z");
             case WEEK:
             case DAY:
-                return LocalDateTime
-                    .ofEpochSecond(0, 0, ZoneOffset.UTC)
-                    .plus(Duration.of((value * valueType.getDayMultiplier()), ChronoUnit.DAYS));
+                return ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
+                    .plus(Duration.of(value * valueType.getDayMultiplier(), ChronoUnit.DAYS))
+                    .toInstant();
             case HOUR:
-                return LocalDateTime
-                    .ofEpochSecond(0, 0, ZoneOffset.UTC)
-                    .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()));
+                return ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
+                    .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()))
+                    .toInstant();
             default:
                 return null;
         }

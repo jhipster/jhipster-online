@@ -19,14 +19,10 @@
 
 package io.github.jhipster.online.service.yorc;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import org.junit.Before;
+import io.github.jhipster.online.service.DataGenerationFixture;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +30,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.DataGenerationUtil;
+import org.springframework.transaction.annotation.Transactional;
+
+import static java.time.ZonedDateTime.parse;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhonlineApp.class)
@@ -51,143 +50,108 @@ public class YoRCServiceCountsIntTest {
     @Autowired
     private YoRCService yoRCService;
 
-    private List<YoRC> yos;
+    @Transactional
+    @Test
+    public void assertThatYearCountIsCorrect() {
+        DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
-    private Instant epochInstant;
+        List<TemporalCountDTO> result = yoRCService.getCount(
+            parse("2018-01-01T18:22:17.000+01:00[Europe/Paris]").toInstant(),
+            TemporalValueType.YEAR
+        );
 
-    private Instant twoYearsAgoInstant;
-
-    @Before
-    public void init() {
-        LocalDateTime epoch = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        LocalDateTime fiveYearsAgo = LocalDateTime.now().minusYears(2);
-
-        epochInstant = Instant.ofEpochSecond(epoch.getSecond());
-        twoYearsAgoInstant = Instant.ofEpochSecond(epoch.until(fiveYearsAgo, ChronoUnit.SECONDS));
-
-        DataGenerationUtil.clearYoRcTable(yoRCRepository);
-        yos = DataGenerationUtil.addYosToDatabase(1_000, twoYearsAgoInstant, Instant.now(), yoRCRepository);
+        assertThat(result)
+            .hasSize(2)
+            .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
+            .contains(
+                tuple(Instant.parse("2018-01-01T00:00:00Z"), 8L),
+                tuple(Instant.parse("2019-01-01T00:00:00Z"), 4L)
+            );
     }
 
+    @Transactional
     @Test
-    public void assertThatCountDoesNotOmitAnyData() {
-        assertThat(yos.size()).isEqualTo(yoRCService.countAll());
+    public void assertThatMonthCountIsCorrect() {
+        DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
+
+        List<TemporalCountDTO> result = yoRCService.getCount(
+            parse("2018-01-01T18:22:17.000+01:00[Europe/Paris]").toInstant(),
+            TemporalValueType.MONTH
+        );
+
+        assertThat(result)
+            .hasSize(7)
+            .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
+            .contains(
+                tuple(Instant.parse("2018-02-01T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-03-01T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-04-01T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-05-01T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-06-01T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-09-01T00:00:00Z"), 3L),
+                tuple(Instant.parse("2019-01-01T00:00:00Z"), 4L)
+            );
     }
 
+    @Transactional
     @Test
-    public void assertThatYearlyCountIsNotOmittingAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
-                .stream()
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
+    public void assertThatWeekCountIsCorrect() {
+        DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
+
+        List<TemporalCountDTO> result = yoRCService.getCount(
+            parse("2018-06-01T18:22:17.000+01:00[Europe/Paris]").toInstant(),
+            TemporalValueType.WEEK
+        );
+
+        assertThat(result)
+            .hasSize(3)
+            .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
+            .contains(
+                tuple(Instant.parse("2018-12-27T00:00:00Z"), 4L),
+                tuple(Instant.parse("2018-09-13T00:00:00Z"), 2L),
+                tuple(Instant.parse("2018-09-27T00:00:00Z"), 1L)
+            );
     }
 
+    @Transactional
     @Test
-    public void assertThatMonthlyCountIsNotOmittingAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
-                .stream()
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
+    public void assertThatDayCountIsCorrect() {
+        DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
+
+        List<TemporalCountDTO> result = yoRCService.getCount(
+            parse("2018-06-01T18:22:17.000+01:00[Europe/Paris]").toInstant(),
+            TemporalValueType.DAY
+        );
+
+        assertThat(result)
+            .hasSize(5)
+            .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
+            .contains(
+                tuple(Instant.parse("2018-09-27T00:00:00Z"), 1L),
+                tuple(Instant.parse("2019-01-01T00:00:00Z"), 2L),
+                tuple(Instant.parse("2019-01-02T00:00:00Z"), 2L),
+                tuple(Instant.parse("2018-09-13T00:00:00Z"), 1L),
+                tuple(Instant.parse("2018-09-14T00:00:00Z"), 1L)
+            );
     }
 
+    @Transactional
     @Test
-    public void assertThatWeeklyCountIsNotOmittingAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.WEEK)
-                .stream()
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
+    public void assertThatHourCountIsCorrect() {
+        DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
-    @Test
-    public void assertThatDailyCountIsNotOmittingAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.DAY)
-                .stream()
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
+        List<TemporalCountDTO> result = yoRCService.getCount(
+            parse("2019-01-01T01:01:01.000+01:00[Europe/Paris]").toInstant(),
+            TemporalValueType.HOUR
+        );
 
-    @Test
-    public void assertThatHourlyCountIsNotOmittingAnyData() {
-        assertThat(yos.size())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
-                .stream()
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
-
-    @Test
-    public void assertThatAYearCountIsCorrect() {
-        int yearWeAreLookingFor = LocalDateTime.now().minusYears(1).getYear();
-        assertThat(
-            yos.stream().filter(yo -> yo.getYear() == yearWeAreLookingFor).count())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.YEAR)
-                .stream()
-                .filter(item -> item.getDate().getYear() == yearWeAreLookingFor)
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
-
-    @Test
-    public void assertThatAMonthCountIsCorrect() {
-        long monthWeAreLookingFor = 561;
-        long numberOfYear = monthWeAreLookingFor / 12;
-        long monthOfTheYear = monthWeAreLookingFor % 12 + 1;
-
-        assertThat(yos.stream().filter(yo -> yo.getMonth() == monthWeAreLookingFor).count())
-            .isEqualTo(
-                yoRCService
-                .getCount(twoYearsAgoInstant, TemporalValueType.MONTH)
-                .stream()
-                .filter(item -> item.getDate().getYear() == numberOfYear + 1970 && item.getDate().getMonth().getValue() == monthOfTheYear)
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
-
-    @Test
-    public void assertThatAWeekCountIsCorrect() {
-        long weekWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) / 7 + 30;
-
-        assertThat(yos.stream().filter(yo -> yo.getWeek() == weekWeAreLookingFor).count())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.WEEK).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(weekWeAreLookingFor, TemporalValueType.WEEK)))
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
-
-    @Test
-    public void assertThatADayCountIsCorrect() {
-        long dayWeAreLookingFor = ChronoUnit.DAYS.between(epochInstant, twoYearsAgoInstant) + 100;
-
-        assertThat(yos.stream()
-            .filter(yo -> yo.getDay() == dayWeAreLookingFor).count())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.DAY).stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(dayWeAreLookingFor, TemporalValueType.DAY)))
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
-    }
-
-    @Test
-    public void assertThatAHourCountIsCorrect() {
-        long hourWeAreLookingFor = ChronoUnit.HOURS.between(epochInstant, twoYearsAgoInstant) + 500;
-
-        assertThat(yos.stream().filter(yo -> yo.getHour() == hourWeAreLookingFor).count())
-            .isEqualTo(
-                yoRCService.getCount(twoYearsAgoInstant, TemporalValueType.HOUR)
-                .stream()
-                .filter(e -> e.getDate().equals(TemporalValueType.absoluteMomentToLocalDateTime(hourWeAreLookingFor, TemporalValueType.HOUR)))
-                .mapToLong(TemporalCountDTO::getCount)
-                .sum());
+        assertThat(result)
+            .hasSize(3)
+            .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
+            .contains(
+                tuple(Instant.parse("2019-01-01T13:00:00Z"), 1L),
+                tuple(Instant.parse("2019-01-02T16:00:00Z"), 2L),
+                tuple(Instant.parse("2019-01-01T05:00:00Z"), 1L)
+            );
     }
 }
