@@ -87,6 +87,8 @@ export class GeneratorComponent implements OnInit {
             { name: 'Tamil', value: 'ta' },
             { name: 'Thai', value: 'th' },
             { name: 'Ukrainian', value: 'ua' },
+            { name: 'Uzbek (Cyrillic)', value: 'uz-cyr' },
+            { name: 'Uzbek (Latin)', value: 'uz-lat' },
             { name: 'Vietnamese', value: 'vi' }
         ];
     }
