@@ -24,9 +24,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import io.github.jhipster.online.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
@@ -75,6 +77,19 @@ public class SubGenEventResource {
     }
 
     /**
+     * GET  /sub-gen-events : get all the subGenEvents.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of subGenEvents in body
+     */
+    @GetMapping("/sub-gen-events")
+    @Secured(AuthoritiesConstants.ADMIN)
+    @Timed
+    public List<SubGenEvent> getAllSubGenEvents() {
+        log.debug("REST request to get all SubGenEvents");
+        return subGenEventService.findAll();
+    }
+
+    /**
      * PUT  /sub-gen-events : Updates an existing subGenEvent.
      *
      * @param subGenEvent the subGenEvent to update
@@ -84,6 +99,7 @@ public class SubGenEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/sub-gen-events")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<SubGenEvent> updateSubGenEvent(@RequestBody SubGenEvent subGenEvent) {
         log.debug("REST request to update SubGenEvent : {}", subGenEvent);
@@ -97,24 +113,13 @@ public class SubGenEventResource {
     }
 
     /**
-     * GET  /sub-gen-events : get all the subGenEvents.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of subGenEvents in body
-     */
-    @GetMapping("/sub-gen-events")
-    @Timed
-    public List<SubGenEvent> getAllSubGenEvents() {
-        log.debug("REST request to get all SubGenEvents");
-        return subGenEventService.findAll();
-    }
-
-    /**
      * GET  /sub-gen-events/:id : get the "id" subGenEvent.
      *
      * @param id the id of the subGenEvent to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the subGenEvent, or with status 404 (Not Found)
      */
     @GetMapping("/sub-gen-events/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<SubGenEvent> getSubGenEvent(@PathVariable Long id) {
         log.debug("REST request to get SubGenEvent : {}", id);
@@ -129,6 +134,7 @@ public class SubGenEventResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/sub-gen-events/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteSubGenEvent(@PathVariable Long id) {
         log.debug("REST request to delete SubGenEvent : {}", id);

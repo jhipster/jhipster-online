@@ -24,9 +24,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import io.github.jhipster.online.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
@@ -84,6 +86,7 @@ public class YoRCResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/yo-rcs")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) {
         log.debug("REST request to update YoRC : {}", yoRC);
@@ -102,6 +105,7 @@ public class YoRCResource {
      * @return the ResponseEntity with status 200 (OK) and the list of yoRCS in body
      */
     @GetMapping("/yo-rcs")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public List<YoRC> getAllYoRCS() {
         log.debug("REST request to get all YoRCS");
@@ -115,6 +119,7 @@ public class YoRCResource {
      * @return the ResponseEntity with status 200 (OK) and with body the yoRC, or with status 404 (Not Found)
      */
     @GetMapping("/yo-rcs/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<YoRC> getYoRC(@PathVariable Long id) {
         log.debug("REST request to get YoRC : {}", id);
@@ -129,6 +134,7 @@ public class YoRCResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/yo-rcs/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteYoRC(@PathVariable Long id) {
         log.debug("REST request to delete YoRC : {}", id);
