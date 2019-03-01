@@ -24,9 +24,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import io.github.jhipster.online.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.codahale.metrics.annotation.Timed;
@@ -84,6 +86,7 @@ public class EntityStatsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/entity-stats")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) {
         log.debug("REST request to update EntityStats : {}", entityStats);
@@ -102,6 +105,7 @@ public class EntityStatsResource {
      * @return the ResponseEntity with status 200 (OK) and the list of entityStats in body
      */
     @GetMapping("/entity-stats")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public List<EntityStats> getAllEntityStats() {
         log.debug("REST request to get all EntityStats");
@@ -115,6 +119,7 @@ public class EntityStatsResource {
      * @return the ResponseEntity with status 200 (OK) and with body the entityStats, or with status 404 (Not Found)
      */
     @GetMapping("/entity-stats/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<EntityStats> getEntityStats(@PathVariable Long id) {
         log.debug("REST request to get EntityStats : {}", id);
@@ -129,6 +134,7 @@ public class EntityStatsResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/entity-stats/{id}")
+    @Secured(AuthoritiesConstants.ADMIN)
     @Timed
     public ResponseEntity<Void> deleteEntityStats(@PathVariable Long id) {
         log.debug("REST request to delete EntityStats : {}", id);
