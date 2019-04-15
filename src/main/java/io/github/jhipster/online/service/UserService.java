@@ -158,8 +158,8 @@ public class UserService {
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
 
-        // new user is active if mails are disabled
-        newUser.setActivated(!mailService.isEnabled());
+        // new user is always active (do not check for emails)
+        newUser.setActivated(true);
 
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
