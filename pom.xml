@@ -565,6 +565,9 @@
                     <mainClass>${start-class}</mainClass>
                     <executable>true</executable>
                     <fork>true</fork>
+                    <embeddedLaunchScriptProperties>
+                        <mode>service</mode>
+                    </embeddedLaunchScriptProperties>
                     <!--
                     Enable the line below to have remote debugging of your application on port 5005
                     <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
