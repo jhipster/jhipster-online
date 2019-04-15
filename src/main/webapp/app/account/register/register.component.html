@@ -1,13 +1,12 @@
 <div>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="alert alert-danger" *ngIf="!success">
-                Please use your real e-mail to register: the whole idea of JHipster Online is that it generates applications on your GitHub/GitLab account. Giving write access to your GitHub/GitLab account
-                to a disposable e-mail provider is a bad idea.
-            </div>
-        </div>
-        <div class="col-md-8">
             <h1>Registration</h1>
+            <div class="col-md-8">
+                <div class="alert alert-info" *ngIf="!success">
+                    <fa-icon icon="info-circle" fixedWidth="true"></fa-icon> E-mail addresses are only used to secure your account, we will not sell them or send any spam.
+                </div>
+            </div>
 
             <div class="alert alert-success" *ngIf="success">
                 <strong>Registration saved!</strong> <ng-container *ngIf="isMailEnabled">Please check your email for confirmation.</ng-container><ng-container *ngIf="!isMailEnabled">You can now login.</ng-container>
@@ -124,6 +123,15 @@
             </form>
             <br />
             <div *ngIf="!success">
+                <h4>Personal data usage</h4>
+                <p>
+                    <small>
+                        JHipster Online uses your e-mail address only for securing your account (typically to send you a reset
+                        link when you forget your password), or for contacting you in case something important happens to the service. We will
+                        not use it to spam you or give it to any third-party. You will also be able to delete your account easily,
+                        at any time, by clicking on the "delete my account" button in your settings.
+                    </small>
+                </p>
                 <h4>Disclaimer of Warranty</h4>
                 <p>
                     <small>
@@ -149,12 +157,6 @@
                         FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED
                         OF
                         THE POSSIBILITY OF SUCH DAMAGES.
-                    </small>
-                </p>
-                <h4>Personal data usage</h4>
-                <p>
-                    <small>
-                        When registering, you allow JHipster Online to use your email address to announce JHipster events, new features, or on behalf of relevant organizations.
                     </small>
                 </p>
             </div>
