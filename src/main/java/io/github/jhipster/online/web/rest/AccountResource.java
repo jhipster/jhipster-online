@@ -85,9 +85,6 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         });
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        if (mailService.isEnabled()) {
-            mailService.sendActivationEmail(user);
-        }
     }
 
     /**
