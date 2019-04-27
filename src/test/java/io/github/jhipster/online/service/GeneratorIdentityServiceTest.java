@@ -19,39 +19,35 @@
 
 package io.github.jhipster.online.service;
 
+import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.repository.UserRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 public class GeneratorIdentityServiceTest {
 
     @MockBean
     private GeneratorIdentityRepository generatorIdentityRepository;
 
-    @MockBean
-    private UserRepository userRepository;
-
     @Autowired
     private GeneratorIdentityService generatorIdentityService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         SecurityContextHolder.getContext().setAuthentication(null);
     }

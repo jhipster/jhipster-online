@@ -19,17 +19,18 @@
 package io.github.jhipster.online.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Locale;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.*;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jhipster.online.JhonlineApp;
@@ -41,7 +42,7 @@ import io.github.jhipster.online.repository.UserRepository;
  *
  * @see DomainUserDetailsService
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 @Transactional
 public class DomainUserDetailsServiceIntTest {
@@ -63,7 +64,7 @@ public class DomainUserDetailsServiceIntTest {
     private User userTwo;
     private User userThree;
 
-    @Before
+    @BeforeEach
     public void init() {
         userOne = new User();
         userOne.setLogin(USER_ONE_LOGIN);
@@ -120,10 +121,11 @@ public class DomainUserDetailsServiceIntTest {
         assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
     }
 
-    @Test(expected = UsernameNotFoundException.class)
+    @Test
     @Transactional
     public void assertThatUserCanNotBeFoundByEmailIgnoreCase() {
-    domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL.toUpperCase(Locale.ENGLISH));
+        assertThatThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL.toUpperCase(Locale.ENGLISH)))
+            .isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
@@ -134,10 +136,11 @@ public class DomainUserDetailsServiceIntTest {
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
     }
 
-    @Test(expected = UserNotActivatedException.class)
+    @Test
     @Transactional
     public void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
-        domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN);
+        assertThatThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN))
+            .isInstanceOf(UserNotActivatedException.class);
     }
 
 }
