@@ -18,59 +18,50 @@
  */
 package io.github.jhipster.online.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-
-import java.io.ByteArrayOutputStream;
-import javax.mail.Multipart;
-import javax.mail.internet.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.ByteArrayOutputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 public class MailServiceIntTest {
 
-    @Autowired
-    private JHipsterProperties jHipsterProperties;
-
-    @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
-    private SpringTemplateEngine templateEngine;
-
-    @Spy
+    @SpyBean
     private JavaMailSenderImpl javaMailSender;
 
     @Captor
     private ArgumentCaptor<MimeMessage> messageCaptor;
 
+    @Autowired
     private MailService mailService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
-        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
     }
 
     @Test

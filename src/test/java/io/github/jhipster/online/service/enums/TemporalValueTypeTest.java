@@ -1,6 +1,6 @@
 package io.github.jhipster.online.service.enums;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
