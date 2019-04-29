@@ -16,13 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { NgxEchartsService } from 'ngx-echarts';
 
 import { StatisticsService } from './statistics.service';
 import { Chart, Frequency } from './statistics.model';
 import { barChartOptions, comparingLineChartOptions, pieChartOptions } from './statistics.options';
+import { computeAngularKey, displayNames } from 'app/entities/statistics/statistics.utils';
 
 @Component({
     selector: 'jhi-statistics',
@@ -151,13 +152,15 @@ export class StatisticsComponent implements AfterViewInit {
     private displayData(data: any, lineChart, pieChart, frequency: Frequency) {
         data.sort((a: any, b: any) => new Date(a.date).toISOString().localeCompare(new Date(b.date).toISOString()));
 
+        const refinedData = this.refineData(data);
+
         const linechartCompared1 = new Chart(
             this.echartsService,
-            comparingLineChartOptions(data, 'Date', 'Total', frequency),
+            comparingLineChartOptions(refinedData, 'Date', 'Total', frequency),
             lineChart
         ).build();
 
-        const pieChartData = data.reduce((acc, current) => {
+        const pieChartData = refinedData.reduce((acc, current) => {
             Object.keys(current.values).forEach(e => {
                 const currentSum = acc[e] || 0;
                 acc[e] = currentSum + current.values[e];
@@ -166,7 +169,7 @@ export class StatisticsComponent implements AfterViewInit {
         }, {});
 
         const lineChartCompared2 = new Chart(this.echartsService, pieChartOptions(pieChartData), pieChart).build();
-        this.updateRelatedBasicChartOf(data, linechartCompared1.chartInstance, lineChartCompared2);
+        this.updateRelatedBasicChartOf(refinedData, linechartCompared1.chartInstance, lineChartCompared2);
     }
 
     private displayChart(frequency: Frequency, field: string, chartLine: any, chartPie: any) {
@@ -211,5 +214,40 @@ export class StatisticsComponent implements AfterViewInit {
                 basicChartInstance.chartInstance.setOption(pieChartOptions(arr));
             });
         });
+    }
+
+    private refineData(data) {
+        return data.reduce((acc, current) => {
+            const refinedValues = Object.keys(current.values).reduce((prev, currentProperty: string) => {
+                const lowerCaseKey = currentProperty.toLowerCase();
+
+                this.prettifyClientFrameworkData(lowerCaseKey, prev, currentProperty, current);
+
+                return prev;
+            }, {});
+
+            acc.push({ date: current.date, values: refinedValues });
+
+            return acc;
+        }, []);
+    }
+
+    private prettifyClientFrameworkData(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['react', 'vue', 'angular', 'none'].some(k => lowerCaseKey.includes(k))) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('react')) {
+            key = displayNames.react;
+        } else if (lowerCaseKey.includes('vue')) {
+            key = displayNames.vuejs;
+        } else if (lowerCaseKey.includes('angular')) {
+            key = computeAngularKey(lowerCaseKey);
+        } else {
+            key = displayNames.default;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
     }
 }

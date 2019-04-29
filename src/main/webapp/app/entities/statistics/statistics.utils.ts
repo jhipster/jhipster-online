@@ -18,9 +18,11 @@
  */
 import { Injectable } from '@angular/core';
 
-const displayNames = {
+export const displayNames = {
     react: 'React',
     angularX: 'Angular',
+    angularJS: 'AngularJS',
+    vuejs: 'Vue.js',
     aws: 'AWS',
     cloudfoundry: 'Cloud Foundry',
     openshift: 'OpenShift',
@@ -30,7 +32,26 @@ const displayNames = {
     mariadb: 'MariaDB',
     cassandra: 'Cassandra',
     couchbase: 'Couchbase',
-    no: 'None'
+    db2: 'Db2',
+    no: 'None',
+    monolithic: 'Monolithic',
+    gateway: 'Gateway',
+    default: 'None/Other'
+};
+
+export const computeAngularKey = (lowercaseKey: string) => {
+    let key;
+    if (lowercaseKey !== 'angular') {
+        const angularVersion = lowercaseKey.slice(-1);
+        if (angularVersion === 'x') {
+            key = displayNames.angularX;
+        } else {
+            key = /^\d$/.test(angularVersion) && Number(angularVersion) > 1 ? displayNames.angularX : displayNames.angularJS;
+        }
+    } else {
+        key = displayNames.angularX;
+    }
+    return key;
 };
 
 @Injectable({ providedIn: 'root' })
