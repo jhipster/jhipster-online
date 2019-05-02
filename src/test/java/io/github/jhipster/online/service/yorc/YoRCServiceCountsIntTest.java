@@ -23,11 +23,11 @@ import java.time.Instant;
 import java.util.List;
 
 import io.github.jhipster.online.service.DataGenerationFixture;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.repository.YoRCRepository;
@@ -40,7 +40,7 @@ import static java.time.ZonedDateTime.parse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 public class YoRCServiceCountsIntTest {
 

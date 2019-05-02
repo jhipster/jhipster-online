@@ -19,32 +19,28 @@
 
 package io.github.jhipster.online.service.yorc;
 
+import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.repository.YoRCRepository;
+import io.github.jhipster.online.service.DataGenerationFixture;
+import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.DataGenerationFixture;
-import org.hamcrest.collection.IsMapContaining;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.service.YoRCService;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.MatcherAssert;
-
 import static java.time.ZonedDateTime.parse;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 public class YoRCServiceChoicesIntTest {
 
@@ -76,12 +72,12 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> fst = result.get(0).getValues(); // 2018
         Map<String, Long> snd = result.get(1).getValues(); // 2019
 
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("react", 1L));
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("angularX", 5L));
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("vuejs", 2L));
+        assertThat(fst).containsEntry("react", 1L);
+        assertThat(fst).containsEntry("angularX", 5L);
+        assertThat(fst).containsEntry("vuejs", 2L);
 
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("react", 2L));
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("vuejs", 2L));
+        assertThat(snd).containsEntry("react", 2L);
+        assertThat(snd).containsEntry("vuejs", 2L);
     }
 
     @Transactional
@@ -116,19 +112,19 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> sep = result.get(5).getValues(); // sep 2018
         Map<String, Long> jan = result.get(6).getValues(); // jan 2019
 
-        MatcherAssert.assertThat(feb, IsMapContaining.hasEntry("angularX", 1L));
+        assertThat(feb).containsEntry("angularX", 1L);
 
-        MatcherAssert.assertThat(mar, IsMapContaining.hasEntry("react", 1L));
+        assertThat(mar).containsEntry("react", 1L);
 
-        MatcherAssert.assertThat(apr, IsMapContaining.hasEntry("angularX", 1L));
-        MatcherAssert.assertThat(may, IsMapContaining.hasEntry("angularX", 1L));
-        MatcherAssert.assertThat(jun, IsMapContaining.hasEntry("angularX", 1L));
+        assertThat(apr).containsEntry("angularX", 1L);
+        assertThat(may).containsEntry("angularX", 1L);
+        assertThat(jun).containsEntry("angularX", 1L);
 
-        MatcherAssert.assertThat(sep, IsMapContaining.hasEntry("angularX", 1L));
-        MatcherAssert.assertThat(sep, IsMapContaining.hasEntry("vuejs", 2L));
+        assertThat(sep).containsEntry("angularX", 1L);
+        assertThat(sep).containsEntry("vuejs", 2L);
 
-        MatcherAssert.assertThat(jan, IsMapContaining.hasEntry("react", 2L));
-        MatcherAssert.assertThat(jan, IsMapContaining.hasEntry("vuejs", 2L));
+        assertThat(jan).containsEntry("react", 2L);
+        assertThat(jan).containsEntry("vuejs", 2L);
     }
 
     @Transactional
@@ -155,13 +151,13 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> snd = result.get(1).getValues(); // thu 13/09/2018
         Map<String, Long> thr = result.get(2).getValues(); // thu 27/09/2018
 
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("react", 2L));
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("vuejs", 2L));
+        assertThat(fst).containsEntry("react", 2L);
+        assertThat(fst).containsEntry("vuejs", 2L);
 
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("angularX", 1L));
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(snd).containsEntry("angularX", 1L);
+        assertThat(snd).containsEntry("vuejs", 1L);
 
-        MatcherAssert.assertThat(thr, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(thr).containsEntry("vuejs", 1L);
     }
 
     @Transactional
@@ -192,17 +188,17 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> fou = result.get(3).getValues(); // 13 sept 2018
         Map<String, Long> fiv = result.get(4).getValues(); // 14 sept 2018
 
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(fst).containsEntry("vuejs", 1L);
 
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("react", 1L));
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(snd).containsEntry("react", 1L);
+        assertThat(snd).containsEntry("vuejs", 1L);
 
-        MatcherAssert.assertThat(thr, IsMapContaining.hasEntry("react", 1L));
-        MatcherAssert.assertThat(thr, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(thr).containsEntry("react", 1L);
+        assertThat(thr).containsEntry("vuejs", 1L);
 
-        MatcherAssert.assertThat(fou, IsMapContaining.hasEntry("angularX", 1L));
+        assertThat(fou).containsEntry("angularX", 1L);
 
-        MatcherAssert.assertThat(fiv, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(fiv).containsEntry("vuejs", 1L);
     }
 
     @Transactional
@@ -229,11 +225,11 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> snd = result.get(1).getValues(); // 02/01/2018 16h
         Map<String, Long> thr = result.get(2).getValues(); // 01/01/2018 5h
 
-        MatcherAssert.assertThat(fst, IsMapContaining.hasEntry("react", 1L));
+        assertThat(fst).containsEntry("react", 1L);
 
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("react", 1L));
-        MatcherAssert.assertThat(snd, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(snd).containsEntry("react", 1L);
+        assertThat(snd).containsEntry("vuejs", 1L);
 
-        MatcherAssert.assertThat(thr, IsMapContaining.hasEntry("vuejs", 1L));
+        assertThat(thr).containsEntry("vuejs", 1L);
     }
 }

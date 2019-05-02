@@ -3,7 +3,7 @@ package io.github.jhipster.online.service.util;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.service.DataGenerationFixture;
 import io.github.jhipster.online.web.rest.util.DateUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
