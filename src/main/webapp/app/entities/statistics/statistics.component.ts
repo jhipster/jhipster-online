@@ -223,6 +223,7 @@ export class StatisticsComponent implements AfterViewInit {
 
                 this.prettifyClientFrameworkData(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyBuildToolData(lowerCaseKey, prev, currentProperty, current);
+                this.prettifyProdDatabase(lowerCaseKey, prev, currentProperty, current);
 
                 return prev;
             }, {});
@@ -262,6 +263,31 @@ export class StatisticsComponent implements AfterViewInit {
             key = displayNames.maven;
         } else if (lowerCaseKey.includes('gradle')) {
             key = displayNames.gradle;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
+    }
+
+    private prettifyProdDatabase(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['postgre', 'maria', 'oracle', 'mysql', 'mssql', 'mongo', 'none'].some(k => lowerCaseKey.includes(k))) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('postgre')) {
+            key = displayNames.postgresql;
+        } else if (lowerCaseKey.includes('maria')) {
+            key = displayNames.mariadb;
+        } else if (lowerCaseKey.includes('oracle')) {
+            key = displayNames.oracle;
+        } else if (lowerCaseKey.includes('mysql')) {
+            key = displayNames.mysql;
+        } else if (lowerCaseKey.includes('mssql')) {
+            key = displayNames.mssql;
+        } else if (lowerCaseKey.includes('mongo')) {
+            key = displayNames.mongodb;
+        } else {
+            key = displayNames.default;
         }
 
         prev[key] = (prev[key] || 0) + current.values[currentProperty];

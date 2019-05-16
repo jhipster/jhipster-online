@@ -26,12 +26,16 @@ export const displayNames = {
     aws: 'AWS',
     cloudfoundry: 'Cloud Foundry',
     openshift: 'OpenShift',
+
     postgresql: 'PostgreSQL',
     oracle: 'Oracle',
     mysql: 'MySQL',
+    mssql: 'MsSQL',
     mariadb: 'MariaDB',
     cassandra: 'Cassandra',
     couchbase: 'Couchbase',
+    mongodb: 'MongoDB',
+
     db2: 'Db2',
     no: 'None',
     monolithic: 'Monolithic',
