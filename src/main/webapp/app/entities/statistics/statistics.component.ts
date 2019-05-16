@@ -222,6 +222,7 @@ export class StatisticsComponent implements AfterViewInit {
                 const lowerCaseKey = currentProperty.toLowerCase();
 
                 this.prettifyClientFrameworkData(lowerCaseKey, prev, currentProperty, current);
+                this.prettifyBuildToolData(lowerCaseKey, prev, currentProperty, current);
 
                 return prev;
             }, {});
@@ -246,6 +247,21 @@ export class StatisticsComponent implements AfterViewInit {
             key = computeAngularKey(lowerCaseKey);
         } else {
             key = displayNames.default;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
+    }
+
+    private prettifyBuildToolData(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['maven', 'gradle'].includes(lowerCaseKey)) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('maven')) {
+            key = displayNames.maven;
+        } else if (lowerCaseKey.includes('gradle')) {
+            key = displayNames.gradle;
         }
 
         prev[key] = (prev[key] || 0) + current.values[currentProperty];

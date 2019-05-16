@@ -36,7 +36,9 @@ export const displayNames = {
     no: 'None',
     monolithic: 'Monolithic',
     gateway: 'Gateway',
-    default: 'None/Other'
+    default: 'None/Other',
+    maven: 'Maven',
+    gradle: 'Gradle'
 };
 
 export const computeAngularKey = (lowercaseKey: string) => {
