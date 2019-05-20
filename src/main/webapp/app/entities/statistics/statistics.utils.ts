@@ -23,6 +23,9 @@ export const displayNames = {
     angularX: 'Angular',
     angularJS: 'AngularJS',
     vuejs: 'Vue.js',
+
+    heroku: 'Heroku',
+    kubernetes: 'Kubernetes',
     aws: 'AWS',
     cloudfoundry: 'Cloud Foundry',
     openshift: 'OpenShift',

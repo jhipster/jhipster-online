@@ -225,6 +225,7 @@ export class StatisticsComponent implements AfterViewInit {
                 this.prettifyBuildToolData(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyProdDatabase(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyCacheProvider(lowerCaseKey, prev, currentProperty, current);
+                this.prettifyCloudDeployment(lowerCaseKey, prev, currentProperty, current);
 
                 return prev;
             }, {});
@@ -306,6 +307,29 @@ export class StatisticsComponent implements AfterViewInit {
             key = displayNames.hazelcast;
         } else if (lowerCaseKey.includes('infinispan')) {
             key = displayNames.infinispan;
+        } else {
+            key = displayNames.default;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
+    }
+
+    private prettifyCloudDeployment(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['kubernetes', 'openshift', 'heroku', 'cloud', 'aws', 'none'].some(k => lowerCaseKey.includes(k))) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('kubernetes')) {
+            key = displayNames.kubernetes;
+        } else if (lowerCaseKey.includes('openshift')) {
+            key = displayNames.openshift;
+        } else if (lowerCaseKey.includes('heroku')) {
+            key = displayNames.heroku;
+        } else if (lowerCaseKey.includes('cloud')) {
+            key = displayNames.cloudfoundry;
+        } else if (lowerCaseKey.includes('aws')) {
+            key = displayNames.aws;
         } else {
             key = displayNames.default;
         }
