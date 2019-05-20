@@ -38,18 +38,21 @@ export const displayNames = {
     cassandra: 'Cassandra',
     couchbase: 'Couchbase',
     mongodb: 'MongoDB',
+    db2: 'Db2',
 
     ehcache: 'Ehcache',
     hazelcast: 'Hazelcast',
     infinispan: 'Infinispan',
 
-    db2: 'Db2',
-    no: 'None',
+    maven: 'Maven',
+    gradle: 'Gradle',
+
     monolithic: 'Monolithic',
     gateway: 'Gateway',
-    default: 'None/Other',
-    maven: 'Maven',
-    gradle: 'Gradle'
+    microservice: 'Microservice',
+    uaa: 'UAA',
+
+    default: 'None/Other'
 };
 
 export const computeAngularKey = (lowercaseKey: string) => {

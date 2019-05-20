@@ -226,6 +226,7 @@ export class StatisticsComponent implements AfterViewInit {
                 this.prettifyProdDatabase(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyCacheProvider(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyCloudDeployment(lowerCaseKey, prev, currentProperty, current);
+                this.prettifyApplicationTypeData(lowerCaseKey, prev, currentProperty, current);
 
                 return prev;
             }, {});
@@ -330,6 +331,27 @@ export class StatisticsComponent implements AfterViewInit {
             key = displayNames.cloudfoundry;
         } else if (lowerCaseKey.includes('aws')) {
             key = displayNames.aws;
+        } else {
+            key = displayNames.default;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
+    }
+
+    private prettifyApplicationTypeData(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['gateway', 'microservice', 'monolith', 'uaa', 'none'].some(k => lowerCaseKey.includes(k))) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('gateway')) {
+            key = displayNames.gateway;
+        } else if (lowerCaseKey.includes('microservice')) {
+            key = displayNames.microservice;
+        } else if (lowerCaseKey.includes('monolith')) {
+            key = displayNames.monolithic;
+        } else if (lowerCaseKey.includes('uaa')) {
+            key = displayNames.uaa;
         } else {
             key = displayNames.default;
         }
