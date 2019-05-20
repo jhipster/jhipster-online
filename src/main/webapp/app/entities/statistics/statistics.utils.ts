@@ -36,6 +36,10 @@ export const displayNames = {
     couchbase: 'Couchbase',
     mongodb: 'MongoDB',
 
+    ehcache: 'Ehcache',
+    hazelcast: 'Hazelcast',
+    infinispan: 'Infinispan',
+
     db2: 'Db2',
     no: 'None',
     monolithic: 'Monolithic',

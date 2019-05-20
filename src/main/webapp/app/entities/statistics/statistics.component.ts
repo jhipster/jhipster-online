@@ -224,6 +224,7 @@ export class StatisticsComponent implements AfterViewInit {
                 this.prettifyClientFrameworkData(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyBuildToolData(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyProdDatabase(lowerCaseKey, prev, currentProperty, current);
+                this.prettifyCacheProvider(lowerCaseKey, prev, currentProperty, current);
 
                 return prev;
             }, {});
@@ -286,6 +287,25 @@ export class StatisticsComponent implements AfterViewInit {
             key = displayNames.mssql;
         } else if (lowerCaseKey.includes('mongo')) {
             key = displayNames.mongodb;
+        } else {
+            key = displayNames.default;
+        }
+
+        prev[key] = (prev[key] || 0) + current.values[currentProperty];
+    }
+
+    private prettifyCacheProvider(lowerCaseKey: string, prev, currentProperty: string, current) {
+        if (!['ehcache', 'hazelcast', 'infinispan', 'none'].some(k => lowerCaseKey.includes(k))) {
+            return;
+        }
+
+        let key;
+        if (lowerCaseKey.includes('ehcache')) {
+            key = displayNames.ehcache;
+        } else if (lowerCaseKey.includes('hazelcast')) {
+            key = displayNames.hazelcast;
+        } else if (lowerCaseKey.includes('infinispan')) {
+            key = displayNames.infinispan;
         } else {
             key = displayNames.default;
         }
