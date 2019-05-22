@@ -49,7 +49,6 @@ steps:
 - bash: yarn install
   displayName: 'INSTALL: dependencies'
 
-
 - script: |
     set -e
     chmod +x mvnw
