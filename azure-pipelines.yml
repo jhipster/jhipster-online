@@ -54,5 +54,5 @@ steps:
     chmod +x mvnw
     ./mvnw clean test
     yarn test
-    ./mvnw verify -Pprof -DskipTests
+    ./mvnw verify -Pprod -DskipTests
   displayName: 'TEST: run test'
