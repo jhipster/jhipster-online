@@ -55,4 +55,4 @@ steps:
     ./mvnw clean test
     yarn test
     ./mvnw verify -Pprof -DskipTests
-  displayName: 'TEST: Run test'
+  displayName: 'TEST: run test'
