@@ -1,6 +1,6 @@
 # JHipster Online
 
-[![Build Status][travis-image]][travis-url]  [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
+[![Azure DevOps Build Status][azure-devops-image]][azure-devops-url-main]  [![Build Status][travis-image]][travis-url]  [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
 
 JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
@@ -195,6 +195,9 @@ You should [post it on Stack Overflow using the "jhipster" tag](https://stackove
 
 We have the same code of conduct as the main JHipster project:
 [JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/master/CODE_OF_CONDUCT.md).
+
+[azure-devops-image]: https://dev.azure.com/jhipster/jhipster-online/_apis/build/status/jhipster.jhipster-online?branchName=master
+[azure-devops-url-main]: https://dev.azure.com/jhipster/jhipster-online/_build
 
 [travis-image]: https://travis-ci.org/jhipster/jhipster-online.svg?branch=master
 [travis-url]: https://travis-ci.org/jhipster/jhipster-online
