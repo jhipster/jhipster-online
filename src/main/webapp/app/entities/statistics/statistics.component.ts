@@ -228,6 +228,11 @@ export class StatisticsComponent implements AfterViewInit {
                 this.prettifyCloudDeployment(lowerCaseKey, prev, currentProperty, current);
                 this.prettifyApplicationTypeData(lowerCaseKey, prev, currentProperty, current);
 
+                // jhipster versions
+                if (/\d\.\d\.\d/.test(lowerCaseKey)) {
+                    prev[lowerCaseKey] = (prev[lowerCaseKey] || 0) + current.values[currentProperty];
+                }
+
                 return prev;
             }, {});
 
