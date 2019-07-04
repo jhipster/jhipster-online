@@ -18,33 +18,31 @@
  */
 
 export class JHipsterConfigurationModel {
-    constructor(
-        public applicationType: string,
-        public gitCompany: string,
-        public baseName: string,
-        public packageName: string,
-        public packageFolder: string,
-        public serverPort: Number,
-        public serviceDiscoveryType: any,
-        public authenticationType: string,
-        public uaaBaseName: string,
-        public cacheProvider: string,
-        public enableHibernateCache: boolean,
-        public websocket: any,
-        public databaseType: string,
-        public devDatabaseType: string,
-        public prodDatabaseType: string,
-        public searchEngine: any,
-        public enableSwaggerCodegen: any,
-        public messageBroker: any,
-        public buildTool: string,
-        public useSass: Boolean,
-        public clientPackageManager: string,
-        public testFrameworks: string[],
-        public enableTranslation: Boolean,
-        public nativeLanguage: string,
-        public languages: string[],
-        public clientFramework: string,
-        public jhiPrefix: string
-    ) {}
+    public applicationType = 'monolith';
+    public gitCompany = '';
+    public baseName = 'jhipsterSampleApplication';
+    public packageName = 'com.mycompany.myapp';
+    public packageFolder = 'com/mycompany/myapp';
+    public serverPort = 8080;
+    public serviceDiscoveryType: any = false;
+    public authenticationType = 'jwt';
+    public uaaBaseName = '../uaa';
+    public cacheProvider = 'ehcache';
+    public enableHibernateCache = true;
+    public websocket: any = false;
+    public databaseType = 'sql';
+    public devDatabaseType = 'h2Disk';
+    public prodDatabaseType = 'mysql';
+    public searchEngine: any = false;
+    public enableSwaggerCodegen: any = false;
+    public messageBroker: any = false;
+    public buildTool = 'maven';
+    public useSass = true;
+    public clientPackageManager = 'npm';
+    public testFrameworks: string[] = [];
+    public enableTranslation = true;
+    public nativeLanguage = 'en';
+    public languages = ['en'];
+    public clientFramework = 'angularX';
+    public jhiPrefix = 'jhi';
 }
