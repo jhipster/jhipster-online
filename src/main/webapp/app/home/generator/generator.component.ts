@@ -53,9 +53,11 @@ export class GeneratorComponent implements OnInit {
      */
     static getAllSupportedLanguageOptions() {
         return [
+            { name: 'Albanian', value: 'al' },
             { name: 'Arabic (Libya)', value: 'ar-ly' },
             { name: 'Armenian', value: 'hy' },
-            { name: 'Bahasa Indonesia', value: 'id' },
+            { name: 'Belorussian', value: 'by' },
+            { name: 'Bengali', value: 'bn' },
             { name: 'Catalan', value: 'ca' },
             { name: 'Chinese (Simplified)', value: 'zh-cn' },
             { name: 'Chinese (Traditional)', value: 'zh-tw' },
@@ -64,16 +66,20 @@ export class GeneratorComponent implements OnInit {
             { name: 'Dutch', value: 'nl' },
             { name: 'English', value: 'en' },
             { name: 'Estonian', value: 'et' },
+            { name: 'Farsi', value: 'fa' },
+            { name: 'Finnish', value: 'fi' },
             { name: 'French', value: 'fr' },
             { name: 'Galician', value: 'gl' },
             { name: 'German', value: 'de' },
             { name: 'Greek', value: 'el' },
             { name: 'Hindi', value: 'hi' },
             { name: 'Hungarian', value: 'hu' },
+            { name: 'Indonesia', value: 'in' },
             { name: 'Italian', value: 'it' },
             { name: 'Japanese', value: 'ja' },
             { name: 'Korean', value: 'ko' },
             { name: 'Marathi', value: 'mr' },
+            { name: 'Myanmar', value: 'my' },
             { name: 'Polish', value: 'pl' },
             { name: 'Portuguese (Brazilian)', value: 'pt-br' },
             { name: 'Portuguese', value: 'pt-pt' },
@@ -85,10 +91,11 @@ export class GeneratorComponent implements OnInit {
             { name: 'Swedish', value: 'sv' },
             { name: 'Turkish', value: 'tr' },
             { name: 'Tamil', value: 'ta' },
+            { name: 'Telugu', value: 'te' },
             { name: 'Thai', value: 'th' },
             { name: 'Ukrainian', value: 'ua' },
-            { name: 'Uzbek (Cyrillic)', value: 'uz-cyr' },
-            { name: 'Uzbek (Latin)', value: 'uz-lat' },
+            { name: 'Uzbek (Cyrillic)', value: 'uz-Cyrl-uz' },
+            { name: 'Uzbek (Latin)', value: 'uz-Latn-uz' },
             { name: 'Vietnamese', value: 'vi' }
         ];
     }
@@ -193,35 +200,7 @@ export class GeneratorComponent implements OnInit {
     }
 
     newGenerator() {
-        this.model = new JHipsterConfigurationModel(
-            'monolith',
-            '',
-            'jhipsterSampleApplication',
-            'io.github.jhipster.application',
-            'io/github/jhipster/application',
-            8080,
-            false,
-            'jwt',
-            '../uaa',
-            'ehcache',
-            true,
-            false,
-            'sql',
-            'h2Disk',
-            'mysql',
-            false,
-            false,
-            false,
-            'maven',
-            false,
-            'npm',
-            [],
-            false,
-            'en',
-            ['en'],
-            'angularX',
-            'jhi'
-        );
+        this.model = new JHipsterConfigurationModel();
         this.repositoryName = 'jhipster-sample-application';
     }
 
