@@ -123,6 +123,7 @@ export const pieChartOptions = (data: any) => {
         legend: {
             orient: 'vertical',
             left: 'left',
+            type: 'scroll',
             data: Object.keys(data).map(k => StatisticsUtils.getDisplayName(k))
         },
         series: [
