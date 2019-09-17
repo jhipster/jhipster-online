@@ -17,8 +17,8 @@
         <maven.version>3.0.0</maven.version>
         <java.version>1.8</java.version>
         <scala.version>2.12.6</scala.version>
-        <node.version>v8.11.3</node.version>
-        <yarn.version>v1.6.0</yarn.version>
+        <node.version>v10.16.3</node.version>
+        <yarn.version>v1.17.3</yarn.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
