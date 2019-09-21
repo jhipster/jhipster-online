@@ -154,6 +154,7 @@
                     <select id="cacheProvider" [(ngModel)]="model.cacheProvider" name="cacheProvider"
                             class="form-control" #cacheProvider="ngModel">
                         <option value="ehcache">Yes, with ehcache (local cache, for a single node)</option>
+                        <option value="caffeine">Yes, with Caffeine (local cache, for a single node)</option>
                         <option value="hazelcast">Yes, with HazelCast (distributed cache, for multiple nodes)</option>
                         <option value="infinispan">Yes, with Infinispan (hybrid cache, for multiple nodes)</option>
                         <option value="no">No</option>
