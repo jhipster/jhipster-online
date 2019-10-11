@@ -4060,10 +4060,10 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-generator-jhipster@6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.4.0.tgz#8b9728ac7727bb1861fad107eb7a79cc51bf5378"
-  integrity sha512-L2wLEy9PfHVWwNnzWx9aj2AaGsxDlVvpr27mOHV0aZrV7fHN61QsiZBjc44mG4kylCS7lF/Jcc3nsCSIq1mZCQ==
+generator-jhipster@6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.4.1.tgz#7ca79b2c983c90dab3d19ae39cd860a990d7297a"
+  integrity sha512-TO/OLaH/cGz/Agag3WXCe774LEwJ//cxBd72AhZTmvCd1Y0TduSzx+KNIYJqWznGXV2qUyPSyobg6OzQ/43eMA==
   dependencies:
     axios "0.19.0"
     chalk "2.4.2"
