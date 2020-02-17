@@ -1,5 +1,6 @@
 os:
   - linux
+dist: trusty
 services:
   - docker
 language: node_js
