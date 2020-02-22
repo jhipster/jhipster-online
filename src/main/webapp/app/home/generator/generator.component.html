@@ -108,6 +108,7 @@
                         <option value="mongodb">MongoDB</option>
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">Couchbase</option>
+                        <option value="neo4j">Neo4j</option>
                         <option value="no"
                                 [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
                     || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
@@ -127,6 +128,7 @@
                         <option value="mongodb" [hidden]="model.databaseType !== 'mongodb'">MongoDB</option>
                         <option value="cassandra" [hidden]="model.databaseType !== 'cassandra'">Cassandra</option>
                         <option value="couchbase" [hidden]="model.databaseType !== 'couchbase'">Couchbase</option>
+                        <option value="neo4j" [hidden]="model.databaseType !== 'neo4j'">Neo4j</option>
                         <option value="no" [hidden]="model.databaseType !== 'no'">No database</option>
                     </select>
                 </div>
@@ -146,6 +148,7 @@
                         <option value="mongodb" [hidden]="model.databaseType !== 'mongodb'">MongoDB</option>
                         <option value="cassandra" [hidden]="model.databaseType !== 'cassandra'">Cassandra</option>
                         <option value="couchbase" [hidden]="model.databaseType !== 'couchbase'">Couchbase</option>
+                        <option value="neo4j" [hidden]="model.databaseType !== 'neo4j'">Neo4j</option>
                         <option value="no" [hidden]="model.databaseType !== 'no'">No database</option>
                     </select>
                 </div>
