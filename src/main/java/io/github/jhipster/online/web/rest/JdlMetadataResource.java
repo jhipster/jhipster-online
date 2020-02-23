@@ -19,25 +19,29 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
 import com.codahale.metrics.annotation.Timed;
-
 import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.JdlMetadataService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing JdlMetadata.
@@ -86,9 +90,9 @@ public class JdlMetadataResource {
      */
     @GetMapping("/jdl-metadata")
     @Timed
-    public List<JdlMetadata> getAllJdlMetadata() {
+    public List<JdlMetadata> getAllJdlMetadata(Sort sort) {
         log.debug("REST request to get all JdlMetadata");
-        return jdlMetadataService.findAllForUser(userService.getUser());
+        return jdlMetadataService.findAllForUser(userService.getUser(), sort);
     }
 
     /**

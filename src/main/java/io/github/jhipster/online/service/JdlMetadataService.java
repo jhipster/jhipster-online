@@ -19,18 +19,24 @@
 
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.*;
-
+import io.github.jhipster.online.domain.Jdl;
+import io.github.jhipster.online.domain.JdlMetadata;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.JdlMetadataRepository;
+import io.github.jhipster.online.repository.JdlRepository;
+import io.github.jhipster.online.repository.UserRepository;
+import io.github.jhipster.online.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.repository.*;
-import io.github.jhipster.online.security.SecurityUtils;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Service Implementation for managing JdlMetadata.
@@ -112,6 +118,12 @@ public class JdlMetadataService {
     public List<JdlMetadata> findAllForUser(User user) {
         log.debug("Request to get all JdlMetadata for user {}", user.getLogin());
         return jdlMetadataRepository.findAllByUserLogin(user.getLogin());
+    }
+
+    @Transactional(readOnly = true)
+    public List<JdlMetadata> findAllForUser(User user, Sort sort) {
+        log.debug("Request to get all JdlMetadata for user {}", user.getLogin());
+        return jdlMetadataRepository.findAllByUserLogin(user.getLogin(), sort);
     }
 
     /**

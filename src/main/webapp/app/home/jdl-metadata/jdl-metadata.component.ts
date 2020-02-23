@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { JdlMetadata } from './jdl-metadata.model';
 import { JdlMetadataService } from './jdl-metadata.service';
@@ -33,6 +33,8 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     jdlRefresh: boolean;
+    predicate: string;
+    ascending: boolean;
 
     constructor(
         private jdlMetadataService: JdlMetadataService,
@@ -40,21 +42,26 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
-        this.jdlRefresh = false;
+        this.predicate = 'name';
+        this.ascending = true;
     }
 
     loadAll() {
         this.jdlRefresh = true;
-        this.jdlMetadataService.query().subscribe(
-            res => {
-                this.jdlMetadata = res;
-                this.jdlRefresh = false;
-            },
-            res => {
-                this.onError(res.json);
-                this.jdlRefresh = false;
-            }
-        );
+        this.jdlMetadataService
+            .query({
+                sort: this.sort()
+            })
+            .subscribe(
+                res => {
+                    this.jdlMetadata = res;
+                    this.jdlRefresh = false;
+                },
+                res => {
+                    this.onError(res.json);
+                    this.jdlRefresh = false;
+                }
+            );
     }
 
     ngOnInit() {
@@ -75,6 +82,18 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
 
     registerChangeInJdlMetadata() {
         this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
+    }
+
+    sort(): string[] {
+        return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    }
+
+    getSortingIcon(fieldName: string): 'sort' | 'sort-up' | 'sort-down' {
+        if (fieldName === this.predicate) {
+            return this.ascending ? 'sort-up' : 'sort-down';
+        } else {
+            return 'sort';
+        }
     }
 
     private onError(error) {
