@@ -1,0 +1,59 @@
+#
+# Copyright 2013-2020 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Application CI
+on: [push, pull_request]
+jobs:
+    pipeline:
+        name: jhipster-online pipeline
+        runs-on: ubuntu-latest
+        if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.pull_request.title, '[skip ci]') && !contains(github.pull_request.title, '[ci skip]')"
+        timeout-minutes: 40
+        env:
+            NODE_VERSION: 10.16.3
+            SPRING_OUTPUT_ANSI_ENABLED: DETECT
+            SPRING_JPA_SHOW_SQL: false
+            JHI_DISABLE_WEBPACK_LOGS: true
+            NG_CLI_ANALYTICS: false
+
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 10.16.3
+
+            - uses: actions/setup-java@v1
+              with:
+                  java-version: '1.8'
+
+            - name: Stop MySQL server
+              run: sudo /etc/init.d/mysql stop
+
+            - name: Install node.js packages
+              run: yarn install
+
+            - name: Run backend test
+              run: |
+                  chmod +x mvnw
+                  ./mvnw -ntp clean verify -P-webpack
+
+            - name: Run frontend test
+              run: yarn run test
+
+            - name: Package application
+              run: ./mvnw -ntp package -Pprod -DskipTests
