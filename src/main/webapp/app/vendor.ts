@@ -74,13 +74,17 @@ import {
     faLightbulb,
     faSkull,
     faExpand,
-    faProjectDiagram
+    faProjectDiagram,
+    faSortUp,
+    faSortDown
 } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faUser);
 library.add(faSort);
+library.add(faSortUp);
+library.add(faSortDown);
 library.add(faSync);
 library.add(faEye);
 library.add(faBan);

@@ -21,9 +21,9 @@
     <div class="table-responsive" *ngIf="jdlMetadata">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span>Name</span></th>
-            <th><span>Last update</span></th>
+            <tr jhiSort jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadAll.bind(this)">
+            <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="getSortingIcon('name')"></fa-icon></th>
+            <th jhiSortBy="updatedDate"><span>Last update</span> <fa-icon [icon]="getSortingIcon('updatedDate')"></fa-icon></th>
             <th><span></span></th>
             </tr>
             </thead>
