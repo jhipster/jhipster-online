@@ -61,7 +61,7 @@ public class JHipsterService {
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
         this.runProcess(generationId, workingDir, jhipsterCommand + " --force-insight --skip-checks " +
-            "--skip-install --skip-cache --skip-git");
+            "--skip-install --skip-cache --skip-git --prettier-java");
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
