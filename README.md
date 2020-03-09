@@ -178,6 +178,11 @@ Then run:
 
     docker-compose -f src/main/docker/app.yml up -d
 
+## Building for GCP environment (include sql proxy)
+
+    ./mvnw clean package -Pgcp
+
+
 ## Help and contribution to the project
 
 Please note that this project is part of the [JHipster organization](https://github.com/jhipster) and it follows the rules
