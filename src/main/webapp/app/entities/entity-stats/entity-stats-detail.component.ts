@@ -4,21 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { IEntityStats } from 'app/shared/model/entity-stats.model';
 
 @Component({
-    selector: 'jhi-entity-stats-detail',
-    templateUrl: './entity-stats-detail.component.html'
+  selector: 'jhi-entity-stats-detail',
+  templateUrl: './entity-stats-detail.component.html'
 })
 export class EntityStatsDetailComponent implements OnInit {
-    entityStats: IEntityStats;
+  entityStats: IEntityStats | null = null;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ entityStats }) => {
-            this.entityStats = entityStats;
-        });
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ entityStats }) => (this.entityStats = entityStats));
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

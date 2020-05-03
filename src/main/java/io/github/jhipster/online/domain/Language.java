@@ -27,7 +27,7 @@ public class Language implements Serializable {
     private String isoCode;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("languages")
     private YoRC yoRC;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -71,19 +71,15 @@ public class Language implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Language)) {
             return false;
         }
-        Language language = (Language) o;
-        if (language.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), language.getId());
+        return id != null && id.equals(((Language) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

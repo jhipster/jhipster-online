@@ -1,58 +1,55 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
-import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
+import { GeneratorIdentityDeleteDialogComponent } from './generator-identity-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-generator-identity',
-    templateUrl: './generator-identity.component.html'
+  selector: 'jhi-generator-identity',
+  templateUrl: './generator-identity.component.html'
 })
 export class GeneratorIdentityComponent implements OnInit, OnDestroy {
-    generatorIdentities: IGeneratorIdentity[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  generatorIdentities?: IGeneratorIdentity[];
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(
+    protected generatorIdentityService: GeneratorIdentityService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
-    loadAll() {
-        this.generatorIdentityService.query().subscribe(
-            (res: HttpResponse<IGeneratorIdentity[]>) => {
-                this.generatorIdentities = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    this.generatorIdentityService
+      .query()
+      .subscribe((res: HttpResponse<IGeneratorIdentity[]>) => (this.generatorIdentities = res.body || []));
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInGeneratorIdentities();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInGeneratorIdentities();
-    }
+  trackId(index: number, item: IGeneratorIdentity): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  registerChangeInGeneratorIdentities(): void {
+    this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', () => this.loadAll());
+  }
 
-    trackId(index: number, item: IGeneratorIdentity) {
-        return item.id;
-    }
-
-    registerChangeInGeneratorIdentities() {
-        this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  delete(generatorIdentity: IGeneratorIdentity): void {
+    const modalRef = this.modalService.open(GeneratorIdentityDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.generatorIdentity = generatorIdentity;
+  }
 }

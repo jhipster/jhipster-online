@@ -4,21 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 
 @Component({
-    selector: 'jhi-generator-identity-detail',
-    templateUrl: './generator-identity-detail.component.html'
+  selector: 'jhi-generator-identity-detail',
+  templateUrl: './generator-identity-detail.component.html'
 })
 export class GeneratorIdentityDetailComponent implements OnInit {
-    generatorIdentity: IGeneratorIdentity;
+  generatorIdentity: IGeneratorIdentity | null = null;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ generatorIdentity }) => {
-            this.generatorIdentity = generatorIdentity;
-        });
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ generatorIdentity }) => (this.generatorIdentity = generatorIdentity));
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

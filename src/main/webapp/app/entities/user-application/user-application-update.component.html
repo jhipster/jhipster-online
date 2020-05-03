@@ -1,47 +1,54 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-user-application-heading">Create or edit a User Application</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!userApplication.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="userApplication.id" readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
-                        [(ngModel)]="userApplication.name" />
+                           formControlName="name"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_shared">Shared</label>
                     <input type="checkbox" class="form-control" name="shared" id="field_shared"
-                        [(ngModel)]="userApplication.shared" />
+                           formControlName="shared"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_sharedLink">Shared Link</label>
                     <input type="text" class="form-control" name="sharedLink" id="field_sharedLink"
-                        [(ngModel)]="userApplication.sharedLink" />
+                           formControlName="sharedLink"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_userId">User Id</label>
                     <input type="text" class="form-control" name="userId" id="field_userId"
-                        [(ngModel)]="userApplication.userId" />
+                           formControlName="userId"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_configuration">Configuration</label>
                     <textarea class="form-control" name="configuration" id="field_configuration"
-                        [(ngModel)]="userApplication.configuration" ></textarea>
+                              formControlName="configuration"></textarea>
                 </div>
-
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
         </form>

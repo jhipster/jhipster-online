@@ -4,21 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { IYoRC } from 'app/shared/model/yo-rc.model';
 
 @Component({
-    selector: 'jhi-yo-rc-detail',
-    templateUrl: './yo-rc-detail.component.html'
+  selector: 'jhi-yo-rc-detail',
+  templateUrl: './yo-rc-detail.component.html'
 })
 export class YoRCDetailComponent implements OnInit {
-    yoRC: IYoRC;
+  yoRC: IYoRC | null = null;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ yoRC }) => {
-            this.yoRC = yoRC;
-        });
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ yoRC }) => (this.yoRC = yoRC));
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

@@ -1,81 +1,95 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { JhiAlertService } from 'ng-jhipster';
 
-import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
+import { IGeneratorIdentity, GeneratorIdentity } from 'app/shared/model/generator-identity.model';
 import { GeneratorIdentityService } from './generator-identity.service';
-import { IUser, UserService } from 'app/core';
+import { IUser } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
-    selector: 'jhi-generator-identity-update',
-    templateUrl: './generator-identity-update.component.html'
+  selector: 'jhi-generator-identity-update',
+  templateUrl: './generator-identity-update.component.html'
 })
 export class GeneratorIdentityUpdateComponent implements OnInit {
-    private _generatorIdentity: IGeneratorIdentity;
-    isSaving: boolean;
+  isSaving = false;
+  users: IUser[] = [];
 
-    users: IUser[];
+  editForm = this.fb.group({
+    id: [],
+    host: [],
+    guid: [],
+    owner: []
+  });
 
-    constructor(
-        private jhiAlertService: JhiAlertService,
-        private generatorIdentityService: GeneratorIdentityService,
-        private userService: UserService,
-        private activatedRoute: ActivatedRoute
-    ) {}
+  constructor(
+    protected generatorIdentityService: GeneratorIdentityService,
+    protected userService: UserService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
-    ngOnInit() {
-        this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ generatorIdentity }) => {
-            this.generatorIdentity = generatorIdentity;
-        });
-        this.userService.query().subscribe(
-            (res: HttpResponse<IUser[]>) => {
-                this.users = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ generatorIdentity }) => {
+      this.updateForm(generatorIdentity);
+
+      this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
+    });
+  }
+
+  updateForm(generatorIdentity: IGeneratorIdentity): void {
+    this.editForm.patchValue({
+      id: generatorIdentity.id,
+      host: generatorIdentity.host,
+      guid: generatorIdentity.guid,
+      owner: generatorIdentity.owner
+    });
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
+  save(): void {
+    this.isSaving = true;
+    const generatorIdentity = this.createFromForm();
+    if (generatorIdentity.id !== undefined) {
+      this.subscribeToSaveResponse(this.generatorIdentityService.update(generatorIdentity));
+    } else {
+      this.subscribeToSaveResponse(this.generatorIdentityService.create(generatorIdentity));
     }
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  private createFromForm(): IGeneratorIdentity {
+    return {
+      ...new GeneratorIdentity(),
+      id: this.editForm.get(['id'])!.value,
+      host: this.editForm.get(['host'])!.value,
+      guid: this.editForm.get(['guid'])!.value,
+      owner: this.editForm.get(['owner'])!.value
+    };
+  }
 
-    save() {
-        this.isSaving = true;
-        if (this.generatorIdentity.id !== undefined) {
-            this.subscribeToSaveResponse(this.generatorIdentityService.update(this.generatorIdentity));
-        } else {
-            this.subscribeToSaveResponse(this.generatorIdentityService.create(this.generatorIdentity));
-        }
-    }
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IGeneratorIdentity>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IGeneratorIdentity>>) {
-        result.subscribe((res: HttpResponse<IGeneratorIdentity>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
 
-    private onSaveSuccess() {
-        this.isSaving = false;
-        this.previousState();
-    }
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
 
-    private onSaveError() {
-        this.isSaving = false;
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
-
-    trackUserById(index: number, item: IUser) {
-        return item.id;
-    }
-    get generatorIdentity() {
-        return this._generatorIdentity;
-    }
-
-    set generatorIdentity(generatorIdentity: IGeneratorIdentity) {
-        this._generatorIdentity = generatorIdentity;
-    }
+  trackById(index: number, item: IUser): any {
+    return item.id;
+  }
 }

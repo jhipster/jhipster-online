@@ -1,58 +1,53 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEntityStats } from 'app/shared/model/entity-stats.model';
-import { Principal } from 'app/core';
 import { EntityStatsService } from './entity-stats.service';
+import { EntityStatsDeleteDialogComponent } from './entity-stats-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-entity-stats',
-    templateUrl: './entity-stats.component.html'
+  selector: 'jhi-entity-stats',
+  templateUrl: './entity-stats.component.html'
 })
 export class EntityStatsComponent implements OnInit, OnDestroy {
-    entityStats: IEntityStats[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  entityStats?: IEntityStats[];
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private entityStatsService: EntityStatsService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(
+    protected entityStatsService: EntityStatsService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
-    loadAll() {
-        this.entityStatsService.query().subscribe(
-            (res: HttpResponse<IEntityStats[]>) => {
-                this.entityStats = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    this.entityStatsService.query().subscribe((res: HttpResponse<IEntityStats[]>) => (this.entityStats = res.body || []));
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInEntityStats();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInEntityStats();
-    }
+  trackId(index: number, item: IEntityStats): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  registerChangeInEntityStats(): void {
+    this.eventSubscriber = this.eventManager.subscribe('entityStatsListModification', () => this.loadAll());
+  }
 
-    trackId(index: number, item: IEntityStats) {
-        return item.id;
-    }
-
-    registerChangeInEntityStats() {
-        this.eventSubscriber = this.eventManager.subscribe('entityStatsListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  delete(entityStats: IEntityStats): void {
+    const modalRef = this.modalService.open(EntityStatsDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.entityStats = entityStats;
+  }
 }

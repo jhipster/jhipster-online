@@ -1,30 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from 'app/shared';
-import { JhonlineAdminModule } from 'app/admin/admin.module';
-import {
-    JdlMetadataComponent,
-    JdlMetadataDetailComponent,
-    JdlMetadataUpdateComponent,
-    JdlMetadataDeletePopupComponent,
-    JdlMetadataDeleteDialogComponent,
-    jdlMetadataRoute,
-    jdlMetadataPopupRoute
-} from './';
-
-const ENTITY_STATES = [...jdlMetadataRoute, ...jdlMetadataPopupRoute];
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { JdlMetadataComponent } from './jdl-metadata.component';
+import { JdlMetadataDetailComponent } from './jdl-metadata-detail.component';
+import { JdlMetadataUpdateComponent } from './jdl-metadata-update.component';
+import { JdlMetadataDeleteDialogComponent } from './jdl-metadata-delete-dialog.component';
+import { jdlMetadataRoute } from './jdl-metadata.route';
 
 @NgModule({
-    imports: [JhonlineSharedModule, JhonlineAdminModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [
-        JdlMetadataComponent,
-        JdlMetadataDetailComponent,
-        JdlMetadataUpdateComponent,
-        JdlMetadataDeleteDialogComponent,
-        JdlMetadataDeletePopupComponent
-    ],
-    entryComponents: [JdlMetadataComponent, JdlMetadataUpdateComponent, JdlMetadataDeleteDialogComponent, JdlMetadataDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedModule, RouterModule.forChild(jdlMetadataRoute)],
+  declarations: [JdlMetadataComponent, JdlMetadataDetailComponent, JdlMetadataUpdateComponent, JdlMetadataDeleteDialogComponent],
+  entryComponents: [JdlMetadataDeleteDialogComponent]
 })
 export class JhonlineJdlMetadataModule {}

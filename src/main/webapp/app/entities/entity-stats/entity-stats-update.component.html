@@ -1,91 +1,105 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-entity-stats-heading">Create or edit a Entity Stats</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!entityStats.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="entityStats.id" readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_year">Year</label>
                     <input type="number" class="form-control" name="year" id="field_year"
-                        [(ngModel)]="entityStats.year" />
+                           formControlName="year"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_month">Month</label>
                     <input type="number" class="form-control" name="month" id="field_month"
-                        [(ngModel)]="entityStats.month" />
+                           formControlName="month"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_week">Week</label>
                     <input type="number" class="form-control" name="week" id="field_week"
-                        [(ngModel)]="entityStats.week" />
+                           formControlName="week"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_day">Day</label>
                     <input type="number" class="form-control" name="day" id="field_day"
-                        [(ngModel)]="entityStats.day" />
+                           formControlName="day"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_hour">Hour</label>
                     <input type="number" class="form-control" name="hour" id="field_hour"
-                        [(ngModel)]="entityStats.hour" />
+                           formControlName="hour"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_fields">Fields</label>
                     <input type="number" class="form-control" name="fields" id="field_fields"
-                        [(ngModel)]="entityStats.fields" />
+                           formControlName="fields"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_relationships">Relationships</label>
                     <input type="number" class="form-control" name="relationships" id="field_relationships"
-                        [(ngModel)]="entityStats.relationships" />
+                           formControlName="relationships"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_pagination">Pagination</label>
                     <input type="text" class="form-control" name="pagination" id="field_pagination"
-                        [(ngModel)]="entityStats.pagination" />
+                           formControlName="pagination"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_dto">Dto</label>
                     <input type="text" class="form-control" name="dto" id="field_dto"
-                        [(ngModel)]="entityStats.dto" />
+                           formControlName="dto"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_service">Service</label>
                     <input type="text" class="form-control" name="service" id="field_service"
-                        [(ngModel)]="entityStats.service" />
+                           formControlName="service"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_fluentMethods">Fluent Methods</label>
                     <input type="checkbox" class="form-control" name="fluentMethods" id="field_fluentMethods"
-                        [(ngModel)]="entityStats.fluentMethods" />
+                           formControlName="fluentMethods"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_date">Date</label>
                     <div class="d-flex">
-                        <input id="field_date" type="datetime-local" class="form-control" name="date" [(ngModel)]="date"
-                        />
+                        <input id="field_date" type="datetime-local" class="form-control" name="date" formControlName="date" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_owner">Owner</label>
-                    <select class="form-control" id="field_owner" name="owner" [(ngModel)]="entityStats.owner" >
+                    <select class="form-control" id="field_owner" name="owner" formControlName="owner">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="generatorIdentityOption.id === entityStats.owner?.id ? entityStats.owner : generatorIdentityOption" *ngFor="let generatorIdentityOption of generatoridentities; trackBy: trackGeneratorIdentityById">{{generatorIdentityOption.id}}</option>
+                        <option [ngValue]="generatorIdentityOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : generatorIdentityOption" *ngFor="let generatorIdentityOption of generatoridentities; trackBy: trackById">{{ generatorIdentityOption.id }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
         </form>

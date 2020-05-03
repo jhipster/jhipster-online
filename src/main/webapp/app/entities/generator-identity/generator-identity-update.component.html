@@ -1,39 +1,44 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-generator-identity-heading">Create or edit a Generator Identity</h2>
+
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!generatorIdentity.id">
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="generatorIdentity.id" readonly />
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_host">Host</label>
                     <input type="text" class="form-control" name="host" id="field_host"
-                        [(ngModel)]="generatorIdentity.host" />
+                           formControlName="host"/>
                 </div>
+
                 <div class="form-group">
                     <label class="form-control-label" for="field_guid">Guid</label>
                     <input type="text" class="form-control" name="guid" id="field_guid"
-                        [(ngModel)]="generatorIdentity.guid" />
+                           formControlName="guid"/>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" for="field_owner">Owner</label>
-                    <select class="form-control" id="field_owner" name="owner" [(ngModel)]="generatorIdentity.owner" >
+                    <select class="form-control" id="field_owner" name="owner" formControlName="owner">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id === generatorIdentity.owner?.id ? generatorIdentity.owner : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                        <option [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption" *ngFor="let userOption of users; trackBy: trackById">{{ userOption.id }}</option>
                     </select>
                 </div>
             </div>
+
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
         </form>

@@ -1,58 +1,53 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ISubGenEvent } from 'app/shared/model/sub-gen-event.model';
-import { Principal } from 'app/core';
 import { SubGenEventService } from './sub-gen-event.service';
+import { SubGenEventDeleteDialogComponent } from './sub-gen-event-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-sub-gen-event',
-    templateUrl: './sub-gen-event.component.html'
+  selector: 'jhi-sub-gen-event',
+  templateUrl: './sub-gen-event.component.html'
 })
 export class SubGenEventComponent implements OnInit, OnDestroy {
-    subGenEvents: ISubGenEvent[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  subGenEvents?: ISubGenEvent[];
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private subGenEventService: SubGenEventService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(
+    protected subGenEventService: SubGenEventService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
-    loadAll() {
-        this.subGenEventService.query().subscribe(
-            (res: HttpResponse<ISubGenEvent[]>) => {
-                this.subGenEvents = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    this.subGenEventService.query().subscribe((res: HttpResponse<ISubGenEvent[]>) => (this.subGenEvents = res.body || []));
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInSubGenEvents();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInSubGenEvents();
-    }
+  trackId(index: number, item: ISubGenEvent): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  registerChangeInSubGenEvents(): void {
+    this.eventSubscriber = this.eventManager.subscribe('subGenEventListModification', () => this.loadAll());
+  }
 
-    trackId(index: number, item: ISubGenEvent) {
-        return item.id;
-    }
-
-    registerChangeInSubGenEvents() {
-        this.eventSubscriber = this.eventManager.subscribe('subGenEventListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  delete(subGenEvent: ISubGenEvent): void {
+    const modalRef = this.modalService.open(SubGenEventDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.subGenEvent = subGenEvent;
+  }
 }

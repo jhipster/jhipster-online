@@ -1,61 +1,68 @@
 <div>
     <h2 id="page-heading">
         <span>Jdl Metadata</span>
+
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-jdl-metadata" [routerLink]="['/jdl-metadata/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span >
-            Create new Jdl Metadata
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Jdl Metadata
             </span>
         </button>
     </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
     <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive" *ngIf="jdlMetadata">
-        <table class="table table-striped">
+
+    <div class="alert alert-warning" id="no-result" *ngIf="jdlMetadata?.length === 0">
+        <span>No jdlMetadata found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="jdlMetadata?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr>
-            <th><span>ID</span></th>
-            <th><span>Key</span></th>
-            <th><span>Name</span></th>
-            <th><span>Is Public</span></th>
-            <th><span>User</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Key</span></th>
+                    <th scope="col" ><span>Name</span></th>
+                    <th scope="col" ><span>Is Public</span></th>
+                    <th scope="col" ><span>User</span></th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let jdlMetadata of jdlMetadata ;trackBy: trackId">
-                <td><a [routerLink]="['/jdl-metadata', jdlMetadata.id, 'view' ]">{{jdlMetadata.id}}</a></td>
-                <td>{{jdlMetadata.key}}</td>
-                <td>{{jdlMetadata.name}}</td>
-                <td>{{jdlMetadata.isPublic}}</td>
-                <td>
-                    {{jdlMetadata.user?.login}}
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/jdl-metadata', jdlMetadata.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/jdl-metadata', jdlMetadata.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'jdl-metadata/'+ jdlMetadata.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let jdlMetadata of jdlMetadata ;trackBy: trackId">
+                    <td><a [routerLink]="['/jdl-metadata', jdlMetadata.id, 'view']">{{ jdlMetadata.id }}</a></td>
+                    <td>{{ jdlMetadata.key }}</td>
+                    <td>{{ jdlMetadata.name }}</td>
+                    <td>{{ jdlMetadata.isPublic }}</td>
+                    <td>
+                        {{ jdlMetadata.user?.login }}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/jdl-metadata', jdlMetadata.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/jdl-metadata', jdlMetadata.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(jdlMetadata)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

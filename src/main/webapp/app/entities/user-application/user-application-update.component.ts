@@ -1,75 +1,111 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
-import { IUserApplication } from 'app/shared/model/user-application.model';
+import { IUserApplication, UserApplication } from 'app/shared/model/user-application.model';
 import { UserApplicationService } from './user-application.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 
 @Component({
-    selector: 'jhi-user-application-update',
-    templateUrl: './user-application-update.component.html'
+  selector: 'jhi-user-application-update',
+  templateUrl: './user-application-update.component.html'
 })
 export class UserApplicationUpdateComponent implements OnInit {
-    private _userApplication: IUserApplication;
-    isSaving: boolean;
+  isSaving = false;
 
-    constructor(
-        private dataUtils: JhiDataUtils,
-        private userApplicationService: UserApplicationService,
-        private activatedRoute: ActivatedRoute
-    ) {}
+  editForm = this.fb.group({
+    id: [],
+    name: [],
+    shared: [],
+    sharedLink: [],
+    userId: [],
+    configuration: []
+  });
 
-    ngOnInit() {
-        this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ userApplication }) => {
-            this.userApplication = userApplication;
-        });
-    }
+  constructor(
+    protected dataUtils: JhiDataUtils,
+    protected eventManager: JhiEventManager,
+    protected userApplicationService: UserApplicationService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ userApplication }) => {
+      this.updateForm(userApplication);
+    });
+  }
 
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
+  updateForm(userApplication: IUserApplication): void {
+    this.editForm.patchValue({
+      id: userApplication.id,
+      name: userApplication.name,
+      shared: userApplication.shared,
+      sharedLink: userApplication.sharedLink,
+      userId: userApplication.userId,
+      configuration: userApplication.configuration
+    });
+  }
 
-    setFileData(event, entity, field, isImage) {
-        this.dataUtils.setFileData(event, entity, field, isImage);
-    }
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
+  }
 
-    save() {
-        this.isSaving = true;
-        if (this.userApplication.id !== undefined) {
-            this.subscribeToSaveResponse(this.userApplicationService.update(this.userApplication));
-        } else {
-            this.subscribeToSaveResponse(this.userApplicationService.create(this.userApplication));
-        }
-    }
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('jhonlineApp.error', { message: err.message })
+      );
+    });
+  }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<IUserApplication>>) {
-        result.subscribe((res: HttpResponse<IUserApplication>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
+  previousState(): void {
+    window.history.back();
+  }
 
-    private onSaveSuccess() {
-        this.isSaving = false;
-        this.previousState();
+  save(): void {
+    this.isSaving = true;
+    const userApplication = this.createFromForm();
+    if (userApplication.id !== undefined) {
+      this.subscribeToSaveResponse(this.userApplicationService.update(userApplication));
+    } else {
+      this.subscribeToSaveResponse(this.userApplicationService.create(userApplication));
     }
+  }
 
-    private onSaveError() {
-        this.isSaving = false;
-    }
-    get userApplication() {
-        return this._userApplication;
-    }
+  private createFromForm(): IUserApplication {
+    return {
+      ...new UserApplication(),
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+      shared: this.editForm.get(['shared'])!.value,
+      sharedLink: this.editForm.get(['sharedLink'])!.value,
+      userId: this.editForm.get(['userId'])!.value,
+      configuration: this.editForm.get(['configuration'])!.value
+    };
+  }
 
-    set userApplication(userApplication: IUserApplication) {
-        this._userApplication = userApplication;
-    }
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUserApplication>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
 }

@@ -7,8 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
+import java.time.Instant;
 
 /**
  * A YoRC.
@@ -54,7 +54,7 @@ public class YoRC implements Serializable {
     @Column(name = "user_language")
     private String userLanguage;
 
-    @Column(name = "jhi_year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "month")
@@ -139,7 +139,7 @@ public class YoRC implements Serializable {
     private Boolean hasCucumber;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("yoRCS")
     private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -664,19 +664,15 @@ public class YoRC implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof YoRC)) {
             return false;
         }
-        YoRC yoRC = (YoRC) o;
-        if (yoRC.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), yoRC.getId());
+        return id != null && id.equals(((YoRC) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

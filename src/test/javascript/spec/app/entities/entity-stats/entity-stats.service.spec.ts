@@ -1,95 +1,149 @@
-/* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import * as moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { EntityStatsService } from 'app/entities/entity-stats/entity-stats.service';
-import { EntityStats } from 'app/shared/model/entity-stats.model';
-import { SERVER_API_URL } from 'app/app.constants';
+import { IEntityStats, EntityStats } from 'app/shared/model/entity-stats.model';
 
 describe('Service Tests', () => {
-    describe('EntityStats Service', () => {
-        let injector: TestBed;
-        let service: EntityStatsService;
-        let httpMock: HttpTestingController;
+  describe('EntityStats Service', () => {
+    let injector: TestBed;
+    let service: EntityStatsService;
+    let httpMock: HttpTestingController;
+    let elemDefault: IEntityStats;
+    let expectedResult: IEntityStats | IEntityStats[] | boolean | null;
+    let currentDate: moment.Moment;
 
-        beforeEach(() => {
-            TestBed.configureTestingModule({
-                imports: [HttpClientTestingModule]
-            });
-            injector = getTestBed();
-            service = injector.get(EntityStatsService);
-            httpMock = injector.get(HttpTestingController);
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule]
+      });
+      expectedResult = null;
+      injector = getTestBed();
+      service = injector.get(EntityStatsService);
+      httpMock = injector.get(HttpTestingController);
+      currentDate = moment();
 
-        describe('Service methods', () => {
-            it('should call correct URL', () => {
-                service.find(123).subscribe(() => {});
-
-                const req = httpMock.expectOne({ method: 'GET' });
-
-                const resourceUrl = SERVER_API_URL + 'api/entity-stats';
-                expect(req.request.url).toEqual(resourceUrl + '/' + 123);
-            });
-
-            it('should create a EntityStats', () => {
-                service.create(new EntityStats(null)).subscribe(received => {
-                    expect(received.body.id).toEqual(null);
-                });
-
-                const req = httpMock.expectOne({ method: 'POST' });
-                req.flush({ id: null });
-            });
-
-            it('should update a EntityStats', () => {
-                service.update(new EntityStats(123)).subscribe(received => {
-                    expect(received.body.id).toEqual(123);
-                });
-
-                const req = httpMock.expectOne({ method: 'PUT' });
-                req.flush({ id: 123 });
-            });
-
-            it('should return a EntityStats', () => {
-                service.find(123).subscribe(received => {
-                    expect(received.body.id).toEqual(123);
-                });
-
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush({ id: 123 });
-            });
-
-            it('should return a list of EntityStats', () => {
-                service.query(null).subscribe(received => {
-                    expect(received.body[0].id).toEqual(123);
-                });
-
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush([new EntityStats(123)]);
-            });
-
-            it('should delete a EntityStats', () => {
-                service.delete(123).subscribe(received => {
-                    expect(received.url).toContain('/' + 123);
-                });
-
-                const req = httpMock.expectOne({ method: 'DELETE' });
-                req.flush(null);
-            });
-
-            it('should propagate not found response', () => {
-                service.find(123).subscribe(null, (_error: any) => {
-                    expect(_error.status).toEqual(404);
-                });
-
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush('Invalid request parameters', {
-                    status: 404,
-                    statusText: 'Bad Request'
-                });
-            });
-        });
-
-        afterEach(() => {
-            httpMock.verify();
-        });
+      elemDefault = new EntityStats(0, 0, 0, 0, 0, 0, 0, 0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', false, currentDate);
     });
+
+    describe('Service methods', () => {
+      it('should find an element', () => {
+        const returnedFromService = Object.assign(
+          {
+            date: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
+
+        service.find(123).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(elemDefault);
+      });
+
+      it('should create a EntityStats', () => {
+        const returnedFromService = Object.assign(
+          {
+            id: 0,
+            date: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate
+          },
+          returnedFromService
+        );
+
+        service.create(new EntityStats()).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'POST' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
+      it('should update a EntityStats', () => {
+        const returnedFromService = Object.assign(
+          {
+            year: 1,
+            month: 1,
+            week: 1,
+            day: 1,
+            hour: 1,
+            fields: 1,
+            relationships: 1,
+            pagination: 'BBBBBB',
+            dto: 'BBBBBB',
+            service: 'BBBBBB',
+            fluentMethods: true,
+            date: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate
+          },
+          returnedFromService
+        );
+
+        service.update(expected).subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'PUT' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject(expected);
+      });
+
+      it('should return a list of EntityStats', () => {
+        const returnedFromService = Object.assign(
+          {
+            year: 1,
+            month: 1,
+            week: 1,
+            day: 1,
+            hour: 1,
+            fields: 1,
+            relationships: 1,
+            pagination: 'BBBBBB',
+            dto: 'BBBBBB',
+            service: 'BBBBBB',
+            fluentMethods: true,
+            date: currentDate.format(DATE_TIME_FORMAT)
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign(
+          {
+            date: currentDate
+          },
+          returnedFromService
+        );
+
+        service.query().subscribe(resp => (expectedResult = resp.body));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        httpMock.verify();
+        expect(expectedResult).toContainEqual(expected);
+      });
+
+      it('should delete a EntityStats', () => {
+        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+
+        const req = httpMock.expectOne({ method: 'DELETE' });
+        req.flush({ status: 200 });
+        expect(expectedResult);
+      });
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+  });
 });

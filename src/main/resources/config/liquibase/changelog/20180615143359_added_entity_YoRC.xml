@@ -3,16 +3,10 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <property name="now" value="now()" dbms="h2"/>
-
-    <property name="now" value="now()" dbms="mysql"/>
-    <property name="autoIncrement" value="true"/>
-
-    <property name="floatType" value="float4" dbms="postgresql, h2"/>
-    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+        <property name="autoIncrement" value="true"/>
 
     <!--
         Added the entity YoRC.
@@ -25,163 +19,184 @@
             <column name="jhipster_version" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="creation_date" type="datetime">
                 <constraints nullable="true" />
             </column>
-
             <column name="git_provider" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="node_version" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="os" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="arch" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="cpu" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="cores" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="memory" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="user_language" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="jhi_year" type="integer">
+            <column name="year" type="integer">
                 <constraints nullable="true" />
             </column>
-
             <column name="month" type="integer">
                 <constraints nullable="true" />
             </column>
-
             <column name="week" type="integer">
                 <constraints nullable="true" />
             </column>
-
             <column name="day" type="integer">
                 <constraints nullable="true" />
             </column>
-
             <column name="hour" type="integer">
                 <constraints nullable="true" />
             </column>
-
             <column name="server_port" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="authentication_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="cache_provider" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="enable_hibernate_cache" type="bit">
+            <column name="enable_hibernate_cache" type="boolean">
                 <constraints nullable="true" />
             </column>
-
-            <column name="websocket" type="bit">
+            <column name="websocket" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="database_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="dev_database_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="prod_database_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="search_engine" type="bit">
+            <column name="search_engine" type="boolean">
                 <constraints nullable="true" />
             </column>
-
-            <column name="message_broker" type="bit">
+            <column name="message_broker" type="boolean">
                 <constraints nullable="true" />
             </column>
-
-            <column name="service_discovery_type" type="bit">
+            <column name="service_discovery_type" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="build_tool" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="enable_swagger_codegen" type="bit">
+            <column name="enable_swagger_codegen" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="client_framework" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="use_sass" type="bit">
+            <column name="use_sass" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="client_package_manager" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="application_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
             <column name="jhi_prefix" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="enable_translation" type="bit">
+            <column name="enable_translation" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="native_language" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="has_protractor" type="bit">
+            <column name="has_protractor" type="boolean">
                 <constraints nullable="true" />
             </column>
-
-            <column name="has_gatling" type="bit">
+            <column name="has_gatling" type="boolean">
                 <constraints nullable="true" />
             </column>
-
-            <column name="has_cucumber" type="bit">
+            <column name="has_cucumber" type="boolean">
                 <constraints nullable="true" />
             </column>
-
             <column name="owner_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="yo_rc" columnName="creation_date" columnDataType="datetime"/>
-        
+    </changeSet>
+
+    <changeSet id="20180615143359-1-relations" author="jhipster">
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20180615143359-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/yo_rc.csv"
+                  separator=";"
+                  tableName="yo_rc">
+            <column name="id" type="numeric"/>
+            <column name="jhipster_version" type="string"/>
+            <column name="creation_date" type="datetime"/>
+            <column name="git_provider" type="string"/>
+            <column name="node_version" type="string"/>
+            <column name="os" type="string"/>
+            <column name="arch" type="string"/>
+            <column name="cpu" type="string"/>
+            <column name="cores" type="string"/>
+            <column name="memory" type="string"/>
+            <column name="user_language" type="string"/>
+            <column name="year" type="numeric"/>
+            <column name="month" type="numeric"/>
+            <column name="week" type="numeric"/>
+            <column name="day" type="numeric"/>
+            <column name="hour" type="numeric"/>
+            <column name="server_port" type="string"/>
+            <column name="authentication_type" type="string"/>
+            <column name="cache_provider" type="string"/>
+            <column name="enable_hibernate_cache" type="boolean"/>
+            <column name="websocket" type="boolean"/>
+            <column name="database_type" type="string"/>
+            <column name="dev_database_type" type="string"/>
+            <column name="prod_database_type" type="string"/>
+            <column name="search_engine" type="boolean"/>
+            <column name="message_broker" type="boolean"/>
+            <column name="service_discovery_type" type="boolean"/>
+            <column name="build_tool" type="string"/>
+            <column name="enable_swagger_codegen" type="boolean"/>
+            <column name="client_framework" type="string"/>
+            <column name="use_sass" type="boolean"/>
+            <column name="client_package_manager" type="string"/>
+            <column name="application_type" type="string"/>
+            <column name="jhi_prefix" type="string"/>
+            <column name="enable_translation" type="boolean"/>
+            <column name="native_language" type="string"/>
+            <column name="has_protractor" type="boolean"/>
+            <column name="has_gatling" type="boolean"/>
+            <column name="has_cucumber" type="boolean"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+        </loadData>
+    </changeSet>
+
 </databaseChangeLog>

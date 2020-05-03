@@ -1,90 +1,83 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { GeneratorIdentity } from 'app/shared/model/generator-identity.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { Authority } from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IGeneratorIdentity, GeneratorIdentity } from 'app/shared/model/generator-identity.model';
 import { GeneratorIdentityService } from './generator-identity.service';
 import { GeneratorIdentityComponent } from './generator-identity.component';
 import { GeneratorIdentityDetailComponent } from './generator-identity-detail.component';
 import { GeneratorIdentityUpdateComponent } from './generator-identity-update.component';
-import { GeneratorIdentityDeletePopupComponent } from './generator-identity-delete-dialog.component';
-import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 
 @Injectable({ providedIn: 'root' })
 export class GeneratorIdentityResolve implements Resolve<IGeneratorIdentity> {
-    constructor(private service: GeneratorIdentityService) {}
+  constructor(private service: GeneratorIdentityService, private router: Router) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(map((generatorIdentity: HttpResponse<GeneratorIdentity>) => generatorIdentity.body));
-        }
-        return of(new GeneratorIdentity());
+  resolve(route: ActivatedRouteSnapshot): Observable<IGeneratorIdentity> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((generatorIdentity: HttpResponse<GeneratorIdentity>) => {
+          if (generatorIdentity.body) {
+            return of(generatorIdentity.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
+    return of(new GeneratorIdentity());
+  }
 }
 
 export const generatorIdentityRoute: Routes = [
-    {
-        path: 'generator-identity',
-        component: GeneratorIdentityComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'GeneratorIdentities'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: GeneratorIdentityComponent,
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'GeneratorIdentities'
     },
-    {
-        path: 'generator-identity/:id/view',
-        component: GeneratorIdentityDetailComponent,
-        resolve: {
-            generatorIdentity: GeneratorIdentityResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'GeneratorIdentities'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: GeneratorIdentityDetailComponent,
+    resolve: {
+      generatorIdentity: GeneratorIdentityResolve
     },
-    {
-        path: 'generator-identity/new',
-        component: GeneratorIdentityUpdateComponent,
-        resolve: {
-            generatorIdentity: GeneratorIdentityResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'GeneratorIdentities'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'GeneratorIdentities'
     },
-    {
-        path: 'generator-identity/:id/edit',
-        component: GeneratorIdentityUpdateComponent,
-        resolve: {
-            generatorIdentity: GeneratorIdentityResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'GeneratorIdentities'
-        },
-        canActivate: [UserRouteAccessService]
-    }
-];
-
-export const generatorIdentityPopupRoute: Routes = [
-    {
-        path: 'generator-identity/:id/delete',
-        component: GeneratorIdentityDeletePopupComponent,
-        resolve: {
-            generatorIdentity: GeneratorIdentityResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'GeneratorIdentities'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: GeneratorIdentityUpdateComponent,
+    resolve: {
+      generatorIdentity: GeneratorIdentityResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'GeneratorIdentities'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: GeneratorIdentityUpdateComponent,
+    resolve: {
+      generatorIdentity: GeneratorIdentityResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'GeneratorIdentities'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];

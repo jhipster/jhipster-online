@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
+
 /**
- * Service Implementation for managing YoRC.
+ * Service Implementation for managing {@link YoRC}.
  */
 @Service
 @Transactional
@@ -29,17 +29,18 @@ public class YoRCService {
     /**
      * Save a yoRC.
      *
-     * @param yoRC the entity to save
-     * @return the persisted entity
+     * @param yoRC the entity to save.
+     * @return the persisted entity.
      */
     public YoRC save(YoRC yoRC) {
-        log.debug("Request to save YoRC : {}", yoRC);        return yoRCRepository.save(yoRC);
+        log.debug("Request to save YoRC : {}", yoRC);
+        return yoRCRepository.save(yoRC);
     }
 
     /**
      * Get all the yoRCS.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<YoRC> findAll() {
@@ -47,12 +48,11 @@ public class YoRCService {
         return yoRCRepository.findAll();
     }
 
-
     /**
      * Get one yoRC by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<YoRC> findOne(Long id) {
@@ -63,7 +63,7 @@ public class YoRCService {
     /**
      * Delete the yoRC by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete YoRC : {}", id);

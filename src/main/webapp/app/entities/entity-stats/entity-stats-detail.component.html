@@ -1,62 +1,65 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="entityStats">
-            <h2><span>Entity Stats</span> {{entityStats.id}}</h2>
+            <h2><span>Entity Stats</span> {{ entityStats.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
                 <dt><span>Year</span></dt>
                 <dd>
-                    <span>{{entityStats.year}}</span>
+                    <span>{{ entityStats.year }}</span>
                 </dd>
                 <dt><span>Month</span></dt>
                 <dd>
-                    <span>{{entityStats.month}}</span>
+                    <span>{{ entityStats.month }}</span>
                 </dd>
                 <dt><span>Week</span></dt>
                 <dd>
-                    <span>{{entityStats.week}}</span>
+                    <span>{{ entityStats.week }}</span>
                 </dd>
                 <dt><span>Day</span></dt>
                 <dd>
-                    <span>{{entityStats.day}}</span>
+                    <span>{{ entityStats.day }}</span>
                 </dd>
                 <dt><span>Hour</span></dt>
                 <dd>
-                    <span>{{entityStats.hour}}</span>
+                    <span>{{ entityStats.hour }}</span>
                 </dd>
                 <dt><span>Fields</span></dt>
                 <dd>
-                    <span>{{entityStats.fields}}</span>
+                    <span>{{ entityStats.fields }}</span>
                 </dd>
                 <dt><span>Relationships</span></dt>
                 <dd>
-                    <span>{{entityStats.relationships}}</span>
+                    <span>{{ entityStats.relationships }}</span>
                 </dd>
                 <dt><span>Pagination</span></dt>
                 <dd>
-                    <span>{{entityStats.pagination}}</span>
+                    <span>{{ entityStats.pagination }}</span>
                 </dd>
                 <dt><span>Dto</span></dt>
                 <dd>
-                    <span>{{entityStats.dto}}</span>
+                    <span>{{ entityStats.dto }}</span>
                 </dd>
                 <dt><span>Service</span></dt>
                 <dd>
-                    <span>{{entityStats.service}}</span>
+                    <span>{{ entityStats.service }}</span>
                 </dd>
                 <dt><span>Fluent Methods</span></dt>
                 <dd>
-                    <span>{{entityStats.fluentMethods}}</span>
+                    <span>{{ entityStats.fluentMethods }}</span>
                 </dd>
                 <dt><span>Date</span></dt>
                 <dd>
-                    <span>{{entityStats.date}}</span>
+                    <span>{{ entityStats.date }}</span>
                 </dd>
                 <dt><span>Owner</span></dt>
                 <dd>
                     <div *ngIf="entityStats.owner">
-                        <a [routerLink]="['/generator-identity', entityStats.owner?.id, 'view']">{{entityStats.owner?.id}}</a>
+                        <a [routerLink]="['/generator-identity', entityStats.owner?.id, 'view']">{{ entityStats.owner?.id }}</a>
                     </div>
                 </dd>
             </dl>
@@ -64,13 +67,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/entity-stats', entityStats.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
             </button>
         </div>
     </div>

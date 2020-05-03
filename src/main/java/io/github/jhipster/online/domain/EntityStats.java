@@ -7,8 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
+import java.time.Instant;
 
 /**
  * A EntityStats.
@@ -24,7 +24,7 @@ public class EntityStats implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jhi_year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "month")
@@ -57,11 +57,11 @@ public class EntityStats implements Serializable {
     @Column(name = "fluent_methods")
     private Boolean fluentMethods;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("entityStats")
     private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -248,19 +248,15 @@ public class EntityStats implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof EntityStats)) {
             return false;
         }
-        EntityStats entityStats = (EntityStats) o;
-        if (entityStats.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), entityStats.getId());
+        return id != null && id.equals(((EntityStats) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

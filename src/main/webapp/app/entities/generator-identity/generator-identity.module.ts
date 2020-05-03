@@ -1,35 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from 'app/shared';
-import { JhonlineAdminModule } from 'app/admin/admin.module';
-import {
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { GeneratorIdentityComponent } from './generator-identity.component';
+import { GeneratorIdentityDetailComponent } from './generator-identity-detail.component';
+import { GeneratorIdentityUpdateComponent } from './generator-identity-update.component';
+import { GeneratorIdentityDeleteDialogComponent } from './generator-identity-delete-dialog.component';
+import { generatorIdentityRoute } from './generator-identity.route';
+
+@NgModule({
+  imports: [JhonlineSharedModule, RouterModule.forChild(generatorIdentityRoute)],
+  declarations: [
     GeneratorIdentityComponent,
     GeneratorIdentityDetailComponent,
     GeneratorIdentityUpdateComponent,
-    GeneratorIdentityDeletePopupComponent,
-    GeneratorIdentityDeleteDialogComponent,
-    generatorIdentityRoute,
-    generatorIdentityPopupRoute
-} from './';
-
-const ENTITY_STATES = [...generatorIdentityRoute, ...generatorIdentityPopupRoute];
-
-@NgModule({
-    imports: [JhonlineSharedModule, JhonlineAdminModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [
-        GeneratorIdentityComponent,
-        GeneratorIdentityDetailComponent,
-        GeneratorIdentityUpdateComponent,
-        GeneratorIdentityDeleteDialogComponent,
-        GeneratorIdentityDeletePopupComponent
-    ],
-    entryComponents: [
-        GeneratorIdentityComponent,
-        GeneratorIdentityUpdateComponent,
-        GeneratorIdentityDeleteDialogComponent,
-        GeneratorIdentityDeletePopupComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    GeneratorIdentityDeleteDialogComponent
+  ],
+  entryComponents: [GeneratorIdentityDeleteDialogComponent]
 })
 export class JhonlineGeneratorIdentityModule {}

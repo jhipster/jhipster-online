@@ -1,23 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from 'app/shared';
-import {
-    YoRCComponent,
-    YoRCDetailComponent,
-    YoRCUpdateComponent,
-    YoRCDeletePopupComponent,
-    YoRCDeleteDialogComponent,
-    yoRCRoute,
-    yoRCPopupRoute
-} from './';
-
-const ENTITY_STATES = [...yoRCRoute, ...yoRCPopupRoute];
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { YoRCComponent } from './yo-rc.component';
+import { YoRCDetailComponent } from './yo-rc-detail.component';
+import { YoRCUpdateComponent } from './yo-rc-update.component';
+import { YoRCDeleteDialogComponent } from './yo-rc-delete-dialog.component';
+import { yoRCRoute } from './yo-rc.route';
 
 @NgModule({
-    imports: [JhonlineSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [YoRCComponent, YoRCDetailComponent, YoRCUpdateComponent, YoRCDeleteDialogComponent, YoRCDeletePopupComponent],
-    entryComponents: [YoRCComponent, YoRCUpdateComponent, YoRCDeleteDialogComponent, YoRCDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedModule, RouterModule.forChild(yoRCRoute)],
+  declarations: [YoRCComponent, YoRCDetailComponent, YoRCUpdateComponent, YoRCDeleteDialogComponent],
+  entryComponents: [YoRCDeleteDialogComponent]
 })
 export class JhonlineYoRCModule {}

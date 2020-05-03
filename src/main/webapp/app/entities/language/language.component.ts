@@ -1,58 +1,49 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ILanguage } from 'app/shared/model/language.model';
-import { Principal } from 'app/core';
 import { LanguageService } from './language.service';
+import { LanguageDeleteDialogComponent } from './language-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-language',
-    templateUrl: './language.component.html'
+  selector: 'jhi-language',
+  templateUrl: './language.component.html'
 })
 export class LanguageComponent implements OnInit, OnDestroy {
-    languages: ILanguage[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  languages?: ILanguage[];
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private languageService: LanguageService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(protected languageService: LanguageService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
-    loadAll() {
-        this.languageService.query().subscribe(
-            (res: HttpResponse<ILanguage[]>) => {
-                this.languages = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    this.languageService.query().subscribe((res: HttpResponse<ILanguage[]>) => (this.languages = res.body || []));
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInLanguages();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInLanguages();
-    }
+  trackId(index: number, item: ILanguage): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  registerChangeInLanguages(): void {
+    this.eventSubscriber = this.eventManager.subscribe('languageListModification', () => this.loadAll());
+  }
 
-    trackId(index: number, item: ILanguage) {
-        return item.id;
-    }
-
-    registerChangeInLanguages() {
-        this.eventSubscriber = this.eventManager.subscribe('languageListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  delete(language: ILanguage): void {
+    const modalRef = this.modalService.open(LanguageDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.language = language;
+  }
 }

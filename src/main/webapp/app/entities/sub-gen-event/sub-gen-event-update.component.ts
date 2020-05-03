@@ -1,87 +1,125 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiAlertService } from 'ng-jhipster';
 
-import { ISubGenEvent } from 'app/shared/model/sub-gen-event.model';
+import { ISubGenEvent, SubGenEvent } from 'app/shared/model/sub-gen-event.model';
 import { SubGenEventService } from './sub-gen-event.service';
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
-import { GeneratorIdentityService } from 'app/entities/generator-identity';
+import { GeneratorIdentityService } from 'app/entities/generator-identity/generator-identity.service';
 
 @Component({
-    selector: 'jhi-sub-gen-event-update',
-    templateUrl: './sub-gen-event-update.component.html'
+  selector: 'jhi-sub-gen-event-update',
+  templateUrl: './sub-gen-event-update.component.html'
 })
 export class SubGenEventUpdateComponent implements OnInit {
-    private _subGenEvent: ISubGenEvent;
-    isSaving: boolean;
+  isSaving = false;
+  generatoridentities: IGeneratorIdentity[] = [];
 
-    generatoridentities: IGeneratorIdentity[];
-    date: string;
+  editForm = this.fb.group({
+    id: [],
+    year: [],
+    month: [],
+    week: [],
+    day: [],
+    hour: [],
+    source: [],
+    type: [],
+    event: [],
+    date: [],
+    owner: []
+  });
 
-    constructor(
-        private jhiAlertService: JhiAlertService,
-        private subGenEventService: SubGenEventService,
-        private generatorIdentityService: GeneratorIdentityService,
-        private activatedRoute: ActivatedRoute
-    ) {}
+  constructor(
+    protected subGenEventService: SubGenEventService,
+    protected generatorIdentityService: GeneratorIdentityService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
-    ngOnInit() {
-        this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ subGenEvent }) => {
-            this.subGenEvent = subGenEvent;
-        });
-        this.generatorIdentityService.query().subscribe(
-            (res: HttpResponse<IGeneratorIdentity[]>) => {
-                this.generatoridentities = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ subGenEvent }) => {
+      if (!subGenEvent.id) {
+        const today = moment().startOf('day');
+        subGenEvent.date = today;
+      }
+
+      this.updateForm(subGenEvent);
+
+      this.generatorIdentityService
+        .query()
+        .subscribe((res: HttpResponse<IGeneratorIdentity[]>) => (this.generatoridentities = res.body || []));
+    });
+  }
+
+  updateForm(subGenEvent: ISubGenEvent): void {
+    this.editForm.patchValue({
+      id: subGenEvent.id,
+      year: subGenEvent.year,
+      month: subGenEvent.month,
+      week: subGenEvent.week,
+      day: subGenEvent.day,
+      hour: subGenEvent.hour,
+      source: subGenEvent.source,
+      type: subGenEvent.type,
+      event: subGenEvent.event,
+      date: subGenEvent.date ? subGenEvent.date.format(DATE_TIME_FORMAT) : null,
+      owner: subGenEvent.owner
+    });
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
+  save(): void {
+    this.isSaving = true;
+    const subGenEvent = this.createFromForm();
+    if (subGenEvent.id !== undefined) {
+      this.subscribeToSaveResponse(this.subGenEventService.update(subGenEvent));
+    } else {
+      this.subscribeToSaveResponse(this.subGenEventService.create(subGenEvent));
     }
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  private createFromForm(): ISubGenEvent {
+    return {
+      ...new SubGenEvent(),
+      id: this.editForm.get(['id'])!.value,
+      year: this.editForm.get(['year'])!.value,
+      month: this.editForm.get(['month'])!.value,
+      week: this.editForm.get(['week'])!.value,
+      day: this.editForm.get(['day'])!.value,
+      hour: this.editForm.get(['hour'])!.value,
+      source: this.editForm.get(['source'])!.value,
+      type: this.editForm.get(['type'])!.value,
+      event: this.editForm.get(['event'])!.value,
+      date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      owner: this.editForm.get(['owner'])!.value
+    };
+  }
 
-    save() {
-        this.isSaving = true;
-        this.subGenEvent.date = moment(this.date, DATE_TIME_FORMAT);
-        if (this.subGenEvent.id !== undefined) {
-            this.subscribeToSaveResponse(this.subGenEventService.update(this.subGenEvent));
-        } else {
-            this.subscribeToSaveResponse(this.subGenEventService.create(this.subGenEvent));
-        }
-    }
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ISubGenEvent>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
 
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ISubGenEvent>>) {
-        result.subscribe((res: HttpResponse<ISubGenEvent>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
 
-    private onSaveSuccess() {
-        this.isSaving = false;
-        this.previousState();
-    }
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
 
-    private onSaveError() {
-        this.isSaving = false;
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
-
-    trackGeneratorIdentityById(index: number, item: IGeneratorIdentity) {
-        return item.id;
-    }
-    get subGenEvent() {
-        return this._subGenEvent;
-    }
-
-    set subGenEvent(subGenEvent: ISubGenEvent) {
-        this._subGenEvent = subGenEvent;
-        this.date = moment(subGenEvent.date).format(DATE_TIME_FORMAT);
-    }
+  trackById(index: number, item: IGeneratorIdentity): any {
+    return item.id;
+  }
 }

@@ -30,7 +30,7 @@ public class GeneratorIdentity implements Serializable {
     private String guid;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("generatorIdentities")
     private User owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -87,19 +87,15 @@ public class GeneratorIdentity implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof GeneratorIdentity)) {
             return false;
         }
-        GeneratorIdentity generatorIdentity = (GeneratorIdentity) o;
-        if (generatorIdentity.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), generatorIdentity.getId());
+        return id != null && id.equals(((GeneratorIdentity) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

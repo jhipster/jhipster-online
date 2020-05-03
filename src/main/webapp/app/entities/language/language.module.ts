@@ -1,29 +1,16 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from 'app/shared';
-import {
-    LanguageComponent,
-    LanguageDetailComponent,
-    LanguageUpdateComponent,
-    LanguageDeletePopupComponent,
-    LanguageDeleteDialogComponent,
-    languageRoute,
-    languagePopupRoute
-} from './';
-
-const ENTITY_STATES = [...languageRoute, ...languagePopupRoute];
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { LanguageComponent } from './language.component';
+import { LanguageDetailComponent } from './language-detail.component';
+import { LanguageUpdateComponent } from './language-update.component';
+import { LanguageDeleteDialogComponent } from './language-delete-dialog.component';
+import { languageRoute } from './language.route';
 
 @NgModule({
-    imports: [JhonlineSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [
-        LanguageComponent,
-        LanguageDetailComponent,
-        LanguageUpdateComponent,
-        LanguageDeleteDialogComponent,
-        LanguageDeletePopupComponent
-    ],
-    entryComponents: [LanguageComponent, LanguageUpdateComponent, LanguageDeleteDialogComponent, LanguageDeletePopupComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedModule, RouterModule.forChild(languageRoute)],
+  declarations: [LanguageComponent, LanguageDetailComponent, LanguageUpdateComponent, LanguageDeleteDialogComponent],
+  entryComponents: [LanguageDeleteDialogComponent]
 })
 export class JhonlineLanguageModule {}

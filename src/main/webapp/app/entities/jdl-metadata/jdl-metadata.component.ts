@@ -1,58 +1,53 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IJdlMetadata } from 'app/shared/model/jdl-metadata.model';
-import { Principal } from 'app/core';
 import { JdlMetadataService } from './jdl-metadata.service';
+import { JdlMetadataDeleteDialogComponent } from './jdl-metadata-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-jdl-metadata',
-    templateUrl: './jdl-metadata.component.html'
+  selector: 'jhi-jdl-metadata',
+  templateUrl: './jdl-metadata.component.html'
 })
 export class JdlMetadataComponent implements OnInit, OnDestroy {
-    jdlMetadata: IJdlMetadata[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  jdlMetadata?: IJdlMetadata[];
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private jdlMetadataService: JdlMetadataService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(
+    protected jdlMetadataService: JdlMetadataService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
-    loadAll() {
-        this.jdlMetadataService.query().subscribe(
-            (res: HttpResponse<IJdlMetadata[]>) => {
-                this.jdlMetadata = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll(): void {
+    this.jdlMetadataService.query().subscribe((res: HttpResponse<IJdlMetadata[]>) => (this.jdlMetadata = res.body || []));
+  }
+
+  ngOnInit(): void {
+    this.loadAll();
+    this.registerChangeInJdlMetadata();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInJdlMetadata();
-    }
+  trackId(index: number, item: IJdlMetadata): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  registerChangeInJdlMetadata(): void {
+    this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
+  }
 
-    trackId(index: number, item: IJdlMetadata) {
-        return item.id;
-    }
-
-    registerChangeInJdlMetadata() {
-        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  delete(jdlMetadata: IJdlMetadata): void {
+    const modalRef = this.modalService.open(JdlMetadataDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.jdlMetadata = jdlMetadata;
+  }
 }

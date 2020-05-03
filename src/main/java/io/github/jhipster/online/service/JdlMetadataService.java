@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
+
 /**
- * Service Implementation for managing JdlMetadata.
+ * Service Implementation for managing {@link JdlMetadata}.
  */
 @Service
 @Transactional
@@ -29,17 +29,18 @@ public class JdlMetadataService {
     /**
      * Save a jdlMetadata.
      *
-     * @param jdlMetadata the entity to save
-     * @return the persisted entity
+     * @param jdlMetadata the entity to save.
+     * @return the persisted entity.
      */
     public JdlMetadata save(JdlMetadata jdlMetadata) {
-        log.debug("Request to save JdlMetadata : {}", jdlMetadata);        return jdlMetadataRepository.save(jdlMetadata);
+        log.debug("Request to save JdlMetadata : {}", jdlMetadata);
+        return jdlMetadataRepository.save(jdlMetadata);
     }
 
     /**
      * Get all the jdlMetadata.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<JdlMetadata> findAll() {
@@ -47,12 +48,11 @@ public class JdlMetadataService {
         return jdlMetadataRepository.findAll();
     }
 
-
     /**
      * Get one jdlMetadata by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<JdlMetadata> findOne(Long id) {
@@ -63,7 +63,7 @@ public class JdlMetadataService {
     /**
      * Delete the jdlMetadata by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete JdlMetadata : {}", id);

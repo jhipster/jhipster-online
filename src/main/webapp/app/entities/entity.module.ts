@@ -1,29 +1,39 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-import { JhonlineJdlMetadataModule } from './jdl-metadata/jdl-metadata.module';
-import { JhonlineSubGenEventModule } from './sub-gen-event/sub-gen-event.module';
-import { JhonlineEntityStatsModule } from './entity-stats/entity-stats.module';
-import { JhonlineLanguageModule } from './language/language.module';
-import { JhonlineGeneratorIdentityModule } from './generator-identity/generator-identity.module';
-import { JhonlineUserApplicationModule } from './user-application/user-application.module';
-import { JhonlineYoRCModule } from './yo-rc/yo-rc.module';
-/* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    // prettier-ignore
-    imports: [
-        JhonlineJdlMetadataModule,
-        JhonlineSubGenEventModule,
-        JhonlineEntityStatsModule,
-        JhonlineLanguageModule,
-        JhonlineGeneratorIdentityModule,
-        JhonlineUserApplicationModule,
-        JhonlineYoRCModule,
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    RouterModule.forChild([
+      {
+        path: 'jdl-metadata',
+        loadChildren: () => import('./jdl-metadata/jdl-metadata.module').then(m => m.JhonlineJdlMetadataModule)
+      },
+      {
+        path: 'sub-gen-event',
+        loadChildren: () => import('./sub-gen-event/sub-gen-event.module').then(m => m.JhonlineSubGenEventModule)
+      },
+      {
+        path: 'entity-stats',
+        loadChildren: () => import('./entity-stats/entity-stats.module').then(m => m.JhonlineEntityStatsModule)
+      },
+      {
+        path: 'language',
+        loadChildren: () => import('./language/language.module').then(m => m.JhonlineLanguageModule)
+      },
+      {
+        path: 'generator-identity',
+        loadChildren: () => import('./generator-identity/generator-identity.module').then(m => m.JhonlineGeneratorIdentityModule)
+      },
+      {
+        path: 'user-application',
+        loadChildren: () => import('./user-application/user-application.module').then(m => m.JhonlineUserApplicationModule)
+      },
+      {
+        path: 'yo-rc',
+        loadChildren: () => import('./yo-rc/yo-rc.module').then(m => m.JhonlineYoRCModule)
+      }
+      /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+    ])
+  ]
 })
 export class JhonlineEntityModule {}

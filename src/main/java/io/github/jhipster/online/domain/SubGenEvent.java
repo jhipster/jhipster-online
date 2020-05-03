@@ -7,8 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
+import java.time.Instant;
 
 /**
  * A SubGenEvent.
@@ -24,7 +24,7 @@ public class SubGenEvent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jhi_year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "month")
@@ -42,17 +42,17 @@ public class SubGenEvent implements Serializable {
     @Column(name = "source")
     private String source;
 
-    @Column(name = "jhi_type")
+    @Column(name = "type")
     private String type;
 
     @Column(name = "event")
     private String event;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("subGenEvents")
     private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -200,19 +200,15 @@ public class SubGenEvent implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof SubGenEvent)) {
             return false;
         }
-        SubGenEvent subGenEvent = (SubGenEvent) o;
-        if (subGenEvent.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), subGenEvent.getId());
+        return id != null && id.equals(((SubGenEvent) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

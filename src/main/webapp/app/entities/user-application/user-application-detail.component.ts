@@ -5,28 +5,27 @@ import { JhiDataUtils } from 'ng-jhipster';
 import { IUserApplication } from 'app/shared/model/user-application.model';
 
 @Component({
-    selector: 'jhi-user-application-detail',
-    templateUrl: './user-application-detail.component.html'
+  selector: 'jhi-user-application-detail',
+  templateUrl: './user-application-detail.component.html'
 })
 export class UserApplicationDetailComponent implements OnInit {
-    userApplication: IUserApplication;
+  userApplication: IUserApplication | null = null;
 
-    constructor(private dataUtils: JhiDataUtils, private activatedRoute: ActivatedRoute) {}
+  constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ userApplication }) => {
-            this.userApplication = userApplication;
-        });
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ userApplication }) => (this.userApplication = userApplication));
+  }
 
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
 
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
-    previousState() {
-        window.history.back();
-    }
+  openFile(contentType: string, base64String: string): void {
+    this.dataUtils.openFile(contentType, base64String);
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
 }

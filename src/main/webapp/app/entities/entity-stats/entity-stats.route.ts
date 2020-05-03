@@ -1,90 +1,83 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { EntityStats } from 'app/shared/model/entity-stats.model';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { Authority } from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IEntityStats, EntityStats } from 'app/shared/model/entity-stats.model';
 import { EntityStatsService } from './entity-stats.service';
 import { EntityStatsComponent } from './entity-stats.component';
 import { EntityStatsDetailComponent } from './entity-stats-detail.component';
 import { EntityStatsUpdateComponent } from './entity-stats-update.component';
-import { EntityStatsDeletePopupComponent } from './entity-stats-delete-dialog.component';
-import { IEntityStats } from 'app/shared/model/entity-stats.model';
 
 @Injectable({ providedIn: 'root' })
 export class EntityStatsResolve implements Resolve<IEntityStats> {
-    constructor(private service: EntityStatsService) {}
+  constructor(private service: EntityStatsService, private router: Router) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(map((entityStats: HttpResponse<EntityStats>) => entityStats.body));
-        }
-        return of(new EntityStats());
+  resolve(route: ActivatedRouteSnapshot): Observable<IEntityStats> | Observable<never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((entityStats: HttpResponse<EntityStats>) => {
+          if (entityStats.body) {
+            return of(entityStats.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
     }
+    return of(new EntityStats());
+  }
 }
 
 export const entityStatsRoute: Routes = [
-    {
-        path: 'entity-stats',
-        component: EntityStatsComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'EntityStats'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: EntityStatsComponent,
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'EntityStats'
     },
-    {
-        path: 'entity-stats/:id/view',
-        component: EntityStatsDetailComponent,
-        resolve: {
-            entityStats: EntityStatsResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'EntityStats'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: EntityStatsDetailComponent,
+    resolve: {
+      entityStats: EntityStatsResolve
     },
-    {
-        path: 'entity-stats/new',
-        component: EntityStatsUpdateComponent,
-        resolve: {
-            entityStats: EntityStatsResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'EntityStats'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'EntityStats'
     },
-    {
-        path: 'entity-stats/:id/edit',
-        component: EntityStatsUpdateComponent,
-        resolve: {
-            entityStats: EntityStatsResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'EntityStats'
-        },
-        canActivate: [UserRouteAccessService]
-    }
-];
-
-export const entityStatsPopupRoute: Routes = [
-    {
-        path: 'entity-stats/:id/delete',
-        component: EntityStatsDeletePopupComponent,
-        resolve: {
-            entityStats: EntityStatsResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'EntityStats'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: EntityStatsUpdateComponent,
+    resolve: {
+      entityStats: EntityStatsResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'EntityStats'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: EntityStatsUpdateComponent,
+    resolve: {
+      entityStats: EntityStatsResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'EntityStats'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];

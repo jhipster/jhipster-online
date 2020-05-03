@@ -4,21 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { ILanguage } from 'app/shared/model/language.model';
 
 @Component({
-    selector: 'jhi-language-detail',
-    templateUrl: './language-detail.component.html'
+  selector: 'jhi-language-detail',
+  templateUrl: './language-detail.component.html'
 })
 export class LanguageDetailComponent implements OnInit {
-    language: ILanguage;
+  language: ILanguage | null = null;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ language }) => {
-            this.language = language;
-        });
-    }
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ language }) => (this.language = language));
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState(): void {
+    window.history.back();
+  }
 }

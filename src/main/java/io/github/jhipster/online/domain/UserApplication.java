@@ -25,7 +25,7 @@ public class UserApplication implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "jhi_shared")
+    @Column(name = "shared")
     private Boolean shared;
 
     @Column(name = "shared_link")
@@ -118,19 +118,15 @@ public class UserApplication implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof UserApplication)) {
             return false;
         }
-        UserApplication userApplication = (UserApplication) o;
-        if (userApplication.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), userApplication.getId());
+        return id != null && id.equals(((UserApplication) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
+
 /**
- * Service Implementation for managing SubGenEvent.
+ * Service Implementation for managing {@link SubGenEvent}.
  */
 @Service
 @Transactional
@@ -29,17 +29,18 @@ public class SubGenEventService {
     /**
      * Save a subGenEvent.
      *
-     * @param subGenEvent the entity to save
-     * @return the persisted entity
+     * @param subGenEvent the entity to save.
+     * @return the persisted entity.
      */
     public SubGenEvent save(SubGenEvent subGenEvent) {
-        log.debug("Request to save SubGenEvent : {}", subGenEvent);        return subGenEventRepository.save(subGenEvent);
+        log.debug("Request to save SubGenEvent : {}", subGenEvent);
+        return subGenEventRepository.save(subGenEvent);
     }
 
     /**
      * Get all the subGenEvents.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<SubGenEvent> findAll() {
@@ -47,12 +48,11 @@ public class SubGenEventService {
         return subGenEventRepository.findAll();
     }
 
-
     /**
      * Get one subGenEvent by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<SubGenEvent> findOne(Long id) {
@@ -63,7 +63,7 @@ public class SubGenEventService {
     /**
      * Delete the subGenEvent by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete SubGenEvent : {}", id);
