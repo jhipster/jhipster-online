@@ -1,0 +1,62 @@
+<div>
+    <h2 id="page-heading">
+        <span>User Applications</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-application" [routerLink]="['/user-application/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new User Application
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="userApplications">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Name</span></th>
+            <th><span>Shared</span></th>
+            <th><span>Shared Link</span></th>
+            <th><span>User Id</span></th>
+            <th><span>Configuration</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let userApplication of userApplications ;trackBy: trackId">
+                <td><a [routerLink]="['/user-application', userApplication.id, 'view' ]">{{userApplication.id}}</a></td>
+                <td>{{userApplication.name}}</td>
+                <td>{{userApplication.shared}}</td>
+                <td>{{userApplication.sharedLink}}</td>
+                <td>{{userApplication.userId}}</td>
+                <td>{{userApplication.configuration}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/user-application', userApplication.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/user-application', userApplication.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'user-application/'+ userApplication.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

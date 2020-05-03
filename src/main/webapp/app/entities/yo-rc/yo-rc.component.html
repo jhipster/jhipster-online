@@ -1,0 +1,134 @@
+<div>
+    <h2 id="page-heading">
+        <span>Yo RCS</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-yo-rc" [routerLink]="['/yo-rc/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Yo RC
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="yoRCS">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Jhipster Version</span></th>
+            <th><span>Creation Date</span></th>
+            <th><span>Git Provider</span></th>
+            <th><span>Node Version</span></th>
+            <th><span>Os</span></th>
+            <th><span>Arch</span></th>
+            <th><span>Cpu</span></th>
+            <th><span>Cores</span></th>
+            <th><span>Memory</span></th>
+            <th><span>User Language</span></th>
+            <th><span>Year</span></th>
+            <th><span>Month</span></th>
+            <th><span>Week</span></th>
+            <th><span>Day</span></th>
+            <th><span>Hour</span></th>
+            <th><span>Server Port</span></th>
+            <th><span>Authentication Type</span></th>
+            <th><span>Cache Provider</span></th>
+            <th><span>Enable Hibernate Cache</span></th>
+            <th><span>Websocket</span></th>
+            <th><span>Database Type</span></th>
+            <th><span>Dev Database Type</span></th>
+            <th><span>Prod Database Type</span></th>
+            <th><span>Search Engine</span></th>
+            <th><span>Message Broker</span></th>
+            <th><span>Service Discovery Type</span></th>
+            <th><span>Build Tool</span></th>
+            <th><span>Enable Swagger Codegen</span></th>
+            <th><span>Client Framework</span></th>
+            <th><span>Use Sass</span></th>
+            <th><span>Client Package Manager</span></th>
+            <th><span>Application Type</span></th>
+            <th><span>Jhi Prefix</span></th>
+            <th><span>Enable Translation</span></th>
+            <th><span>Native Language</span></th>
+            <th><span>Has Protractor</span></th>
+            <th><span>Has Gatling</span></th>
+            <th><span>Has Cucumber</span></th>
+            <th><span>Owner</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let yoRC of yoRCS ;trackBy: trackId">
+                <td><a [routerLink]="['/yo-rc', yoRC.id, 'view' ]">{{yoRC.id}}</a></td>
+                <td>{{yoRC.jhipsterVersion}}</td>
+                <td>{{yoRC.creationDate | date:'medium'}}</td>
+                <td>{{yoRC.gitProvider}}</td>
+                <td>{{yoRC.nodeVersion}}</td>
+                <td>{{yoRC.os}}</td>
+                <td>{{yoRC.arch}}</td>
+                <td>{{yoRC.cpu}}</td>
+                <td>{{yoRC.cores}}</td>
+                <td>{{yoRC.memory}}</td>
+                <td>{{yoRC.userLanguage}}</td>
+                <td>{{yoRC.year}}</td>
+                <td>{{yoRC.month}}</td>
+                <td>{{yoRC.week}}</td>
+                <td>{{yoRC.day}}</td>
+                <td>{{yoRC.hour}}</td>
+                <td>{{yoRC.serverPort}}</td>
+                <td>{{yoRC.authenticationType}}</td>
+                <td>{{yoRC.cacheProvider}}</td>
+                <td>{{yoRC.enableHibernateCache}}</td>
+                <td>{{yoRC.websocket}}</td>
+                <td>{{yoRC.databaseType}}</td>
+                <td>{{yoRC.devDatabaseType}}</td>
+                <td>{{yoRC.prodDatabaseType}}</td>
+                <td>{{yoRC.searchEngine}}</td>
+                <td>{{yoRC.messageBroker}}</td>
+                <td>{{yoRC.serviceDiscoveryType}}</td>
+                <td>{{yoRC.buildTool}}</td>
+                <td>{{yoRC.enableSwaggerCodegen}}</td>
+                <td>{{yoRC.clientFramework}}</td>
+                <td>{{yoRC.useSass}}</td>
+                <td>{{yoRC.clientPackageManager}}</td>
+                <td>{{yoRC.applicationType}}</td>
+                <td>{{yoRC.jhiPrefix}}</td>
+                <td>{{yoRC.enableTranslation}}</td>
+                <td>{{yoRC.nativeLanguage}}</td>
+                <td>{{yoRC.hasProtractor}}</td>
+                <td>{{yoRC.hasGatling}}</td>
+                <td>{{yoRC.hasCucumber}}</td>
+                <td>
+                    <div *ngIf="yoRC.owner">
+                        <a [routerLink]="['../generator-identity', yoRC.owner?.id, 'view' ]" >{{yoRC.owner?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/yo-rc', yoRC.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/yo-rc', yoRC.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'yo-rc/'+ yoRC.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

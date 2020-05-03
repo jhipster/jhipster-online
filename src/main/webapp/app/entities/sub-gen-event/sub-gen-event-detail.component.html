@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="subGenEvent">
+            <h2><span>Sub Gen Event</span> {{subGenEvent.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Year</span></dt>
+                <dd>
+                    <span>{{subGenEvent.year}}</span>
+                </dd>
+                <dt><span>Month</span></dt>
+                <dd>
+                    <span>{{subGenEvent.month}}</span>
+                </dd>
+                <dt><span>Week</span></dt>
+                <dd>
+                    <span>{{subGenEvent.week}}</span>
+                </dd>
+                <dt><span>Day</span></dt>
+                <dd>
+                    <span>{{subGenEvent.day}}</span>
+                </dd>
+                <dt><span>Hour</span></dt>
+                <dd>
+                    <span>{{subGenEvent.hour}}</span>
+                </dd>
+                <dt><span>Source</span></dt>
+                <dd>
+                    <span>{{subGenEvent.source}}</span>
+                </dd>
+                <dt><span>Type</span></dt>
+                <dd>
+                    <span>{{subGenEvent.type}}</span>
+                </dd>
+                <dt><span>Event</span></dt>
+                <dd>
+                    <span>{{subGenEvent.event}}</span>
+                </dd>
+                <dt><span>Date</span></dt>
+                <dd>
+                    <span>{{subGenEvent.date}}</span>
+                </dd>
+                <dt><span>Owner</span></dt>
+                <dd>
+                    <div *ngIf="subGenEvent.owner">
+                        <a [routerLink]="['/generator-identity', subGenEvent.owner?.id, 'view']">{{subGenEvent.owner?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sub-gen-event', subGenEvent.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

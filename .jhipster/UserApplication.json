@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shared",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "sharedLink",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "configuration",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "user_application",
+    "pagination": "no"
+}

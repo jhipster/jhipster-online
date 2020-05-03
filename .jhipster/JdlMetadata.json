@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "jdlMetadata"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "key",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isPublic",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20171116094805",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "jdl_metadata",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}
