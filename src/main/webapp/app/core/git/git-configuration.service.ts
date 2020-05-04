@@ -16,33 +16,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { EventEmitter, Injectable, Output } from '@angular/core';
-
-import { GitConfigurationModel, GitProviderService } from 'app/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitProviderService } from 'app/core/git/git-provider.service';
 
 @Injectable({ providedIn: 'root' })
 export class GitConfigurationService {
-    sharedData = new EventEmitter<GitConfigurationModel>();
+  sharedData = new EventEmitter<GitConfigurationModel>();
 
-    gitConfig: GitConfigurationModel;
+  gitConfig!: GitConfigurationModel;
 
-    constructor(public gitProviderService: GitProviderService) {
-        this.newGitConfig();
-    }
+  constructor(public gitProviderService: GitProviderService) {
+    this.newGitConfig();
+  }
 
-    setupGitConfiguration(): Promise<any> {
-        return this.gitProviderService
-            .getGitConfig()
-            .toPromise()
-            .then((config: any) => {
-                this.gitConfig = { ...this.gitConfig, ...config };
-                this.sharedData.emit(this.gitConfig);
-            })
-            .catch(() => Promise.resolve());
-    }
-
-    newGitConfig() {
-        this.gitConfig = new GitConfigurationModel([], false, null, null, false, null, null, null, false, false);
+  setupGitConfiguration(): Promise<any> {
+    return this.gitProviderService
+      .getGitConfig()
+      .toPromise()
+      .then((config: any) => {
+        this.gitConfig = { ...this.gitConfig, ...config };
         this.sharedData.emit(this.gitConfig);
-    }
+      })
+      .catch(() => Promise.resolve());
+  }
+
+  newGitConfig(): void {
+    this.gitConfig = new GitConfigurationModel([], false, '', '', false, '', '', '', false, false);
+    this.sharedData.emit(this.gitConfig);
+  }
 }

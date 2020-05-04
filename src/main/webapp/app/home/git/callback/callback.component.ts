@@ -18,59 +18,59 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { GithubCallbackService } from './callback.service';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
 
 @Component({
-    selector: 'jhi-github-callback',
-    templateUrl: './callback.component.html',
-    styleUrls: ['callback.scss']
+  selector: 'jhi-github-callback',
+  templateUrl: './callback.component.html',
+  styleUrls: ['callback.scss']
 })
 export class CallbackComponent implements OnInit {
-    token: string;
+  token!: string;
 
-    provider: string;
+  provider!: string;
 
-    message: string;
+  message!: string;
 
-    isLoading = false;
+  isLoading = false;
 
-    alertType = 'warning';
+  alertType = 'warning';
 
-    gitConfig: GitConfigurationModel;
+  gitConfig?: GitConfigurationModel;
 
-    constructor(
-        private route: ActivatedRoute,
-        private callbackService: GithubCallbackService,
-        private gitConfigurationService: GitConfigurationService
-    ) {}
+  constructor(
+    private route: ActivatedRoute,
+    private callbackService: GithubCallbackService,
+    private gitConfigurationService: GitConfigurationService
+  ) {}
 
-    ngOnInit(): void {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.route.params.subscribe(params => {
-            this.provider = params['provider'];
-            this.token = params['token'];
-            this.isLoading = true;
-            const capitalizedProvider = this.provider.charAt(0).toUpperCase() + this.provider.slice(1);
-            this.message = `JHipster is trying to link your ${capitalizedProvider} repositories...`;
-            this.callbackService.saveToken(this.provider, this.token).subscribe(
-                () => {
-                    this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
-                    this.isLoading = false;
-                    this.alertType = 'success';
-                    if (this.provider === 'github') {
-                        this.gitConfigurationService.gitConfig.githubConfigured = true;
-                    } else if (this.provider === 'gitlab') {
-                        this.gitConfigurationService.gitConfig.gitlabConfigured = true;
-                    }
-                },
-                () => {
-                    this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;
-                    this.isLoading = false;
-                    this.alertType = 'danger';
-                }
-            );
-        });
-    }
+  ngOnInit(): void {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+    this.route.params.subscribe(params => {
+      this.provider = params['provider'];
+      this.token = params['token'];
+      this.isLoading = true;
+      const capitalizedProvider = this.provider.charAt(0).toUpperCase() + this.provider.slice(1);
+      this.message = `JHipster is trying to link your ${capitalizedProvider} repositories...`;
+      this.callbackService.saveToken(this.provider, this.token).subscribe(
+        () => {
+          this.message = `JHipster is successfully linked to your ${capitalizedProvider} repositories.`;
+          this.isLoading = false;
+          this.alertType = 'success';
+          if (this.provider === 'github') {
+            this.gitConfigurationService.gitConfig.githubConfigured = true;
+          } else if (this.provider === 'gitlab') {
+            this.gitConfigurationService.gitConfig.gitlabConfigured = true;
+          }
+        },
+        () => {
+          this.message = `JHipster has failed to reach your ${capitalizedProvider} repositories.`;
+          this.isLoading = false;
+          this.alertType = 'danger';
+        }
+      );
+    });
+  }
 }

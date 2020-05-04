@@ -21,140 +21,146 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
 import { JdlMetadataService } from './jdl-metadata.service';
 import { JdlMetadata } from './jdl-metadata.model';
 import { JdlOutputDialogComponent } from './jdl.output.component';
 import { JdlService } from './jdl.service';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
 
 @Component({
-    selector: 'jhi-jdl-studio-delete',
-    templateUrl: './jdl-studio-delete.component.html'
+  selector: 'jhi-jdl-studio-delete',
+  templateUrl: './jdl-studio-delete.component.html'
 })
 export class DeleteJdlStudioComponent implements OnInit, OnDestroy {
-    jdlModelName = '';
-    jdlId = '';
-    private subscription: Subscription;
+  jdlModelName: string | undefined = '';
+  jdlId: string | undefined = '';
+  private subscription!: Subscription;
 
-    constructor(private jdlMetadataService: JdlMetadataService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private jdlMetadataService: JdlMetadataService, private route: ActivatedRoute, private router: Router) {}
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
-            this.jdlMetadataService.find(params['jdlId']).subscribe(
-                (jdlMetadata: JdlMetadata) => {
-                    this.jdlId = jdlMetadata.id;
-                    this.jdlModelName = jdlMetadata.name;
-                },
-                (res: any) => console.log(res)
-            );
-        });
-    }
+  ngOnInit(): void {
+    this.subscription = this.route.params.subscribe(params => {
+      this.jdlMetadataService.find(params['jdlId']).subscribe(
+        (jdlMetadata: JdlMetadata) => {
+          this.jdlId = jdlMetadata.id;
+          this.jdlModelName = jdlMetadata.name;
+        },
+        // eslint-disable-next-line no-console
+        (res: any) => console.log(res)
+      );
+    });
+  }
 
-    deleteJdl(jdlId: string) {
-        this.jdlMetadataService.delete(jdlId).subscribe(
-            () => {
-                this.router.navigate(['/design-entities']);
-            },
-            error => {
-                console.log(error);
-                this.router.navigate(['/design-entities']);
-            }
-        );
-    }
+  deleteJdl(jdlId: string): void {
+    this.jdlMetadataService.delete(jdlId).subscribe(
+      () => {
+        this.router.navigate(['/design-entities']);
+      },
+      error => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        this.router.navigate(['/design-entities']);
+      }
+    );
+  }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
 
 @Component({
-    selector: 'jhi-jdl-studio-apply',
-    templateUrl: './jdl-studio-apply.component.html'
+  selector: 'jhi-jdl-studio-apply',
+  templateUrl: './jdl-studio-apply.component.html'
 })
 export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
-    private subscription: Subscription;
+  private subscription!: Subscription;
 
-    jdlModelName = '';
+  jdlModelName: string | undefined = '';
 
-    jdlId = '';
+  jdlId!: string | undefined;
 
-    submitted = false;
+  submitted = false;
 
-    selectedGitProvider: string;
-    selectedGitCompany: string;
-    selectedGitRepository: string;
+  selectedGitProvider!: string;
+  selectedGitCompany!: string;
+  selectedGitRepository!: string;
 
-    githubConfigured = false;
-    gitlabConfigured = false;
+  githubConfigured = false;
+  gitlabConfigured = false;
 
-    gitConfig: GitConfigurationModel;
+  gitConfig!: GitConfigurationModel;
 
-    isGitProviderComponentValid: boolean;
+  isGitProviderComponentValid?: boolean;
 
-    constructor(
-        private modalService: NgbModal,
-        private jdlMetadataService: JdlMetadataService,
-        private route: ActivatedRoute,
-        private gitConfigurationService: GitConfigurationService,
-        private jdlService: JdlService
-    ) {}
+  constructor(
+    private modalService: NgbModal,
+    private jdlMetadataService: JdlMetadataService,
+    private route: ActivatedRoute,
+    private gitConfigurationService: GitConfigurationService,
+    private jdlService: JdlService
+  ) {}
 
-    ngOnInit() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.githubConfigured = this.gitConfig.githubConfigured;
-        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.gitlabConfigured = gitConfig.gitlabConfigured;
-            this.githubConfigured = gitConfig.githubConfigured;
-        });
+  ngOnInit(): void {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+    this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+    this.githubConfigured = this.gitConfig.githubConfigured;
+    this.gitConfigurationService.sharedData.subscribe((gitConfig: any) => {
+      this.gitlabConfigured = gitConfig.gitlabConfigured;
+      this.githubConfigured = gitConfig.githubConfigured;
+    });
 
-        this.subscription = this.route.params.subscribe(params => {
-            this.jdlMetadataService.find(params['jdlId']).subscribe(
-                (jdlMetadata: JdlMetadata) => {
-                    this.jdlId = jdlMetadata.id;
-                    this.jdlModelName = jdlMetadata.name;
-                },
-                (res: any) => console.log(res)
-            );
-        });
-    }
+    this.subscription = this.route.params.subscribe(params => {
+      this.jdlMetadataService.find(params['jdlId']).subscribe(
+        (jdlMetadata: JdlMetadata) => {
+          this.jdlId = jdlMetadata.id;
+          this.jdlModelName = jdlMetadata.name;
+        },
+        // eslint-disable-next-line no-console
+        (res: any) => console.log(res)
+      );
+    });
+  }
 
-    updateSharedData(data: any) {
-        this.selectedGitProvider = data.selectedGitProvider;
-        this.selectedGitCompany = data.selectedGitCompany;
-        this.selectedGitRepository = data.selectedGitRepository;
-        this.isGitProviderComponentValid = data.isValid;
-    }
+  updateSharedData(data: any): void {
+    this.selectedGitProvider = data.selectedGitProvider;
+    this.selectedGitCompany = data.selectedGitCompany;
+    this.selectedGitRepository = data.selectedGitRepository;
+    this.isGitProviderComponentValid = data.isValid;
+  }
 
-    applyJdl() {
-        this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.jdlId).subscribe(
-            res => {
-                this.openOutputModal(res);
-                this.submitted = false;
-            },
-            err => {
-                console.log('Error applying the JDL Model.');
-                console.log(err);
-            }
-        );
-    }
+  applyJdl(): void {
+    this.jdlService.doApplyJdl(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.jdlId).subscribe(
+      (res: any) => {
+        this.openOutputModal(res);
+        this.submitted = false;
+      },
+      (err: any) => {
+        // eslint-disable-next-line no-console
+        console.log('Error applying the JDL Model.');
+        // eslint-disable-next-line no-console
+        console.log(err);
+      }
+    );
+  }
 
-    openOutputModal(applyJdlId: String) {
-        const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
+  openOutputModal(applyJdlId: String): void {
+    const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
-        modalRef.applyJdlId = applyJdlId;
-        modalRef.gitlabHost = this.gitConfig.gitlabHost;
-        modalRef.githubHost = this.gitConfig.githubHost;
-        modalRef.selectedGitProvider = this.selectedGitProvider;
-        modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.selectedGitRepository = this.selectedGitRepository;
-    }
+    modalRef.applyJdlId = applyJdlId;
+    modalRef.gitlabHost = this.gitConfig.gitlabHost;
+    modalRef.githubHost = this.gitConfig.githubHost;
+    modalRef.selectedGitProvider = this.selectedGitProvider;
+    modalRef.selectedGitCompany = this.selectedGitCompany;
+    modalRef.selectedGitRepository = this.selectedGitRepository;
+  }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-    isAtLeastOneGitProviderAvailableAndConfigured() {
-        return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured);
-    }
+  isAtLeastOneGitProviderAvailableAndConfigured(): boolean {
+    return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured);
+  }
 }

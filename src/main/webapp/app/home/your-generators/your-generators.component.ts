@@ -24,69 +24,69 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
-import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
 import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-generator-dialog.component';
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
+import { Principal } from 'app/core/auth/principal.service';
 
 @Component({
-    selector: 'jhi-your-generators',
-    templateUrl: './your-generators.component.html',
-    styleUrls: ['your-generators.scss']
+  selector: 'jhi-your-generators',
+  templateUrl: './your-generators.component.html',
+  styleUrls: ['your-generators.scss']
 })
 export class YourGeneratorsComponent implements OnInit, OnDestroy {
-    generatorIdentities: IGeneratorIdentity[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  generatorIdentities?: IGeneratorIdentity[] | null;
+  currentAccount: any;
+  eventSubscriber?: Subscription;
 
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal,
-        private modalService: NgbModal
-    ) {}
+  constructor(
+    private generatorIdentityService: GeneratorIdentityService,
+    private jhiAlertService: JhiAlertService,
+    private eventManager: JhiEventManager,
+    private principal: Principal,
+    private modalService: NgbModal
+  ) {}
 
-    refresh() {
-        this.generatorIdentityService.query().subscribe(
-            (res: HttpResponse<IGeneratorIdentity[]>) => {
-                this.generatorIdentities = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-    }
+  refresh(): void {
+    this.generatorIdentityService.query().subscribe(
+      (res: HttpResponse<IGeneratorIdentity[]>) => {
+        this.generatorIdentities = res.body;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+  }
 
-    ngOnInit() {
-        this.refresh();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInGeneratorIdentities();
-    }
+  ngOnInit(): void {
+    this.refresh();
+    this.principal.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInGeneratorIdentities();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    openUnbindModal(generatorId: string) {
-        const modalRef = this.modalService.open(RemoveGeneratorDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
+  openUnbindModal(generatorId: string): void {
+    const modalRef = this.modalService.open(RemoveGeneratorDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
-        modalRef.generatorId = generatorId;
-    }
+    modalRef.generatorId = generatorId;
+  }
 
-    openDataDeletionModal() {
-        this.modalService.open(DataDeletionDialogComponent, { size: 'lg', backdrop: 'static' });
-    }
+  openDataDeletionModal(): void {
+    this.modalService.open(DataDeletionDialogComponent, { size: 'lg', backdrop: 'static' });
+  }
 
-    trackId(index: number, item: IGeneratorIdentity) {
-        return item.id;
-    }
+  trackId(index: number, item: IGeneratorIdentity): number | undefined {
+    return item.id;
+  }
 
-    registerChangeInGeneratorIdentities() {
-        this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', () => this.refresh());
-    }
+  registerChangeInGeneratorIdentities(): void {
+    this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', () => this.refresh());
+  }
 
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  private onError(errorMessage: string): void {
+    this.jhiAlertService.error(errorMessage, null, '');
+  }
 }

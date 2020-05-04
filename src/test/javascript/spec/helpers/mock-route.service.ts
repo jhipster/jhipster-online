@@ -16,32 +16,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActivatedRoute, Router } from '@angular/router';
 import { SpyObject } from './spyobject';
 import { Observable, of } from 'rxjs';
 import Spy = jasmine.Spy;
+import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
 
 export class MockActivatedRoute extends ActivatedRoute {
-    constructor(parameters?: any) {
-        super();
-        this.queryParams = of(parameters);
-        this.params = of(parameters);
-        this.data = of({
-            ...parameters,
-            pagingParams: {
-                page: 10,
-                ascending: false,
-                predicate: 'id'
-            }
-        });
-    }
+  constructor(parameters?: any) {
+    super();
+    this.queryParams = of(parameters);
+    this.params = of(parameters);
+    this.data = of({
+      ...parameters,
+      pagingParams: {
+        page: 10,
+        ascending: false,
+        predicate: 'id'
+      }
+    });
+  }
 }
 
 export class MockRouter extends SpyObject {
-    navigateSpy: Spy;
+  navigateSpy: Spy;
+  navigateByUrlSpy: Spy;
+  events: Observable<RouterEvent> | null = null;
+  routerState: any;
+  url = '';
 
-    constructor() {
-        super(Router);
-        this.navigateSpy = this.spy('navigate');
-    }
+  constructor() {
+    super(Router);
+    this.navigateSpy = this.spy('navigate');
+    this.navigateByUrlSpy = this.spy('navigateByUrl');
+  }
+
+  setEvents(events: Observable<RouterEvent>): void {
+    this.events = events;
+  }
+
+  setRouterState(routerState: any): void {
+    this.routerState = routerState;
+  }
 }

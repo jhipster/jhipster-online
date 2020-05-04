@@ -19,28 +19,26 @@
 
 package io.github.jhipster.online.web.rest;
 
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.EntityStatsService;
+import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.service.EntityStatsService;
-import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-
 /**
- * REST controller for managing EntityStats.
+ * REST controller for managing {@link io.github.jhipster.online.domain.EntityStats}.
  */
 @RestController
 @RequestMapping("/api")
@@ -50,6 +48,9 @@ public class EntityStatsResource {
 
     private static final String ENTITY_NAME = "entityStats";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final EntityStatsService entityStatsService;
 
     public EntityStatsResource(EntityStatsService entityStatsService) {
@@ -57,14 +58,13 @@ public class EntityStatsResource {
     }
 
     /**
-     * POST  /entity-stats : Create a new entityStats.
+     * {@code POST  /entity-stats} : Create a new entityStats.
      *
-     * @param entityStats the entityStats to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new entityStats, or with status 400 (Bad Request) if the entityStats has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param entityStats the entityStats to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new entityStats, or with status {@code 400 (Bad Request)} if the entityStats has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/entity-stats")
-    @Timed
     public ResponseEntity<EntityStats> createEntityStats(@RequestBody EntityStats entityStats) throws URISyntaxException {
         log.debug("REST request to save EntityStats : {}", entityStats);
         if (entityStats.getId() != null) {
@@ -72,22 +72,20 @@ public class EntityStatsResource {
         }
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.created(new URI("/api/entity-stats/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /entity-stats : Updates an existing entityStats.
+     * {@code PUT  /entity-stats} : Updates an existing entityStats.
      *
-     * @param entityStats the entityStats to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated entityStats,
-     * or with status 400 (Bad Request) if the entityStats is not valid,
-     * or with status 500 (Internal Server Error) if the entityStats couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param entityStats the entityStats to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated entityStats,
+     * or with status {@code 400 (Bad Request)} if the entityStats is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the entityStats couldn't be updated.
      */
     @PutMapping("/entity-stats")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) {
         log.debug("REST request to update EntityStats : {}", entityStats);
         if (entityStats.getId() == null) {
@@ -95,32 +93,30 @@ public class EntityStatsResource {
         }
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, entityStats.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, entityStats.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /entity-stats : get all the entityStats.
+     * {@code GET  /entity-stats} : get all the entityStats.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of entityStats in body
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of entityStats in body.
      */
     @GetMapping("/entity-stats")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public List<EntityStats> getAllEntityStats() {
         log.debug("REST request to get all EntityStats");
         return entityStatsService.findAll();
     }
 
     /**
-     * GET  /entity-stats/:id : get the "id" entityStats.
+     * {@code GET  /entity-stats/:id} : get the "id" entityStats.
      *
-     * @param id the id of the entityStats to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the entityStats, or with status 404 (Not Found)
+     * @param id the id of the entityStats to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the entityStats, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/entity-stats/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<EntityStats> getEntityStats(@PathVariable Long id) {
         log.debug("REST request to get EntityStats : {}", id);
         Optional<EntityStats> entityStats = entityStatsService.findOne(id);
@@ -128,17 +124,16 @@ public class EntityStatsResource {
     }
 
     /**
-     * DELETE  /entity-stats/:id : delete the "id" entityStats.
+     * {@code DELETE  /entity-stats/:id} : delete the "id" entityStats.
      *
-     * @param id the id of the entityStats to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the entityStats to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/entity-stats/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<Void> deleteEntityStats(@PathVariable Long id) {
         log.debug("REST request to delete EntityStats : {}", id);
         entityStatsService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

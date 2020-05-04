@@ -1,23 +1,28 @@
-<form name="deleteForm" (ngSubmit)="confirmDelete()">
+<form name="deleteForm">
     <div class="modal-header">
         <h4 class="modal-title">Confirm delete operation</h4>
+
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;
         </button>
     </div>
+
     <div class="modal-body">
         <ngb-alert [dismissible]="false" type="warning" *ngIf="showAlert">
             <strong>Account deletion is successful!</strong> You will be redirected to homepage in 2 seconds.
         </ngb-alert>
         <jhi-alert-error></jhi-alert-error>
-        <p>Are you sure you want to delete your <i>JHipster Online</i> account?</p>
+
+        <p id="jhi-delete-generatorIdentity-heading">Are you sure you want to delete your <i>JHipster Online</i> account?</p>
     </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
         </button>
-        <button type="submit" class="btn btn-danger">
-            <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span>Delete</span>
+
+        <button id="jhi-confirm-delete-generatorIdentity" type="submit" class="btn btn-danger">
+            <fa-icon icon="times"></fa-icon>&nbsp;<span>Delete</span>
         </button>
     </div>
 </form>

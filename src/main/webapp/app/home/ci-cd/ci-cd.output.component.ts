@@ -22,57 +22,57 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CiCdService } from './ci-cd.service';
 
 @Component({
-    selector: 'jhi-ci-cd-output-dialog',
-    templateUrl: './ci-cd.output.component.html'
+  selector: 'jhi-ci-cd-output-dialog',
+  templateUrl: './ci-cd.output.component.html'
 })
 export class CiCdOutputDialogComponent implements OnInit {
-    logs = '';
+  logs = '';
 
-    ciCdId: string;
-    ciCdTool: string;
+  ciCdId?: string;
+  ciCdTool?: string;
 
-    displayApplicationUrl = false;
+  displayApplicationUrl = false;
 
-    selectedGitProvider: string;
-    selectedGitCompany: string;
-    selectedGitRepository: string;
+  selectedGitProvider?: string;
+  selectedGitCompany?: string;
+  selectedGitRepository?: string;
 
-    gitlabHost: string;
-    githubHost: string;
+  gitlabHost?: string;
+  githubHost?: string;
 
-    constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
+  constructor(private activeModal: NgbActiveModal, private ciCdService: CiCdService) {}
 
-    ngOnInit() {
+  ngOnInit(): void {
+    this.updateLogsData();
+  }
+
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
+
+  updateLogsData(): void {
+    if (this.ciCdId === undefined) {
+      setTimeout(() => {
         this.updateLogsData();
-    }
-
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    updateLogsData() {
-        if (this.ciCdId === undefined) {
+      }, 2000);
+    } else {
+      this.ciCdService.getCiCdData(this.ciCdId).subscribe(
+        (data: string) => {
+          this.logs += data;
+          if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
             setTimeout(() => {
-                this.updateLogsData();
+              this.updateLogsData();
             }, 2000);
-        } else {
-            this.ciCdService.getCiCdData(this.ciCdId).subscribe(
-                (data: string) => {
-                    this.logs += data;
-                    if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
-                        setTimeout(() => {
-                            this.updateLogsData();
-                        }, 2000);
-                    } else {
-                        if (data.endsWith('Generation finished\n')) {
-                            this.displayApplicationUrl = true;
-                        }
-                    }
-                },
-                () => {
-                    this.logs += 'Server disconnected...';
-                }
-            );
+          } else {
+            if (data.endsWith('Generation finished\n')) {
+              this.displayApplicationUrl = true;
+            }
+          }
+        },
+        () => {
+          this.logs += 'Server disconnected...';
         }
+      );
     }
+  }
 }

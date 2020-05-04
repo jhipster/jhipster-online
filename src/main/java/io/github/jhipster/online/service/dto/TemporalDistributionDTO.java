@@ -20,7 +20,6 @@
 package io.github.jhipster.online.service.dto;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 

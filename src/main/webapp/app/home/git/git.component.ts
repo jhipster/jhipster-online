@@ -17,37 +17,37 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
 
 @Component({
-    selector: 'jhi-github',
-    templateUrl: './git.component.html',
-    styleUrls: ['git.scss']
+  selector: 'jhi-github',
+  templateUrl: './git.component.html',
+  styleUrls: ['git.scss']
 })
 export class GitComponent implements OnInit {
-    gitConfig: GitConfigurationModel;
+  gitConfig?: GitConfigurationModel;
 
-    githubConfigured = false;
-    gitlabConfigured = false;
+  githubConfigured = false;
+  gitlabConfigured = false;
 
-    constructor(private gitConfigurationService: GitConfigurationService) {}
+  constructor(private gitConfigurationService: GitConfigurationService) {}
 
-    ngOnInit() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.githubConfigured = this.gitConfig.githubConfigured;
-        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.gitlabConfigured = gitConfig.gitlabConfigured;
-            this.githubConfigured = gitConfig.githubConfigured;
-        });
+  ngOnInit(): void {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+    this.gitlabConfigured = this.gitConfig.gitlabConfigured;
+    this.githubConfigured = this.gitConfig.githubConfigured;
+    this.gitConfigurationService.sharedData.subscribe((gitConfig: any) => {
+      this.gitlabConfigured = gitConfig.gitlabConfigured;
+      this.githubConfigured = gitConfig.githubConfigured;
+    });
 
-        this.gitConfig.availableGitProviders.forEach(provider => {
-            this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(companies => {
-                if (companies.length === 0) {
-                    this.gitConfigurationService.gitProviderService.refreshGitProvider(provider);
-                }
-            });
-        });
-    }
+    this.gitConfig.availableGitProviders.forEach((provider: any) => {
+      this.gitConfigurationService.gitProviderService.getCompanies(provider.toLowerCase()).subscribe(companies => {
+        if (companies.length === 0) {
+          this.gitConfigurationService.gitProviderService.refreshGitProvider(provider);
+        }
+      });
+    });
+  }
 }

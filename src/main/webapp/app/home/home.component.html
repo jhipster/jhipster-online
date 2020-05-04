@@ -87,8 +87,10 @@
             </nav>
         </div>
     </div>
+
     <div class="col-md-9">
         <router-outlet></router-outlet>
+
         <router-outlet name="popup"></router-outlet>
             <div>
             <div [ngSwitch]="isAuthenticated()">

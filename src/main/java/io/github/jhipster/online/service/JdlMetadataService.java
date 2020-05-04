@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service Implementation for managing JdlMetadata.
+ * Service Implementation for managing {@link JdlMetadata}.
  */
 @Service
 @Transactional
@@ -87,8 +87,8 @@ public class JdlMetadataService {
     /**
      * Save a jdlMetadata.
      *
-     * @param jdlMetadata the entity to saveJdlMetadata
-     * @return the persisted entity
+     * @param jdlMetadata the entity to save.
+     * @return the persisted entity.
      */
     public JdlMetadata saveJdlMetadata(JdlMetadata jdlMetadata) {
         log.debug("Request to save JdlMetadata : {}", jdlMetadata);
@@ -112,7 +112,7 @@ public class JdlMetadataService {
     /**
      *  Get all the jdlMetadata.
      *
-     *  @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<JdlMetadata> findAllForUser(User user) {
@@ -129,8 +129,8 @@ public class JdlMetadataService {
     /**
      *  Get one jdlMetadata by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<JdlMetadata> findOne(String id) {
@@ -148,7 +148,7 @@ public class JdlMetadataService {
     /**
      *  Delete the  jdlMetadata by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(String id) throws Exception {
         log.debug("Request to delete JdlMetadata : {}", id);

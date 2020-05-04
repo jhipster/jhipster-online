@@ -19,28 +19,27 @@
 
 package io.github.jhipster.online.web.rest;
 
+
+import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.SubGenEventService;
+import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.service.SubGenEventService;
-import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-
 /**
- * REST controller for managing SubGenEvent.
+ * REST controller for managing {@link io.github.jhipster.online.domain.SubGenEvent}.
  */
 @RestController
 @RequestMapping("/api")
@@ -50,6 +49,9 @@ public class SubGenEventResource {
 
     private static final String ENTITY_NAME = "subGenEvent";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final SubGenEventService subGenEventService;
 
     public SubGenEventResource(SubGenEventService subGenEventService) {
@@ -57,14 +59,13 @@ public class SubGenEventResource {
     }
 
     /**
-     * POST  /sub-gen-events : Create a new subGenEvent.
+     * {@code POST  /sub-gen-events} : Create a new subGenEvent.
      *
-     * @param subGenEvent the subGenEvent to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new subGenEvent, or with status 400 (Bad Request) if the subGenEvent has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param subGenEvent the subGenEvent to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new subGenEvent, or with status {@code 400 (Bad Request)} if the subGenEvent has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/sub-gen-events")
-    @Timed
     public ResponseEntity<SubGenEvent> createSubGenEvent(@RequestBody SubGenEvent subGenEvent) throws URISyntaxException {
         log.debug("REST request to save SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() != null) {
@@ -72,7 +73,7 @@ public class SubGenEventResource {
         }
         SubGenEvent result = subGenEventService.save(subGenEvent);
         return ResponseEntity.created(new URI("/api/sub-gen-events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -83,24 +84,21 @@ public class SubGenEventResource {
      */
     @GetMapping("/sub-gen-events")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public List<SubGenEvent> getAllSubGenEvents() {
         log.debug("REST request to get all SubGenEvents");
         return subGenEventService.findAll();
     }
 
     /**
-     * PUT  /sub-gen-events : Updates an existing subGenEvent.
+     * {@code PUT  /sub-gen-events} : Updates an existing subGenEvent.
      *
-     * @param subGenEvent the subGenEvent to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated subGenEvent,
-     * or with status 400 (Bad Request) if the subGenEvent is not valid,
-     * or with status 500 (Internal Server Error) if the subGenEvent couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param subGenEvent the subGenEvent to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated subGenEvent,
+     * or with status {@code 400 (Bad Request)} if the subGenEvent is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the subGenEvent couldn't be updated.
      */
     @PutMapping("/sub-gen-events")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<SubGenEvent> updateSubGenEvent(@RequestBody SubGenEvent subGenEvent) {
         log.debug("REST request to update SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() == null) {
@@ -108,19 +106,18 @@ public class SubGenEventResource {
         }
         SubGenEvent result = subGenEventService.save(subGenEvent);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, subGenEvent.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, subGenEvent.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /sub-gen-events/:id : get the "id" subGenEvent.
+     * {@code GET  /sub-gen-events/:id} : get the "id" subGenEvent.
      *
-     * @param id the id of the subGenEvent to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the subGenEvent, or with status 404 (Not Found)
+     * @param id the id of the subGenEvent to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the subGenEvent, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/sub-gen-events/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<SubGenEvent> getSubGenEvent(@PathVariable Long id) {
         log.debug("REST request to get SubGenEvent : {}", id);
         Optional<SubGenEvent> subGenEvent = subGenEventService.findOne(id);
@@ -128,17 +125,16 @@ public class SubGenEventResource {
     }
 
     /**
-     * DELETE  /sub-gen-events/:id : delete the "id" subGenEvent.
+     * {@code DELETE  /sub-gen-events/:id} : delete the "id" subGenEvent.
      *
-     * @param id the id of the subGenEvent to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the subGenEvent to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/sub-gen-events/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<Void> deleteSubGenEvent(@PathVariable Long id) {
         log.debug("REST request to delete SubGenEvent : {}", id);
         subGenEventService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

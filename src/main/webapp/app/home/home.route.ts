@@ -18,8 +18,7 @@
  */
 import { Route } from '@angular/router';
 
-import { HomeComponent } from './';
-import { UserRouteAccessService } from 'app/core/';
+import { HomeComponent } from './home.component';
 import { GENERATOR_ROUTE } from 'app/home/generator/generator.route';
 import { GIT_ROUTE } from 'app/home/git/git.route';
 import { WELCOME_ROUTE } from 'app/home/welcome/welcome.route';
@@ -27,24 +26,25 @@ import { GITHUB_CALLBACK_ROUTE } from 'app/home/git/callback/callback.route';
 import { jdlMetadataRoute } from 'app/home/jdl-metadata/jdl-metadata.route';
 import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from 'app/home/ci-cd/ci-cd.route';
 import { YourGeneratorsRoute, YourGeneratorsDialogueRoutes } from 'app/home/your-generators/your-generators.route';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const HOME_ROUTE: Route = {
-    path: '',
-    component: HomeComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'JHipster Online'
-    },
-    canActivate: [UserRouteAccessService],
-    children: [
-        GENERATOR_ROUTE,
-        WELCOME_ROUTE,
-        GIT_ROUTE,
-        GITHUB_CALLBACK_ROUTE,
-        CI_CD_ROUTE,
-        YourGeneratorsRoute,
-        ...YourGeneratorsDialogueRoutes,
-        CI_CD_OUTPUT_ROUTE,
-        ...jdlMetadataRoute
-    ]
+  path: '',
+  component: HomeComponent,
+  data: {
+    authorities: [],
+    pageTitle: 'JHipster Online'
+  },
+  canActivate: [UserRouteAccessService],
+  children: [
+    GENERATOR_ROUTE,
+    WELCOME_ROUTE,
+    GIT_ROUTE,
+    GITHUB_CALLBACK_ROUTE,
+    CI_CD_ROUTE,
+    YourGeneratorsRoute,
+    ...YourGeneratorsDialogueRoutes,
+    CI_CD_OUTPUT_ROUTE,
+    ...jdlMetadataRoute
+  ]
 };

@@ -18,58 +18,20 @@
  */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { adminState } from 'app/admin/admin-routing.module';
+import { UserDialogComponent, UserMgmtDialogComponent } from 'app/admin/user-management/user-management-dialog.component';
 
-import { JhonlineSharedModule } from 'app/shared';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
-import {
-    adminState,
-    AuditsComponent,
-    UserMgmtComponent,
-    UserMgmtDetailComponent,
-    UserMgmtUpdateComponent,
-    UserMgmtDeleteDialogComponent,
-    UserMgmtResetDialogComponent,
-    LogsComponent,
-    JhiMetricsMonitoringModalComponent,
-    JhiMetricsMonitoringComponent,
-    JhiHealthModalComponent,
-    JhiHealthCheckComponent,
-    JhiConfigurationComponent,
-    JhiDocsComponent,
-    UserMgmtDialogComponent,
-    UserDialogComponent
-} from './';
-
 @NgModule({
-    imports: [
-        JhonlineSharedModule,
-        RouterModule.forChild(adminState)
-        /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
-    ],
-    declarations: [
-        AuditsComponent,
-        UserMgmtComponent,
-        UserDialogComponent,
-        UserMgmtDialogComponent,
-        UserMgmtDetailComponent,
-        UserMgmtUpdateComponent,
-        UserMgmtDeleteDialogComponent,
-        UserMgmtResetDialogComponent,
-        LogsComponent,
-        JhiConfigurationComponent,
-        JhiHealthCheckComponent,
-        JhiHealthModalComponent,
-        JhiDocsComponent,
-        JhiMetricsMonitoringComponent,
-        JhiMetricsMonitoringModalComponent
-    ],
-    entryComponents: [
-        UserMgmtDeleteDialogComponent,
-        JhiHealthModalComponent,
-        JhiMetricsMonitoringModalComponent,
-        UserMgmtResetDialogComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    JhonlineSharedModule,
+    RouterModule.forChild(adminState)
+    /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
+  ],
+  declarations: [UserDialogComponent, UserMgmtDialogComponent],
+  entryComponents: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineAdminModule {}

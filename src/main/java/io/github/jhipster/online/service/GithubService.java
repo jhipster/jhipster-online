@@ -19,19 +19,6 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
-import org.kohsuke.github.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
-
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
@@ -40,6 +27,21 @@ import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.interfaces.GitProviderService;
+import org.kohsuke.github.GHCreateRepositoryBuilder;
+import org.kohsuke.github.GHMyself;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GitHub;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GithubService implements GitProviderService {

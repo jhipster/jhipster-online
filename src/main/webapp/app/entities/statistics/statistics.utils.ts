@@ -19,64 +19,64 @@
 import { Injectable } from '@angular/core';
 
 export const displayNames = {
-    react: 'React',
-    angularX: 'Angular',
-    angularJS: 'AngularJS',
-    vuejs: 'Vue.js',
+  react: 'React',
+  angularX: 'Angular',
+  angularJS: 'AngularJS',
+  vuejs: 'Vue.js',
 
-    heroku: 'Heroku',
-    kubernetes: 'Kubernetes',
-    aws: 'AWS',
-    cloudfoundry: 'Cloud Foundry',
-    openshift: 'OpenShift',
+  heroku: 'Heroku',
+  kubernetes: 'Kubernetes',
+  aws: 'AWS',
+  cloudfoundry: 'Cloud Foundry',
+  openshift: 'OpenShift',
 
-    postgresql: 'PostgreSQL',
-    oracle: 'Oracle',
-    mysql: 'MySQL',
-    mssql: 'MsSQL',
-    mariadb: 'MariaDB',
-    cassandra: 'Cassandra',
-    couchbase: 'Couchbase',
-    mongodb: 'MongoDB',
-    db2: 'Db2',
+  postgresql: 'PostgreSQL',
+  oracle: 'Oracle',
+  mysql: 'MySQL',
+  mssql: 'MsSQL',
+  mariadb: 'MariaDB',
+  cassandra: 'Cassandra',
+  couchbase: 'Couchbase',
+  mongodb: 'MongoDB',
+  db2: 'Db2',
 
-    ehcache: 'Ehcache',
-    hazelcast: 'Hazelcast',
-    infinispan: 'Infinispan',
+  ehcache: 'Ehcache',
+  hazelcast: 'Hazelcast',
+  infinispan: 'Infinispan',
 
-    maven: 'Maven',
-    gradle: 'Gradle',
+  maven: 'Maven',
+  gradle: 'Gradle',
 
-    monolithic: 'Monolithic',
-    gateway: 'Gateway',
-    microservice: 'Microservice',
-    uaa: 'UAA',
+  monolithic: 'Monolithic',
+  gateway: 'Gateway',
+  microservice: 'Microservice',
+  uaa: 'UAA',
 
-    default: 'None/Other'
+  default: 'None/Other'
 };
 
 export const computeAngularKey = (lowercaseKey: string) => {
-    let key;
-    if (lowercaseKey !== 'angular') {
-        const angularVersion = lowercaseKey.slice(-1);
-        if (angularVersion === 'x') {
-            key = displayNames.angularX;
-        } else {
-            key = /^\d$/.test(angularVersion) && Number(angularVersion) > 1 ? displayNames.angularX : displayNames.angularJS;
-        }
+  let key;
+  if (lowercaseKey !== 'angular') {
+    const angularVersion = lowercaseKey.slice(-1);
+    if (angularVersion === 'x') {
+      key = displayNames.angularX;
     } else {
-        key = displayNames.angularX;
+      key = /^\d$/.test(angularVersion) && Number(angularVersion) > 1 ? displayNames.angularX : displayNames.angularJS;
     }
-    return key;
+  } else {
+    key = displayNames.angularX;
+  }
+  return key;
 };
 
 @Injectable({ providedIn: 'root' })
 export class StatisticsUtils {
-    public static getDisplayName(name: string, upperFirst = true) {
-        return upperFirst ? StatisticsUtils.upperFirst(displayNames[name] || name) : displayNames[name] || name;
-    }
+  public static getDisplayName(name: string, upperFirst = true): string {
+    return upperFirst ? StatisticsUtils.upperFirst(displayNames[name] || name) : displayNames[name] || name;
+  }
 
-    public static upperFirst(text: string) {
-        return text.charAt(0).toUpperCase() + text.slice(1);
-    }
+  public static upperFirst(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
 }

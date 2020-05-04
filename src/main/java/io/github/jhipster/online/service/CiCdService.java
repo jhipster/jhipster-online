@@ -19,11 +19,11 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.File;
-
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.service.enums.CiCdTool;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +31,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
+import java.io.File;
 
 @Service
 public class CiCdService {

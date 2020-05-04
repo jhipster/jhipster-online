@@ -19,26 +19,26 @@
 import { Route } from '@angular/router';
 
 import { CiCdComponent } from './ci-cd.component';
-import { UserRouteAccessService } from 'app/core';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const CI_CD_ROUTE: Route = {
-    path: 'ci-cd',
-    component: CiCdComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Continuous Integration'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'ci-cd',
+  component: CiCdComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Continuous Integration'
+  },
+  canActivate: [UserRouteAccessService]
 };
 
 export const CI_CD_OUTPUT_ROUTE: Route = {
-    path: 'ci-cd-output',
-    component: CiCdOutputDialogComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Continuous Integration'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+  path: 'ci-cd-output',
+  component: CiCdOutputDialogComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Continuous Integration'
+  },
+  canActivate: [UserRouteAccessService],
+  outlet: 'popup'
 };

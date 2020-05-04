@@ -19,30 +19,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { GitCompanyModel } from 'app/core';
+import { GitCompanyModel } from 'app/core/git/git-company.model';
 
 @Injectable({ providedIn: 'root' })
 export class GitProviderService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    saveGitOAuthToken(provider: string, token: string): Observable<any> {
-        return this.http.post<any>(`api/${provider}/save-token`, token);
-    }
+  saveGitOAuthToken(provider: string, token: string): Observable<any> {
+    return this.http.post<any>(`api/${provider}/save-token`, token);
+  }
 
-    refreshGitProvider(provider: string): Observable<any> {
-        return this.http.post<any>(`api/${provider}/refresh`, '');
-    }
+  refreshGitProvider(provider: string): Observable<any> {
+    return this.http.post<any>(`api/${provider}/refresh`, '');
+  }
 
-    getCompanies(provider: string): Observable<GitCompanyModel[]> {
-        return this.http.get<GitCompanyModel[]>(`api/${provider}/companies`);
-    }
+  getCompanies(provider: string): Observable<GitCompanyModel[]> {
+    return this.http.get<GitCompanyModel[]>(`api/${provider}/companies`);
+  }
 
-    getProjects(provider: string, companyName: string): Observable<string[]> {
-        return this.http.get<string[]>(`api/${provider}/companies/${companyName}/projects`);
-    }
+  getProjects(provider: string, companyName: string): Observable<string[]> {
+    return this.http.get<string[]>(`api/${provider}/companies/${companyName}/projects`);
+  }
 
-    getGitConfig(): Observable<any> {
-        return this.http.get<any>('api/git/config');
-    }
+  getGitConfig(): Observable<any> {
+    return this.http.get<any>('api/git/config');
+  }
 }

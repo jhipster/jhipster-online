@@ -19,14 +19,16 @@
 
 package io.github.jhipster.online.web.rest.util;
 
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 public class DateUtil {
 

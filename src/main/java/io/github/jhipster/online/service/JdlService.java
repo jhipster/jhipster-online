@@ -19,9 +19,13 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.*;
-import java.util.Optional;
-
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.config.CacheConfiguration;
+import io.github.jhipster.online.domain.Jdl;
+import io.github.jhipster.online.domain.JdlMetadata;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.repository.JdlRepository;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
@@ -32,11 +36,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.config.CacheConfiguration;
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.repository.JdlRepository;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Optional;
 
 @Service
 public class JdlService {

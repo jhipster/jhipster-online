@@ -18,15 +18,15 @@
  */
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
 import { ActivateComponent } from './activate.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const activateRoute: Route = {
-    path: 'activate',
-    component: ActivateComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'Activation'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'activate',
+  component: ActivateComponent,
+  data: {
+    authorities: [],
+    pageTitle: 'Activation'
+  },
+  canActivate: [UserRouteAccessService]
 };

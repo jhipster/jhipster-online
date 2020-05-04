@@ -91,24 +91,24 @@
                                  constraintName="fk_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/users.csv"
-                  separator=";"
-                  tableName="jhi_user">
-            <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
-        </loadData>
+<!--        <loadData encoding="UTF-8"-->
+<!--                  file="config/liquibase/users.csv"-->
+<!--                  separator=";"-->
+<!--                  tableName="jhi_user">-->
+<!--            <column name="activated" type="boolean"/>-->
+<!--            <column name="created_date" type="timestamp"/>-->
+<!--        </loadData>-->
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
 
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/authorities.csv"
-                  separator=";"
-                  tableName="jhi_authority"/>
+<!--        <loadData encoding="UTF-8"-->
+<!--                  file="config/liquibase/authorities.csv"-->
+<!--                  separator=";"-->
+<!--                  tableName="jhi_authority"/>-->
 
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/users_authorities.csv"
-                  separator=";"
-                  tableName="jhi_user_authority"/>
+<!--        <loadData encoding="UTF-8"-->
+<!--                  file="config/liquibase/users_authorities.csv"-->
+<!--                  separator=";"-->
+<!--                  tableName="jhi_user_authority"/>-->
         <createTable tableName="jhi_persistent_audit_event">
             <column name="event_id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>

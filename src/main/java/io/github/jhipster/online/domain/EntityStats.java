@@ -19,17 +19,14 @@
 
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Objects;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import io.github.jhipster.online.domain.interfaces.CompleteDate;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A EntityStats.
@@ -45,7 +42,7 @@ public class EntityStats implements Serializable, CompleteDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jhi_year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "month")
@@ -78,11 +75,11 @@ public class EntityStats implements Serializable, CompleteDate {
     @Column(name = "fluent_methods")
     private Boolean fluentMethods;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private Instant date;
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("entityStats")
     private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -269,19 +266,15 @@ public class EntityStats implements Serializable, CompleteDate {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof EntityStats)) {
             return false;
         }
-        EntityStats entityStats = (EntityStats) o;
-        if (entityStats.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), entityStats.getId());
+        return id != null && id.equals(((EntityStats) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

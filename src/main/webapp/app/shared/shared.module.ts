@@ -22,28 +22,18 @@ import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbDateMomentAdapter } from './util/datepicker-adapter';
 import { GoogleAnalyticsEventsService } from './ga/google-analytics-events.service';
-
-import {
-    JhonlineSharedLibsModule,
-    JhiGitProviderComponent,
-    JhiGitProviderAlertComponent,
-    JhonlineSharedCommonModule,
-    JhiLoginModalComponent,
-    HasAnyAuthorityDirective
-} from 'app/shared';
+import { JhonlineSharedLibsModule } from 'app/shared/shared-libs.module';
+import { JhiGitProviderAlertComponent, JhiGitProviderComponent } from 'app/shared/git-provider/git-provider.component';
+import { HasAnyAuthorityDirective } from 'app/shared/auth/has-any-authority.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginModalComponent } from 'app/shared/login/login.component';
 
 @NgModule({
-    imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule, RouterModule],
-    declarations: [JhiLoginModalComponent, JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective],
-    providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }, GoogleAnalyticsEventsService],
-    entryComponents: [JhiLoginModalComponent],
-    exports: [
-        JhonlineSharedCommonModule,
-        JhiLoginModalComponent,
-        JhiGitProviderComponent,
-        JhiGitProviderAlertComponent,
-        HasAnyAuthorityDirective
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedLibsModule, RouterModule, ReactiveFormsModule, FormsModule],
+  declarations: [JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective, LoginModalComponent],
+  providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }, GoogleAnalyticsEventsService],
+  entryComponents: [LoginModalComponent],
+  exports: [JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective, LoginModalComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineSharedModule {}

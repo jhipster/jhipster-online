@@ -18,16 +18,14 @@
  */
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Objects;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A JdlMetadata.
@@ -57,7 +55,7 @@ public class JdlMetadata implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnore
+    @JsonIgnoreProperties("jdlMetadata")
     private User user;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
@@ -130,19 +128,15 @@ public class JdlMetadata implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof JdlMetadata)) {
             return false;
         }
-        JdlMetadata jdlMetadata = (JdlMetadata) o;
-        if (jdlMetadata.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), jdlMetadata.getId());
+        return id != null && id.equals(((JdlMetadata) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

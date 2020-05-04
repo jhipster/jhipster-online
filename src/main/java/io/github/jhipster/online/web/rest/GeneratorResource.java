@@ -19,24 +19,25 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.io.*;
-import java.util.UUID;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -67,7 +68,6 @@ public class GeneratorResource {
     }
 
     @PostMapping("/generate-application")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
@@ -104,7 +104,6 @@ public class GeneratorResource {
     }
 
     @GetMapping("/generate-application/{applicationId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<String> generateApplicationOutput(@PathVariable String applicationId) {
         String logs = this.logsService.getLogs(applicationId);
@@ -112,7 +111,6 @@ public class GeneratorResource {
     }
 
     @PostMapping("/download-application")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity downloadApplication(@RequestBody String applicationConfiguration) {

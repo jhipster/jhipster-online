@@ -19,9 +19,9 @@
 
 package io.github.jhipster.online.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,12 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.GeneratorIdentityRepository;
-
+import java.util.List;
+import java.util.Optional;
 /**
- * Service Implementation for managing GeneratorIdentity.
+ * Service Implementation for managing {@link GeneratorIdentity}.
  */
 @Service
 @Transactional
@@ -51,8 +49,8 @@ public class GeneratorIdentityService {
     /**
      * Save a generatorIdentity.
      *
-     * @param generatorIdentity the entity to save
-     * @return the persisted entity
+     * @param generatorIdentity the entity to save.
+     * @return the persisted entity.
      */
     public GeneratorIdentity save(GeneratorIdentity generatorIdentity) {
         log.debug("Request to save GeneratorIdentity : {}", generatorIdentity);
@@ -62,7 +60,7 @@ public class GeneratorIdentityService {
     /**
      * Get all the generatorIdentities.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<GeneratorIdentity> findAll() {
@@ -86,8 +84,8 @@ public class GeneratorIdentityService {
     /**
      * Get one generatorIdentity by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<GeneratorIdentity> findOne(Long id) {
@@ -98,7 +96,7 @@ public class GeneratorIdentityService {
     /**
      * Delete the generatorIdentity by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete GeneratorIdentity : {}", id);

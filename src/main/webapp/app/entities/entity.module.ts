@@ -20,20 +20,25 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { RouterModule } from '@angular/router';
 import { STATISTICS_ROUTE } from './statistics/statistics.route';
-import { JhonlineSharedModule } from 'app/shared';
-
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommonModule } from '@angular/common';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
-    // prettier-ignore
-    imports: [
-        JhonlineSharedModule,
-        RouterModule.forRoot([STATISTICS_ROUTE], { useHash: true })
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [StatisticsComponent],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  // prettier-ignore
+  imports: [
+    JhonlineSharedModule,
+    RouterModule.forRoot([STATISTICS_ROUTE], { useHash: true }),
+    FormsModule,
+    FontAwesomeModule,
+    CommonModule
+    /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
+  ],
+  declarations: [StatisticsComponent],
+  entryComponents: [],
+  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class JhonlineEntityModule {}

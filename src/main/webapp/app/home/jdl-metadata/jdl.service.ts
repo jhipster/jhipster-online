@@ -22,13 +22,13 @@ import { Observable } from 'rxjs/Rx';
 
 @Injectable({ providedIn: 'root' })
 export class JdlService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    doApplyJdl(gitProvider: string, organizationName: string, projectName: string, jdlId: string): Observable<string> {
-        return this.http.post(`api/apply-jdl/${gitProvider}/${organizationName}/${projectName}/${jdlId}`, '', { responseType: 'text' });
-    }
+  doApplyJdl(gitProvider: string, organizationName: string, projectName: string, jdlId: string | undefined): Observable<string> {
+    return this.http.post(`api/apply-jdl/${gitProvider}/${organizationName}/${projectName}/${jdlId}`, '', { responseType: 'text' });
+  }
 
-    getApplyJdlLogs(applyJdlId: string): Observable<string> {
-        return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
-    }
+  getApplyJdlLogs(applyJdlId: string): Observable<string> {
+    return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
+  }
 }

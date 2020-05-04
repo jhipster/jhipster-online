@@ -19,22 +19,21 @@
 
 package io.github.jhipster.online.service.yorc;
 
-import java.time.Instant;
-import java.util.List;
-
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.DataGenerationFixture;
+import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.repository.YoRCRepository;
-import io.github.jhipster.online.service.YoRCService;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.enums.TemporalValueType;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.List;
 
 import static java.time.ZonedDateTime.parse;
 import static org.assertj.core.api.Assertions.assertThat;

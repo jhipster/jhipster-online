@@ -19,11 +19,10 @@
 
 package io.github.jhipster.online.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.YoRC;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the YoRC entity.
@@ -31,7 +30,5 @@ import io.github.jhipster.online.domain.YoRC;
 @SuppressWarnings("unused")
 @Repository
 public interface YoRCRepository extends JpaRepository<YoRC, Long> {
-
     void deleteAllByOwner(GeneratorIdentity owner);
-
 }

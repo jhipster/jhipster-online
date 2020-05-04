@@ -22,60 +22,60 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneratorService } from './generator.service';
 
 @Component({
-    selector: 'jhi-generator-output-dialog',
-    templateUrl: './generator.output.component.html'
+  selector: 'jhi-generator-output-dialog',
+  templateUrl: './generator.output.component.html'
 })
 export class GeneratorOutputDialogComponent implements OnInit {
-    logs = '';
+  logs = '';
 
-    applicationId: string;
+  applicationId?: string;
 
-    repositoryName: string;
+  repositoryName?: string;
 
-    displayApplicationUrl = false;
+  displayApplicationUrl = false;
 
-    selectedGitProvider: string;
-    selectedGitCompany: string;
+  selectedGitProvider?: string;
+  selectedGitCompany?: string;
 
-    githubConfigured = false;
-    gitlabConfigured = false;
+  githubConfigured = false;
+  gitlabConfigured = false;
 
-    gitlabHost: string;
-    githubHost: string;
+  gitlabHost?: string;
+  githubHost?: string;
 
-    constructor(private activeModal: NgbActiveModal, private generatorService: GeneratorService) {}
+  constructor(private activeModal: NgbActiveModal, private generatorService: GeneratorService) {}
 
-    ngOnInit() {
+  ngOnInit(): void {
+    this.updateLogsData();
+  }
+
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
+
+  updateLogsData(): void {
+    if (this.applicationId === undefined) {
+      setTimeout(() => {
         this.updateLogsData();
-    }
-
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    updateLogsData() {
-        if (this.applicationId === undefined) {
+      }, 500);
+    } else {
+      this.generatorService.getGenerationData(this.applicationId).subscribe(
+        (data: string) => {
+          this.logs += data;
+          if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
             setTimeout(() => {
-                this.updateLogsData();
+              this.updateLogsData();
             }, 500);
-        } else {
-            this.generatorService.getGenerationData(this.applicationId).subscribe(
-                (data: string) => {
-                    this.logs += data;
-                    if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
-                        setTimeout(() => {
-                            this.updateLogsData();
-                        }, 500);
-                    } else {
-                        if (data.endsWith('Generation finished\n')) {
-                            this.displayApplicationUrl = true;
-                        }
-                    }
-                },
-                () => {
-                    this.logs += 'Server disconnected...';
-                }
-            );
+          } else {
+            if (data.endsWith('Generation finished\n')) {
+              this.displayApplicationUrl = true;
+            }
+          }
+        },
+        () => {
+          this.logs += 'Server disconnected...';
         }
+      );
     }
+  }
 }

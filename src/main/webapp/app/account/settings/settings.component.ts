@@ -17,59 +17,69 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { DeleteAccountDialogComponent } from 'app/account/settings/delete-account-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Principal, AccountService } from 'app/core';
-import { DeleteAccountDialogComponent } from 'app/account/settings/delete-account-dialog.component';
-
 @Component({
-    selector: 'jhi-settings',
-    templateUrl: './settings.component.html'
+  selector: 'jhi-settings',
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent implements OnInit {
-    error: string;
-    success: string;
-    settingsAccount: any;
-    languages: any[];
+  account!: Account;
+  success = false;
+  settingsForm = this.fb.group({
+    firstName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    lastName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+    email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
+  });
 
-    constructor(private account: AccountService, private principal: Principal, private modalService: NgbModal) {}
+  constructor(private accountService: AccountService, private modalService: NgbModal, private fb: FormBuilder) {}
 
-    ngOnInit() {
-        this.principal.identity().then(account => {
-            this.settingsAccount = this.copyAccount(account);
+  deleteAccount(): void {
+    this.modalService.open(DeleteAccountDialogComponent, { size: 'lg', backdrop: 'static' });
+  }
+
+  ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      if (account) {
+        this.settingsForm.patchValue({
+          firstName: account.firstName,
+          lastName: account.lastName,
+          email: account.email
         });
-    }
 
-    deleteAccount() {
-        this.modalService.open(DeleteAccountDialogComponent, { size: 'lg', backdrop: 'static' });
-    }
+        this.account = account;
+      }
+    });
+  }
 
-    save() {
-        this.account.save(this.settingsAccount).subscribe(
-            () => {
-                this.error = null;
-                this.success = 'OK';
-                this.principal.identity(true).then(account => {
-                    this.settingsAccount = this.copyAccount(account);
-                });
-            },
-            () => {
-                this.success = null;
-                this.error = 'ERROR';
-            }
-        );
-    }
+  private copyAccount(account: any): any {
+    return {
+      activated: account.activated,
+      email: account.email,
+      firstName: account.firstName,
+      langKey: account.langKey,
+      lastName: account.lastName,
+      login: account.login,
+      imageUrl: account.imageUrl
+    };
+  }
 
-    private copyAccount(account) {
-        return {
-            activated: account.activated,
-            email: account.email,
-            firstName: account.firstName,
-            langKey: account.langKey,
-            lastName: account.lastName,
-            login: account.login,
-            imageUrl: account.imageUrl
-        };
-    }
+  save(): void {
+    this.success = false;
+
+    this.account.firstName = this.settingsForm.get('firstName')!.value;
+    this.account.lastName = this.settingsForm.get('lastName')!.value;
+    this.account.email = this.settingsForm.get('email')!.value;
+
+    this.accountService.save(this.account).subscribe(() => {
+      this.success = true;
+
+      this.accountService.authenticate(this.account);
+    });
+  }
 }

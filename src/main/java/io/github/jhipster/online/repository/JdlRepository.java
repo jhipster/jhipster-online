@@ -19,12 +19,11 @@
 
 package io.github.jhipster.online.repository;
 
-import java.util.Optional;
-
+import io.github.jhipster.online.domain.Jdl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import io.github.jhipster.online.domain.Jdl;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Jdl entity.

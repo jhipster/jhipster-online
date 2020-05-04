@@ -18,12 +18,11 @@
  */
 package io.github.jhipster.online.repository;
 
+import io.github.jhipster.online.domain.Authority;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.github.jhipster.online.domain.Authority;
-
 /**
- * Spring Data JPA repository for the Authority entity.
+ * Spring Data JPA repository for the {@link Authority} entity.
  */
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
 }

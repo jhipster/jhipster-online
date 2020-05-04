@@ -19,16 +19,18 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-
+import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.service.enums.CiCdTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import io.github.jhipster.online.config.ApplicationProperties;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JHipsterService {

@@ -25,78 +25,78 @@ import { JdlMetadataService } from './jdl-metadata.service';
 import { Principal } from 'app/core/auth/principal.service';
 
 @Component({
-    selector: 'jhi-jdl-metadata',
-    templateUrl: './jdl-metadata.component.html'
+  selector: 'jhi-jdl-metadata',
+  templateUrl: './jdl-metadata.component.html'
 })
 export class JdlMetadataComponent implements OnInit, OnDestroy {
-    jdlMetadata: JdlMetadata[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    jdlRefresh: boolean;
-    predicate: string;
-    ascending: boolean;
+  jdlMetadata!: JdlMetadata[];
+  currentAccount: any;
+  eventSubscriber!: Subscription;
+  jdlRefresh!: boolean;
+  predicate: string;
+  ascending: boolean;
 
-    constructor(
-        private jdlMetadataService: JdlMetadataService,
-        private alertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {
-        this.predicate = 'name';
-        this.ascending = true;
-    }
+  constructor(
+    private jdlMetadataService: JdlMetadataService,
+    private alertService: JhiAlertService,
+    private eventManager: JhiEventManager,
+    private principal: Principal
+  ) {
+    this.predicate = 'name';
+    this.ascending = true;
+  }
 
-    loadAll() {
-        this.jdlRefresh = true;
-        this.jdlMetadataService
-            .query({
-                sort: this.sort()
-            })
-            .subscribe(
-                res => {
-                    this.jdlMetadata = res;
-                    this.jdlRefresh = false;
-                },
-                res => {
-                    this.onError(res.json);
-                    this.jdlRefresh = false;
-                }
-            );
-    }
-
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInJdlMetadata();
-    }
-
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    trackId(index: number, item: JdlMetadata) {
-        return item.id;
-    }
-
-    registerChangeInJdlMetadata() {
-        this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
-    }
-
-    sort(): string[] {
-        return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    }
-
-    getSortingIcon(fieldName: string): 'sort' | 'sort-up' | 'sort-down' {
-        if (fieldName === this.predicate) {
-            return this.ascending ? 'sort-up' : 'sort-down';
-        } else {
-            return 'sort';
+  loadAll(): void {
+    this.jdlRefresh = true;
+    this.jdlMetadataService
+      .query({
+        sort: this.sort()
+      })
+      .subscribe(
+        res => {
+          this.jdlMetadata = res;
+          this.jdlRefresh = false;
+        },
+        res => {
+          this.onError(res.json);
+          this.jdlRefresh = false;
         }
-    }
+      );
+  }
 
-    private onError(error) {
-        this.alertService.error(error.message, null, null);
+  ngOnInit(): void {
+    this.loadAll();
+    this.principal.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInJdlMetadata();
+  }
+
+  ngOnDestroy(): void {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
+
+  trackId(index: number, item: JdlMetadata): string | undefined {
+    return item.id;
+  }
+
+  registerChangeInJdlMetadata(): void {
+    this.eventSubscriber = this.eventManager.subscribe('jdlMetadataListModification', () => this.loadAll());
+  }
+
+  sort(): string[] {
+    return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+  }
+
+  getSortingIcon(fieldName: string): 'sort' | 'sort-up' | 'sort-down' {
+    if (fieldName === this.predicate) {
+      return this.ascending ? 'sort-up' : 'sort-down';
+    } else {
+      return 'sort';
     }
+  }
+
+  private onError(error: any): void {
+    this.alertService.error(error.message, null, '');
+  }
 }

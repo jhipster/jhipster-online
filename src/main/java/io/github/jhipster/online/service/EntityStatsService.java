@@ -19,26 +19,32 @@
 
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.domain.EntityStats_;
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.enums.EntityStatColumn;
+import io.github.jhipster.online.repository.EntityStatsRepository;
+import io.github.jhipster.online.service.dto.RawSQL;
+import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.domain.enums.EntityStatColumn;
-import io.github.jhipster.online.repository.EntityStatsRepository;
-import io.github.jhipster.online.service.dto.*;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.QueryUtil;
-
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 /**
- * Service Implementation for managing EntityStats.
+ * Service Implementation for managing {@link EntityStats}.
  */
 @Service
 @Transactional
@@ -58,8 +64,8 @@ public class EntityStatsService {
     /**
      * Save a entityStats.
      *
-     * @param entityStats the entity to save
-     * @return the persisted entity
+     * @param entityStats the entity to save.
+     * @return the persisted entity.
      */
     public EntityStats save(EntityStats entityStats) {
         log.debug("Request to save EntityStats : {}", entityStats);
@@ -69,7 +75,7 @@ public class EntityStatsService {
     /**
      * Get all the entityStats.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<EntityStats> findAll() {
@@ -77,12 +83,11 @@ public class EntityStatsService {
         return entityStatsRepository.findAll();
     }
 
-
     /**
      * Get one entityStats by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<EntityStats> findOne(Long id) {
@@ -93,7 +98,7 @@ public class EntityStatsService {
     /**
      * Delete the entityStats by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete EntityStats : {}", id);

@@ -1,4 +1,4 @@
-/**</span>
+/** </span>
  * Copyright 2017-2020 the original author or authors from the JHipster Online project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
@@ -16,4 +16,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const DATE_TIME_FORMAT = 'YYYY-MM-DDThh:mm';
+export const DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm';

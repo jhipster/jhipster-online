@@ -19,26 +19,26 @@
 import { Route } from '@angular/router';
 
 import { GeneratorComponent } from './generator.component';
-import { UserRouteAccessService } from 'app/core';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GENERATOR_ROUTE: Route = {
-    path: 'generate-application',
-    component: GeneratorComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Generate a new application'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'generate-application',
+  component: GeneratorComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Generate a new application'
+  },
+  canActivate: [UserRouteAccessService]
 };
 
 export const GENERATOR_OUTPUT_ROUTE: Route = {
-    path: 'generate-application-output',
-    component: GeneratorOutputDialogComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Generating an application'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+  path: 'generate-application-output',
+  component: GeneratorOutputDialogComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Generating an application'
+  },
+  canActivate: [UserRouteAccessService],
+  outlet: 'popup'
 };

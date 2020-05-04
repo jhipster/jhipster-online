@@ -17,38 +17,36 @@
  * limitations under the License.
  */
 import { Routes } from '@angular/router';
-
-import { UserRouteAccessService } from 'app/core';
-
 import { JdlMetadataComponent } from './jdl-metadata.component';
 import { ApplyJdlStudioComponent, DeleteJdlStudioComponent } from './jdl-studio.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const jdlMetadataRoute: Routes = [
-    {
-        path: 'design-entities',
-        component: JdlMetadataComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Design Entities'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: 'design-entities',
+    component: JdlMetadataComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Design Entities'
     },
-    {
-        path: 'design-entities-delete/:jdlId',
-        component: DeleteJdlStudioComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Delete JDL Model'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'design-entities-delete/:jdlId',
+    component: DeleteJdlStudioComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Delete JDL Model'
     },
-    {
-        path: 'design-entities-apply/:jdlId',
-        component: ApplyJdlStudioComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Apply JDL Model to a project'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'design-entities-apply/:jdlId',
+    component: ApplyJdlStudioComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Apply JDL Model to a project'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];

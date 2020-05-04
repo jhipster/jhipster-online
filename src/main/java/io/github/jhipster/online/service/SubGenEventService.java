@@ -19,26 +19,32 @@
 
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.SubGenEvent_;
+import io.github.jhipster.online.domain.enums.SubGenEventType;
+import io.github.jhipster.online.repository.SubGenEventRepository;
+import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.domain.enums.SubGenEventType;
-import io.github.jhipster.online.repository.SubGenEventRepository;
-import io.github.jhipster.online.service.dto.*;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.QueryUtil;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Service Implementation for managing SubGenEvent.
+ * Service Implementation for managing {@link SubGenEvent}.
  */
 @Service
 @Transactional
@@ -58,8 +64,8 @@ public class SubGenEventService {
     /**
      * Save a subGenEvent.
      *
-     * @param subGenEvent the entity to save
-     * @return the persisted entity
+     * @param subGenEvent the entity to save.
+     * @return the persisted entity.
      */
     public SubGenEvent save(SubGenEvent subGenEvent) {
         log.debug("Request to save SubGenEvent : {}", subGenEvent);
@@ -69,7 +75,7 @@ public class SubGenEventService {
     /**
      * Get all the subGenEvents.
      *
-     * @return the list of entities
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<SubGenEvent> findAll() {
@@ -77,12 +83,11 @@ public class SubGenEventService {
         return subGenEventRepository.findAll();
     }
 
-
     /**
      * Get one subGenEvent by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
     public Optional<SubGenEvent> findOne(Long id) {
@@ -93,7 +98,7 @@ public class SubGenEventService {
     /**
      * Delete the subGenEvent by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete SubGenEvent : {}", id);

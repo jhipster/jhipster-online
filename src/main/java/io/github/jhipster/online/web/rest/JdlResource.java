@@ -19,10 +19,17 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Optional;
-
+import io.github.jhipster.online.domain.Jdl;
+import io.github.jhipster.online.domain.JdlMetadata;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.repository.JdlRepository;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.JdlMetadataService;
+import io.github.jhipster.online.service.JdlService;
+import io.github.jhipster.online.service.LogsService;
+import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.web.rest.vm.JdlVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,14 +37,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.repository.JdlRepository;
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.service.*;
-import io.github.jhipster.online.web.rest.vm.JdlVM;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -69,7 +71,6 @@ public class JdlResource {
      * Get a JDL file by its ID.
      */
     @GetMapping("/jdl/{jdlId}")
-    @Timed
     public ResponseEntity<JdlVM> getJdlFile(@PathVariable String jdlId) {
         log.debug("Trying to retrieve JDL: {}", jdlId);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
@@ -87,7 +88,6 @@ public class JdlResource {
      * Create a new JDL files and gives back its key.
      */
     @PostMapping("/jdl")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
@@ -106,7 +106,6 @@ public class JdlResource {
      * Update a JDL file.
      */
     @PutMapping("/jdl/{jdlId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
@@ -124,7 +123,6 @@ public class JdlResource {
      * Delete a JDL file.
      */
     @DeleteMapping("/jdl/{jdlId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity deleteJdlFile(@PathVariable String jdlId) {
@@ -138,7 +136,6 @@ public class JdlResource {
     }
 
     @PostMapping("/apply-jdl/{gitProvider}/{organizationName}/{projectName}/{jdlId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
         @PathVariable String projectName,
@@ -166,7 +163,6 @@ public class JdlResource {
     }
 
     @GetMapping("/apply-jdl-logs/{applyJdlId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<String> generateApplicationOutput(@PathVariable String applyJdlId) {
         String logs = this.logsService.getLogs(applyJdlId);

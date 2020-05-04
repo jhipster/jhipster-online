@@ -17,49 +17,49 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, Route } from '@angular/router';
-import { UserRouteAccessService } from 'app/core';
+import { Resolve, ActivatedRouteSnapshot, Routes, Route } from '@angular/router';
 
 import { YourGeneratorsComponent } from 'app/home/your-generators/your-generators.component';
 import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-generator-dialog.component';
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 @Injectable({ providedIn: 'root' })
 export class GuidResolve implements Resolve<string> {
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return route.params['guid'] ? route.params['guid'] : null;
-    }
+  resolve(route: ActivatedRouteSnapshot): any {
+    return route.params['guid'] ? route.params['guid'] : null;
+  }
 }
 
 export const YourGeneratorsRoute: Route = {
-    path: 'your-generators',
-    component: YourGeneratorsComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Bound Generators'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'your-generators',
+  component: YourGeneratorsComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Bound Generators'
+  },
+  canActivate: [UserRouteAccessService]
 };
 
 export const YourGeneratorsDialogueRoutes: Routes = [
-    {
-        path: 'your-generators/remove',
-        component: RemoveGeneratorDialogComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Remove a generator'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: 'your-generators/remove',
+    component: RemoveGeneratorDialogComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Remove a generator'
     },
-    {
-        path: 'your-generators/delete-statistics',
-        component: DataDeletionDialogComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Delete all user statistics'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  },
+  {
+    path: 'your-generators/delete-statistics',
+    component: DataDeletionDialogComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Delete all user statistics'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

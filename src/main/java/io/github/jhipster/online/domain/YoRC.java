@@ -19,19 +19,18 @@
 
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.*;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
+import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
-import io.github.jhipster.online.domain.interfaces.CompleteDate;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A YoRC.
@@ -78,7 +77,7 @@ public class YoRC implements Serializable, CompleteDate {
     @Column(name = "user_language")
     private String userLanguage;
 
-    @Column(name = "jhi_year")
+    @Column(name = "year")
     private Integer year;
 
     @Column(name = "month")
@@ -167,7 +166,7 @@ public class YoRC implements Serializable, CompleteDate {
     private Set<String> selectedLanguages = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties("")
+    @JsonIgnoreProperties("yoRCS")
     private GeneratorIdentity owner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -715,19 +714,15 @@ public class YoRC implements Serializable, CompleteDate {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof YoRC)) {
             return false;
         }
-        YoRC yoRC = (YoRC) o;
-        if (yoRC.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), yoRC.getId());
+        return id != null && id.equals(((YoRC) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

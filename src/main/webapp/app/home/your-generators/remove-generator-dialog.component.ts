@@ -24,29 +24,29 @@ import { JhiEventManager } from 'ng-jhipster';
 import { GeneratorIdentityService } from './generator-identity.service';
 
 @Component({
-    selector: 'jhi-remove-generator-dialog',
-    templateUrl: './remove-generator-dialog.component.html'
+  selector: 'jhi-remove-generator-dialog',
+  templateUrl: './remove-generator-dialog.component.html'
 })
 export class RemoveGeneratorDialogComponent {
-    generatorId: string;
+  generatorId?: string;
 
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private eventManager: JhiEventManager,
-        private activeModal: NgbActiveModal
-    ) {}
+  constructor(
+    private generatorIdentityService: GeneratorIdentityService,
+    private eventManager: JhiEventManager,
+    private activeModal: NgbActiveModal
+  ) {}
 
-    confirmUnbind() {
-        this.generatorIdentityService.unbind(this.generatorId).subscribe(() => {
-            this.eventManager.broadcast({
-                name: 'generatorIdentityListModification',
-                content: 'Remove a generatorIdentity'
-            });
-            this.activeModal.close();
-        });
-    }
+  confirmUnbind(): void {
+    this.generatorIdentityService.unbind(this.generatorId).subscribe(() => {
+      this.eventManager.broadcast({
+        name: 'generatorIdentityListModification',
+        content: 'Remove a generatorIdentity'
+      });
+      this.activeModal.close();
+    });
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
 }
