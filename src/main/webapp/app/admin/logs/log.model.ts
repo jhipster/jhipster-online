@@ -16,6 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
+
+export interface Logger {
+  configuredLevel: Level | null;
+  effectiveLevel: Level;
+}
+
+export interface LoggersResponse {
+  levels: Level[];
+  loggers: { [key: string]: Logger };
+}
+
 export class Log {
-    constructor(public name: string, public level: string) {}
+  constructor(public name: string, public level: Level) {}
 }

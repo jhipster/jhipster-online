@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -30,38 +30,38 @@ import { JdlOutputDialogComponent } from './jdl-metadata/jdl.output.component';
 import { CiCdComponent } from './ci-cd/ci-cd.component';
 import { CiCdOutputDialogComponent } from './ci-cd/ci-cd.output.component';
 import { RemoveGeneratorDialogComponent } from './your-generators/remove-generator-dialog.component';
-import { JhonlineSharedModule } from 'app/shared';
-import { HOME_ROUTE, HomeComponent } from './';
+import { JhonlineSharedModule } from 'app/shared/shared.module';
+import { HOME_ROUTE } from './home.route';
+import { HomeComponent } from './home.component';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
 import { YourGeneratorsComponent } from 'app/home/your-generators/your-generators.component';
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @NgModule({
-    imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { useHash: true })],
-    declarations: [
-        HomeComponent,
-        GeneratorComponent,
-        GeneratorOutputDialogComponent,
-        WelcomeComponent,
-        GitComponent,
-        CallbackComponent,
-        JdlMetadataComponent,
-        DeleteJdlStudioComponent,
-        ApplyJdlStudioComponent,
-        JdlOutputDialogComponent,
-        CiCdComponent,
-        YourGeneratorsComponent,
-        CiCdOutputDialogComponent,
-        RemoveGeneratorDialogComponent,
-        DataDeletionDialogComponent
-    ],
-    entryComponents: [
-        GeneratorOutputDialogComponent,
-        JdlOutputDialogComponent,
-        CiCdOutputDialogComponent,
-        RemoveGeneratorDialogComponent,
-        DataDeletionDialogComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE])],
+  declarations: [
+    HomeComponent,
+    GeneratorComponent,
+    GeneratorOutputDialogComponent,
+    WelcomeComponent,
+    GitComponent,
+    CallbackComponent,
+    JdlMetadataComponent,
+    DeleteJdlStudioComponent,
+    ApplyJdlStudioComponent,
+    JdlOutputDialogComponent,
+    CiCdComponent,
+    YourGeneratorsComponent,
+    CiCdOutputDialogComponent,
+    RemoveGeneratorDialogComponent,
+    DataDeletionDialogComponent
+  ],
+  entryComponents: [
+    GeneratorOutputDialogComponent,
+    JdlOutputDialogComponent,
+    CiCdOutputDialogComponent,
+    RemoveGeneratorDialogComponent,
+    DataDeletionDialogComponent
+  ]
 })
 export class JhonlineHomeModule {}

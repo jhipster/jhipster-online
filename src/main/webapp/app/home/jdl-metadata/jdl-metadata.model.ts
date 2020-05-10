@@ -16,18 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { User } from 'app/core';
+import { User } from 'app/core/user/user.model';
 
 export class JdlMetadata {
-    constructor(
-        public id?: string,
-        public key?: string,
-        public name?: string,
-        public isPublic?: boolean,
-        public createdDate?: Date,
-        public updatedDate?: Date,
-        public user?: User
-    ) {
-        this.isPublic = false;
-    }
+  constructor(
+    public id?: string,
+    public key?: string,
+    public name?: string,
+    public isPublic?: boolean,
+    public createdDate?: Date,
+    public updatedDate?: Date,
+    public user?: User
+  ) {
+    this.isPublic = false;
+  }
 }

@@ -1,6 +1,6 @@
 # JHipster Online
 
-[![Azure DevOps Build Status][azure-devops-image]][azure-devops-url-main]  [![Build Status][travis-image]][travis-url]  [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
+[![Azure DevOps Build Status][azure-devops-image]][azure-devops-url-main] [![Build Status][travis-image]][travis-url] [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
 
 JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
@@ -25,18 +25,15 @@ the next section for details on configuring the application.
 
     yarn install && yarn start
 
-
 - Run the database:
 
 
     docker-compose -f src/main/docker/mysql.yml up -d
 
-
 - Run the back-end:
 
 
     ./mvnw
-
 
 ## Specific configuration
 
@@ -53,10 +50,10 @@ command line to work, you need to have JHipster installed on your machine.
 We recommend you use the "Yarn installation" from the official [JHipster installation documentation](https://www.jhipster.tech/installation/).
 
 If you need more configuration options for running the JHipster command, you can modify:
- 
+
 - the location of the `jhipster` command
 - the timeout value for that command (the default is 120 seconds - please note that on our production server a generation usually
- takes 5 to 6 seconds)
+  takes 5 to 6 seconds)
 - the temporary folder in which the application will be generated (`/tmp` by default)
 
 Those are customized using the Spring Boot `application-*.yml` files as usual, for example:
@@ -79,10 +76,10 @@ files, using the standard `spring.datasource` keys.
 JHipster Online uses JWT to secure the application. For a production application, it is therefore **mandatory** that:
 
 - The `jhipster.security.authentication.jwt.key` is configured, and that key is stored securely (**not** commited in your application's Git repository).
-We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
-in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
+  We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
+  in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 - The application is only available through HTTPS. You can configure it using Spring Boot (please read the comments in the `application-prod.yml` file), or
-using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
+  using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 
 ### Mail
 
@@ -93,6 +90,7 @@ To configure e-mail sending, you need to configure the `jhipster.mail` keys (see
 and the Spring Boot standard `spring.mail` keys.
 
 When running the app with the `dev` profile, make sure to start the development mail server with:
+
 ```
 docker-compose -f src/main/docker/mailserver.yml up -d
 ```
@@ -142,9 +140,9 @@ JHipster Online needs to have a specific "JHipster Bot" user configured: create 
 Once logged in, the required API credentials can be created by going to "Settings > Applications > Add new application".
 Create a new application:
 
- - Its name is `jhipster`
- - The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
- - It has the `api` and `read_user` scopes
+- Its name is `jhipster`
+- The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
+- It has the `api` and `read_user` scopes
 
 Save that new application and store safely the `Application Id` and `Secret` values, so you can use them to configure
 the `application-*.yml` files.
@@ -169,10 +167,11 @@ To generate a production build, like any normal JHipster application, please run
     ./mvnw -Pprod clean package
 
 ### Using Docker
+
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw package -Pprod dockerfile:build
+    ./mvnw compile -Pprod jib:dockerBuild
 
 Then run:
 
@@ -181,7 +180,6 @@ Then run:
 ## Building for GCP environment (include sql proxy)
 
     ./mvnw clean package -Pgcp
-
 
 ## Help and contribution to the project
 
@@ -203,6 +201,5 @@ We have the same code of conduct as the main JHipster project:
 
 [azure-devops-image]: https://dev.azure.com/jhipster/jhipster-online/_apis/build/status/jhipster.jhipster-online?branchName=master
 [azure-devops-url-main]: https://dev.azure.com/jhipster/jhipster-online/_build
-
 [travis-image]: https://travis-ci.org/jhipster/jhipster-online.svg?branch=master
 [travis-url]: https://travis-ci.org/jhipster/jhipster-online

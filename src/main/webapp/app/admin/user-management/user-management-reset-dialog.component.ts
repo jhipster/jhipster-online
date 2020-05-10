@@ -1,42 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { User, PasswordResetService } from 'app/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { User } from 'app/core/user/user.model';
+import { PasswordResetService } from 'app/core/auth/password-reset.service';
 
 @Component({
-    selector: 'jhi-user-mgmt-reset-dialog',
-    templateUrl: './user-management-reset-dialog.component.html'
+  selector: 'jhi-user-mgmt-reset-dialog',
+  templateUrl: './user-management-reset-dialog.component.html'
 })
-export class UserMgmtResetDialogComponent implements OnInit {
-    user: User;
-    resetLink: string;
-    showClipboardSuccess: boolean;
-    showClipboardError: boolean;
-    isGeneratingLink: boolean;
+export class UserMgmtResetDialogComponent {
+  user?: User;
+  resetLink: string;
+  showClipboardSuccess: boolean;
+  showClipboardError: boolean;
+  isGeneratingLink: boolean;
 
-    constructor(private passwordResetService: PasswordResetService, public activeModal: NgbActiveModal) {}
+  constructor(private passwordResetService: PasswordResetService, public activeModal: NgbActiveModal) {
+    this.resetLink = '';
+    this.showClipboardSuccess = false;
+    this.showClipboardError = false;
+    this.isGeneratingLink = false;
+  }
 
-    ngOnInit() {
-        this.resetLink = '';
-        this.showClipboardSuccess = false;
-        this.showClipboardError = false;
+  generateResetLink(email: string): void {
+    this.isGeneratingLink = true;
+    this.passwordResetService.getResetLink(email).subscribe(
+      value => {
+        this.resetLink = value;
         this.isGeneratingLink = false;
-    }
+      },
+      () => {
+        this.isGeneratingLink = false;
+      }
+    );
+  }
 
-    generateResetLink(email: string) {
-        this.isGeneratingLink = true;
-        this.passwordResetService.getResetLink(email).subscribe(
-            value => {
-                this.resetLink = value;
-                this.isGeneratingLink = false;
-            },
-            () => {
-                this.isGeneratingLink = false;
-            }
-        );
-    }
-
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
 }

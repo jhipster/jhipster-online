@@ -19,24 +19,9 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-
-import io.github.jhipster.online.web.rest.util.DateUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.domain.SubGenEvent;
+import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.security.AuthoritiesConstants;
@@ -44,6 +29,20 @@ import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/s")
@@ -83,7 +82,6 @@ public class StatisticsResource {
 
 
     @GetMapping("/count-yo/{frequency}")
-    @Timed
     public ResponseEntity<List<TemporalCountDTO>> getCount(@PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
@@ -96,7 +94,6 @@ public class StatisticsResource {
     }
 
     @GetMapping("/yo/{field}/{frequency}")
-    @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getYoFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
@@ -110,7 +107,6 @@ public class StatisticsResource {
     }
 
     @GetMapping("/entity/{field}/{frequency}")
-    @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getEntityFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
@@ -125,7 +121,6 @@ public class StatisticsResource {
 
 
     @GetMapping("/sub-gen-event/deployment/{frequency}")
-    @Timed
     public ResponseEntity<List<TemporalDistributionDTO>> getDeploymentToolsDistribution(@NotNull @PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
@@ -138,7 +133,6 @@ public class StatisticsResource {
     }
 
     @GetMapping("/entity/{frequency}")
-    @Timed
     public ResponseEntity<List<TemporalCountDTO>> getEntityCount(@NotNull @PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
@@ -151,25 +145,21 @@ public class StatisticsResource {
     }
 
     @GetMapping("/count-yo")
-    @Timed
     public long getYoRCCount() {
         return yoRCService.countAll();
     }
 
     @GetMapping("/count-jdl")
-    @Timed
     public long getJdlCount() {
         return jdlService.countAll();
     }
 
     @GetMapping("/count-user")
-    @Timed
     public long getUserCount() {
         return userService.countAll();
     }
 
     @PostMapping("/entry")
-    @Timed
     public ResponseEntity addYoRc(HttpServletRequest req, @RequestBody String entry) {
         try {
             statisticsService.addEntry(entry, req.getRemoteHost());
@@ -180,21 +170,18 @@ public class StatisticsResource {
     }
 
     @PostMapping("/event/{generatorId}")
-    @Timed
     public ResponseEntity addSubGenEvent(@RequestBody SubGenEvent event, @PathVariable String generatorId) {
         statisticsService.addSubGenEvent(event, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/entity/{generatorId}")
-    @Timed
     public ResponseEntity addEntityStats(@RequestBody EntityStats entity, @PathVariable String generatorId) {
         statisticsService.addEntityStats(entity, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/link/{generatorId}")
-    @Timed
     public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Binding current user to generator {}", generatorId);
 
@@ -206,7 +193,6 @@ public class StatisticsResource {
     }
 
     @DeleteMapping("/link/{generatorId}")
-    @Timed
     public ResponseEntity unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
         log.info("Unbinding current user to generator {}", generatorId);
 
@@ -218,7 +204,6 @@ public class StatisticsResource {
     }
 
     @DeleteMapping("/data")
-    @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public void deleteStatisticsData() {
         User user = userService.getUser();

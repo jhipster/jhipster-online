@@ -17,16 +17,16 @@
  * limitations under the License.
  */
 export class GitConfigurationModel {
-    constructor(
-        public availableGitProviders: any,
-        public githubAvailable: boolean,
-        public githubClientId: string,
-        public githubHost: string,
-        public gitlabAvailable: boolean,
-        public gitlabRedirectUri: string,
-        public gitlabClientId: string,
-        public gitlabHost: string,
-        public githubConfigured: boolean,
-        public gitlabConfigured: boolean
-    ) {}
+  constructor(
+    public availableGitProviders: any,
+    public githubAvailable: boolean,
+    public githubClientId?: string,
+    public githubHost?: string,
+    public gitlabAvailable?: boolean,
+    public gitlabRedirectUri?: string,
+    public gitlabClientId?: string,
+    public gitlabHost?: string,
+    public githubConfigured?: boolean,
+    public gitlabConfigured?: boolean
+  ) {}
 }

@@ -16,7 +16,7 @@
         <form>
             <label for="reset-link"></label>
             <input type="text" id="reset-link" [value]="resetLink" size="50" readonly #resetLinkInput />
-            <button class="btn btn-primary" (click)="generateResetLink(user.email)">
+            <button class="btn btn-primary" (click)="generateResetLink(user?.email)">
                 <fa-icon [icon]="'sync'" [spin]="isGeneratingLink"></fa-icon>
                 &nbsp;Generate link
             </button>

@@ -19,25 +19,23 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
+import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.EntityStatsService;
+import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.service.EntityStatsService;
-import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing EntityStats.
@@ -52,6 +50,9 @@ public class EntityStatsResource {
 
     private final EntityStatsService entityStatsService;
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     public EntityStatsResource(EntityStatsService entityStatsService) {
         this.entityStatsService = entityStatsService;
     }
@@ -64,7 +65,6 @@ public class EntityStatsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/entity-stats")
-    @Timed
     public ResponseEntity<EntityStats> createEntityStats(@RequestBody EntityStats entityStats) throws URISyntaxException {
         log.debug("REST request to save EntityStats : {}", entityStats);
         if (entityStats.getId() != null) {
@@ -72,7 +72,7 @@ public class EntityStatsResource {
         }
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.created(new URI("/api/entity-stats/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -87,7 +87,6 @@ public class EntityStatsResource {
      */
     @PutMapping("/entity-stats")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) {
         log.debug("REST request to update EntityStats : {}", entityStats);
         if (entityStats.getId() == null) {
@@ -95,7 +94,7 @@ public class EntityStatsResource {
         }
         EntityStats result = entityStatsService.save(entityStats);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, entityStats.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, entityStats.getId().toString()))
             .body(result);
     }
 
@@ -106,7 +105,6 @@ public class EntityStatsResource {
      */
     @GetMapping("/entity-stats")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public List<EntityStats> getAllEntityStats() {
         log.debug("REST request to get all EntityStats");
         return entityStatsService.findAll();
@@ -120,7 +118,6 @@ public class EntityStatsResource {
      */
     @GetMapping("/entity-stats/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<EntityStats> getEntityStats(@PathVariable Long id) {
         log.debug("REST request to get EntityStats : {}", id);
         Optional<EntityStats> entityStats = entityStatsService.findOne(id);
@@ -135,10 +132,9 @@ public class EntityStatsResource {
      */
     @DeleteMapping("/entity-stats/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<Void> deleteEntityStats(@PathVariable Long id) {
         log.debug("REST request to delete EntityStats : {}", id);
         entityStatsService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

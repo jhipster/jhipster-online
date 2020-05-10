@@ -28,7 +28,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
 
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
@@ -56,7 +55,6 @@ public class CiCdResource {
     }
 
     @PostMapping("/ci-cd/{gitProvider}/{organizationName}/{projectName}/{ciCdTool}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName,
         @PathVariable String projectName, @PathVariable String ciCdTool) {
@@ -88,7 +86,6 @@ public class CiCdResource {
     }
 
     @GetMapping("/ci-cd-logs/{ciCdId}")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<String> generateApplicationOutput(@PathVariable String ciCdId) {
         String logs = this.logsService.getLogs(ciCdId);

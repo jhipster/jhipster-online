@@ -133,7 +133,7 @@ public class SubGenEventResourceIntTest {
 
         // Create the SubGenEvent
         restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
             .andExpect(status().isCreated());
 
@@ -162,7 +162,7 @@ public class SubGenEventResourceIntTest {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
             .andExpect(status().isBadRequest());
 
@@ -180,7 +180,7 @@ public class SubGenEventResourceIntTest {
         // Get all the subGenEventList
         restSubGenEventMockMvc.perform(get("/api/sub-gen-events?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subGenEvent.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
@@ -203,7 +203,7 @@ public class SubGenEventResourceIntTest {
         // Get the subGenEvent
         restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", subGenEvent.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(subGenEvent.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
@@ -247,7 +247,7 @@ public class SubGenEventResourceIntTest {
             .date(UPDATED_DATE);
 
         restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedSubGenEvent)))
             .andExpect(status().isOk());
 
@@ -275,7 +275,7 @@ public class SubGenEventResourceIntTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
             .andExpect(status().isBadRequest());
 
@@ -294,7 +294,7 @@ public class SubGenEventResourceIntTest {
 
         // Get the subGenEvent
         restSubGenEventMockMvc.perform(delete("/api/sub-gen-events/{id}", subGenEvent.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty
