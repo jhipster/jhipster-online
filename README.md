@@ -171,7 +171,7 @@ To generate a production build, like any normal JHipster application, please run
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw compile -Pprod jib:dockerBuild
+    ./mvnw clean package -Pprod jib:dockerBuild -DskipTests
 
 Then run:
 
