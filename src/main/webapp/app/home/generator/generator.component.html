@@ -118,9 +118,9 @@
                     <label for="prodDatabaseType">Which <i>production</i> database would you like to use?</label>
                     <select id="prodDatabaseType" [(ngModel)]="model.prodDatabaseType" name="prodDatabaseType"
                             class="form-control" #prodDatabaseType="ngModel" (change)="changeProdDatabaseType()">
+                        <option value="postgresql" [hidden]="model.databaseType !== 'sql'">PostgreSQL</option>
                         <option value="mysql" [hidden]="model.databaseType !== 'sql'">MySQL</option>
                         <option value="mariadb" [hidden]="model.databaseType !== 'sql'">MariaDB</option>
-                        <option value="postgresql" [hidden]="model.databaseType !== 'sql'">PostgreSQL</option>
                         <option value="oracle" [hidden]="model.databaseType !== 'sql'">Oracle (Please follow our documentation to use the Oracle proprietary
                             driver)
                         </option>
