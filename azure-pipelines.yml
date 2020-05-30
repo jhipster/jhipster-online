@@ -21,38 +21,38 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  NODE_VERSION: 10.16.3
+  NODE_VERSION: 12.17.0
   SPRING_OUTPUT_ANSI_ENABLED: ALWAYS
   SPRING_JPA_SHOW_SQL: false
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.16.3'
-  displayName: 'TOOLS: install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.17.0'
+    displayName: 'TOOLS: install Node.js'
 
-- bash: npm install -g yarn
-  displayName: 'TOOLS: install yarn'
+  - bash: npm install -g yarn
+    displayName: 'TOOLS: install yarn'
 
-- script: |
-    set -e
-    sudo add-apt-repository ppa:openjdk-r/ppa
-    sudo apt-get update
-    sudo apt-get install -y openjdk-8-jdk
-    sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-    java -version
-  displayName: 'TOOLS: configuring OpenJDK'
+  - script: |
+      set -e
+      sudo add-apt-repository ppa:openjdk-r/ppa
+      sudo apt-get update
+      sudo apt-get install -y openjdk-8-jdk
+      sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+      java -version
+    displayName: 'TOOLS: configuring OpenJDK'
 
-- bash: sudo /etc/init.d/mysql stop
-  displayName: 'CONFIGURE: shutdown mysql database'
+  - bash: sudo /etc/init.d/mysql stop
+    displayName: 'CONFIGURE: shutdown mysql database'
 
-- bash: yarn install
-  displayName: 'INSTALL: dependencies'
+  - bash: yarn install
+    displayName: 'INSTALL: dependencies'
 
-- script: |
-    set -e
-    chmod +x mvnw
-    ./mvnw clean test
-    yarn test
-    ./mvnw verify -Pprod -DskipTests
-  displayName: 'TEST: run test'
+  - script: |
+      set -e
+      chmod +x mvnw
+      ./mvnw clean test
+      yarn test
+      ./mvnw verify -Pprod -DskipTests
+    displayName: 'TEST: run test'
