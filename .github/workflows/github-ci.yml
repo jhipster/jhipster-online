@@ -53,7 +53,7 @@ jobs:
           ./mvnw -ntp clean verify -P-webpack
 
       - name: Run frontend test
-        run: yarn run test
+        run: yarn test
 
       - name: Package application
         run: ./mvnw -ntp package -Pprod -DskipTests
