@@ -30,8 +30,7 @@ import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -120,8 +119,11 @@ public class GitResource {
                         .INTERNAL_SERVER_ERROR);
             }
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0");
+            HttpEntity<GitAccessTokenRequest> entity = new HttpEntity<>(request, headers);
             ResponseEntity<GitAccessTokenResponse> response =
-                restTemplate.postForEntity(url, request, GitAccessTokenResponse.class);
+                restTemplate.postForEntity(url, entity, GitAccessTokenResponse.class);
             this.userService.saveToken(response.getBody().getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
             log.error("OAuth2 token could not saved: {}", e);
