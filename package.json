@@ -106,7 +106,7 @@
     "yarn": ">=1.19.0"
   },
   "scripts": {
-    "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,css,scss,yml,java}\"",
+    "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,css,scss,yml}\"",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "yarn run lint --fix",
     "ngc": "ngc -p tsconfig.app.json",
