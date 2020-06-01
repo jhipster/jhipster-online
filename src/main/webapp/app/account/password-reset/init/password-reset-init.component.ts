@@ -16,39 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EMAIL_NOT_FOUND_TYPE } from 'app/shared/constants/error.constants';
 
 import { PasswordResetInitService } from './password-reset-init.service';
-import { PasswordResetService } from 'app/core/auth/password-reset.service';
 
 @Component({
   selector: 'jhi-password-reset-init',
   templateUrl: './password-reset-init.component.html'
 })
-export class PasswordResetInitComponent implements OnInit, AfterViewInit {
+export class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })
   email?: ElementRef;
   errorEmailNotExists: string | undefined;
 
   success = false;
-  isMailEnabled: boolean;
   resetRequestForm = this.fb.group({
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
   });
 
-  constructor(
-    private passwordResetInitService: PasswordResetInitService,
-    private fb: FormBuilder,
-    private passwordResetService: PasswordResetService
-  ) {
-    this.isMailEnabled = true;
-  }
-
-  ngOnInit(): void {
-    this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
-  }
+  constructor(private passwordResetInitService: PasswordResetInitService, private fb: FormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.email) {
