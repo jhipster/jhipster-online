@@ -17,5 +17,5 @@
  * limitations under the License.
  */
 export class GitCompanyModel {
-    constructor(public id: number, public name: string, public gitProvider: string) {}
+  constructor(public id: number, public name: string, public gitProvider: string) {}
 }

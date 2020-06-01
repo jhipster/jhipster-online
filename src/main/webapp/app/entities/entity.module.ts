@@ -16,24 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { RouterModule } from '@angular/router';
 import { STATISTICS_ROUTE } from './statistics/statistics.route';
-import { JhonlineSharedModule } from 'app/shared';
+import { JhonlineSharedModule } from 'app/shared/shared.module';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
-    // prettier-ignore
-    imports: [
+  // prettier-ignore
+  imports: [
         JhonlineSharedModule,
-        RouterModule.forRoot([STATISTICS_ROUTE], { useHash: true })
+        RouterModule.forRoot([STATISTICS_ROUTE])
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
-    declarations: [StatisticsComponent],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  declarations: [StatisticsComponent],
+  entryComponents: [],
+  providers: []
 })
 export class JhonlineEntityModule {}

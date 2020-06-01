@@ -19,14 +19,15 @@
 
 package io.github.jhipster.online.service.dto;
 
+import io.github.jhipster.online.config.Constants;
+
+import io.github.jhipster.online.domain.Authority;
+import io.github.jhipster.online.domain.User;
+
+import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
-
-import io.github.jhipster.online.config.Constants;
-import io.github.jhipster.online.domain.Authority;
-import io.github.jhipster.online.domain.User;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -55,7 +56,7 @@ public class UserDTO {
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
+    @Size(min = 2, max = 10)
     private String langKey;
 
     private String createdBy;

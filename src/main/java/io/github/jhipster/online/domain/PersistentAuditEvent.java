@@ -18,12 +18,12 @@
  */
 package io.github.jhipster.online.domain;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * Persist AuditEvent managed by the Spring Boot actuator.
@@ -95,5 +95,30 @@ public class PersistentAuditEvent implements Serializable {
 
     public void setData(Map<String, String> data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PersistentAuditEvent)) {
+            return false;
+        }
+        return id != null && id.equals(((PersistentAuditEvent) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistentAuditEvent{" +
+            "principal='" + principal + '\'' +
+            ", auditEventDate=" + auditEventDate +
+            ", auditEventType='" + auditEventType + '\'' +
+            '}';
     }
 }

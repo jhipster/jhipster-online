@@ -19,9 +19,15 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.domain.GitCompany;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.GithubService;
+import io.github.jhipster.online.service.GitlabService;
+import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -30,15 +36,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.domain.GitCompany;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.*;
-import io.github.jhipster.online.service.dto.GitConfigurationDTO;
+import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -72,15 +71,14 @@ public class GitResource {
      * Handles the callback code returned by the OAuth2 authentication.
      */
     @GetMapping("/{gitProvider}/callback")
-    @Timed
     public RedirectView callback(@PathVariable String gitProvider, String code) {
         switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/github/callback/" + code);
+                return new RedirectView("/github/callback/" + code);
             case GITLAB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/gitlab/callback/" + code);
+                return new RedirectView("/gitlab/callback/" + code);
             default:
                 log.error("Unknown git provider : {}", gitProvider);
                 return null;
@@ -91,7 +89,6 @@ public class GitResource {
      * Saves the callback code returned by the OAuth2 authentication.
      */
     @PostMapping("/{gitProvider}/save-token")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
 
@@ -216,7 +213,6 @@ public class GitResource {
      * Refresh Github data for the current user.
      */
     @PostMapping("/{gitProvider}/refresh")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
@@ -258,7 +254,6 @@ public class GitResource {
      * Get the current user's GitHub companies.
      */
     @GetMapping("/{gitProvider}/companies")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getUserCompanies(@PathVariable String gitProvider) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
@@ -277,17 +272,15 @@ public class GitResource {
      * Get the projects belonging to an organization.
      */
     @GetMapping("/{gitProvider}/companies/{companyName}/projects")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         return maybeGitProvider.<ResponseEntity>map(gitProvider1 ->
             new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/git/config")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getGitlabConfig() {
         GitConfigurationDTO result = new GitConfigurationDTO(

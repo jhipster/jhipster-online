@@ -17,15 +17,15 @@
  * limitations under the License.
  */
 export class GitProviderModel {
-    constructor(
-        public availableGitProviders: any,
-        public selectedGitProvider: string,
-        public selectedGitCompany: string,
-        public selectedGitRepository: string,
-        public gitCompanies: any,
-        public gitProjects: any,
-        public gitCompanyListRefresh: boolean,
-        public gitProjectListRefresh: boolean,
-        public isValid: boolean
-    ) {}
+  constructor(
+    public gitCompanyListRefresh: boolean,
+    public gitProjectListRefresh: boolean,
+    public isValid: boolean,
+    public availableGitProviders: any,
+    public gitCompanies: any,
+    public gitProjects: any,
+    public selectedGitProvider?: string,
+    public selectedGitCompany?: string,
+    public selectedGitRepository?: string
+  ) {}
 }

@@ -24,7 +24,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.jhipster.online.web.rest.util.DateUtil;
+import io.github.jhipster.online.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;

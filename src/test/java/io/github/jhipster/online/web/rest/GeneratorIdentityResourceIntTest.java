@@ -105,7 +105,7 @@ public class GeneratorIdentityResourceIntTest {
 
         // Create the GeneratorIdentity
         restGeneratorIdentityMockMvc.perform(post("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
             .andExpect(status().isCreated());
 
@@ -127,7 +127,7 @@ public class GeneratorIdentityResourceIntTest {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGeneratorIdentityMockMvc.perform(post("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
             .andExpect(status().isBadRequest());
 
@@ -145,7 +145,7 @@ public class GeneratorIdentityResourceIntTest {
         // Get all the generatorIdentityList
         restGeneratorIdentityMockMvc.perform(get("/api/generator-identities?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generatorIdentity.getId().intValue())))
             .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
             .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
@@ -161,7 +161,7 @@ public class GeneratorIdentityResourceIntTest {
         // Get the generatorIdentity
         restGeneratorIdentityMockMvc.perform(get("/api/generator-identities/{id}", generatorIdentity.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(generatorIdentity.getId().intValue()))
             .andExpect(jsonPath("$.host").value(DEFAULT_HOST.toString()))
             .andExpect(jsonPath("$.guid").value(DEFAULT_GUID.toString()));
@@ -191,7 +191,7 @@ public class GeneratorIdentityResourceIntTest {
             .guid(UPDATED_GUID);
 
         restGeneratorIdentityMockMvc.perform(put("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedGeneratorIdentity)))
             .andExpect(status().isOk());
 
@@ -212,7 +212,7 @@ public class GeneratorIdentityResourceIntTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restGeneratorIdentityMockMvc.perform(put("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
             .andExpect(status().isBadRequest());
 
@@ -231,7 +231,7 @@ public class GeneratorIdentityResourceIntTest {
 
         // Get the generatorIdentity
         restGeneratorIdentityMockMvc.perform(delete("/api/generator-identities/{id}", generatorIdentity.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty

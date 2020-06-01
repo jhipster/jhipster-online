@@ -16,55 +16,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
-import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { EMAIL_NOT_FOUND_TYPE } from 'app/shared/constants/error.constants';
+
 import { PasswordResetInitService } from './password-reset-init.service';
-import { PasswordResetService } from 'app/core';
+import { PasswordResetService } from 'app/core/auth/password-reset.service';
 
 @Component({
-    selector: 'jhi-password-reset-init',
-    templateUrl: './password-reset-init.component.html'
+  selector: 'jhi-password-reset-init',
+  templateUrl: './password-reset-init.component.html'
 })
 export class PasswordResetInitComponent implements OnInit, AfterViewInit {
-    error: string;
-    errorEmailNotExists: string;
-    resetAccount: any;
-    success: string;
-    isMailEnabled: boolean;
+  @ViewChild('email', { static: false })
+  email?: ElementRef;
+  errorEmailNotExists: string | undefined;
 
-    constructor(
-        private passwordResetInitService: PasswordResetInitService,
-        private elementRef: ElementRef,
-        private renderer: Renderer,
-        private passwordResetService: PasswordResetService
-    ) {}
+  success = false;
+  isMailEnabled: boolean;
+  resetRequestForm = this.fb.group({
+    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
+  });
 
-    ngOnInit() {
-        this.resetAccount = {};
-        this.isMailEnabled = true;
-        this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
+  constructor(
+    private passwordResetInitService: PasswordResetInitService,
+    private fb: FormBuilder,
+    private passwordResetService: PasswordResetService
+  ) {
+    this.isMailEnabled = true;
+  }
+
+  ngOnInit(): void {
+    this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
+  }
+
+  ngAfterViewInit(): void {
+    if (this.email) {
+      this.email.nativeElement.focus();
     }
+  }
 
-    ngAfterViewInit() {
-        this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#email'), 'focus', []);
-    }
-
-    requestReset() {
-        this.error = null;
-        this.errorEmailNotExists = null;
-
-        this.passwordResetInitService.save(this.resetAccount.email).subscribe(
-            () => {
-                this.success = 'OK';
-            },
-            response => {
-                this.success = null;
-                if (response.status === 400 && response.error.type === EMAIL_NOT_FOUND_TYPE) {
-                    this.errorEmailNotExists = 'ERROR';
-                } else {
-                    this.error = 'ERROR';
-                }
-            }
-        );
-    }
+  requestReset(): void {
+    this.errorEmailNotExists = undefined;
+    this.passwordResetInitService.save(this.resetRequestForm.get(['email'])!.value).subscribe(
+      () => (this.success = true),
+      (response: any) => {
+        if (response.status === 400 && response.error.type === EMAIL_NOT_FOUND_TYPE) {
+          this.errorEmailNotExists = 'ERROR';
+        }
+      }
+    );
+  }
 }

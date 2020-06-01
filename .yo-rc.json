@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "io.github.jhipster.online"
     },
-    "jhipsterVersion": "5.0.2",
+    "jhipsterVersion": "6.8.0",
     "baseName": "jhonline",
     "packageName": "io.github.jhipster.online",
     "packageFolder": "io/github/jhipster/online",
@@ -29,6 +29,13 @@
     "jhiPrefix": "jhi",
     "enableTranslation": false,
     "cacheProvider": "ehcache",
-    "enableHibernateCache": true
+    "enableHibernateCache": true,
+    "embeddableLaunchScript": false,
+    "clientTheme": "none",
+    "creationTimestamp": 1588338299248,
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
   }
 }

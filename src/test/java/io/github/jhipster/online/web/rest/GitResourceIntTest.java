@@ -99,7 +99,7 @@ public class GitResourceIntTest {
         restMvc.perform(
             get("/api/git/config", "TestProvider")
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 
@@ -108,7 +108,7 @@ public class GitResourceIntTest {
         final String code = "ret66spihj6sio4bud2";
         restMvc.perform(
             post("/api/{gitProvider}/save-token", "TestProvider")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(code))
             .andExpect(status().isInternalServerError());
     }
@@ -118,7 +118,7 @@ public class GitResourceIntTest {
         final String unavailableGitProvider = "TestProvider";
         restMvc.perform(
             post("/api/{gitProvider}/refresh", "TestProvider")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8))
+                .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string("Unknown git provider: " + unavailableGitProvider));
     }

@@ -23,19 +23,19 @@ import java.time.Duration;
 
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
+import org.hibernate.cache.jcache.ConfigSettings;
 import io.github.jhipster.config.JHipsterProperties;
+
+import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.*;
+
+import javax.cache.CacheManager;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
 public class CacheConfiguration {
 
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
@@ -47,8 +47,7 @@ public class CacheConfiguration {
     public static final String STATISTICS_USERS_COUNT = "statisticsUsersCount";
 
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
-        JHipsterProperties.Cache.Ehcache ehcache =
-            jHipsterProperties.getCache().getEhcache();
+        JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
 
         jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
             CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
@@ -64,30 +63,42 @@ public class CacheConfiguration {
     }
 
     @Bean
+    public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(javax.cache.CacheManager cacheManager) {
+        return hibernateProperties -> hibernateProperties.put(ConfigSettings.CACHE_MANAGER, cacheManager);
+    }
+
+    @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            cm.createCache(STATISTICS_YORC_COUNT, statisticsJcacheConfiguration);
-            cm.createCache(STATISTICS_JDL_COUNT, statisticsJcacheConfiguration);
-            cm.createCache(STATISTICS_USERS_COUNT, statisticsJcacheConfiguration);
+            createIfNotExists(cm, STATISTICS_YORC_COUNT, statisticsJcacheConfiguration);
+            createIfNotExists(cm, STATISTICS_JDL_COUNT, statisticsJcacheConfiguration);
+            createIfNotExists(cm, STATISTICS_USERS_COUNT, statisticsJcacheConfiguration);
 
-            cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.User.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.User.class.getName() + ".gitCompanies", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.Authority.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.User.class.getName() + ".authorities", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.Jdl.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.JdlMetadata.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.GitCompany.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".languages", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.GeneratorIdentity.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".testFrameworks", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.YoRC.class.getName() + ".selectedLanguages", jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.SubGenEvent.class.getName(), jcacheConfiguration);
-            cm.createCache(io.github.jhipster.online.domain.EntityStats.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.User.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.User.class.getName() + ".gitCompanies", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.Authority.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.Jdl.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.JdlMetadata.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.GitCompany.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.GitCompany.class.getName() + ".gitProjects", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.YoRC.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.YoRC.class.getName() + ".languages", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.GeneratorIdentity.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.YoRC.class.getName() + ".testFrameworks", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.YoRC.class.getName() + ".selectedLanguages", jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.SubGenEvent.class.getName(), jcacheConfiguration);
+            createIfNotExists(cm, io.github.jhipster.online.domain.EntityStats.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
+    }
+
+    private void createIfNotExists(CacheManager cacheManager, String cacheName,
+                                   javax.cache.configuration.Configuration<Object, Object> cacheConfiguration) {
+        if(cacheManager.getCache(cacheName) == null) {
+            cacheManager.createCache(cacheName, cacheConfiguration);
+        }
     }
 }

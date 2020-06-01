@@ -22,7 +22,6 @@ package io.github.jhipster.online.service;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
-import io.github.jhipster.online.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,6 +58,6 @@ public class GeneratorIdentityServiceTest {
 
         GeneratorIdentity result = generatorIdentityService.findOneByGuid("123").orElse(null);
 
-        assertThat(result).extracting(GeneratorIdentity::getGuid).containsExactly("123");
+        assertThat(result).extracting(GeneratorIdentity::getGuid).isEqualTo("123");
     }
 }

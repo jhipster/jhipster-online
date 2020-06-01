@@ -22,11 +22,11 @@ import { GitComponent } from './git.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GIT_ROUTE: Route = {
-    path: 'git',
-    component: GitComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Git configuration'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'git',
+  component: GitComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Git configuration'
+  },
+  canActivate: [UserRouteAccessService]
 };

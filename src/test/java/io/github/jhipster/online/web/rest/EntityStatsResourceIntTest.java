@@ -143,7 +143,7 @@ public class EntityStatsResourceIntTest {
 
         // Create the EntityStats
         restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(entityStats)))
             .andExpect(status().isCreated());
 
@@ -175,7 +175,7 @@ public class EntityStatsResourceIntTest {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(entityStats)))
             .andExpect(status().isBadRequest());
 
@@ -193,7 +193,7 @@ public class EntityStatsResourceIntTest {
         // Get all the entityStatsList
         restEntityStatsMockMvc.perform(get("/api/entity-stats?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(entityStats.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
@@ -218,7 +218,7 @@ public class EntityStatsResourceIntTest {
         // Get the entityStats
         restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", entityStats.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(entityStats.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
@@ -269,7 +269,7 @@ public class EntityStatsResourceIntTest {
             .date(UPDATED_DATE);
 
         restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedEntityStats)))
             .andExpect(status().isOk());
 
@@ -300,7 +300,7 @@ public class EntityStatsResourceIntTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(entityStats)))
             .andExpect(status().isBadRequest());
 
@@ -319,7 +319,7 @@ public class EntityStatsResourceIntTest {
 
         // Get the entityStats
         restEntityStatsMockMvc.perform(delete("/api/entity-stats/{id}", entityStats.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty

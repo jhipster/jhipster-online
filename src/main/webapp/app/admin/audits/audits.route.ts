@@ -16,20 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Route } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { Route } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
 
 import { AuditsComponent } from './audits.component';
 
 export const auditsRoute: Route = {
-    path: 'audits',
-    component: AuditsComponent,
-    resolve: {
-        pagingParams: JhiResolvePagingParams
-    },
-    data: {
-        pageTitle: 'Audits',
-        defaulSort: 'auditEventDate,desc'
-    }
+  path: '',
+  component: AuditsComponent,
+  resolve: {
+    pagingParams: JhiResolvePagingParams
+  },
+  data: {
+    pageTitle: 'Audits',
+    defaultSort: 'auditEventDate,desc'
+  }
 };

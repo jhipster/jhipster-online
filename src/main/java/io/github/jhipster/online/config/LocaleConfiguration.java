@@ -18,14 +18,13 @@
  */
 package io.github.jhipster.online.config;
 
+import io.github.jhipster.config.locale.AngularCookieLocaleResolver;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-
-import io.github.jhipster.config.locale.AngularCookieLocaleResolver;
 
 @Configuration
 public class LocaleConfiguration implements WebMvcConfigurer {

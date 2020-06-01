@@ -18,17 +18,17 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CiCdService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    addCiCd(gitProvider: string, organizationName: string, projectName: string, ciCdTool: string): Observable<string> {
-        return this.http.post(`api/ci-cd/${gitProvider}/${organizationName}/${projectName}/${ciCdTool}`, {}, { responseType: 'text' });
-    }
+  addCiCd(gitProvider: string, organizationName: string, projectName: string, ciCdTool: string): Observable<string> {
+    return this.http.post(`api/ci-cd/${gitProvider}/${organizationName}/${projectName}/${ciCdTool}`, {}, { responseType: 'text' });
+  }
 
-    getCiCdData(ciCdId: string): Observable<string> {
-        return this.http.get('api/ci-cd-logs/' + ciCdId, { responseType: 'text' });
-    }
+  getCiCdData(ciCdId: string): Observable<string> {
+    return this.http.get('api/ci-cd-logs/' + ciCdId, { responseType: 'text' });
+  }
 }

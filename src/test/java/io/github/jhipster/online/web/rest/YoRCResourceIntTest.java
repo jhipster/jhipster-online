@@ -211,7 +211,7 @@ public class YoRCResourceIntTest {
         // Get all the yoRCList
         restYoRCMockMvc.perform(get("/api/yo-rcs?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(yoRC.getId().intValue())))
             .andExpect(jsonPath("$.[*].jhipsterVersion").value(hasItem(DEFAULT_JHIPSTER_VERSION.toString())))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
@@ -263,7 +263,7 @@ public class YoRCResourceIntTest {
         // Get the yoRC
         restYoRCMockMvc.perform(get("/api/yo-rcs/{id}", yoRC.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(yoRC.getId().intValue()))
             .andExpect(jsonPath("$.jhipsterVersion").value(DEFAULT_JHIPSTER_VERSION.toString()))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
@@ -322,7 +322,7 @@ public class YoRCResourceIntTest {
 
         // Get the yoRC
         restYoRCMockMvc.perform(delete("/api/yo-rcs/{id}", yoRC.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty
