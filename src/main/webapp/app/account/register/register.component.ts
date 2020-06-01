@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -29,7 +29,7 @@ import { RegisterService } from './register.service';
   selector: 'jhi-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit, AfterViewInit {
+export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
   login?: ElementRef;
 
@@ -38,7 +38,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
-  isMailEnabled: boolean;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
@@ -52,13 +51,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     private registerService: RegisterService,
     private fb: FormBuilder,
     private passwordResetService: PasswordResetService
-  ) {
-    this.isMailEnabled = true;
-  }
-
-  ngOnInit(): void {
-    this.passwordResetService.getMailStatus().subscribe(result => (this.isMailEnabled = result['mailEnabled']));
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.login) {

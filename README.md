@@ -1,6 +1,6 @@
 # JHipster Online
 
-![Application CI](https://github.com/jhipster/jhipster-online/workflows/Application%20CI/badge.svg) [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
+[![Build Status][github-actions-jhonline-image]][github-actions-url] [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
 
 JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
@@ -171,7 +171,7 @@ To generate a production build, like any normal JHipster application, please run
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw clean package -Pprod jib:dockerBuild -DskipTests
+    ./mvnw package -Pprod dockerfile:build
 
 Then run:
 
@@ -199,7 +199,5 @@ You should [post it on Stack Overflow using the "jhipster" tag](https://stackove
 We have the same code of conduct as the main JHipster project:
 [JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/master/CODE_OF_CONDUCT.md).
 
-[azure-devops-image]: https://dev.azure.com/jhipster/jhipster-online/_apis/build/status/jhipster.jhipster-online?branchName=master
-[azure-devops-url-main]: https://dev.azure.com/jhipster/jhipster-online/_build
-[travis-image]: https://travis-ci.org/jhipster/jhipster-online.svg?branch=master
-[travis-url]: https://travis-ci.org/jhipster/jhipster-online
+[github-actions-jhonline-image]: https://github.com/jhipster/jhipster-online/workflows/Application%20CI/badge.svg
+[github-actions-url]: https://github.com/jhipster/jhipster-online/actions

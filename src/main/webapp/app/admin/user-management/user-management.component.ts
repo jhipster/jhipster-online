@@ -28,7 +28,6 @@ import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
-import { PasswordResetService } from 'app/core/auth/password-reset.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 import { UserMgmtResetDialogComponent } from 'app/admin/user-management/user-management-reset-dialog.component';
@@ -47,7 +46,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   predicate!: string;
   previousPage!: number;
   ascending!: boolean;
-  isMailEnabled: boolean;
 
   constructor(
     private userService: UserService,
@@ -55,11 +53,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal,
-    private passwordResetService: PasswordResetService
-  ) {
-    this.isMailEnabled = true;
-  }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data
@@ -78,11 +73,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
-
-    this.passwordResetService.getMailStatus().subscribe(
-      result => (this.isMailEnabled = result['mailEnabled']),
-      () => (this.isMailEnabled = false)
-    );
   }
 
   ngOnDestroy(): void {
