@@ -7,7 +7,7 @@ RUN \
     rm -Rf target node_modules && \
     chmod +x /code/mvnw && \
     sleep 1 && \
-    ./mvnw package -Pprod -DskipTests && \
+    ./mvnw package -Pgcp -DskipTests && \
     mv /code/target/*.war / && \
     apt-get clean && \
     rm -Rf /code/ /root/.m2 /root/.cache /tmp/* /var/lib/apt/lists/* /var/tmp/*  && \
