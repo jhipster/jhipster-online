@@ -198,6 +198,9 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/link")
     public String requestPasswordResetAndReturnLink(@RequestBody String mail) {
         Optional<User> user = userService.requestPasswordReset(mail);
+        if (!user.isPresent()) {
+            throw new AccountResourceException("User could not be found");
+        }
         return userService.generatePasswordResetLink(user.get().getResetKey());
     }
 
