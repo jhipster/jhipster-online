@@ -18,7 +18,6 @@
  */
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { EMAIL_NOT_FOUND_TYPE } from 'app/shared/constants/error.constants';
 
 import { PasswordResetInitService } from './password-reset-init.service';
 
@@ -29,7 +28,6 @@ import { PasswordResetInitService } from './password-reset-init.service';
 export class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })
   email?: ElementRef;
-  errorEmailNotExists: string | undefined;
 
   success = false;
   resetRequestForm = this.fb.group({
@@ -45,14 +43,6 @@ export class PasswordResetInitComponent implements AfterViewInit {
   }
 
   requestReset(): void {
-    this.errorEmailNotExists = undefined;
-    this.passwordResetInitService.save(this.resetRequestForm.get(['email'])!.value).subscribe(
-      () => (this.success = true),
-      (response: any) => {
-        if (response.status === 400 && response.error.type === EMAIL_NOT_FOUND_TYPE) {
-          this.errorEmailNotExists = 'ERROR';
-        }
-      }
-    );
+    this.passwordResetInitService.save(this.resetRequestForm.get(['email'])!.value).subscribe(() => (this.success = true));
   }
 }
