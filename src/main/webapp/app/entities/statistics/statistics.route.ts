@@ -21,12 +21,12 @@ import { Route } from '@angular/router';
 import { StatisticsComponent } from './statistics.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
-export const STATISTICS_ROUTE: Route = {
-    path: 'statistics',
-    component: StatisticsComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'Statistics'
-    },
-    canActivate: [UserRouteAccessService]
+export const statisticsRoute: Route = {
+  path: '',
+  component: StatisticsComponent,
+  data: {
+    authorities: [],
+    pageTitle: 'Statistics'
+  },
+  canActivate: [UserRouteAccessService]
 };
