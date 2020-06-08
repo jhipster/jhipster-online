@@ -17,22 +17,20 @@
  * limitations under the License.
  */
 import { NgModule } from '@angular/core';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { RouterModule } from '@angular/router';
-import { STATISTICS_ROUTE } from './statistics/statistics.route';
-import { JhonlineSharedModule } from 'app/shared/shared.module';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
   // prettier-ignore
   imports: [
-        JhonlineSharedModule,
-        RouterModule.forRoot([STATISTICS_ROUTE])
+    RouterModule.forChild([
+        {
+          path: 'statistics',
+          loadChildren: () => import('./statistics/statistics.module').then(m => m.JhonlineStatisticsModule),
+        }
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-  declarations: [StatisticsComponent],
-  entryComponents: [],
-  providers: []
+    ]),
+  ]
 })
 export class JhonlineEntityModule {}
