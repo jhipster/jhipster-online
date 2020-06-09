@@ -22,18 +22,21 @@ the next section for details on configuring the application.
 
 - Install and run the front-end:
 
-
-    yarn install && yarn start
+```
+yarn install && yarn start
+```
 
 - Run the database:
 
-
-    docker-compose -f src/main/docker/mysql.yml up -d
+```
+docker-compose -f src/main/docker/mysql.yml up -d
+```
 
 - Run the back-end:
 
-
-    ./mvnw
+```
+./mvnw
+```
 
 ## Specific configuration
 
@@ -164,22 +167,30 @@ application:
 
 To generate a production build, like any normal JHipster application, please run:
 
-    ./mvnw -Pprod clean package
+```
+./mvnw -Pprod clean package
+```
 
 ### Using Docker
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw package -Pprod dockerfile:build
+```
+./mvnw package -Pprod dockerfile:build
+```
 
 Then run:
 
-    docker-compose -f src/main/docker/app.yml up -d
+```
+docker-compose -f src/main/docker/app.yml up -d
+```
 
 ## Building for GCP environment (include sql proxy)
 
-    ./mvnw clean package -Pgcp
+```
+./mvnw clean package -Pgcp
+```
 
 ## Help and contribution to the project
 
