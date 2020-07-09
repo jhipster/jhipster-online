@@ -15,9 +15,9 @@
 
 logging:
   level:
-    ROOT: INFO
-    io.github.jhipster: INFO
-    io.github.jhipster.online: INFO
+    ROOT: DEBUG
+    io.github.jhipster: DEBUG
+    io.github.jhipster.online: DEBUG
 
 management:
   metrics:
