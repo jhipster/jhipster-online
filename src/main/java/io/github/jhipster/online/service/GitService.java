@@ -94,7 +94,7 @@ public class GitService {
     public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider
         gitProvider) throws
         GitAPIException {
-        log.info("Pushing {} to {} / {}", workingDir, user, organization, applicationName);
+        log.info("Pushing {} to {} / {} for user {}", workingDir, organization, applicationName, user);
         git.push().setCredentialsProvider(getCredentialProvider(user, gitProvider)).call();
     }
 

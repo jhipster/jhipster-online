@@ -72,8 +72,6 @@ public class CiCdService {
     @Async
     public void configureCiCd(User user, String organizationName, String projectName, CiCdTool ciCdTool, String ciCdId,
         GitProvider gitProvider) {
-        StopWatch watch = new StopWatch();
-        watch.start();
         try {
             log.info("Beginning to configure CI with {} to {} / {}", ciCdTool, organizationName, projectName);
             boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
@@ -142,6 +140,5 @@ public class CiCdService {
             e.printStackTrace();
             this.logsService.addLog(ciCdId, "Generation failed");
         }
-        watch.stop();
     }
 }

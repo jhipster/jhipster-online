@@ -21,6 +21,7 @@ package io.github.jhipster.online.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -113,7 +114,7 @@ public class GitCompany implements Serializable {
 
         GitCompany authority = (GitCompany) o;
 
-        return !(id != null ? !id.equals(authority.id) : authority.id != null);
+        return Objects.equals(id, authority.id);
     }
 
     @Override

@@ -19,6 +19,8 @@
 
 package io.github.jhipster.online.service.dto;
 
+import java.util.Objects;
+
 public class GitConfigurationDTO {
 
     private String githubHost;
@@ -146,16 +148,15 @@ public class GitConfigurationDTO {
             return false;
         if (gitlabConfigured != that.gitlabConfigured)
             return false;
-        if (githubHost != null ? !githubHost.equals(that.githubHost) : that.githubHost != null)
+        if (!Objects.equals(githubHost, that.githubHost))
             return false;
-        if (githubClientId != null ? !githubClientId.equals(that.githubClientId) : that.githubClientId != null)
+        if (!Objects.equals(githubClientId, that.githubClientId))
             return false;
-        if (gitlabHost != null ? !gitlabHost.equals(that.gitlabHost) : that.gitlabHost != null)
+        if (!Objects.equals(gitlabHost, that.gitlabHost))
             return false;
-        if (gitlabRedirectUri != null ? !gitlabRedirectUri.equals(that.gitlabRedirectUri) : that.gitlabRedirectUri !=
-            null)
+        if (!Objects.equals(gitlabRedirectUri, that.gitlabRedirectUri))
             return false;
-        return gitlabClientId != null ? gitlabClientId.equals(that.gitlabClientId) : that.gitlabClientId == null;
+        return Objects.equals(gitlabClientId, that.gitlabClientId);
     }
 
     @Override

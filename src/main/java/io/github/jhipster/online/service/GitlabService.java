@@ -106,11 +106,12 @@ public class GitlabService implements GitProviderService {
     @Transactional
     @Override
     public void syncUserFromGitProvider() throws Exception {
-        Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(currentUserLogin.orElse(null));
         if (user.isPresent()) {
             this.getSyncedUserFromGitProvider(user.get());
         } else {
-            log.info("No user `{} was found to sync with GitLab ");
+            log.info("No user {} was found to sync with GitLab", currentUserLogin);
         }
     }
 
@@ -198,8 +199,6 @@ public class GitlabService implements GitProviderService {
     public void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
         group,
         String repositoryName) {
-        StopWatch watch = new StopWatch();
-        watch.start();
         try {
             log.info("Beginning to create repository {} / {}", group, repositoryName);
             this.logsService.addLog(applicationId, "Creating GitLab repository");
@@ -208,13 +207,12 @@ public class GitlabService implements GitProviderService {
                 log.debug("Repository {} belongs to user {}", repositoryName, group);
                 log.info("Creating repository {} / {}", group, repositoryName);
                 gitlab.createProject(repositoryName);
-                this.logsService.addLog(applicationId, "GitLab repository created!");
             } else {
                 log.debug("Repository {} belongs to organization {}", repositoryName, group);
                 log.info("Creating repository {} / {}", group, repositoryName);
                 gitlab.createProjectForGroup(repositoryName, gitlab.getGroup(group));
-                this.logsService.addLog(applicationId, "GitLab repository created!");
             }
+            this.logsService.addLog(applicationId, "GitLab repository created!");
 
             this.generatorService.generateGitApplication(user, applicationId, applicationConfiguration, group,
                 repositoryName, GitProvider.GITLAB);
@@ -224,7 +222,6 @@ public class GitlabService implements GitProviderService {
             this.logsService.addLog(applicationId, "Error during generation: " + e.getMessage());
             this.logsService.addLog(applicationId, "Generation failed");
         }
-        watch.stop();
     }
 
     @Override
