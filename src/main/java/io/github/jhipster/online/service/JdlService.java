@@ -78,8 +78,6 @@ public class JdlService {
     @Async
     public void applyJdl(User user, String organizationName, String projectName, JdlMetadata jdlMetadata, String
         applyJdlId, GitProvider gitProvider) {
-        StopWatch watch = new StopWatch();
-        watch.start();
         try {
             log.info("Beginning to apply JDL Model {} to {} / {}", jdlMetadata.getId(), organizationName, projectName);
             boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
@@ -153,7 +151,6 @@ public class JdlService {
             e.printStackTrace();
             this.logsService.addLog(applyJdlId, "Generation failed");
         }
-        watch.stop();
     }
 
     private void generateJdlFile(File workingDir, JdlMetadata jdlMetadata)

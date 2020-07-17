@@ -7,6 +7,7 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -23,19 +24,19 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         YoRC result = new YoRC();
         JsonNode node = jp.getCodec().readTree(jp);
 
-        String serverPort = node.get("serverPort").asText();
+        String serverPort = getDefaultIfNull(node.get("serverPort"), "8080");
         String authenticationType = node.get("authenticationType").asText();
-        String cacheProvider = node.get("cacheProvider").asText();
+        String cacheProvider = getDefaultIfNull(node.get("cacheProvider"), "no");
         boolean enableHibernateCache = getDefaultIfNull(node.get("enableHibernateCache"), false);
         boolean webSocket = node.get("websocket").asBoolean();
         String databaseType = node.get("databaseType").asText();
         String devDatabaseType = node.get("devDatabaseType").asText();
         String prodDatabaseType = node.get("prodDatabaseType").asText();
         boolean searchEngine = getDefaultIfNull(node.get("searchEngine"), false);
-        boolean messageBroker = node.get("messageBroker").asBoolean();
-        boolean serviceDiscoveryType = node.get("serviceDiscoveryType").asBoolean();
+        boolean messageBroker = getDefaultIfNull(node.get("messageBroker"), false);
+        boolean serviceDiscoveryType = getDefaultIfNull(node.get("serviceDiscoveryType"), false);
         String buildTool = node.get("buildTool").asText();
-        boolean enableSwaggerCodegen = node.get("enableSwaggerCodegen").asBoolean();
+        boolean enableSwaggerCodegen = getDefaultIfNull(node.get("enableSwaggerCodegen"), false);
         String clientFramework = getDefaultIfNull(node.get("clientFramework"), "none");
         boolean useSass = getDefaultIfNull(node.get("useSass"), false);
         String clientPackageManager = node.get("clientPackageManager").asText();
@@ -45,18 +46,21 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         boolean hasProtractor = false;
         boolean hasGatling = false;
         boolean hasCucumber = false;
-        ArrayNode testFrameworks = (ArrayNode)node.get("testFrameworks");
-        for (JsonNode testFramework: testFrameworks) {
-            switch(testFramework.asText().toLowerCase()) {
-                case "protractor":
-                    hasProtractor = true;
-                    break;
-                case "gatling":
-                    hasGatling = true;
-                    break;
-                case "cucumber":
-                    hasCucumber = true;
-                    break;
+
+        if (node.get("testFrameworks") != null) {
+            ArrayNode testFrameworks = (ArrayNode) node.get("testFrameworks");
+            for (JsonNode testFramework : testFrameworks) {
+                switch (testFramework.asText().toLowerCase()) {
+                    case "protractor":
+                        hasProtractor = true;
+                        break;
+                    case "gatling":
+                        hasGatling = true;
+                        break;
+                    case "cucumber":
+                        hasCucumber = true;
+                        break;
+                }
             }
         }
 

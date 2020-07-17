@@ -26,6 +26,11 @@
         <appender-ref ref="ASYNC"/>
     </root>
 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <Pattern>%-4r [%thread] %-5level User:%X{user.login} - %msg%n</Pattern>
+        </layout>
+    </appender>
     <logger name="io.github.jhipster.online" level="DEBUG"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>

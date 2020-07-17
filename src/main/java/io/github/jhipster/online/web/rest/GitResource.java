@@ -126,7 +126,7 @@ public class GitResource {
                 restTemplate.postForEntity(url, entity, GitAccessTokenResponse.class);
             this.userService.saveToken(response.getBody().getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
-            log.error("OAuth2 token could not saved: {}", e);
+            log.error("OAuth2 token could not saved: ", e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -144,16 +144,8 @@ public class GitResource {
 
         private String redirectUri;
 
-        public String getClient_id() {
-            return client_id;
-        }
-
         public void setClient_id(String client_id) {
             this.client_id = client_id;
-        }
-
-        public String getClient_secret() {
-            return client_secret;
         }
 
         public void setClient_secret(String client_secret) {
@@ -168,16 +160,8 @@ public class GitResource {
             this.code = code;
         }
 
-        public String getGrant_type() {
-            return grantType;
-        }
-
         public void setGrant_type(String grantType) {
             this.grantType = grantType;
-        }
-
-        public String getRedirect_uri() {
-            return redirectUri;
         }
 
         public void setRedirect_uri(String redirectUri) {
