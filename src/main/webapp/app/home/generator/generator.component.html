@@ -109,9 +109,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">Couchbase</option>
                         <option value="neo4j">Neo4j</option>
-                        <option value="no"
-                                [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
-                    || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
+                        <option value="no" [hidden]="model.authenticationType === 'uaa'">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
