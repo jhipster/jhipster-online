@@ -1,0 +1,6 @@
+name: "CodeQL Configuration"
+
+paths-ignore:
+  - node_modules
+  - target
+  - node
