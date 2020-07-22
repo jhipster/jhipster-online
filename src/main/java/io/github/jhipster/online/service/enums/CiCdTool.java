@@ -12,9 +12,7 @@ public enum CiCdTool {
     TRAVIS,
     JENKINS,
     GITLAB,
-    AZURE,
-    CIRCLE,
-    GITHUB;
+    AZURE;
 
     public static Optional<CiCdTool> getByName(String name) {
         return Stream
