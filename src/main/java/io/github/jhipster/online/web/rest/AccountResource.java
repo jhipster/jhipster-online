@@ -27,7 +27,6 @@ import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
 import io.github.jhipster.online.service.dto.UserDTO;
 import io.github.jhipster.online.web.rest.errors.EmailAlreadyUsedException;
-import io.github.jhipster.online.web.rest.errors.EmailNotFoundException;
 import io.github.jhipster.online.web.rest.errors.InvalidPasswordException;
 import io.github.jhipster.online.web.rest.errors.LoginAlreadyUsedException;
 import io.github.jhipster.online.web.rest.vm.KeyAndPasswordVM;
@@ -186,19 +185,23 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/reset-password/init")
     public void requestPasswordReset(@RequestBody String mail) {
-        if (mailService.isEnabled()) {
-            mailService.sendPasswordResetMail(
-                userService
-                    .requestPasswordReset(mail)
-                    .orElseThrow(EmailNotFoundException::new)
-            );
+        Optional<User> user = userService.requestPasswordReset(mail);
+        if (user.isPresent()) {
+            mailService.sendPasswordResetMail(user.get());
+        } else {
+            // Pretend the request has been successful to prevent checking which emails really exist
+            // but log that an invalid attempt has been made
+            log.warn("Password reset requested for non existing mail '{}'", mail);
         }
     }
 
     @PostMapping(path = "/account/reset-password/link")
     public String requestPasswordResetAndReturnLink(@RequestBody String mail) {
-        User user = userService.requestPasswordReset(mail).orElseThrow(EmailNotFoundException::new);
-        return userService.generatePasswordResetLink(user.getResetKey());
+        Optional<User> user = userService.requestPasswordReset(mail);
+        if (!user.isPresent()) {
+            throw new AccountResourceException("User could not be found");
+        }
+        return userService.generatePasswordResetLink(user.get().getResetKey());
     }
 
     /**

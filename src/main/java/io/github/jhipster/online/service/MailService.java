@@ -70,10 +70,6 @@ public class MailService {
         this.templateEngine = templateEngine;
     }
 
-    public boolean isEnabled() {
-        return this.jHipsterProperties.getMail().isEnabled();
-    }
-
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
