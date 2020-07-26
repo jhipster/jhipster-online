@@ -19,6 +19,8 @@
 
 package io.github.jhipster.online.web.rest;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.enums.GitProvider;
@@ -30,14 +32,21 @@ import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api")
@@ -91,9 +100,7 @@ public class GitResource {
     @PostMapping("/{gitProvider}/save-token")
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
-
         try {
-            RestTemplate restTemplate = new RestTemplate();
             String url;
             GitProvider gitProviderEnum;
             GitAccessTokenRequest request = new GitAccessTokenRequest();
@@ -119,12 +126,23 @@ public class GitResource {
                         .INTERNAL_SERVER_ERROR);
             }
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("user-agent", "Mozilla/5.0 (X11; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0");
-            HttpEntity<GitAccessTokenRequest> entity = new HttpEntity<>(request, headers);
-            ResponseEntity<GitAccessTokenResponse> response =
-                restTemplate.postForEntity(url, entity, GitAccessTokenResponse.class);
-            this.userService.saveToken(response.getBody().getAccess_token(), gitProviderEnum);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String requestBody = objectMapper.writeValueAsString(request);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+            CompletableFuture<HttpResponse<String>> response = client.sendAsync(httpRequest,
+                HttpResponse.BodyHandlers.ofString());
+
+            String jsonResponse = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            GitAccessTokenResponse accessTokenResponse = objectMapper.readValue(jsonResponse, GitAccessTokenResponse.class);
+            this.userService.saveToken(accessTokenResponse.getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
             log.error("OAuth2 token could not saved: ", e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -144,8 +162,16 @@ public class GitResource {
 
         private String redirectUri;
 
+        public String getClient_id() {
+            return client_id;
+        }
+
         public void setClient_id(String client_id) {
             this.client_id = client_id;
+        }
+
+        public String getClient_secret() {
+            return client_secret;
         }
 
         public void setClient_secret(String client_secret) {
@@ -160,8 +186,16 @@ public class GitResource {
             this.code = code;
         }
 
+        public String getGrant_type() {
+            return grantType;
+        }
+
         public void setGrant_type(String grantType) {
             this.grantType = grantType;
+        }
+
+        public String getRedirect_uri() {
+            return redirectUri;
         }
 
         public void setRedirect_uri(String redirectUri) {
@@ -180,8 +214,8 @@ public class GitResource {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class GitAccessTokenResponse {
-
         private String access_token;
 
         public String getAccess_token() {
