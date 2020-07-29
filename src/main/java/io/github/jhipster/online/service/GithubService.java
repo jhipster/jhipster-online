@@ -33,7 +33,6 @@ import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -228,7 +227,6 @@ public class GithubService implements GitProviderService {
      *  Sync the projects from the user's companies
      */
     private void syncUserProjectsFromCompanies(User user, GitHub gitHub, Set<GitCompany> currentGithubCompanies, Set<GitCompany> updatedGithubCompanies) throws IOException {
-        MDC.put("user.login", user.getLogin());
         Map<String, GHOrganization> githubOrganizations = gitHub.getMyOrganizations();
         for (String githubOrganizationName : githubOrganizations.keySet()) {
             log.debug("Syncing company `{}`", githubOrganizationName);
@@ -251,7 +249,6 @@ public class GithubService implements GitProviderService {
             updatedGithubCompanies.add(company);
             company.setGitProjects(new ArrayList<>(githubOrganizations.get(githubOrganizationName).getRepositories().keySet()));
         }
-        MDC.remove("user.login");
     }
 
     /**

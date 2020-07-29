@@ -27,11 +27,17 @@
     </root>
 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <layout>
-            <Pattern>%-4r [%thread] %-5level User:%X{user.login} - %msg%n</Pattern>
-        </layout>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - User:%X{user} - %msg%n</Pattern>
+        </encoder>
     </appender>
-    <logger name="io.github.jhipster.online" level="DEBUG"/>
+    <root>
+        <level value="ERROR"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <logger name="io.github.jhipster.online" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.management.remote" level="WARN"/>
@@ -69,5 +75,4 @@
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
-
 </configuration>
