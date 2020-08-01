@@ -168,7 +168,7 @@ public class ApplicationProperties {
 
     public static class Mail {
 
-        public boolean enable;
+        private boolean enable;
 
         public void setEnable(boolean enable) {
             this.enable = enable;

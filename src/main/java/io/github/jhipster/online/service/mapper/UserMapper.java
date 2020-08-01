@@ -18,10 +18,12 @@ package io.github.jhipster.online.service.mapper;
 import io.github.jhipster.online.domain.Authority;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.service.dto.UserDTO;
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

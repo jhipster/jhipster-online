@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class EntityStatsResourceIntTest {
+class EntityStatsResourceIntTest {
 
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
@@ -138,7 +138,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void createEntityStats() throws Exception {
+    void createEntityStats() throws Exception {
         int databaseSizeBeforeCreate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats
@@ -167,7 +167,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void createEntityStatsWithExistingId() throws Exception {
+    void createEntityStatsWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats with an existing ID
@@ -186,7 +186,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllEntityStats() throws Exception {
+    void getAllEntityStats() throws Exception {
         // Initialize the database
         entityStatsRepository.saveAndFlush(entityStats);
 
@@ -211,7 +211,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void getEntityStats() throws Exception {
+    void getEntityStats() throws Exception {
         // Initialize the database
         entityStatsRepository.saveAndFlush(entityStats);
 
@@ -236,7 +236,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void getNonExistingEntityStats() throws Exception {
+    void getNonExistingEntityStats() throws Exception {
         // Get the entityStats
         restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -244,7 +244,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void updateEntityStats() throws Exception {
+    void updateEntityStats() throws Exception {
         // Initialize the database
         entityStatsService.save(entityStats);
 
@@ -293,7 +293,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingEntityStats() throws Exception {
+    void updateNonExistingEntityStats() throws Exception {
         int databaseSizeBeforeUpdate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats
@@ -311,7 +311,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteEntityStats() throws Exception {
+    void deleteEntityStats() throws Exception {
         // Initialize the database
         entityStatsService.save(entityStats);
 
@@ -329,7 +329,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(EntityStats.class);
         EntityStats entityStats1 = new EntityStats();
         entityStats1.setId(1L);

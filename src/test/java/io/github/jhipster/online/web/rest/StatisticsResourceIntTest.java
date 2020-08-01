@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class StatisticsResourceIntTest {
+class StatisticsResourceIntTest {
 
     @Autowired
     private YoRCService yoRCService;
@@ -130,7 +130,7 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void shouldNotGetCountWithUnknownFrequency() throws Exception {
+    void shouldNotGetCountWithUnknownFrequency() throws Exception {
         restStatiticsMockMvc
             .perform(get("/api/s/count-yo/{frequency}", "every minutes"))
             .andExpect(status().isBadRequest());
@@ -138,7 +138,7 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void shouldNotGetFieldCountWithUnknownFieldOrFrequency() throws Exception {
+    void shouldNotGetFieldCountWithUnknownFieldOrFrequency() throws Exception {
         restStatiticsMockMvc
             .perform(get("/api/s/yo/{field}/{frequency}", "clientFramework", "every minutes"))
             .andExpect(status().isBadRequest());
@@ -146,7 +146,7 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void getYoCount() throws Exception {
+    void getYoCount() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
         restStatiticsMockMvc
@@ -164,7 +164,7 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void addEntry() throws Exception {
+    void addEntry() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
         restStatiticsMockMvc.perform(post("/api/s/entry")

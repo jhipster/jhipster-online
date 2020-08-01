@@ -19,11 +19,9 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jhipster.online.domain.*;
 import io.github.jhipster.online.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +29,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.github.jhipster.online.domain.*;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StatisticsService {

@@ -19,7 +19,6 @@
 package io.github.jhipster.online.config.audit;
 
 import io.github.jhipster.online.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;

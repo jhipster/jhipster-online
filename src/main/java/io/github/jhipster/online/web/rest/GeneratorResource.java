@@ -25,6 +25,7 @@ import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.util.SanitizeInputs;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,7 @@ public class GeneratorResource {
     @PostMapping("/generate-application")
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
+        applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
         User user = userService.getUser();
         log.debug("Reading application configuration");
@@ -77,7 +79,6 @@ public class GeneratorResource {
         GitProvider provider = GitProvider.getGitProviderByValue(JsonPath.read(document, "$.git-provider"))
             .orElseThrow(() -> new Exception("No git provider"));
         String gitCompany = JsonPath.read(document, "$.git-company");
-        String applicationName = JsonPath.read(document, "$.generator-jhipster.baseName");
         String repositoryName = JsonPath.read(document, "$.repository-name");
         String applicationId = UUID.randomUUID().toString();
 
@@ -114,6 +115,7 @@ public class GeneratorResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity downloadApplication(@RequestBody String applicationConfiguration) {
+        applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Downloading application - .yo-rc.json: {}", applicationConfiguration);
         String applicationId = UUID.randomUUID().toString();
         String zippedApplication;

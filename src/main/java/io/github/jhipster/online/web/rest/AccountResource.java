@@ -26,6 +26,7 @@ import io.github.jhipster.online.service.MailService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.PasswordChangeDTO;
 import io.github.jhipster.online.service.dto.UserDTO;
+import io.github.jhipster.online.util.SanitizeInputs;
 import io.github.jhipster.online.web.rest.errors.EmailAlreadyUsedException;
 import io.github.jhipster.online.web.rest.errors.InvalidPasswordException;
 import io.github.jhipster.online.web.rest.errors.LoginAlreadyUsedException;
@@ -47,6 +48,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+
+    private static final String USER_NOT_FOUND = "User could not be found";
 
     private static class AccountResourceException extends RuntimeException {
         private AccountResourceException(String message) {
@@ -83,7 +86,7 @@ public class AccountResource {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        userService.registerUser(managedUserVM, managedUserVM.getPassword());
     }
 
     /**
@@ -122,7 +125,7 @@ public class AccountResource {
     public UserDTO getAccount() {
         return userService.getUserWithAuthorities()
             .map(UserDTO::new)
-            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+            .orElseThrow(() -> new AccountResourceException(USER_NOT_FOUND));
     }
 
     /**
@@ -136,8 +139,8 @@ public class AccountResource {
             AccountResourceException("Current user login not found"));
         // Checks if user exists
         Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
-            throw new AccountResourceException("User could not be found");
+        if (user.isEmpty()) {
+            throw new AccountResourceException(USER_NOT_FOUND);
         }
         userService.deleteUser(userLogin);
     }
@@ -158,7 +161,7 @@ public class AccountResource {
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (!user.isPresent()) {
-            throw new AccountResourceException("User could not be found");
+            throw new AccountResourceException(USER_NOT_FOUND);
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
@@ -185,6 +188,7 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/reset-password/init")
     public void requestPasswordReset(@RequestBody String mail) {
+        mail = SanitizeInputs.sanitizeInput(mail);
         Optional<User> user = userService.requestPasswordReset(mail);
         if (user.isPresent()) {
             mailService.sendPasswordResetMail(user.get());
@@ -199,7 +203,7 @@ public class AccountResource {
     public String requestPasswordResetAndReturnLink(@RequestBody String mail) {
         Optional<User> user = userService.requestPasswordReset(mail);
         if (!user.isPresent()) {
-            throw new AccountResourceException("User could not be found");
+            throw new AccountResourceException(USER_NOT_FOUND);
         }
         return userService.generatePasswordResetLink(user.get().getResetKey());
     }

@@ -19,11 +19,10 @@
 
 package io.github.jhipster.online.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.domain.GeneratorIdentity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 
 /**

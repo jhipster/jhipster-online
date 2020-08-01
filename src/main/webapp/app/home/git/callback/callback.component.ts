@@ -25,8 +25,7 @@ import { GithubCallbackService } from './callback.service';
 
 @Component({
   selector: 'jhi-github-callback',
-  templateUrl: './callback.component.html',
-  styleUrls: ['callback.scss']
+  templateUrl: './callback.component.html'
 })
 export class CallbackComponent implements OnInit {
   token: string | undefined;

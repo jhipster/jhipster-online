@@ -19,23 +19,30 @@
 
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.domain.EntityStats_;
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.enums.EntityStatColumn;
+import io.github.jhipster.online.repository.EntityStatsRepository;
+import io.github.jhipster.online.service.dto.RawSQL;
+import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.domain.enums.EntityStatColumn;
-import io.github.jhipster.online.repository.EntityStatsRepository;
-import io.github.jhipster.online.service.dto.*;
-import io.github.jhipster.online.service.enums.TemporalValueType;
-import io.github.jhipster.online.service.util.QueryUtil;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing EntityStats.

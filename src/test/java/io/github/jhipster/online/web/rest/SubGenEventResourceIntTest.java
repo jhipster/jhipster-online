@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class SubGenEventResourceIntTest {
+class SubGenEventResourceIntTest {
 
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
@@ -128,7 +128,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void createSubGenEvent() throws Exception {
+    void createSubGenEvent() throws Exception {
         int databaseSizeBeforeCreate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent
@@ -154,7 +154,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void createSubGenEventWithExistingId() throws Exception {
+    void createSubGenEventWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent with an existing ID
@@ -173,7 +173,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllSubGenEvents() throws Exception {
+    void getAllSubGenEvents() throws Exception {
         // Initialize the database
         subGenEventRepository.saveAndFlush(subGenEvent);
 
@@ -196,7 +196,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void getSubGenEvent() throws Exception {
+    void getSubGenEvent() throws Exception {
         // Initialize the database
         subGenEventRepository.saveAndFlush(subGenEvent);
 
@@ -217,7 +217,7 @@ public class SubGenEventResourceIntTest {
     }
     @Test
     @Transactional
-    public void getNonExistingSubGenEvent() throws Exception {
+    void getNonExistingSubGenEvent() throws Exception {
         // Get the subGenEvent
         restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -225,7 +225,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void updateSubGenEvent() throws Exception {
+    void updateSubGenEvent() throws Exception {
         // Initialize the database
         subGenEventService.save(subGenEvent);
 
@@ -268,7 +268,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingSubGenEvent() throws Exception {
+    void updateNonExistingSubGenEvent() throws Exception {
         int databaseSizeBeforeUpdate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent
@@ -286,7 +286,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteSubGenEvent() throws Exception {
+    void deleteSubGenEvent() throws Exception {
         // Initialize the database
         subGenEventService.save(subGenEvent);
 
@@ -304,7 +304,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(SubGenEvent.class);
         SubGenEvent subGenEvent1 = new SubGenEvent();
         subGenEvent1.setId(1L);

@@ -151,7 +151,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     }
   }
 
-  openOutputModal(applyJdlId: String): void {
+  openOutputModal(applyJdlId: string): void {
     const modalRef = this.modalService.open(JdlOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
     modalRef.applyJdlId = applyJdlId;

@@ -30,6 +30,7 @@ import io.github.jhipster.online.service.GithubService;
 import io.github.jhipster.online.service.GitlabService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.GitConfigurationDTO;
+import io.github.jhipster.online.util.SanitizeInputs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,8 @@ public class GitResource {
 
     private static final String GITLAB = "gitlab";
 
+    private static final String UNKNOWN_GIT_PROVIDER = "Unknown git provider: ";
+
     private final ApplicationProperties applicationProperties;
 
     private final UserService userService;
@@ -81,6 +84,7 @@ public class GitResource {
      */
     @GetMapping("/{gitProvider}/callback")
     public RedirectView callback(@PathVariable String gitProvider, String code) {
+        gitProvider = SanitizeInputs.sanitizeInput(gitProvider);
         switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);
@@ -89,7 +93,7 @@ public class GitResource {
                 log.debug("GitHub callback received: {}", code);
                 return new RedirectView("/gitlab/callback/" + code);
             default:
-                log.error("Unknown git provider : {}", gitProvider);
+                log.error("Unknown git provider: {}", gitProvider);
                 return null;
         }
     }
@@ -122,7 +126,7 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 default:
-                    return new ResponseEntity<>("Unknown git provider: " + gitProvider, HttpStatus
+                    return new ResponseEntity<>(UNKNOWN_GIT_PROVIDER + gitProvider, HttpStatus
                         .INTERNAL_SERVER_ERROR);
             }
 
@@ -245,7 +249,7 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER +
                         gitProvider);
             }
             return ResponseEntity.ok().build();
@@ -262,7 +266,7 @@ public class GitResource {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " +
                         "refreshed");
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER +
                         gitProvider);
             }
         }
@@ -279,7 +283,7 @@ public class GitResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Collection<GitCompany> organizations = this.userService.getOrganizations(maybeGitProvider.get());
-        if (organizations.size() == 0) {
+        if (organizations.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(organizations, HttpStatus.OK);

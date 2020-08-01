@@ -18,11 +18,12 @@
  */
 package io.github.jhipster.online.security.jwt;
 
+import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.security.AuthoritiesConstants;
-
-import java.security.Key;
-import java.util.*;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,15 +32,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TokenProviderTest {
+class TokenProviderTest {
 
     private static final long ONE_MINUTE = 60000;
 
@@ -57,24 +57,24 @@ public class TokenProviderTest {
     }
 
     @Test
-    public void testReturnFalseWhenJWThasInvalidSignature() {
+    void testReturnFalseWhenJWThasInvalidSignature() {
         boolean isTokenValid = tokenProvider.validateToken(createTokenWithDifferentSignature());
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisMalformed() {
+    void testReturnFalseWhenJWTisMalformed() {
         Authentication authentication = createAuthentication();
         String token = tokenProvider.createToken(authentication, false);
         String invalidToken = token.substring(1);
         boolean isTokenValid = tokenProvider.validateToken(invalidToken);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisExpired() {
+    void testReturnFalseWhenJWTisExpired() {
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", -ONE_MINUTE);
 
         Authentication authentication = createAuthentication();
@@ -82,23 +82,23 @@ public class TokenProviderTest {
 
         boolean isTokenValid = tokenProvider.validateToken(token);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisUnsupported() {
+    void testReturnFalseWhenJWTisUnsupported() {
         String unsupportedToken = createUnsupportedToken();
 
         boolean isTokenValid = tokenProvider.validateToken(unsupportedToken);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisInvalid() {
+    void testReturnFalseWhenJWTisInvalid() {
         boolean isTokenValid = tokenProvider.validateToken("");
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     private Authentication createAuthentication() {

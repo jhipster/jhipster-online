@@ -28,7 +28,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MDCConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        AsyncHandlerInterceptor MDCInterceptor = new MDCInterceptor();
-        registry.addInterceptor(MDCInterceptor);
+        AsyncHandlerInterceptor mdcInterceptor = new MDCInterceptor();
+        registry.addInterceptor(mdcInterceptor);
     }
 }

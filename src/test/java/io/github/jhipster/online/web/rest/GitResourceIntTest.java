@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GitResourceIntTest {
+class GitResourceIntTest {
 
     @Autowired
     private HttpMessageConverter<?>[] httpMessageConverters;
@@ -86,7 +86,7 @@ public class GitResourceIntTest {
     }
 
     @Test
-    public void testGetGitConfiguration() throws Exception {
+    void testGetGitConfiguration() throws Exception {
         when(mockGithubService.getClientId()).thenReturn("fzerfzer54fer8gf48");
         when(mockGithubService.getHost()).thenReturn("http://github.com");
         when(mockGithubService.isEnabled()).thenReturn(true);
@@ -104,7 +104,7 @@ public class GitResourceIntTest {
     }
 
     @Test
-    public void testSaveTokenWithUnknownGitProvider() throws Exception {
+    void testSaveTokenWithUnknownGitProvider() throws Exception {
         final String code = "ret66spihj6sio4bud2";
         restMvc.perform(
             post("/api/{gitProvider}/save-token", "TestProvider")
@@ -114,7 +114,7 @@ public class GitResourceIntTest {
     }
 
     @Test
-    public void testRefreshGithubWithUnknownProvider() throws Exception {
+    void testRefreshGithubWithUnknownProvider() throws Exception {
         final String unavailableGitProvider = "TestProvider";
         restMvc.perform(
             post("/api/{gitProvider}/refresh", "TestProvider")

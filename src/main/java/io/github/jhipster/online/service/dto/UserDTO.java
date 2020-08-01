@@ -20,11 +20,13 @@
 package io.github.jhipster.online.service.dto;
 
 import io.github.jhipster.online.config.Constants;
-
 import io.github.jhipster.online.domain.Authority;
 import io.github.jhipster.online.domain.User;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;

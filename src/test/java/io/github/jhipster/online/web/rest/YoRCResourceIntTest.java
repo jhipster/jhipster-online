@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class YoRCResourceIntTest {
+class YoRCResourceIntTest {
 
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
 
@@ -204,7 +204,7 @@ public class YoRCResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllYoRCS() throws Exception {
+    void getAllYoRCS() throws Exception {
         // Initialize the database
         yoRCRepository.saveAndFlush(yoRC);
 
@@ -256,7 +256,7 @@ public class YoRCResourceIntTest {
 
     @Test
     @Transactional
-    public void getYoRC() throws Exception {
+    void getYoRC() throws Exception {
         // Initialize the database
         yoRCRepository.saveAndFlush(yoRC);
 
@@ -306,7 +306,7 @@ public class YoRCResourceIntTest {
     }
     @Test
     @Transactional
-    public void getNonExistingYoRC() throws Exception {
+    void getNonExistingYoRC() throws Exception {
         // Get the yoRC
         restYoRCMockMvc.perform(get("/api/yo-rcs/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -314,7 +314,7 @@ public class YoRCResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteYoRC() throws Exception {
+    void deleteYoRC() throws Exception {
         // Initialize the database
         yoRCService.save(yoRC);
 
@@ -332,7 +332,7 @@ public class YoRCResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(YoRC.class);
         YoRC yoRC1 = new YoRC();
         yoRC1.setId(1L);

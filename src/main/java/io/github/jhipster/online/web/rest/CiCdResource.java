@@ -19,7 +19,14 @@
 
 package io.github.jhipster.online.web.rest;
 
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.CiCdService;
+import io.github.jhipster.online.service.LogsService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.enums.CiCdTool;
+import io.github.jhipster.online.util.SanitizeInputs;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +34,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.security.AuthoritiesConstants;
-import io.github.jhipster.online.service.*;
 
 import java.util.Optional;
 
@@ -58,14 +59,16 @@ public class CiCdResource {
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName,
         @PathVariable String projectName, @PathVariable String ciCdTool) {
-        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        projectName = SanitizeInputs.sanitizeInput(projectName);
+        organizationName = SanitizeInputs.sanitizeInput(organizationName);
+        boolean isGitHub = gitProvider.equalsIgnoreCase("github");
         log.info("Configuring CI: {} on " + (isGitHub ? "GitHub" : "GitLab") + " {}/{}", ciCdTool, organizationName,
             projectName);
         User user = userService.getUser();
         String ciCdId = "ci-" + System.nanoTime();
 
         Optional<CiCdTool> integrationTool = CiCdTool.getByName(ciCdTool);
-        if (!integrationTool.isPresent()) {
+        if (integrationTool.isEmpty()) {
             this.logsService.addLog(ciCdId, "Continuous Integration with `" + ciCdTool + "` is not supported.");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
