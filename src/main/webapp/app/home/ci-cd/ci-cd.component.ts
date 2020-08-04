@@ -98,7 +98,7 @@ export class CiCdComponent implements OnInit {
   isAtLeastOneGitProviderAvailableAndConfigured(): boolean {
     return (
       (this.gitConfig &&
-        ((this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.githubAvailable && this.gitlabConfigured))) ||
+        ((this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured))) ||
       false
     );
   }
