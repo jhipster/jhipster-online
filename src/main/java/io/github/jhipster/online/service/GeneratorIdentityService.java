@@ -19,9 +19,9 @@
 
 package io.github.jhipster.online.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,9 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.repository.GeneratorIdentityRepository;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing GeneratorIdentity.
@@ -116,7 +115,7 @@ public class GeneratorIdentityService {
         if (!generatorIdentity.isPresent()) {
             // Try to create the GeneratorIdentity in a separate transaction, to manage concurrent access issues
             try {
-                save(new GeneratorIdentity().guid(guid));;
+                save(new GeneratorIdentity().guid(guid));
             } catch (DataIntegrityViolationException dve) {
                 log.info("Could not create GeneratorIdentity {} - it was already created", guid);
             }

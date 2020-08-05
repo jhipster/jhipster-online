@@ -23,8 +23,7 @@ import { GitConfigurationService } from 'app/core/git/git-configuration.service'
 
 @Component({
   selector: 'jhi-github',
-  templateUrl: './git.component.html',
-  styleUrls: ['git.scss']
+  templateUrl: './git.component.html'
 })
 export class GitComponent implements OnInit {
   gitConfig: GitConfigurationModel;

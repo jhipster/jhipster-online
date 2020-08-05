@@ -27,8 +27,7 @@ import { CiCdService } from './ci-cd.service';
 
 @Component({
   selector: 'jhi-generator',
-  templateUrl: './ci-cd.component.html',
-  styleUrls: ['ci-cd.scss']
+  templateUrl: './ci-cd.component.html'
 })
 export class CiCdComponent implements OnInit {
   submitted = false;

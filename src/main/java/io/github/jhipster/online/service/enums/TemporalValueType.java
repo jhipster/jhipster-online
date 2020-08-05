@@ -19,7 +19,10 @@
 
 package io.github.jhipster.online.service.enums;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static java.time.Instant.parse;

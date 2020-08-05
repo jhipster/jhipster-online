@@ -38,7 +38,7 @@ public enum GitProvider {
 
     public static Optional<GitProvider> getGitProviderByValue(String value) {
         return Arrays.stream(GitProvider.values())
-            .filter(e -> e.value.equals(value.toLowerCase()))
+            .filter(e -> e.value.equalsIgnoreCase(value))
             .findFirst();
     }
 }

@@ -19,16 +19,18 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-
+import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.service.enums.CiCdTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import io.github.jhipster.online.config.ApplicationProperties;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class JHipsterService {
@@ -83,6 +85,7 @@ public class JHipsterService {
 
     private void runProcess(String generationId, File workingDir, String command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
+        BufferedReader input = null;
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -100,7 +103,7 @@ public class JHipsterService {
                 }
             });
 
-            BufferedReader input =
+            input =
                 new BufferedReader
                     (new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
@@ -110,6 +113,9 @@ public class JHipsterService {
             input.close();
         } catch (Exception e) {
             log.error("Error while running the process", e);
+            if (input != null) {
+                input.close();
+            }
             throw e;
         }
     }

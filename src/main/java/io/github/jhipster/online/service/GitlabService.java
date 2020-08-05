@@ -19,11 +19,14 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.domain.GitCompany;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
+import io.github.jhipster.online.repository.GitCompanyRepository;
+import io.github.jhipster.online.repository.UserRepository;
+import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.interfaces.GitProviderService;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.GitlabMergeRequest;
@@ -36,14 +39,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.domain.GitCompany;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
-import io.github.jhipster.online.repository.GitCompanyRepository;
-import io.github.jhipster.online.repository.UserRepository;
-import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.interfaces.GitProviderService;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GitlabService implements GitProviderService {

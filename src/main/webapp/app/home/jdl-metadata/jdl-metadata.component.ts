@@ -99,6 +99,6 @@ export class JdlMetadataComponent implements OnInit, OnDestroy {
   }
 
   private onError(error: any): void {
-    this.alertService.error(error.message, null, undefined);
+    this.alertService.error(error.message, null);
   }
 }

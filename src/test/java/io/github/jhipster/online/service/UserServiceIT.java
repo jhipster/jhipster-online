@@ -23,9 +23,7 @@ import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.service.dto.UserDTO;
-
 import io.github.jhipster.security.RandomUtil;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,11 +35,12 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -51,7 +50,7 @@ import static org.mockito.Mockito.when;
  */
 @SpringBootTest(classes = JhonlineApp.class)
 @Transactional
-public class UserServiceIT {
+class UserServiceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
 
@@ -97,7 +96,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserMustExistToResetPassword() {
+    void assertThatUserMustExistToResetPassword() {
         userRepository.saveAndFlush(user);
         Optional<User> maybeUser = userService.requestPasswordReset("invalid.login@localhost");
         assertThat(maybeUser).isNotPresent();
@@ -111,7 +110,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatOnlyActivatedUserCanRequestPasswordReset() {
+    void assertThatOnlyActivatedUserCanRequestPasswordReset() {
         user.setActivated(false);
         userRepository.saveAndFlush(user);
 
@@ -122,7 +121,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatResetKeyMustNotBeOlderThan24Hours() {
+    void assertThatResetKeyMustNotBeOlderThan24Hours() {
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
         user.setActivated(true);
@@ -137,7 +136,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatResetKeyMustBeValid() {
+    void assertThatResetKeyMustBeValid() {
         Instant daysAgo = Instant.now().minus(25, ChronoUnit.HOURS);
         user.setActivated(true);
         user.setResetDate(daysAgo);
@@ -151,7 +150,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserCanResetPassword() {
+    void assertThatUserCanResetPassword() {
         String oldPassword = user.getPassword();
         Instant daysAgo = Instant.now().minus(2, ChronoUnit.HOURS);
         String resetKey = RandomUtil.generateResetKey();
@@ -171,7 +170,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatNotActivatedUsersWithNotNullActivationKeyCreatedBefore3DaysAreDeleted() {
+    void assertThatNotActivatedUsersWithNotNullActivationKeyCreatedBefore3DaysAreDeleted() {
         Instant now = Instant.now();
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
         user.setActivated(false);
@@ -188,7 +187,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatNotActivatedUsersWithNullActivationKeyCreatedBefore3DaysAreNotDeleted() {
+    void assertThatNotActivatedUsersWithNullActivationKeyCreatedBefore3DaysAreNotDeleted() {
         Instant now = Instant.now();
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(now.minus(4, ChronoUnit.DAYS)));
         user.setActivated(false);
@@ -204,7 +203,7 @@ public class UserServiceIT {
 
     @Test
     @Transactional
-    public void assertThatAnonymousUserIsNotGet() {
+    void assertThatAnonymousUserIsNotGet() {
         user.setLogin(Constants.ANONYMOUS_USER);
         if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()) {
             userRepository.saveAndFlush(user);

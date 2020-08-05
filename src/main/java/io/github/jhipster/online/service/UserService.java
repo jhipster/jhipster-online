@@ -51,8 +51,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.EMPTY_LIST;
-
 /**
  * Service class for managing users.
  */
@@ -376,15 +374,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List getProjects(String organizationName, GitProvider gitProvider) {
+    public List<String> getProjects(String organizationName, GitProvider gitProvider) {
         Collection<GitCompany> organizations = this.getOrganizations(gitProvider);
         if (organizations.size() == 0) {
-            return EMPTY_LIST;
+            return Collections.emptyList();
         }
         Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals
             (organizationName)).findFirst();
-        if (!organization.isPresent()) {
-            return EMPTY_LIST;
+        if (organization.isEmpty()) {
+            return Collections.emptyList();
         } else {
             List<String> projects = organization.get().getGitProjects();
             Hibernate.initialize(projects);

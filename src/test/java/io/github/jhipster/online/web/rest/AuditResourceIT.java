@@ -19,27 +19,17 @@
 package io.github.jhipster.online.web.rest;
 
 import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.online.config.audit.AuditEventConverter;
 import io.github.jhipster.online.domain.PersistentAuditEvent;
 import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
-
-import io.github.jhipster.online.service.AuditEventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -56,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = JhonlineApp.class)
 @Transactional
-public class AuditResourceIT {
+class AuditResourceIT {
 
     private static final String SAMPLE_PRINCIPAL = "SAMPLE_PRINCIPAL";
     private static final String SAMPLE_TYPE = "SAMPLE_TYPE";
@@ -81,7 +71,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAllAudits() throws Exception {
+    void getAllAudits() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -93,7 +83,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAudit() throws Exception {
+    void getAudit() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -105,7 +95,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAuditsByDate() throws Exception {
+    void getAuditsByDate() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -121,7 +111,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getNonExistingAuditsByDate() throws Exception {
+    void getNonExistingAuditsByDate() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -137,7 +127,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getNonExistingAudit() throws Exception {
+    void getNonExistingAudit() throws Exception {
         // Get the audit
         restAuditMockMvc.perform(get("/management/audits/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -145,7 +135,7 @@ public class AuditResourceIT {
 
     @Test
     @Transactional
-    public void testPersistentAuditEventEquals() throws Exception {
+    void testPersistentAuditEventEquals() throws Exception {
         TestUtil.equalsVerifier(PersistentAuditEvent.class);
         PersistentAuditEvent auditEvent1 = new PersistentAuditEvent();
         auditEvent1.setId(1L);

@@ -18,11 +18,9 @@
  */
 package io.github.jhipster.online;
 
-import io.github.jhipster.online.config.ApplicationProperties;
-
 import io.github.jhipster.config.DefaultProfileUtil;
 import io.github.jhipster.config.JHipsterConstants;
-
+import io.github.jhipster.online.config.ApplicationProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

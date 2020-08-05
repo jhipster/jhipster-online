@@ -19,22 +19,28 @@
 
 package io.github.jhipster.online.util;
 
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+
 public class DateUtil {
 
-    private final static String YEARLY = "yearly";
-    private final static String MONTHLY = "monthly";
-    private final static String WEEKLY = "weekly";
-    private final static String DAILY = "daily";
-    private final static String HOURLY = "hourly";
+    private static final String YEARLY = "yearly";
+    private static final String MONTHLY = "monthly";
+    private static final String WEEKLY = "weekly";
+    private static final String DAILY = "daily";
+    private static final String HOURLY = "hourly";
+
+    private DateUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static void setAbsoluteDate(CompleteDate datableObject, Instant now) {
         ZonedDateTime epoch = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneId.of("Europe/Paris"));

@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class GeneratorIdentityResourceIntTest {
+class GeneratorIdentityResourceIntTest {
 
     private static final String DEFAULT_HOST = "AAAAAAAAAA";
     private static final String UPDATED_HOST = "BBBBBBBBBB";
@@ -100,7 +100,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void createGeneratorIdentity() throws Exception {
+    void createGeneratorIdentity() throws Exception {
         int databaseSizeBeforeCreate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity
@@ -119,7 +119,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void createGeneratorIdentityWithExistingId() throws Exception {
+    void createGeneratorIdentityWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity with an existing ID
@@ -138,7 +138,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllGeneratorIdentities() throws Exception {
+    void getAllGeneratorIdentities() throws Exception {
         // Initialize the database
         generatorIdentityRepository.saveAndFlush(generatorIdentity);
 
@@ -154,7 +154,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void getGeneratorIdentity() throws Exception {
+    void getGeneratorIdentity() throws Exception {
         // Initialize the database
         generatorIdentityRepository.saveAndFlush(generatorIdentity);
 
@@ -168,7 +168,7 @@ public class GeneratorIdentityResourceIntTest {
     }
     @Test
     @Transactional
-    public void getNonExistingGeneratorIdentity() throws Exception {
+    void getNonExistingGeneratorIdentity() throws Exception {
         // Get the generatorIdentity
         restGeneratorIdentityMockMvc.perform(get("/api/generator-identities/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -176,7 +176,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void updateGeneratorIdentity() throws Exception {
+    void updateGeneratorIdentity() throws Exception {
         // Initialize the database
         generatorIdentityService.save(generatorIdentity);
 
@@ -205,7 +205,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingGeneratorIdentity() throws Exception {
+    void updateNonExistingGeneratorIdentity() throws Exception {
         int databaseSizeBeforeUpdate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity
@@ -223,7 +223,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteGeneratorIdentity() throws Exception {
+    void deleteGeneratorIdentity() throws Exception {
         // Initialize the database
         generatorIdentityService.save(generatorIdentity);
 
@@ -241,7 +241,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(GeneratorIdentity.class);
         GeneratorIdentity generatorIdentity1 = new GeneratorIdentity();
         generatorIdentity1.setId(1L);

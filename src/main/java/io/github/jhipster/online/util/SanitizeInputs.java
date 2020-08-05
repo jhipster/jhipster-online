@@ -17,20 +17,16 @@
  * limitations under the License.
  */
 
-package io.github.jhipster.online.repository;
+package io.github.jhipster.online.util;
 
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.YoRC;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+public class SanitizeInputs {
+    private SanitizeInputs() {
+        throw new IllegalStateException("Utility class: SanitizeInputs");
+    }
 
-/**
- * Spring Data JPA repository for the YoRC entity.
- */
-@SuppressWarnings("unused")
-@Repository
-public interface YoRCRepository extends JpaRepository<YoRC, Long> {
-
-    void deleteAllByOwner(GeneratorIdentity owner);
-
+    public static String sanitizeInput(String inputString) {
+        if (inputString == null)
+            return null;
+        return inputString.replaceAll("[\n\r\t]", "_");
+    }
 }

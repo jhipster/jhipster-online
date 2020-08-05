@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class GeneratorIdentityServiceTest {
+class GeneratorIdentityServiceTest {
 
     @MockBean
     private GeneratorIdentityRepository generatorIdentityRepository;
@@ -52,7 +52,7 @@ public class GeneratorIdentityServiceTest {
     }
 
     @Test
-    public void shouldFindOneByGuid() {
+    void shouldFindOneByGuid() {
         GeneratorIdentity expected = new GeneratorIdentity().guid("123");
         when(generatorIdentityRepository.findFirstByGuidEquals("123")).thenReturn(Optional.of(expected));
 

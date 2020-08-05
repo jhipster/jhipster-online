@@ -101,6 +101,6 @@ public class JdlMetadataResource {
     public ResponseEntity<JdlMetadata> getJdlMetadata(@PathVariable String id) {
         log.debug("REST request to get JdlMetadata : {}", id);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(jdlMetadata.get()));
+        return ResponseUtil.wrapOrNotFound(jdlMetadata);
     }
 }

@@ -18,9 +18,9 @@
  */
 package io.github.jhipster.online.config;
 
-import io.github.jhipster.online.security.*;
-import io.github.jhipster.online.security.jwt.*;
-
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.security.jwt.JWTConfigurer;
+import io.github.jhipster.online.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

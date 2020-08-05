@@ -30,6 +30,7 @@ import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.util.DateUtil;
+import io.github.jhipster.online.util.SanitizeInputs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -171,18 +172,21 @@ public class StatisticsResource {
 
     @PostMapping("/event/{generatorId}")
     public ResponseEntity addSubGenEvent(@RequestBody SubGenEvent event, @PathVariable String generatorId) {
+        generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addSubGenEvent(event, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/entity/{generatorId}")
     public ResponseEntity addEntityStats(@RequestBody EntityStats entity, @PathVariable String generatorId) {
+        generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addEntityStats(entity, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/link/{generatorId}")
     public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
+        generatorId = SanitizeInputs.sanitizeInput(generatorId);
         log.info("Binding current user to generator {}", generatorId);
 
         if (generatorIdentityService.bindUserToGenerator(userService.getUser(), generatorId)) {
@@ -194,6 +198,7 @@ public class StatisticsResource {
 
     @DeleteMapping("/link/{generatorId}")
     public ResponseEntity unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
+        generatorId = SanitizeInputs.sanitizeInput(generatorId);
         log.info("Unbinding current user to generator {}", generatorId);
 
         if (generatorIdentityService.unbindUserFromGenerator(userService.getUser(), generatorId)) {

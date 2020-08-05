@@ -28,8 +28,7 @@ import { GeneratorOutputDialogComponent } from './generator.output.component';
 
 @Component({
   selector: 'jhi-generator',
-  templateUrl: './generator.component.html',
-  styleUrls: ['generator.scss']
+  templateUrl: './generator.component.html'
 })
 export class GeneratorComponent implements OnInit {
   model: JHipsterConfigurationModel = new JHipsterConfigurationModel();
@@ -184,7 +183,7 @@ export class GeneratorComponent implements OnInit {
     );
   }
 
-  openOutputModal(applicationId: String): void {
+  openOutputModal(applicationId: string): void {
     const modalRef = this.modalService.open(GeneratorOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
     modalRef.applicationId = applicationId;

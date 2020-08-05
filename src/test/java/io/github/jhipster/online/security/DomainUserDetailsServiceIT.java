@@ -21,7 +21,6 @@ package io.github.jhipster.online.security;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  */
 @SpringBootTest(classes = JhonlineApp.class)
 @Transactional
-public class DomainUserDetailsServiceIT {
+class DomainUserDetailsServiceIT {
 
     private static final String USER_ONE_LOGIN = "test-user-one";
     private static final String USER_ONE_EMAIL = "test-user-one@localhost";
@@ -95,7 +94,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserCanBeFoundByLogin() {
+    void assertThatUserCanBeFoundByLogin() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
@@ -103,7 +102,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserCanBeFoundByLoginIgnoreCase() {
+    void assertThatUserCanBeFoundByLoginIgnoreCase() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN.toUpperCase(Locale.ENGLISH));
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
@@ -111,7 +110,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserCanBeFoundByEmail() {
+    void assertThatUserCanBeFoundByEmail() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
@@ -119,7 +118,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserCanBeFoundByEmailIgnoreCase() {
+    void assertThatUserCanBeFoundByEmailIgnoreCase() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_TWO_EMAIL.toUpperCase(Locale.ENGLISH));
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_TWO_LOGIN);
@@ -127,7 +126,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatEmailIsPrioritizedOverLogin() {
+    void assertThatEmailIsPrioritizedOverLogin() {
         UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_EMAIL);
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getUsername()).isEqualTo(USER_ONE_LOGIN);
@@ -135,7 +134,7 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     @Transactional
-    public void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
+    void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
         assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(
             () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
     }

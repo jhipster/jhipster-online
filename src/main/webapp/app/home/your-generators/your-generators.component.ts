@@ -31,8 +31,7 @@ import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-your-generators',
-  templateUrl: './your-generators.component.html',
-  styleUrls: ['your-generators.scss']
+  templateUrl: './your-generators.component.html'
 })
 export class YourGeneratorsComponent implements OnInit, OnDestroy {
   generatorIdentities: IGeneratorIdentity[] | null | undefined;
@@ -89,6 +88,6 @@ export class YourGeneratorsComponent implements OnInit, OnDestroy {
   }
 
   private onError(errorMessage: string): void {
-    this.jhiAlertService.error(errorMessage, null, undefined);
+    this.jhiAlertService.error(errorMessage, null);
   }
 }

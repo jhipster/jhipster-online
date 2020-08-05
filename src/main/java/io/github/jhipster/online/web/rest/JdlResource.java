@@ -29,6 +29,7 @@ import io.github.jhipster.online.service.JdlMetadataService;
 import io.github.jhipster.online.service.JdlService;
 import io.github.jhipster.online.service.LogsService;
 import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.util.SanitizeInputs;
 import io.github.jhipster.online.web.rest.vm.JdlVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,7 @@ public class JdlResource {
         log.debug("Trying to retrieve JDL: {}", jdlId);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         Optional<Jdl> jdl = this.jdlRepository.findOneByJdlMetadataId(jdlId);
-        if (!jdl.isPresent()) {
+        if (jdl.isEmpty() || jdlMetadata.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         JdlVM vm = new JdlVM();
@@ -111,6 +112,9 @@ public class JdlResource {
     ResponseEntity updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         try {
+            if (jdlMetadata.isEmpty()) {
+                throw new IllegalArgumentException("jdlMetaData object for jdlId="+ jdlId + " is empty");
+            }
             jdlMetadataService.updateJdlContent(jdlMetadata.get(), vm.getContent());
         } catch (Exception e) {
             log.info("Could not update the JDL file", e);
@@ -126,6 +130,7 @@ public class JdlResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity deleteJdlFile(@PathVariable String jdlId) {
+        jdlId = SanitizeInputs.sanitizeInput(jdlId);
         try {
             this.jdlMetadataService.delete(jdlId);
         } catch (Exception e) {
@@ -140,18 +145,23 @@ public class JdlResource {
     public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
                                    @PathVariable String projectName,
                                    @PathVariable String jdlId) {
-        boolean isGitHub = gitProvider.toLowerCase().equals("github");
+        projectName = SanitizeInputs.sanitizeInput(projectName);
+        boolean isGitHub = gitProvider.equalsIgnoreCase("github");
         log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId,
             organizationName, projectName);
         User user = userService.getUser();
 
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
-        String applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" +
-            System.nanoTime();
-        this.logsService.addLog(applyJdlId, "JDL Model is going to be applied to " + organizationName + "/" +
-            projectName);
-
+        String applyJdlId;
         try {
+            if (jdlMetadata.isEmpty()) {
+                throw new IllegalArgumentException("jdlMetaData object for jdlId="+ jdlId + " is empty");
+            }
+
+            applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" + System.nanoTime();
+            this.logsService.addLog(applyJdlId, "JDL Model is going to be applied to " + organizationName + "/" +
+                projectName);
+
             this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
                 applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
         } catch (Exception e) {

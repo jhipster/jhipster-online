@@ -19,14 +19,13 @@
 
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A GeneratorIdentity.

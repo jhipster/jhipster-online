@@ -19,14 +19,13 @@
 
 package io.github.jhipster.online.service;
 
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LogsService {

@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Unit tests for the {@link ClientForwardController} REST controller.
  */
-public class ClientForwardControllerTest {
+class ClientForwardControllerTest {
 
     private MockMvc restMockMvc;
 
@@ -30,7 +28,7 @@ public class ClientForwardControllerTest {
     }
 
     @Test
-    public void getBackendEndpoint() throws Exception {
+    void getBackendEndpoint() throws Exception {
         restMockMvc.perform(get("/test"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN_VALUE))
@@ -38,7 +36,7 @@ public class ClientForwardControllerTest {
     }
 
     @Test
-    public void getClientEndpoint() throws Exception {
+    void getClientEndpoint() throws Exception {
         ResultActions perform = restMockMvc.perform(get("/non-existant-mapping"));
         perform
             .andExpect(status().isOk())
@@ -46,7 +44,7 @@ public class ClientForwardControllerTest {
     }
 
     @Test
-    public void getNestedClientEndpoint() throws Exception {
+    void getNestedClientEndpoint() throws Exception {
         restMockMvc.perform(get("/admin/user-management"))
             .andExpect(status().isOk())
             .andExpect(forwardedUrl("/"));
@@ -54,7 +52,7 @@ public class ClientForwardControllerTest {
 
 
     @RestController
-    public static class TestController {
+    static class TestController {
 
         @RequestMapping(value = "/test")
         public String test() {

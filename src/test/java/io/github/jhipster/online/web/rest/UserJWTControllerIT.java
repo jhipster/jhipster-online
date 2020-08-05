@@ -29,24 +29,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link UserJWTController} REST controller.
  */
 @AutoConfigureMockMvc
 @SpringBootTest(classes = JhonlineApp.class)
-public class UserJWTControllerIT {
+class UserJWTControllerIT {
 
     @Autowired
     private UserRepository userRepository;
@@ -59,7 +53,7 @@ public class UserJWTControllerIT {
 
     @Test
     @Transactional
-    public void testAuthorize() throws Exception {
+    void testAuthorize() throws Exception {
         User user = new User();
         user.setLogin("user-jwt-controller");
         user.setEmail("user-jwt-controller@example.com");
@@ -83,7 +77,7 @@ public class UserJWTControllerIT {
 
     @Test
     @Transactional
-    public void testAuthorizeWithRememberMe() throws Exception {
+    void testAuthorizeWithRememberMe() throws Exception {
         User user = new User();
         user.setLogin("user-jwt-controller-remember-me");
         user.setEmail("user-jwt-controller-remember-me@example.com");
@@ -107,7 +101,7 @@ public class UserJWTControllerIT {
     }
 
     @Test
-    public void testAuthorizeFails() throws Exception {
+    void testAuthorizeFails() throws Exception {
         LoginVM login = new LoginVM();
         login.setUsername("wrong-user");
         login.setPassword("wrong password");

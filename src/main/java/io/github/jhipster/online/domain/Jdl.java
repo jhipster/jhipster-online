@@ -18,13 +18,13 @@
  */
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A JDL.
@@ -87,11 +87,11 @@ public class Jdl implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Jdl jdlMetadata = (Jdl) o;
-        if (jdlMetadata.getId() == null || getId() == null) {
+        Jdl jdlMetadataObject = (Jdl) o;
+        if (jdlMetadataObject.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), jdlMetadata.getId());
+        return Objects.equals(getId(), jdlMetadataObject.getId());
     }
 
     @Override
