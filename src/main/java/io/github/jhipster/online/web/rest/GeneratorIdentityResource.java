@@ -22,6 +22,7 @@ package io.github.jhipster.online.web.rest;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.service.GeneratorIdentityService;
 import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -67,12 +68,12 @@ public class GeneratorIdentityResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/generator-identities")
-    public ResponseEntity<GeneratorIdentity> createGeneratorIdentity(@RequestBody GeneratorIdentity generatorIdentity) throws URISyntaxException {
+    public ResponseEntity<GeneratorIdentityDTO> createGeneratorIdentity(@RequestBody GeneratorIdentityDTO generatorIdentity) throws URISyntaxException {
         log.debug("REST request to save GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() != null) {
             throw new BadRequestAlertException("A new generatorIdentity cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        GeneratorIdentity result = generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO result = generatorIdentityService.save(generatorIdentity);
         return ResponseEntity.created(new URI("/api/generator-identities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -85,15 +86,14 @@ public class GeneratorIdentityResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated generatorIdentity,
      * or with status 400 (Bad Request) if the generatorIdentity is not valid,
      * or with status 500 (Internal Server Error) if the generatorIdentity couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/generator-identities")
-    public ResponseEntity<GeneratorIdentity> updateGeneratorIdentity(@RequestBody GeneratorIdentity generatorIdentity) {
+    public ResponseEntity<GeneratorIdentityDTO> updateGeneratorIdentity(@RequestBody GeneratorIdentityDTO generatorIdentity) {
         log.debug("REST request to update GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        GeneratorIdentity result = generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO result = generatorIdentityService.save(generatorIdentity);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, generatorIdentity.getId().toString()))
             .body(result);

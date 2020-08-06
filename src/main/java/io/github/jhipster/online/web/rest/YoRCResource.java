@@ -22,6 +22,7 @@ package io.github.jhipster.online.web.rest;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.dto.YoRCDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -65,12 +66,12 @@ public class YoRCResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/yo-rcs")
-    public ResponseEntity<YoRC> createYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRCDTO> createYoRC(@RequestBody YoRCDTO yoRC) throws URISyntaxException {
         log.debug("REST request to save YoRC : {}", yoRC);
         if (yoRC.getId() != null) {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        YoRC result = yoRCService.save(yoRC);
+        YoRCDTO result = yoRCService.save(yoRC);
         return ResponseEntity.created(new URI("/api/yo-rcs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -83,16 +84,15 @@ public class YoRCResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated yoRC,
      * or with status 400 (Bad Request) if the yoRC is not valid,
      * or with status 500 (Internal Server Error) if the yoRC couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/yo-rcs")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) {
+    public ResponseEntity<YoRCDTO> updateYoRC(@RequestBody YoRCDTO yoRC) {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        YoRC result = yoRCService.save(yoRC);
+        YoRCDTO result = yoRCService.save(yoRC);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, yoRC.getId().toString()))
             .body(result);

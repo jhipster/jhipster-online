@@ -4,6 +4,8 @@ import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.SubGenEventService;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
+import io.github.jhipster.online.service.mapper.SubGenEventMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,10 +71,11 @@ class SubGenEventResourceIntTest {
     @Autowired
     private SubGenEventRepository subGenEventRepository;
 
-
-
     @Autowired
     private SubGenEventService subGenEventService;
+
+    @Autowired
+    private SubGenEventMapper subGenEventMapper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -108,7 +111,7 @@ class SubGenEventResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static SubGenEvent createEntity(EntityManager em) {
-        SubGenEvent subGenEvent = new SubGenEvent()
+        return new SubGenEvent()
             .year(DEFAULT_YEAR)
             .month(DEFAULT_MONTH)
             .week(DEFAULT_WEEK)
@@ -118,7 +121,6 @@ class SubGenEventResourceIntTest {
             .type(DEFAULT_TYPE)
             .event(DEFAULT_EVENT)
             .date(DEFAULT_DATE);
-        return subGenEvent;
     }
 
     @BeforeEach
@@ -187,9 +189,9 @@ class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
             .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
-            .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT.toString())))
+            .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
@@ -210,9 +212,9 @@ class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
             .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
-            .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.event").value(DEFAULT_EVENT.toString()))
+            .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.event").value(DEFAULT_EVENT))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
     @Test
@@ -227,12 +229,12 @@ class SubGenEventResourceIntTest {
     @Transactional
     void updateSubGenEvent() throws Exception {
         // Initialize the database
-        subGenEventService.save(subGenEvent);
+        SubGenEventDTO subGenEventDTO = subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
 
         int databaseSizeBeforeUpdate = subGenEventRepository.findAll().size();
 
         // Update the subGenEvent
-        SubGenEvent updatedSubGenEvent = subGenEventRepository.findById(subGenEvent.getId()).get();
+        SubGenEvent updatedSubGenEvent = subGenEventRepository.findById(subGenEventDTO.getId()).get();
         // Disconnect from session so that the updates on updatedSubGenEvent are not directly saved in db
         em.detach(updatedSubGenEvent);
         updatedSubGenEvent
@@ -288,12 +290,12 @@ class SubGenEventResourceIntTest {
     @Transactional
     void deleteSubGenEvent() throws Exception {
         // Initialize the database
-        subGenEventService.save(subGenEvent);
+        SubGenEventDTO subGenEventDTO = subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
 
         int databaseSizeBeforeDelete = subGenEventRepository.findAll().size();
 
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(delete("/api/sub-gen-events/{id}", subGenEvent.getId())
+        restSubGenEventMockMvc.perform(delete("/api/sub-gen-events/{id}", subGenEventDTO.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 

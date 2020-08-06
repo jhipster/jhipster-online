@@ -22,6 +22,8 @@ package io.github.jhipster.online.service;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
+import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
+import io.github.jhipster.online.service.mapper.GeneratorIdentityMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,19 +45,24 @@ public class GeneratorIdentityService {
 
     private final GeneratorIdentityRepository generatorIdentityRepository;
 
-    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository) {
+    private final GeneratorIdentityMapper generatorIdentityMapper;
+
+    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository, GeneratorIdentityMapper generatorIdentityMapper) {
         this.generatorIdentityRepository = generatorIdentityRepository;
+        this.generatorIdentityMapper = generatorIdentityMapper;
     }
 
     /**
-     * Save a generatorIdentity.
+     * Save a generatorIdentityDTO.
      *
-     * @param generatorIdentity the entity to save
+     * @param generatorIdentityDTO the entity to save
      * @return the persisted entity
      */
-    public GeneratorIdentity save(GeneratorIdentity generatorIdentity) {
-        log.debug("Request to save GeneratorIdentity : {}", generatorIdentity);
-        return generatorIdentityRepository.save(generatorIdentity);
+    public GeneratorIdentityDTO save(GeneratorIdentityDTO generatorIdentityDTO) {
+        log.debug("Request to save GeneratorIdentity : {}", generatorIdentityDTO);
+        GeneratorIdentity generatorIdentity = generatorIdentityMapper.toEntity(generatorIdentityDTO);
+        generatorIdentity = generatorIdentityRepository.save(generatorIdentity);
+        return generatorIdentityMapper.toDto(generatorIdentity);
     }
 
     /**
@@ -112,10 +119,10 @@ public class GeneratorIdentityService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 5)
     public void tryToCreateGeneratorIdentity(String guid) {
         Optional<GeneratorIdentity> generatorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
-        if (!generatorIdentity.isPresent()) {
+        if (generatorIdentity.isEmpty()) {
             // Try to create the GeneratorIdentity in a separate transaction, to manage concurrent access issues
             try {
-                save(new GeneratorIdentity().guid(guid));
+                save(new GeneratorIdentityDTO().guid(guid));
             } catch (DataIntegrityViolationException dve) {
                 log.info("Could not create GeneratorIdentity {} - it was already created", guid);
             }
@@ -130,7 +137,7 @@ public class GeneratorIdentityService {
     @Transactional
     public boolean bindUserToGenerator(User user, String guid) {
         Optional<GeneratorIdentity> generatorIdentity = findOneByGuid(guid);
-        if (!generatorIdentity.isPresent()) {
+        if (generatorIdentity.isEmpty()) {
             log.info("GeneratorIdentity {} does not exist", guid);
             return false;
         }
@@ -146,7 +153,7 @@ public class GeneratorIdentityService {
     public boolean unbindUserFromGenerator(User user, String guid) {
         Optional<GeneratorIdentity> maybeGeneratorIdentity = generatorIdentityRepository.findFirstByGuidEquals(guid);
 
-        if (!maybeGeneratorIdentity.isPresent()) {
+        if (maybeGeneratorIdentity.isEmpty()) {
             return false;
         }
 

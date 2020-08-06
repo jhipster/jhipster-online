@@ -24,11 +24,9 @@ import io.github.jhipster.online.domain.EntityStats_;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.repository.EntityStatsRepository;
-import io.github.jhipster.online.service.dto.RawSQL;
-import io.github.jhipster.online.service.dto.RawSQLField;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.dto.*;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,20 +55,25 @@ public class EntityStatsService {
 
     private final EntityManager entityManager;
 
-    public EntityStatsService(EntityStatsRepository entityStatsRepository, EntityManager entityManager) {
+    private final EntityStatsMapper entityStatsMapper;
+
+    public EntityStatsService(EntityStatsRepository entityStatsRepository, EntityManager entityManager, EntityStatsMapper entityStatsMapper) {
         this.entityStatsRepository = entityStatsRepository;
         this.entityManager = entityManager;
+        this.entityStatsMapper = entityStatsMapper;
     }
 
     /**
-     * Save a entityStats.
+     * Save a entityStatsDTO.
      *
-     * @param entityStats the entity to save
+     * @param entityStatsDTO the entity to save
      * @return the persisted entity
      */
-    public EntityStats save(EntityStats entityStats) {
-        log.debug("Request to save EntityStats : {}", entityStats);
-        return entityStatsRepository.save(entityStats);
+    public EntityStatsDTO save(EntityStatsDTO entityStatsDTO) {
+        log.debug("Request to save EntityStats : {}", entityStatsDTO);
+        EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
+        entityStats = entityStatsRepository.save(entityStats);
+        return entityStatsMapper.toDto(entityStats);
     }
 
     /**

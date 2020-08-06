@@ -22,6 +22,7 @@ package io.github.jhipster.online.web.rest;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.EntityStatsService;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -65,12 +66,12 @@ public class EntityStatsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/entity-stats")
-    public ResponseEntity<EntityStats> createEntityStats(@RequestBody EntityStats entityStats) throws URISyntaxException {
+    public ResponseEntity<EntityStatsDTO> createEntityStats(@RequestBody EntityStatsDTO entityStats) throws URISyntaxException {
         log.debug("REST request to save EntityStats : {}", entityStats);
         if (entityStats.getId() != null) {
             throw new BadRequestAlertException("A new entityStats cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        EntityStats result = entityStatsService.save(entityStats);
+        EntityStatsDTO result = entityStatsService.save(entityStats);
         return ResponseEntity.created(new URI("/api/entity-stats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -83,16 +84,15 @@ public class EntityStatsResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated entityStats,
      * or with status 400 (Bad Request) if the entityStats is not valid,
      * or with status 500 (Internal Server Error) if the entityStats couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/entity-stats")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<EntityStats> updateEntityStats(@RequestBody EntityStats entityStats) {
+    public ResponseEntity<EntityStatsDTO> updateEntityStats(@RequestBody EntityStatsDTO entityStats) {
         log.debug("REST request to update EntityStats : {}", entityStats);
         if (entityStats.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        EntityStats result = entityStatsService.save(entityStats);
+        EntityStatsDTO result = entityStatsService.save(entityStats);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, entityStats.getId().toString()))
             .body(result);

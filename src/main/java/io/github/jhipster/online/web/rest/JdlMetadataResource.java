@@ -23,6 +23,7 @@ import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.JdlMetadataService;
 import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.dto.JdlMetadataDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -34,7 +35,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,12 +69,11 @@ public class JdlMetadataResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated jdlMetadata,
      * or with status 400 (Bad Request) if the jdlMetadata is not valid,
      * or with status 500 (Internal Server Error) if the jdlMetadata couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/jdl-metadata")
-    public ResponseEntity<JdlMetadata> updateJdlMetadata(@Valid @RequestBody JdlMetadata jdlMetadata) {
+    public ResponseEntity<JdlMetadataDTO> updateJdlMetadata(@Valid @RequestBody JdlMetadataDTO jdlMetadata) {
         log.debug("REST request to update JdlMetadata : {}", jdlMetadata);
-        JdlMetadata result = jdlMetadataService.saveJdlMetadata(jdlMetadata);
+        JdlMetadataDTO result = jdlMetadataService.saveJdlMetadata(jdlMetadata);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, jdlMetadata.getId()))
             .body(result);
