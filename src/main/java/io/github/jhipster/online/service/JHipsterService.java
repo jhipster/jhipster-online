@@ -73,10 +73,10 @@ public class JHipsterService {
             "--force-insight --skip-checks --skip-install --force ");
     }
 
-    public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws Exception {
+    public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws IOException {
         if (ciCdTool == null) {
             this.logsService.addLog(generationId, "Continuous Integration system not supported, aborting");
-            throw new Exception("Invalid Continuous Integration system");
+            throw new IllegalArgumentException("Invalid Continuous Integration system");
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
         this.runProcess(generationId, workingDir, jhipsterCommand + " ci-cd " +

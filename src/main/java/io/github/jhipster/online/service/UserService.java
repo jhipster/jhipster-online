@@ -68,8 +68,6 @@ public class UserService {
 
     private final GitCompanyRepository gitCompanyRepository;
 
-    private final MailService mailService;
-
     private final JHipsterProperties jHipsterProperties;
 
     private final PasswordEncoder passwordEncoder;
@@ -95,7 +93,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.githubService = githubService;
-        this.mailService = mailService;
         this.cacheManager = cacheManager;
         this.gitCompanyRepository = gitCompanyRepository;
         this.gitlabService = gitlabService;

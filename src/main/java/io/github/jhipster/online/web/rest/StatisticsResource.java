@@ -161,7 +161,7 @@ public class StatisticsResource {
     }
 
     @PostMapping("/entry")
-    public ResponseEntity addYoRc(HttpServletRequest req, @RequestBody String entry) {
+    public ResponseEntity<String> addYoRc(HttpServletRequest req, @RequestBody String entry) {
         try {
             statisticsService.addEntry(entry, req.getRemoteHost());
         } catch (IOException e) {
@@ -171,21 +171,21 @@ public class StatisticsResource {
     }
 
     @PostMapping("/event/{generatorId}")
-    public ResponseEntity addSubGenEvent(@RequestBody SubGenEventDTO event, @PathVariable String generatorId) {
+    public ResponseEntity<String> addSubGenEvent(@RequestBody SubGenEventDTO event, @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addSubGenEvent(event, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/entity/{generatorId}")
-    public ResponseEntity addEntityStats(@RequestBody EntityStatsDTO entity, @PathVariable String generatorId) {
+    public ResponseEntity<String> addEntityStats(@RequestBody EntityStatsDTO entity, @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addEntityStats(entity, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/link/{generatorId}")
-    public ResponseEntity linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
+    public ResponseEntity<String> linkGeneratorToCurrentUser(@NotNull @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         log.info("Binding current user to generator {}", generatorId);
 
@@ -197,7 +197,7 @@ public class StatisticsResource {
     }
 
     @DeleteMapping("/link/{generatorId}")
-    public ResponseEntity unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
+    public ResponseEntity<String> unlinkGeneratorFromCurrentUser(@NotNull @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         log.info("Unbinding current user to generator {}", generatorId);
 

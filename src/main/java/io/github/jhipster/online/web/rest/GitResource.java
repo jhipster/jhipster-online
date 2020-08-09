@@ -108,7 +108,7 @@ public class GitResource {
      */
     @PostMapping("/{gitProvider}/save-token")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
+    public @ResponseBody ResponseEntity<String> saveToken(@PathVariable String gitProvider, @RequestBody String code) {
         try {
             String url;
             GitProvider gitProviderEnum;
@@ -154,7 +154,7 @@ public class GitResource {
             this.userService.saveToken(accessTokenResponse.getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
             log.error("OAuth2 token could not saved: ", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -241,7 +241,7 @@ public class GitResource {
      */
     @PostMapping("/{gitProvider}/refresh")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity<String> refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
             switch (gitProvider.toLowerCase()) {
@@ -282,9 +282,9 @@ public class GitResource {
      */
     @GetMapping("/{gitProvider}/companies")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getUserCompanies(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity<Collection<GitCompany>> getUserCompanies(@PathVariable String gitProvider) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
-        if (!maybeGitProvider.isPresent()) {
+        if (maybeGitProvider.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Collection<GitCompany> organizations = this.userService.getOrganizations(maybeGitProvider.get());
@@ -309,7 +309,7 @@ public class GitResource {
 
     @GetMapping("/git/config")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getGitlabConfig() {
+    public @ResponseBody ResponseEntity<GitConfigurationDTO> getGitlabConfig() {
         GitConfigurationDTO result = new GitConfigurationDTO(
             githubService.getHost(),
             githubService.getClientId(),

@@ -27,7 +27,9 @@ import io.github.jhipster.online.repository.GitCompanyRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.interfaces.GitProviderService;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.gitlab.api.GitlabAPI;
+import org.gitlab.api.GitlabAPIException;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.GitlabMergeRequest;
 import org.gitlab.api.models.GitlabProject;
@@ -41,6 +43,8 @@ import org.springframework.util.StopWatch;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.lang.module.FindException;
+import java.net.ConnectException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -104,7 +108,7 @@ public class GitlabService implements GitProviderService {
 
     @Transactional
     @Override
-    public void syncUserFromGitProvider() throws Exception {
+    public void syncUserFromGitProvider() throws IOException {
         Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(currentUserLogin.orElse(null));
         if (user.isPresent()) {
@@ -116,7 +120,7 @@ public class GitlabService implements GitProviderService {
 
     @Transactional
     @Override
-    public User getSyncedUserFromGitProvider(User user) throws Exception {
+    public User getSyncedUserFromGitProvider(User user) throws IOException {
         log.info("Syncing user `{}` with GitLab...", user.getLogin());
         StopWatch watch = new StopWatch();
         watch.start();
@@ -140,7 +144,7 @@ public class GitlabService implements GitProviderService {
 
         } else {
             gitCompany = currentGitlabCompanies.stream().filter(g -> g.getName().equals(myself.getUsername())).findFirst().orElseThrow(
-                () -> new Exception("Should not happen."));
+                () -> new NoSuchElementException("Could not find any GitCompany for user."));
         }
 
         try {
@@ -225,7 +229,7 @@ public class GitlabService implements GitProviderService {
 
     @Override
     public int createPullRequest(User user, String group, String repositoryName,
-        String title, String branchName, String body) throws Exception {
+        String title, String branchName, String body) throws IOException {
         log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
         int number = gitlab.getProject(group, repositoryName).getId();
@@ -244,11 +248,10 @@ public class GitlabService implements GitProviderService {
     /**
      * Connect to GitLab as the current logged in user.
      */
-    private GitlabAPI getConnection(User user) throws Exception {
+    private GitlabAPI getConnection(User user) throws IOException {
         log.debug("Authenticating user `{}` on GitLab", user.getLogin());
         if (user.getGitlabOAuthToken() == null) {
-            log.info("No GitLab token configured");
-            throw new Exception("GitLab is not configured.");
+            throw new ConnectException("No GitLab token configured");
         }
         GitlabAPI gitlab = GitlabAPI.connect(applicationProperties.getGitlab().getHost(), user.getGitlabOAuthToken(),
             TokenType.ACCESS_TOKEN);

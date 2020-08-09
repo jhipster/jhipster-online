@@ -73,7 +73,7 @@ class WebConfigurerTest {
     }
 
     @Test
-    public void testStartUpProdServletContext() throws ServletException {
+    void testStartUpProdServletContext() throws ServletException {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION);
         webConfigurer.onStartup(servletContext);
 

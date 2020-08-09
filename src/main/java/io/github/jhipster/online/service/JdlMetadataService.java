@@ -35,6 +35,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.FileSystemException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -104,14 +105,13 @@ public class JdlMetadataService {
         return jdlMetadataMapper.toDto(jdlMetadata);
     }
 
-    public void updateJdlContent(JdlMetadata jdlMetadata, String content) throws Exception {
+    public void updateJdlContent(JdlMetadata jdlMetadata, String content) throws FileSystemException {
         log.debug("Request to update JDL : {}", jdlMetadata);
         jdlMetadata.setUpdatedDate(Instant.now());
         jdlMetadataRepository.save(jdlMetadata);
         Optional<Jdl> jdl = jdlRepository.findOneByJdlMetadataId(jdlMetadata.getId());
         if (jdl.isEmpty()) {
-            log.error("Error creating updating the JDL, the JDL could not be found: {}", jdlMetadata);
-            throw new Exception("JDL could not be found");
+            throw new FileSystemException("Error creating updating the JDL, the JDL could not be found: " + jdlMetadata);
         }
         jdl.get().setContent(content);
     }
@@ -143,7 +143,7 @@ public class JdlMetadataService {
     public Optional<JdlMetadata> findOne(String id) {
         log.debug("Request to get JdlMetadata : {}", id);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataRepository.findById(id);
-        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && jdlMetadata.get().isIsPublic()) {
+        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && Boolean.TRUE.equals(jdlMetadata.get().isIsPublic())) {
             return jdlMetadata;
         } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(this.getUser())) {
             return jdlMetadata;
@@ -157,13 +157,12 @@ public class JdlMetadataService {
      *
      *  @param id the id of the entity
      */
-    public void delete(String id) throws Exception {
+    public void delete(String id) throws FileSystemException {
         log.debug("Request to delete JdlMetadata : {}", id);
         this.findOne(id); // Checks if the user has access to this JDL
         Optional<Jdl> jdl = jdlRepository.findOneByJdlMetadataId(id);
         if (jdl.isEmpty()) {
-            log.error("Error creating updating the JDL, the JDL could not be found: {}", id);
-            throw new Exception("JDL could not be found");
+            throw new FileSystemException("Error creating updating the JDL, the JDL could not be found: " + id);
         }
         this.jdlRepository.delete(jdl.get());
         jdlMetadataRepository.deleteById(id);

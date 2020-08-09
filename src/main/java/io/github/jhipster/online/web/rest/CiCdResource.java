@@ -57,7 +57,7 @@ public class CiCdResource {
 
     @PostMapping("/ci-cd/{gitProvider}/{organizationName}/{projectName}/{ciCdTool}")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName,
+    public ResponseEntity<String> configureCiCd(@PathVariable String gitProvider, @PathVariable String organizationName,
         @PathVariable String projectName, @PathVariable String ciCdTool) {
         projectName = SanitizeInputs.sanitizeInput(projectName);
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
