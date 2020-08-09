@@ -5,6 +5,8 @@ import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.service.GeneratorIdentityService;
 import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
+import io.github.jhipster.online.service.mapper.GeneratorIdentityMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,6 +56,9 @@ class GeneratorIdentityResourceIntTest {
     private GeneratorIdentityService generatorIdentityService;
 
     @Autowired
+    private GeneratorIdentityMapper generatorIdentityMapper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -87,10 +92,9 @@ class GeneratorIdentityResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static GeneratorIdentity createEntity(EntityManager em) {
-        GeneratorIdentity generatorIdentity = new GeneratorIdentity()
+        return new GeneratorIdentity()
             .host(DEFAULT_HOST)
             .guid(DEFAULT_GUID);
-        return generatorIdentity;
     }
 
     @BeforeEach
@@ -147,8 +151,8 @@ class GeneratorIdentityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generatorIdentity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
-            .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
+            .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST)))
+            .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID)));
     }
 
 
@@ -163,8 +167,8 @@ class GeneratorIdentityResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(generatorIdentity.getId().intValue()))
-            .andExpect(jsonPath("$.host").value(DEFAULT_HOST.toString()))
-            .andExpect(jsonPath("$.guid").value(DEFAULT_GUID.toString()));
+            .andExpect(jsonPath("$.host").value(DEFAULT_HOST))
+            .andExpect(jsonPath("$.guid").value(DEFAULT_GUID));
     }
     @Test
     @Transactional
@@ -178,12 +182,12 @@ class GeneratorIdentityResourceIntTest {
     @Transactional
     void updateGeneratorIdentity() throws Exception {
         // Initialize the database
-        generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO generatorIdentityDTO = generatorIdentityService.save(generatorIdentityMapper.toDto(generatorIdentity));
 
         int databaseSizeBeforeUpdate = generatorIdentityRepository.findAll().size();
 
         // Update the generatorIdentity
-        GeneratorIdentity updatedGeneratorIdentity = generatorIdentityRepository.findById(generatorIdentity.getId()).get();
+        GeneratorIdentity updatedGeneratorIdentity = generatorIdentityRepository.findById(generatorIdentityDTO.getId()).get();
         // Disconnect from session so that the updates on updatedGeneratorIdentity are not directly saved in db
         em.detach(updatedGeneratorIdentity);
         updatedGeneratorIdentity
@@ -225,12 +229,12 @@ class GeneratorIdentityResourceIntTest {
     @Transactional
     void deleteGeneratorIdentity() throws Exception {
         // Initialize the database
-        generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO generatorIdentityDTO = generatorIdentityService.save(generatorIdentityMapper.toDto(generatorIdentity));
 
         int databaseSizeBeforeDelete = generatorIdentityRepository.findAll().size();
 
         // Get the generatorIdentity
-        restGeneratorIdentityMockMvc.perform(delete("/api/generator-identities/{id}", generatorIdentity.getId())
+        restGeneratorIdentityMockMvc.perform(delete("/api/generator-identities/{id}", generatorIdentityDTO.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 

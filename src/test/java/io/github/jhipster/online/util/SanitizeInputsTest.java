@@ -16,4 +16,21 @@ class SanitizeInputsTest {
         assertThat(SanitizeInputs.sanitizeInput("T\this \nis \rJHipster")).isEqualTo("T_his _is _JHipster");
         assertThat(SanitizeInputs.sanitizeInput("T\t\rhis \n\tis \r\nJHipster")).isEqualTo("T__his __is __JHipster");
     }
+
+    @Test
+    void isAlphaNumeric() {
+        assertThat(SanitizeInputs.isAlphaNumeric("This is JHipster")).isFalse();
+        assertThat(SanitizeInputs.isAlphaNumeric("442kj32342kd")).isTrue();
+        assertThat(SanitizeInputs.isAlphaNumeric("A3sdflkjE422")).isTrue();
+        assertThat(SanitizeInputs.isAlphaNumeric("A$sdlfjk%332")).isFalse();
+        assertThat(SanitizeInputs.isAlphaNumeric("Asdkl/djf323")).isFalse();
+    }
+
+    @Test
+    void isLettersNumbersAndSpaces() {
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("This is JHipster")).isTrue();
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("442kj32342kd")).isTrue();
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23094823023")).isTrue();
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/482$3023")).isFalse();
+    }
 }

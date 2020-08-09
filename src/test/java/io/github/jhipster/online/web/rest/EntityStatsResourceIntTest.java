@@ -4,6 +4,8 @@ import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.EntityStatsService;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,9 @@ class EntityStatsResourceIntTest {
     private EntityStatsService entityStatsService;
 
     @Autowired
+    private EntityStatsMapper entityStatsMapper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -115,7 +120,7 @@ class EntityStatsResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static EntityStats createEntity(EntityManager em) {
-        EntityStats entityStats = new EntityStats()
+        return new EntityStats()
             .year(DEFAULT_YEAR)
             .month(DEFAULT_MONTH)
             .week(DEFAULT_WEEK)
@@ -128,7 +133,6 @@ class EntityStatsResourceIntTest {
             .service(DEFAULT_SERVICE)
             .fluentMethods(DEFAULT_FLUENT_METHODS)
             .date(DEFAULT_DATE);
-        return entityStats;
     }
 
     @BeforeEach
@@ -202,10 +206,10 @@ class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].fields").value(hasItem(DEFAULT_FIELDS)))
             .andExpect(jsonPath("$.[*].relationships").value(hasItem(DEFAULT_RELATIONSHIPS)))
-            .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION.toString())))
-            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO.toString())))
-            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE.toString())))
-            .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
+            .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION)))
+            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO)))
+            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE)))
+            .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
@@ -227,10 +231,10 @@ class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.fields").value(DEFAULT_FIELDS))
             .andExpect(jsonPath("$.relationships").value(DEFAULT_RELATIONSHIPS))
-            .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION.toString()))
-            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO.toString()))
-            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE.toString()))
-            .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
+            .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION))
+            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO))
+            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE))
+            .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
@@ -246,12 +250,12 @@ class EntityStatsResourceIntTest {
     @Transactional
     void updateEntityStats() throws Exception {
         // Initialize the database
-        entityStatsService.save(entityStats);
+        EntityStatsDTO entityStatsDTO = entityStatsService.save(entityStatsMapper.toDto(entityStats));
 
         int databaseSizeBeforeUpdate = entityStatsRepository.findAll().size();
 
         // Update the entityStats
-        EntityStats updatedEntityStats = entityStatsRepository.findById(entityStats.getId()).get();
+        EntityStats updatedEntityStats = entityStatsRepository.findById(entityStatsDTO.getId()).get();
         // Disconnect from session so that the updates on updatedEntityStats are not directly saved in db
         em.detach(updatedEntityStats);
         updatedEntityStats
@@ -313,12 +317,12 @@ class EntityStatsResourceIntTest {
     @Transactional
     void deleteEntityStats() throws Exception {
         // Initialize the database
-        entityStatsService.save(entityStats);
+        EntityStatsDTO entityStatsDTO = entityStatsService.save(entityStatsMapper.toDto(entityStats));
 
         int databaseSizeBeforeDelete = entityStatsRepository.findAll().size();
 
         // Get the entityStats
-        restEntityStatsMockMvc.perform(delete("/api/entity-stats/{id}", entityStats.getId())
+        restEntityStatsMockMvc.perform(delete("/api/entity-stats/{id}", entityStatsDTO.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 

@@ -20,6 +20,10 @@
 package io.github.jhipster.online.util;
 
 public class SanitizeInputs {
+    private static final String SANITIZE_REGEX = "[\n\r\t]";
+    private static final String ALPHANUMERIC_REGEX = "[a-zA-Z0-9]*";
+    private static final String ALPHANUMERIC_AND_SPACES_REGEX = "[\\w\\s]*";
+
     private SanitizeInputs() {
         throw new IllegalStateException("Utility class: SanitizeInputs");
     }
@@ -27,6 +31,18 @@ public class SanitizeInputs {
     public static String sanitizeInput(String inputString) {
         if (inputString == null)
             return null;
-        return inputString.replaceAll("[\n\r\t]", "_");
+        return inputString.replaceAll(SANITIZE_REGEX, "_");
+    }
+
+    public static boolean isAlphaNumeric(String inputString) {
+        if (inputString == null)
+            return false;
+        return inputString.matches(ALPHANUMERIC_REGEX);
+    }
+
+    public static boolean isLettersNumbersAndSpaces (String inputString) {
+        if (inputString == null)
+            return false;
+        return inputString.matches(ALPHANUMERIC_AND_SPACES_REGEX);
     }
 }

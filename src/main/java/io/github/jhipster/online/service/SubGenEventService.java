@@ -25,9 +25,11 @@ import io.github.jhipster.online.domain.SubGenEvent_;
 import io.github.jhipster.online.domain.enums.SubGenEventType;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.mapper.SubGenEventMapper;
 import io.github.jhipster.online.service.util.QueryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,20 +58,25 @@ public class SubGenEventService {
 
     private final EntityManager entityManager;
 
-    public SubGenEventService(SubGenEventRepository subGenEventRepository, EntityManager entityManager) {
+    private final SubGenEventMapper subGenEventMapper;
+
+    public SubGenEventService(SubGenEventRepository subGenEventRepository, EntityManager entityManager, SubGenEventMapper subGenEventMapper) {
         this.subGenEventRepository = subGenEventRepository;
         this.entityManager = entityManager;
+        this.subGenEventMapper = subGenEventMapper;
     }
 
     /**
-     * Save a subGenEvent.
+     * Save a subGenEventDTO.
      *
-     * @param subGenEvent the entity to save
+     * @param subGenEventDTO the entity to save
      * @return the persisted entity
      */
-    public SubGenEvent save(SubGenEvent subGenEvent) {
-        log.debug("Request to save SubGenEvent : {}", subGenEvent);
-        return subGenEventRepository.save(subGenEvent);
+    public SubGenEventDTO save(SubGenEventDTO subGenEventDTO) {
+        log.debug("Request to save SubGenEvent : {}", subGenEventDTO);
+        SubGenEvent subGenEvent = subGenEventMapper.toEntity(subGenEventDTO);
+        subGenEvent = subGenEventRepository.save(subGenEvent);
+        return subGenEventMapper.toDto(subGenEvent);
     }
 
     /**

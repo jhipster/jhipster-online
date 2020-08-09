@@ -4,6 +4,8 @@ import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.repository.YoRCRepository;
 import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.dto.YoRCDTO;
+import io.github.jhipster.online.service.mapper.YoRCMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.util.List;
 
@@ -122,6 +123,9 @@ class YoRCResourceIntTest {
     private YoRCService yoRCService;
 
     @Autowired
+    private YoRCMapper yoRCMapper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -129,9 +133,6 @@ class YoRCResourceIntTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
-    private EntityManager em;
 
     private MockMvc restYoRCMockMvc;
 
@@ -154,8 +155,8 @@ class YoRCResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static YoRC createEntity(EntityManager em) {
-        YoRC yoRC = new YoRC()
+    public static YoRC createEntity() {
+        return new YoRC()
             .jhipsterVersion(DEFAULT_JHIPSTER_VERSION)
             .creationDate(DEFAULT_CREATION_DATE)
             .gitProvider(DEFAULT_GIT_PROVIDER)
@@ -194,12 +195,11 @@ class YoRCResourceIntTest {
             .hasProtractor(DEFAULT_HAS_PROTRACTOR)
             .hasGatling(DEFAULT_HAS_GATLING)
             .hasCucumber(DEFAULT_HAS_CUCUMBER);
-        return yoRC;
     }
 
     @BeforeEach
     public void initTest() {
-        yoRC = createEntity(em);
+        yoRC = createEntity();
     }
 
     @Test
@@ -213,44 +213,44 @@ class YoRCResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(yoRC.getId().intValue())))
-            .andExpect(jsonPath("$.[*].jhipsterVersion").value(hasItem(DEFAULT_JHIPSTER_VERSION.toString())))
+            .andExpect(jsonPath("$.[*].jhipsterVersion").value(hasItem(DEFAULT_JHIPSTER_VERSION)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].gitProvider").value(hasItem(DEFAULT_GIT_PROVIDER.toString())))
-            .andExpect(jsonPath("$.[*].nodeVersion").value(hasItem(DEFAULT_NODE_VERSION.toString())))
-            .andExpect(jsonPath("$.[*].os").value(hasItem(DEFAULT_OS.toString())))
-            .andExpect(jsonPath("$.[*].arch").value(hasItem(DEFAULT_ARCH.toString())))
-            .andExpect(jsonPath("$.[*].cpu").value(hasItem(DEFAULT_CPU.toString())))
-            .andExpect(jsonPath("$.[*].cores").value(hasItem(DEFAULT_CORES.toString())))
-            .andExpect(jsonPath("$.[*].memory").value(hasItem(DEFAULT_MEMORY.toString())))
-            .andExpect(jsonPath("$.[*].userLanguage").value(hasItem(DEFAULT_USER_LANGUAGE.toString())))
+            .andExpect(jsonPath("$.[*].gitProvider").value(hasItem(DEFAULT_GIT_PROVIDER)))
+            .andExpect(jsonPath("$.[*].nodeVersion").value(hasItem(DEFAULT_NODE_VERSION)))
+            .andExpect(jsonPath("$.[*].os").value(hasItem(DEFAULT_OS)))
+            .andExpect(jsonPath("$.[*].arch").value(hasItem(DEFAULT_ARCH)))
+            .andExpect(jsonPath("$.[*].cpu").value(hasItem(DEFAULT_CPU)))
+            .andExpect(jsonPath("$.[*].cores").value(hasItem(DEFAULT_CORES)))
+            .andExpect(jsonPath("$.[*].memory").value(hasItem(DEFAULT_MEMORY)))
+            .andExpect(jsonPath("$.[*].userLanguage").value(hasItem(DEFAULT_USER_LANGUAGE)))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
             .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
             .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
-            .andExpect(jsonPath("$.[*].serverPort").value(hasItem(DEFAULT_SERVER_PORT.toString())))
-            .andExpect(jsonPath("$.[*].authenticationType").value(hasItem(DEFAULT_AUTHENTICATION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].cacheProvider").value(hasItem(DEFAULT_CACHE_PROVIDER.toString())))
-            .andExpect(jsonPath("$.[*].enableHibernateCache").value(hasItem(DEFAULT_ENABLE_HIBERNATE_CACHE.booleanValue())))
-            .andExpect(jsonPath("$.[*].websocket").value(hasItem(DEFAULT_WEBSOCKET.booleanValue())))
-            .andExpect(jsonPath("$.[*].databaseType").value(hasItem(DEFAULT_DATABASE_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].devDatabaseType").value(hasItem(DEFAULT_DEV_DATABASE_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].prodDatabaseType").value(hasItem(DEFAULT_PROD_DATABASE_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].searchEngine").value(hasItem(DEFAULT_SEARCH_ENGINE.booleanValue())))
-            .andExpect(jsonPath("$.[*].messageBroker").value(hasItem(DEFAULT_MESSAGE_BROKER.booleanValue())))
-            .andExpect(jsonPath("$.[*].serviceDiscoveryType").value(hasItem(DEFAULT_SERVICE_DISCOVERY_TYPE.booleanValue())))
-            .andExpect(jsonPath("$.[*].buildTool").value(hasItem(DEFAULT_BUILD_TOOL.toString())))
-            .andExpect(jsonPath("$.[*].enableSwaggerCodegen").value(hasItem(DEFAULT_ENABLE_SWAGGER_CODEGEN.booleanValue())))
-            .andExpect(jsonPath("$.[*].clientFramework").value(hasItem(DEFAULT_CLIENT_FRAMEWORK.toString())))
-            .andExpect(jsonPath("$.[*].useSass").value(hasItem(DEFAULT_USE_SASS.booleanValue())))
-            .andExpect(jsonPath("$.[*].clientPackageManager").value(hasItem(DEFAULT_CLIENT_PACKAGE_MANAGER.toString())))
-            .andExpect(jsonPath("$.[*].applicationType").value(hasItem(DEFAULT_APPLICATION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].jhiPrefix").value(hasItem(DEFAULT_JHI_PREFIX.toString())))
-            .andExpect(jsonPath("$.[*].enableTranslation").value(hasItem(DEFAULT_ENABLE_TRANSLATION.booleanValue())))
-            .andExpect(jsonPath("$.[*].nativeLanguage").value(hasItem(DEFAULT_NATIVE_LANGUAGE.toString())))
-            .andExpect(jsonPath("$.[*].hasProtractor").value(hasItem(DEFAULT_HAS_PROTRACTOR.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasGatling").value(hasItem(DEFAULT_HAS_GATLING.booleanValue())))
-            .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER.booleanValue())));
+            .andExpect(jsonPath("$.[*].serverPort").value(hasItem(DEFAULT_SERVER_PORT)))
+            .andExpect(jsonPath("$.[*].authenticationType").value(hasItem(DEFAULT_AUTHENTICATION_TYPE)))
+            .andExpect(jsonPath("$.[*].cacheProvider").value(hasItem(DEFAULT_CACHE_PROVIDER)))
+            .andExpect(jsonPath("$.[*].enableHibernateCache").value(hasItem(DEFAULT_ENABLE_HIBERNATE_CACHE)))
+            .andExpect(jsonPath("$.[*].websocket").value(hasItem(DEFAULT_WEBSOCKET)))
+            .andExpect(jsonPath("$.[*].databaseType").value(hasItem(DEFAULT_DATABASE_TYPE)))
+            .andExpect(jsonPath("$.[*].devDatabaseType").value(hasItem(DEFAULT_DEV_DATABASE_TYPE)))
+            .andExpect(jsonPath("$.[*].prodDatabaseType").value(hasItem(DEFAULT_PROD_DATABASE_TYPE)))
+            .andExpect(jsonPath("$.[*].searchEngine").value(hasItem(DEFAULT_SEARCH_ENGINE)))
+            .andExpect(jsonPath("$.[*].messageBroker").value(hasItem(DEFAULT_MESSAGE_BROKER)))
+            .andExpect(jsonPath("$.[*].serviceDiscoveryType").value(hasItem(DEFAULT_SERVICE_DISCOVERY_TYPE)))
+            .andExpect(jsonPath("$.[*].buildTool").value(hasItem(DEFAULT_BUILD_TOOL)))
+            .andExpect(jsonPath("$.[*].enableSwaggerCodegen").value(hasItem(DEFAULT_ENABLE_SWAGGER_CODEGEN)))
+            .andExpect(jsonPath("$.[*].clientFramework").value(hasItem(DEFAULT_CLIENT_FRAMEWORK)))
+            .andExpect(jsonPath("$.[*].useSass").value(hasItem(DEFAULT_USE_SASS)))
+            .andExpect(jsonPath("$.[*].clientPackageManager").value(hasItem(DEFAULT_CLIENT_PACKAGE_MANAGER)))
+            .andExpect(jsonPath("$.[*].applicationType").value(hasItem(DEFAULT_APPLICATION_TYPE)))
+            .andExpect(jsonPath("$.[*].jhiPrefix").value(hasItem(DEFAULT_JHI_PREFIX)))
+            .andExpect(jsonPath("$.[*].enableTranslation").value(hasItem(DEFAULT_ENABLE_TRANSLATION)))
+            .andExpect(jsonPath("$.[*].nativeLanguage").value(hasItem(DEFAULT_NATIVE_LANGUAGE)))
+            .andExpect(jsonPath("$.[*].hasProtractor").value(hasItem(DEFAULT_HAS_PROTRACTOR)))
+            .andExpect(jsonPath("$.[*].hasGatling").value(hasItem(DEFAULT_HAS_GATLING)))
+            .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER)));
     }
 
 
@@ -265,44 +265,44 @@ class YoRCResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(yoRC.getId().intValue()))
-            .andExpect(jsonPath("$.jhipsterVersion").value(DEFAULT_JHIPSTER_VERSION.toString()))
+            .andExpect(jsonPath("$.jhipsterVersion").value(DEFAULT_JHIPSTER_VERSION))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
-            .andExpect(jsonPath("$.gitProvider").value(DEFAULT_GIT_PROVIDER.toString()))
-            .andExpect(jsonPath("$.nodeVersion").value(DEFAULT_NODE_VERSION.toString()))
-            .andExpect(jsonPath("$.os").value(DEFAULT_OS.toString()))
-            .andExpect(jsonPath("$.arch").value(DEFAULT_ARCH.toString()))
-            .andExpect(jsonPath("$.cpu").value(DEFAULT_CPU.toString()))
-            .andExpect(jsonPath("$.cores").value(DEFAULT_CORES.toString()))
-            .andExpect(jsonPath("$.memory").value(DEFAULT_MEMORY.toString()))
-            .andExpect(jsonPath("$.userLanguage").value(DEFAULT_USER_LANGUAGE.toString()))
+            .andExpect(jsonPath("$.gitProvider").value(DEFAULT_GIT_PROVIDER))
+            .andExpect(jsonPath("$.nodeVersion").value(DEFAULT_NODE_VERSION))
+            .andExpect(jsonPath("$.os").value(DEFAULT_OS))
+            .andExpect(jsonPath("$.arch").value(DEFAULT_ARCH))
+            .andExpect(jsonPath("$.cpu").value(DEFAULT_CPU))
+            .andExpect(jsonPath("$.cores").value(DEFAULT_CORES))
+            .andExpect(jsonPath("$.memory").value(DEFAULT_MEMORY))
+            .andExpect(jsonPath("$.userLanguage").value(DEFAULT_USER_LANGUAGE))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
             .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
             .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
-            .andExpect(jsonPath("$.serverPort").value(DEFAULT_SERVER_PORT.toString()))
-            .andExpect(jsonPath("$.authenticationType").value(DEFAULT_AUTHENTICATION_TYPE.toString()))
-            .andExpect(jsonPath("$.cacheProvider").value(DEFAULT_CACHE_PROVIDER.toString()))
-            .andExpect(jsonPath("$.enableHibernateCache").value(DEFAULT_ENABLE_HIBERNATE_CACHE.booleanValue()))
-            .andExpect(jsonPath("$.websocket").value(DEFAULT_WEBSOCKET.booleanValue()))
-            .andExpect(jsonPath("$.databaseType").value(DEFAULT_DATABASE_TYPE.toString()))
-            .andExpect(jsonPath("$.devDatabaseType").value(DEFAULT_DEV_DATABASE_TYPE.toString()))
-            .andExpect(jsonPath("$.prodDatabaseType").value(DEFAULT_PROD_DATABASE_TYPE.toString()))
-            .andExpect(jsonPath("$.searchEngine").value(DEFAULT_SEARCH_ENGINE.booleanValue()))
-            .andExpect(jsonPath("$.messageBroker").value(DEFAULT_MESSAGE_BROKER.booleanValue()))
-            .andExpect(jsonPath("$.serviceDiscoveryType").value(DEFAULT_SERVICE_DISCOVERY_TYPE.booleanValue()))
-            .andExpect(jsonPath("$.buildTool").value(DEFAULT_BUILD_TOOL.toString()))
-            .andExpect(jsonPath("$.enableSwaggerCodegen").value(DEFAULT_ENABLE_SWAGGER_CODEGEN.booleanValue()))
-            .andExpect(jsonPath("$.clientFramework").value(DEFAULT_CLIENT_FRAMEWORK.toString()))
-            .andExpect(jsonPath("$.useSass").value(DEFAULT_USE_SASS.booleanValue()))
-            .andExpect(jsonPath("$.clientPackageManager").value(DEFAULT_CLIENT_PACKAGE_MANAGER.toString()))
-            .andExpect(jsonPath("$.applicationType").value(DEFAULT_APPLICATION_TYPE.toString()))
-            .andExpect(jsonPath("$.jhiPrefix").value(DEFAULT_JHI_PREFIX.toString()))
-            .andExpect(jsonPath("$.enableTranslation").value(DEFAULT_ENABLE_TRANSLATION.booleanValue()))
-            .andExpect(jsonPath("$.nativeLanguage").value(DEFAULT_NATIVE_LANGUAGE.toString()))
-            .andExpect(jsonPath("$.hasProtractor").value(DEFAULT_HAS_PROTRACTOR.booleanValue()))
-            .andExpect(jsonPath("$.hasGatling").value(DEFAULT_HAS_GATLING.booleanValue()))
-            .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER.booleanValue()));
+            .andExpect(jsonPath("$.serverPort").value(DEFAULT_SERVER_PORT))
+            .andExpect(jsonPath("$.authenticationType").value(DEFAULT_AUTHENTICATION_TYPE))
+            .andExpect(jsonPath("$.cacheProvider").value(DEFAULT_CACHE_PROVIDER))
+            .andExpect(jsonPath("$.enableHibernateCache").value(DEFAULT_ENABLE_HIBERNATE_CACHE))
+            .andExpect(jsonPath("$.websocket").value(DEFAULT_WEBSOCKET))
+            .andExpect(jsonPath("$.databaseType").value(DEFAULT_DATABASE_TYPE))
+            .andExpect(jsonPath("$.devDatabaseType").value(DEFAULT_DEV_DATABASE_TYPE))
+            .andExpect(jsonPath("$.prodDatabaseType").value(DEFAULT_PROD_DATABASE_TYPE))
+            .andExpect(jsonPath("$.searchEngine").value(DEFAULT_SEARCH_ENGINE))
+            .andExpect(jsonPath("$.messageBroker").value(DEFAULT_MESSAGE_BROKER))
+            .andExpect(jsonPath("$.serviceDiscoveryType").value(DEFAULT_SERVICE_DISCOVERY_TYPE))
+            .andExpect(jsonPath("$.buildTool").value(DEFAULT_BUILD_TOOL))
+            .andExpect(jsonPath("$.enableSwaggerCodegen").value(DEFAULT_ENABLE_SWAGGER_CODEGEN))
+            .andExpect(jsonPath("$.clientFramework").value(DEFAULT_CLIENT_FRAMEWORK))
+            .andExpect(jsonPath("$.useSass").value(DEFAULT_USE_SASS))
+            .andExpect(jsonPath("$.clientPackageManager").value(DEFAULT_CLIENT_PACKAGE_MANAGER))
+            .andExpect(jsonPath("$.applicationType").value(DEFAULT_APPLICATION_TYPE))
+            .andExpect(jsonPath("$.jhiPrefix").value(DEFAULT_JHI_PREFIX))
+            .andExpect(jsonPath("$.enableTranslation").value(DEFAULT_ENABLE_TRANSLATION))
+            .andExpect(jsonPath("$.nativeLanguage").value(DEFAULT_NATIVE_LANGUAGE))
+            .andExpect(jsonPath("$.hasProtractor").value(DEFAULT_HAS_PROTRACTOR))
+            .andExpect(jsonPath("$.hasGatling").value(DEFAULT_HAS_GATLING))
+            .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER));
     }
     @Test
     @Transactional
@@ -316,12 +316,12 @@ class YoRCResourceIntTest {
     @Transactional
     void deleteYoRC() throws Exception {
         // Initialize the database
-        yoRCService.save(yoRC);
+        YoRCDTO yoRCDTO = yoRCService.save(yoRCMapper.toDto(yoRC));
 
         int databaseSizeBeforeDelete = yoRCRepository.findAll().size();
 
         // Get the yoRC
-        restYoRCMockMvc.perform(delete("/api/yo-rcs/{id}", yoRC.getId())
+        restYoRCMockMvc.perform(delete("/api/yo-rcs/{id}", yoRCDTO.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 

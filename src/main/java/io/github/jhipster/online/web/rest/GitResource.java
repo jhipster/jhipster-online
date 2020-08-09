@@ -85,6 +85,11 @@ public class GitResource {
     @GetMapping("/{gitProvider}/callback")
     public RedirectView callback(@PathVariable String gitProvider, String code) {
         gitProvider = SanitizeInputs.sanitizeInput(gitProvider);
+        code = SanitizeInputs.sanitizeInput(code);
+        if (!SanitizeInputs.isAlphaNumeric(code)) {
+            log.error("Invalid code: {}", code);
+            return null;
+        }
         switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);

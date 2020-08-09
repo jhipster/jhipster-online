@@ -22,6 +22,7 @@ package io.github.jhipster.online.web.rest;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.SubGenEventService;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -65,12 +66,12 @@ public class SubGenEventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/sub-gen-events")
-    public ResponseEntity<SubGenEvent> createSubGenEvent(@RequestBody SubGenEvent subGenEvent) throws URISyntaxException {
+    public ResponseEntity<SubGenEventDTO> createSubGenEvent(@RequestBody SubGenEventDTO subGenEvent) throws URISyntaxException {
         log.debug("REST request to save SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() != null) {
             throw new BadRequestAlertException("A new subGenEvent cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SubGenEvent result = subGenEventService.save(subGenEvent);
+        SubGenEventDTO result = subGenEventService.save(subGenEvent);
         return ResponseEntity.created(new URI("/api/sub-gen-events/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -95,16 +96,15 @@ public class SubGenEventResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated subGenEvent,
      * or with status 400 (Bad Request) if the subGenEvent is not valid,
      * or with status 500 (Internal Server Error) if the subGenEvent couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/sub-gen-events")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<SubGenEvent> updateSubGenEvent(@RequestBody SubGenEvent subGenEvent) {
+    public ResponseEntity<SubGenEventDTO> updateSubGenEvent(@RequestBody SubGenEventDTO subGenEvent) {
         log.debug("REST request to update SubGenEvent : {}", subGenEvent);
         if (subGenEvent.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        SubGenEvent result = subGenEventService.save(subGenEvent);
+        SubGenEventDTO result = subGenEventService.save(subGenEvent);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, subGenEvent.getId().toString()))
             .body(result);

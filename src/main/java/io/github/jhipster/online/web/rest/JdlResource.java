@@ -98,6 +98,8 @@ public class JdlResource {
         } else {
             jdlMetadata.setName(vm.getName());
         }
+        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()))
+            throw new IllegalArgumentException("Provided user input is not valid: " + vm.getName());
         jdlMetadataService.create(jdlMetadata, vm.getContent());
         return ResponseEntity.created(new URI("/api/jdl/" + jdlMetadata.getId()))
             .body(jdlMetadata);
@@ -146,6 +148,7 @@ public class JdlResource {
                                    @PathVariable String projectName,
                                    @PathVariable String jdlId) {
         projectName = SanitizeInputs.sanitizeInput(projectName);
+        organizationName = SanitizeInputs.sanitizeInput(organizationName);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
         log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId,
             organizationName, projectName);

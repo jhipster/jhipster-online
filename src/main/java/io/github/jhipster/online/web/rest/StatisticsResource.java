@@ -19,13 +19,13 @@
 
 package io.github.jhipster.online.web.rest;
 
-import io.github.jhipster.online.domain.EntityStats;
-import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
@@ -171,14 +171,14 @@ public class StatisticsResource {
     }
 
     @PostMapping("/event/{generatorId}")
-    public ResponseEntity addSubGenEvent(@RequestBody SubGenEvent event, @PathVariable String generatorId) {
+    public ResponseEntity addSubGenEvent(@RequestBody SubGenEventDTO event, @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addSubGenEvent(event, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/entity/{generatorId}")
-    public ResponseEntity addEntityStats(@RequestBody EntityStats entity, @PathVariable String generatorId) {
+    public ResponseEntity addEntityStats(@RequestBody EntityStatsDTO entity, @PathVariable String generatorId) {
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
         statisticsService.addEntityStats(entity, generatorId);
         return new ResponseEntity<>(HttpStatus.CREATED);

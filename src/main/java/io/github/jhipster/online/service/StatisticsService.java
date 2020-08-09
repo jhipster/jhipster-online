@@ -22,6 +22,11 @@ package io.github.jhipster.online.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
+import io.github.jhipster.online.service.mapper.SubGenEventMapper;
+import io.github.jhipster.online.service.mapper.YoRCMapper;
 import io.github.jhipster.online.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,14 +52,26 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
+    private final SubGenEventMapper subGenEventMapper;
+
+    private final EntityStatsMapper entityStatsMapper;
+
+    private YoRCMapper yoRCMapper;
+
     public StatisticsService(YoRCService yoRCService,
                              GeneratorIdentityService generatorIdentityService,
                              SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService) {
+                             EntityStatsService entityStatsService,
+                             SubGenEventMapper subGenEventMapper,
+                             EntityStatsMapper entityStatsMapper,
+                             YoRCMapper yoRCMapper) {
         this.yoRCService = yoRCService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
+        this.subGenEventMapper = subGenEventMapper;
+        this.entityStatsMapper = entityStatsMapper;
+        this.yoRCMapper = yoRCMapper;
     }
 
     @Transactional
@@ -102,13 +119,14 @@ public class StatisticsService {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
 
-        yoRCService.save(yorc);
+        yoRCService.save(yoRCMapper.toDto(yorc));
     }
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addSubGenEvent(SubGenEvent subGenEvent, String generatorGuid)  {
+    public void addSubGenEvent(SubGenEventDTO subGenEventDTO, String generatorGuid)  {
         Instant now = Instant.now();
+        SubGenEvent subGenEvent = subGenEventMapper.toEntity(subGenEventDTO);
         DateUtil.setAbsoluteDate(subGenEvent, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
@@ -120,13 +138,14 @@ public class StatisticsService {
         } else {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
-        subGenEventService.save(subGenEvent);
+        subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
     }
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addEntityStats(EntityStats entityStats, String generatorGuid)  {
+    public void addEntityStats(EntityStatsDTO entityStatsDTO, String generatorGuid)  {
         Instant now = Instant.now();
+        EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
         DateUtil.setAbsoluteDate(entityStats, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
@@ -138,7 +157,7 @@ public class StatisticsService {
         } else {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
-        entityStatsService.save(entityStats);
+        entityStatsService.save(entityStatsMapper.toDto(entityStats));
     }
 
     @Transactional
