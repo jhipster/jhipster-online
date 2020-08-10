@@ -19,10 +19,12 @@
 
 package io.github.jhipster.online.util;
 
+import java.util.regex.Pattern;
+
 public class SanitizeInputs {
-    private static final String SANITIZE_REGEX = "[\n\r\t]";
-    private static final String ALPHANUMERIC_REGEX = "[a-zA-Z0-9]*";
-    private static final String ALPHANUMERIC_AND_SPACES_REGEX = "[\\w\\s]*";
+    private static final Pattern SANITIZE_REGEX = Pattern.compile("[\n\r\t]");
+    private static final Pattern ALPHANUMERIC_REGEX = Pattern.compile("[a-zA-Z0-9]*");
+    private static final Pattern ALPHANUMERIC_AND_SPACES_REGEX = Pattern.compile("[\\w\\s]*");
 
     private SanitizeInputs() {
         throw new IllegalStateException("Utility class: SanitizeInputs");
@@ -31,18 +33,18 @@ public class SanitizeInputs {
     public static String sanitizeInput(String inputString) {
         if (inputString == null)
             return null;
-        return inputString.replaceAll(SANITIZE_REGEX, "_");
+        return SANITIZE_REGEX.matcher(inputString).replaceAll("_");
     }
 
     public static boolean isAlphaNumeric(String inputString) {
         if (inputString == null)
             return false;
-        return inputString.matches(ALPHANUMERIC_REGEX);
+        return ALPHANUMERIC_REGEX.matcher(inputString).matches();
     }
 
     public static boolean isLettersNumbersAndSpaces (String inputString) {
         if (inputString == null)
             return false;
-        return inputString.matches(ALPHANUMERIC_AND_SPACES_REGEX);
+        return ALPHANUMERIC_AND_SPACES_REGEX.matcher(inputString).matches();
     }
 }

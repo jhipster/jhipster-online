@@ -9,6 +9,7 @@ class SanitizeInputsTest {
 
     @Test
     void sanitizeInput() {
+        assertThat(SanitizeInputs.sanitizeInput(null)).isNull();
         assertThat(SanitizeInputs.sanitizeInput("This is JHipster")).isEqualTo("This is JHipster");
         assertThat(SanitizeInputs.sanitizeInput("This is \nJHipster")).isEqualTo("This is _JHipster");
         assertThat(SanitizeInputs.sanitizeInput("This is \tJHipster")).isEqualTo("This is _JHipster");
@@ -19,6 +20,7 @@ class SanitizeInputsTest {
 
     @Test
     void isAlphaNumeric() {
+        assertThat(SanitizeInputs.isAlphaNumeric(null)).isFalse();
         assertThat(SanitizeInputs.isAlphaNumeric("This is JHipster")).isFalse();
         assertThat(SanitizeInputs.isAlphaNumeric("442kj32342kd")).isTrue();
         assertThat(SanitizeInputs.isAlphaNumeric("A3sdflkjE422")).isTrue();
@@ -28,6 +30,7 @@ class SanitizeInputsTest {
 
     @Test
     void isLettersNumbersAndSpaces() {
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces(null)).isFalse();
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("This is JHipster")).isTrue();
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("442kj32342kd")).isTrue();
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23094823023")).isTrue();
