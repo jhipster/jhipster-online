@@ -101,7 +101,7 @@ public class JdlResource {
             jdlMetadata.setName(vm.getName());
         }
         jdlMetadataService.create(jdlMetadata, vm.getContent());
-        return ResponseEntity.created(new URI("/api/jdl/" + jdlMetadata.getId()))
+        return ResponseEntity.created(new URI("/api/jdl/" + jdlMetadata.getId())) //NOSONAR
             .body(jdlMetadata);
     }
 
