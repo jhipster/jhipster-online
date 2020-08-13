@@ -20,6 +20,8 @@ package io.github.jhipster.online.service.interfaces;
 
 import io.github.jhipster.online.domain.User;
 
+import java.io.IOException;
+
 public interface GitProviderService {
 
     boolean isEnabled();
@@ -28,15 +30,15 @@ public interface GitProviderService {
 
     String getClientId();
 
-    void syncUserFromGitProvider() throws Exception;
+    void syncUserFromGitProvider() throws IOException;
 
-    User getSyncedUserFromGitProvider(User user) throws Exception;
+    User getSyncedUserFromGitProvider(User user) throws IOException;
 
     void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
         organization, String repositoryName);
 
     int createPullRequest(User user, String organization, String applicationName,
-        String title, String branchName, String body) throws Exception;
+        String title, String branchName, String body) throws IOException;
 
     boolean isConfigured();
 

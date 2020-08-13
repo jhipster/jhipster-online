@@ -91,15 +91,15 @@ public class JdlResource {
     @PostMapping("/jdl")
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
+    ResponseEntity<JdlMetadata> createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
+        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()))
+            throw new IllegalArgumentException("Provided user input is not valid: " + vm.getName());
         JdlMetadata jdlMetadata = new JdlMetadata();
         if (vm.getName() == null || vm.getName().equals("")) {
             jdlMetadata.setName("New JDL Model");
         } else {
             jdlMetadata.setName(vm.getName());
         }
-        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()))
-            throw new IllegalArgumentException("Provided user input is not valid: " + vm.getName());
         jdlMetadataService.create(jdlMetadata, vm.getContent());
         return ResponseEntity.created(new URI("/api/jdl/" + jdlMetadata.getId()))
             .body(jdlMetadata);
@@ -111,7 +111,7 @@ public class JdlResource {
     @PutMapping("/jdl/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
+    ResponseEntity<String> updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         try {
             if (jdlMetadata.isEmpty()) {
@@ -131,7 +131,7 @@ public class JdlResource {
     @DeleteMapping("/jdl/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity deleteJdlFile(@PathVariable String jdlId) {
+    ResponseEntity<String> deleteJdlFile(@PathVariable String jdlId) {
         jdlId = SanitizeInputs.sanitizeInput(jdlId);
         try {
             this.jdlMetadataService.delete(jdlId);
@@ -144,11 +144,12 @@ public class JdlResource {
 
     @PostMapping("/apply-jdl/{gitProvider}/{organizationName}/{projectName}/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
+    public ResponseEntity<String> applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
                                    @PathVariable String projectName,
                                    @PathVariable String jdlId) {
         projectName = SanitizeInputs.sanitizeInput(projectName);
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
+        jdlId = SanitizeInputs.sanitizeInput(jdlId);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
         log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId,
             organizationName, projectName);

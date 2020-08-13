@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,7 @@ public class GithubService implements GitProviderService {
      */
     @Transactional
     @Override
-    public void syncUserFromGitProvider() throws Exception {
+    public void syncUserFromGitProvider() {
         Optional<User> user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElse(null));
         if (user.isPresent()) {
             this.getSyncedUserFromGitProvider(user.get());
@@ -180,7 +181,7 @@ public class GithubService implements GitProviderService {
     }
 
     public int createPullRequest(User user, String organization, String repositoryName,
-        String title, String branchName, String body) throws Exception {
+        String title, String branchName, String body) throws IOException {
 
         log.info("Creating Pull Request on repository {} / {}", organization, repositoryName);
 
@@ -204,11 +205,10 @@ public class GithubService implements GitProviderService {
     /**
      * Connect to GitHub as the current logged in user.
      */
-    private GitHub getConnection(User user) throws Exception {
+    private GitHub getConnection(User user) throws IOException {
         log.debug("Authenticating as User `{}`", user.getGithubUser());
         if (user.getGithubOAuthToken() == null) {
-            log.info("No GitHub token configured");
-            throw new Exception("GitHub is not configured.");
+            throw new ConnectException("No GitHub token configured.");
         }
         return GitHub.connectUsingOAuth(user.getGithubOAuthToken());
     }
@@ -235,7 +235,7 @@ public class GithubService implements GitProviderService {
             Optional<GitCompany> currentGitHubOrganization =
                 currentGithubCompanies.stream().filter(g -> g.getName().equals(githubOrganizationName)).findFirst();
 
-            if (!currentGitHubOrganization.isPresent()) {
+            if (currentGitHubOrganization.isEmpty()) {
                 log.debug("Saving new company `{}`", githubOrganizationName);
                 company = new GitCompany();
                 company.setName(githubOrganizationName);

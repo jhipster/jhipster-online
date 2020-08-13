@@ -70,7 +70,7 @@ public class GeneratorResource {
 
     @PostMapping("/generate-application")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
+    public ResponseEntity<String> generateApplicationOnGit(@RequestBody String applicationConfiguration) throws Exception {
         applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Generating application on GitHub - .yo-rc.json: {}", applicationConfiguration);
         User user = userService.getUser();
@@ -114,7 +114,7 @@ public class GeneratorResource {
     @PostMapping("/download-application")
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
-    ResponseEntity downloadApplication(@RequestBody String applicationConfiguration) {
+    ResponseEntity<byte[]> downloadApplication(@RequestBody String applicationConfiguration) {
         applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Downloading application - .yo-rc.json: {}", applicationConfiguration);
         String applicationId = UUID.randomUUID().toString();
@@ -126,7 +126,7 @@ public class GeneratorResource {
             log.error("Error generating application", ioe);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = new FileInputStream(zippedApplication);
             byte[] out = IOUtils.toByteArray(inputStream);
@@ -135,7 +135,7 @@ public class GeneratorResource {
             responseHeaders.add("Content-Type", "application/octet-stream");
             responseHeaders.add("Content-Transfer-Encoding", "binary");
             responseHeaders.add("Content-Length", String.valueOf(out.length));
-            return new ResponseEntity(out, responseHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(out, responseHeaders, HttpStatus.OK);
         } catch (IOException ioe) {
             log.error("Error sending zipped application", ioe);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

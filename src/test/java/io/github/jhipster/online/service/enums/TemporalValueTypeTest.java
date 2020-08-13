@@ -7,7 +7,7 @@ import java.time.Instant;
 import static java.time.Instant.parse;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TemporalValueTypeTest {
+class TemporalValueTypeTest {
 
     @Test
     void assertThatYearToInstantIsCorrect() {

@@ -38,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystemException;
 import java.util.Optional;
 
 @Service
@@ -155,22 +157,18 @@ public class JdlService {
         }
     }
 
-    private void generateJdlFile(File workingDir, JdlMetadata jdlMetadata)
-        throws Exception {
-
+    private void generateJdlFile(File workingDir, JdlMetadata jdlMetadata) throws IOException {
         try {
             Optional<Jdl> jdl = this.jdlRepository.findOneByJdlMetadataId(jdlMetadata.getId());
-            if (!jdl.isPresent()) {
-                log.error("Error creating file jhipster-jdl.jh, the JDL could not be found");
-                throw new Exception("JDL could not be found");
+            if (jdl.isEmpty()) {
+                throw new FileSystemException("Error creating file jhipster-jdl.jh, the JDL could not be found");
             }
             PrintWriter writer = new PrintWriter(workingDir + "/" + this.kebabCaseJdlName(jdlMetadata) + ".jh",
-                "UTF-8");
+                StandardCharsets.UTF_8);
             writer.print(jdl.get().getContent());
             writer.close();
         } catch (IOException ioe) {
-            log.error("Error creating file jhipster-jdl.jh, could not write the file", ioe);
-            throw ioe;
+            throw new IOException("Error creating file jhipster-jdl.jh, could not write the file");
         }
     }
 
