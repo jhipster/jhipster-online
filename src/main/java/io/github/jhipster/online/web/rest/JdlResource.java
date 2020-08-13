@@ -92,8 +92,8 @@ public class JdlResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody
     ResponseEntity<JdlMetadata> createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
-        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()))
-            throw new IllegalArgumentException("Provided user input is not valid: " + vm.getName());
+        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()) && !SanitizeInputs.isLettersNumbersAndSpaces(vm.getContent()))
+            throw new IllegalArgumentException("Provided user input is not valid: vm.name: " + vm.getName() + "vm.content: " + vm.getContent());
         JdlMetadata jdlMetadata = new JdlMetadata();
         if (vm.getName() == null || vm.getName().equals("")) {
             jdlMetadata.setName("New JDL Model");
