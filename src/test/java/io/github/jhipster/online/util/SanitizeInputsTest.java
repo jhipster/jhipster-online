@@ -35,5 +35,7 @@ class SanitizeInputsTest {
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("442kj32342kd")).isTrue();
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23094823023")).isTrue();
        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/482$3023")).isFalse();
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/\n482\r$3\t023")).isFalse();
+       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23};09/\n482\r$3\t023**")).isFalse();
     }
 }
