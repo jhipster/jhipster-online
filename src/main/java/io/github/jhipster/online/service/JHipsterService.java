@@ -106,7 +106,7 @@ public class JHipsterService {
             input =
                 new BufferedReader
                     (new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
+            while (input.ready() && (line = input.readLine()) != null) {
                 log.debug(line);
                 this.logsService.addLog(generationId, line);
             }
