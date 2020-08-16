@@ -86,6 +86,7 @@ public class JHipsterService {
     private void runProcess(String generationId, File workingDir, String command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
         BufferedReader input = null;
+        BufferedReader error = null;
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -94,27 +95,36 @@ public class JHipsterService {
             taskExecutor.execute(() -> {
                 try {
                     p.waitFor(timeout, TimeUnit.SECONDS);
-                    if (p.isAlive()) {
-                        p.destroyForcibly();
-                    }
+                    p.destroyForcibly();
                 } catch (InterruptedException e) {
                     log.error("Unable to execute process successfully.", e);
                     Thread.currentThread().interrupt();
                 }
             });
 
+            error = new BufferedReader(
+                new InputStreamReader(p.getErrorStream()));
+            while ((line = error.readLine()) != null) {
+                log.debug(line);
+            }
+
             input =
                 new BufferedReader
                     (new InputStreamReader(p.getInputStream()));
-            while (input.ready() && (line = input.readLine()) != null) {
+            while ((line = input.readLine()) != null) {
                 log.debug(line);
                 this.logsService.addLog(generationId, line);
             }
+
             input.close();
+            error.close();
         } catch (Exception e) {
             log.error("Error while running the process", e);
             if (input != null) {
                 input.close();
+            }
+            if (error != null) {
+                error.close();
             }
             throw e;
         }
