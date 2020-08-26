@@ -252,6 +252,15 @@ class UserResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = AuthoritiesConstants.USER)
+    void getAllUsersShouldBeForbiddenWithUser() throws Exception {
+        restUserMockMvc.perform(get("/api/users?sort=id,desc")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
     void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
