@@ -186,11 +186,14 @@ Then run:
 docker-compose -f src/main/docker/app.yml up -d
 ```
 
-## Building for GCP environment (include sql proxy)
+## Deployment to Google App Engine (GAE) Flexible Environment
 
-```
-./mvnw clean package -Pgcp
-```
+- The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
+
+- Creating a new release triggers the [deploy.yml GitHub Actions workflow](https://github.com/jhipster/jhipster-online/blob/master/.github/workflows/deploy.yml).
+
+- The above workflow includes a Docker build and pushes the image to [Google Container Registry](https://cloud.google.com/container-registry/). [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging) are used for
+  obtaining application logs and monitoring.
 
 ## Help and contribution to the project
 

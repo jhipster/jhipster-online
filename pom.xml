@@ -86,7 +86,6 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
-        <mysql-socket-factory.version>1.0.16</mysql-socket-factory.version>
     </properties>
 
     <dependencyManagement>
@@ -95,6 +94,13 @@
                 <groupId>io.github.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>1.2.2.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -1090,9 +1096,8 @@
                     <artifactId>spring-boot-starter-undertow</artifactId>
                 </dependency>
                 <dependency>
-                    <groupId>com.google.cloud.sql</groupId>
-                    <artifactId>mysql-socket-factory</artifactId>
-                    <version>${mysql-socket-factory.version}</version>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
                 </dependency>
             </dependencies>
             <build>
@@ -1176,7 +1181,7 @@
             </build>
             <properties>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.swagger}${profile.no-liquibase}</spring.profiles.active>
+                <spring.profiles.active>prod,gcp${profile.swagger}${profile.no-liquibase}</spring.profiles.active>
             </properties>
         </profile>
         <profile>
