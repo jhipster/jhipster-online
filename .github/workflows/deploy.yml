@@ -38,7 +38,6 @@ jobs:
           files: '${{ github.workspace }}/app.yaml'
         env:
           env_variables.DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          env_variables.INSTANCE_CONNECTION_NAME: ${{ secrets.INSTANCE_CONNECTION_NAME }}
           env_variables.GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           env_variables.GCP_REGION: ${{ secrets.GCP_REGION }}
           env_variables.SQL_INSTANCE_ID: ${{ secrets.SQL_INSTANCE_ID }}

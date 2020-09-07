@@ -14,20 +14,10 @@
 # ===================================================================
 
 spring:
-  cloud:
-    gcp:
-      sql:
-        enabled: true
-        database-name: ${DATABASE_NAME}
-        instance-connection-name: ${INSTANCE_CONNECTION_NAME}
   datasource:
-    hikari:
-      data-source-properties:
-        socketFactory: com.google.cloud.sql.mysql.SocketFactory
-        cloudSqlInstance: ${GCP_PROJECT_ID}:${GCP_REGION}:${SQL_INSTANCE_ID}
-      jdbcUrl: jdbc:mysql://google/${DATABASE_NAME}
-      username: ${DATABASE_USERNAME}
-      password: ${DATABASE_PASSWORD}
+    url: jdbc:mysql://google/${DATABASE_NAME}?cloudSqlInstance=${GCP_PROJECT_ID}:${GCP_REGION}:${SQL_INSTANCE_ID}&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
