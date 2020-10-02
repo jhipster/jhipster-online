@@ -64,7 +64,7 @@ public class CiCdService {
     }
 
     /**
-     * Apply a JDL Model to an existing repository.
+     * Apply a CI-CD configuration to an existing repository.
      */
     @Async
     public void configureCiCd(User user, String organizationName, String projectName, CiCdTool ciCdTool, String ciCdId,
