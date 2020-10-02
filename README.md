@@ -114,8 +114,6 @@ behalf. JHipster Online uses `https://your-jhipster-online-url/api/github/callba
 
 JHipster Online also needs to have a specific "JHipster Bot" user configured, like the  
 [https://github.com/jhipster-bot](https://github.com/jhipster-bot) used by the official [JHipster Online website](https://start.jhipster.tech/).
-In order for JHipster Online to use that bot, it will need its OAuth token: log in as the "JHipster Bot" user, and go to
-"Settings > Developer Settings > Personal access tokens" and generate a new token.
 
 Here is the final configuration, that should be set up inside the `application-dev.yml` file for
 development, and inside the `application-prod.yml` file for production.
@@ -126,7 +124,6 @@ application:
         host: https://github.com # The GitHub to connect to (by default: the public GitHub instance)
         client-id: XXX # The OAuth Client ID of the application on GitHub
         client-secret: XXX # The OAuth Client secret of the application on GitHub
-        jhipster-bot-oauth-token: XXX # The "personal access token" of the JHipster Bot
 ```
 
 ### GitLab configuration

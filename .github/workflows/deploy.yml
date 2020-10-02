@@ -50,7 +50,6 @@ jobs:
           env_variables.BASE64_SECRET: ${{ secrets.BASE64_SECRET }}
           env_variables.CLIENT_ID_GITHUB: ${{ secrets.CLIENT_ID_GITHUB }}
           env_variables.CLIENT_SECRET_GITHUB: ${{ secrets.CLIENT_SECRET_GITHUB }}
-          env_variables.JHIPSTER_BOT_OAUTH_TOKEN: ${{ secrets.JHIPSTER_BOT_OAUTH_TOKEN }}
           env_variables.GITLAB_CLIENT_ID: ${{ secrets.GITLAB_CLIENT_ID }}
           env_variables.GITLAB_CLIENT_SECRET: ${{ secrets.GITLAB_CLIENT_SECRET }}
           env_variables.GITLAB_REDIRECT_URI: ${{ secrets.GITLAB_REDIRECT_URI }}
