@@ -111,6 +111,7 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
+      this.gitConfig = gitConfig;
       this.gitlabConfigured = gitConfig.gitlabConfigured || false;
       this.githubConfigured = gitConfig.githubConfigured || false;
     });
