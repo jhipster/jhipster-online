@@ -92,7 +92,6 @@ public class ApplicationProperties {
         private String clientId;
         private String clientSecret;
         private String host = "https://github.com";
-        private String jhipsterBotOauthToken = "";
 
         public String getClientId() {
             return clientId;
@@ -116,14 +115,6 @@ public class ApplicationProperties {
 
         public void setHost(String host) {
             this.host = host;
-        }
-
-        public String getJhipsterBotOauthToken() {
-            return jhipsterBotOauthToken;
-        }
-
-        public void setJhipsterBotOauthToken(String jhipsterBotOauthToken) {
-            this.jhipsterBotOauthToken = jhipsterBotOauthToken;
         }
     }
 

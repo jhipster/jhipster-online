@@ -37,7 +37,6 @@ application:
   github:
     client-id: ${CLIENT_ID_GITHUB}
     client-secret: ${CLIENT_SECRET_GITHUB}
-    jhipster-bot-oauth-token: ${JHIPSTER_BOT_OAUTH_TOKEN}
   gitlab:
     client-id: ${GITLAB_CLIENT_ID}
     client-secret: ${GITLAB_CLIENT_SECRET}

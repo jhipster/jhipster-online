@@ -135,10 +135,8 @@ jhipster:
 #        host: https://github.com
 #        client-id: XXX
 #        client-secret: XXX
-#        jhipster-bot-oauth-token: XXX
 #    gitlab:
 #        host: https://gitlab.com
 #        client-id: XXX
 #        client-secret: XXX
 #        redirect-uri: XXX
-#        jhipster-bot-oauth-token: XXX
