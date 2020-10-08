@@ -57,6 +57,7 @@ export class CiCdComponent implements OnInit {
     }
 
     this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
+      this.gitConfig = gitConfig;
       this.gitlabConfigured = gitConfig.gitlabConfigured || false;
       this.githubConfigured = gitConfig.githubConfigured || false;
     });

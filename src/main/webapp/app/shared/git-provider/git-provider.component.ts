@@ -51,10 +51,13 @@ export class JhiGitProviderAlertComponent implements OnInit {
       this.gitConfig = gitConfig;
       this.gitlabConfigured = gitConfig.gitlabConfigured;
       this.githubConfigured = gitConfig.githubConfigured;
+      this.updateGitProviderName();
     });
     this.updateGitProviderName();
     this.noGitProvidersMessage = `There is no Git provider available, please contact your administrator to configure one.`;
+  }
 
+  updateMessages(): void {
     if (this.tab === 'ci-cd') {
       this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
                 you must authorize JHipster Online to access your ${this.displayedGitProvider} account.`;
@@ -94,6 +97,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
     } else if (!this.gitConfig.githubAvailable && this.gitConfig.gitlabAvailable) {
       this.displayedGitProvider = 'GitLab';
     }
+    this.updateMessages();
   }
 }
 
