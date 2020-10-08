@@ -143,7 +143,7 @@ public class YoRCService {
 
             log.debug("Parsed json:\n{}", yorc);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Generation failed", e);
         }
     }
 

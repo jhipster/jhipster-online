@@ -152,7 +152,7 @@ public class JdlService {
             this.logsService.addLog(applyJdlId, "Generation finished");
         } catch (Exception e) {
             this.logsService.addLog(applyJdlId, "Error during generation: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Generation failed", e);
             this.logsService.addLog(applyJdlId, "Generation failed");
         }
     }
