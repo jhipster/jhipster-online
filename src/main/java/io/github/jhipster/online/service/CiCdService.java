@@ -134,7 +134,7 @@ public class CiCdService {
             this.logsService.addLog(ciCdId, "Generation finished");
         } catch (Exception e) {
             this.logsService.addLog(ciCdId, "Error during generation: " + e.getMessage());
-            log.error(e.getMessage(), e);
+            log.error("Generation failed", e);
             this.logsService.addLog(ciCdId, "Generation failed");
         }
     }
