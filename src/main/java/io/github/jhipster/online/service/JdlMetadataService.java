@@ -28,18 +28,17 @@ import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.dto.JdlMetadataDTO;
 import io.github.jhipster.online.service.mapper.JdlMetadataMapper;
+import java.nio.file.FileSystemException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.nio.file.FileSystemException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service Implementation for managing JdlMetadata.
@@ -58,9 +57,12 @@ public class JdlMetadataService {
 
     private final JdlMetadataMapper jdlMetadataMapper;
 
-    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository,
-        UserRepository userRepository, JdlMetadataMapper jdlMetadataMapper) {
-
+    public JdlMetadataService(
+        JdlMetadataRepository jdlMetadataRepository,
+        JdlRepository jdlRepository,
+        UserRepository userRepository,
+        JdlMetadataMapper jdlMetadataMapper
+    ) {
         this.jdlMetadataRepository = jdlMetadataRepository;
         this.jdlRepository = jdlRepository;
         this.userRepository = userRepository;

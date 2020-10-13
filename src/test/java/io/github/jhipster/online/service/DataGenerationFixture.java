@@ -19,15 +19,14 @@
 
 package io.github.jhipster.online.service;
 
+import static java.time.ZonedDateTime.parse;
+
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.repository.YoRCRepository;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
-import static java.time.ZonedDateTime.parse;
 
 public class DataGenerationFixture {
 
@@ -61,7 +60,8 @@ public class DataGenerationFixture {
     }
 
     public static YoRC yorc(Instant createdDate, String clientFramework) {
-        YoRC yorc = new YoRC().serverPort("8080")
+        YoRC yorc = new YoRC()
+            .serverPort("8080")
             .authenticationType("jwt")
             .cacheProvider("ehcache")
             .enableHibernateCache(true)

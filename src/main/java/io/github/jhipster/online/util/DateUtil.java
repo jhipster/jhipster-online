@@ -23,7 +23,6 @@ import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import io.github.jhipster.online.service.enums.TemporalValueType;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -90,18 +89,10 @@ public class DateUtil {
     }
 
     public static YoRCColumn getYoColumnFromField(String field) {
-        return Arrays
-            .stream(YoRCColumn.values())
-            .filter(c -> c.getDatabaseValue().equals(field))
-            .findFirst()
-            .orElse(null);
+        return Arrays.stream(YoRCColumn.values()).filter(c -> c.getDatabaseValue().equals(field)).findFirst().orElse(null);
     }
 
     public static EntityStatColumn getEntityColumnFromField(String field) {
-        return Arrays
-            .stream(EntityStatColumn.values())
-            .filter(c -> c.getDatabaseValue().equals(field))
-            .findFirst()
-            .orElse(null);
+        return Arrays.stream(EntityStatColumn.values()).filter(c -> c.getDatabaseValue().equals(field)).findFirst().orElse(null);
     }
 }

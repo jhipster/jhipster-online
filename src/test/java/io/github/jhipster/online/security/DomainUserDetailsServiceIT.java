@@ -18,9 +18,13 @@
  */
 package io.github.jhipster.online.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
+import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +33,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Integrations tests for {@link DomainUserDetailsService}.
@@ -135,8 +134,7 @@ class DomainUserDetailsServiceIT {
     @Test
     @Transactional
     void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
-        assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(
-            () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
+        assertThatExceptionOfType(UserNotActivatedException.class)
+            .isThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
     }
-
 }

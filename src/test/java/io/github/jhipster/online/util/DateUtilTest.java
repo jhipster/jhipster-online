@@ -1,16 +1,15 @@
 package io.github.jhipster.online.util;
 
+import static java.time.Instant.parse;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.service.DataGenerationFixture;
-import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import static java.time.Instant.parse;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 class DateUtilTest {
 

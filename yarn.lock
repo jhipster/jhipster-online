@@ -6155,6 +6155,14 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
+java-parser@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/java-parser/-/java-parser-0.8.2.tgz#12a29a6ef8e9ca50d5d047e4c4c8ac383ff240d6"
+  integrity sha512-YphTEk4zIpWAHqBriAdjlNnTEcEYQ2xBA8KOH5V7QxggNbxjkeEcKJjNYnQvqEue8+O1TLj7vfL0NVG6x5LGMw==
+  dependencies:
+    chevrotain "6.5.0"
+    lodash "4.17.20"
+
 java-parser@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/java-parser/-/java-parser-0.8.0.tgz#5abee16e3fbc11d0d90c5b6ac69919e01fe1ba5c"
@@ -7116,6 +7124,11 @@ lodash@4.17.15, lodash@^4, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lo
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@^1.0.2:
   version "1.0.2"
@@ -9159,6 +9172,15 @@ prettier-plugin-java@0.8.0:
     lodash "4.17.15"
     prettier "2.0.4"
 
+prettier-plugin-java@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-java/-/prettier-plugin-java-0.8.3.tgz#a7d381c2945a2cdda4f7baa6ced2205cb6cceebb"
+  integrity sha512-LyFle106727RkY1NBGzHHnzEJKjILigSfHPPqalNi5yJ/DkM5hjOVxWa4374gm44LStMl1arNgzpCnYPL0F8cg==
+  dependencies:
+    java-parser "0.8.2"
+    lodash "4.17.20"
+    prettier "2.1.1"
+
 prettier@1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
@@ -9173,6 +9195,11 @@ prettier@2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
   integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
+
+prettier@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.1.1.tgz#d9485dd5e499daa6cb547023b87a6cf51bee37d6"
+  integrity sha512-9bY+5ZWCfqj3ghYBLxApy2zf6m+NJo5GzmLTpr9FsApsfjriNnS2dahWReHMi7qNPhhHl9SYHJs2cHZLgexNIw==
 
 pretty-bytes@^5.1.0, pretty-bytes@^5.2.0:
   version "5.3.0"

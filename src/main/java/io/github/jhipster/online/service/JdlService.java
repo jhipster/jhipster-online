@@ -26,6 +26,12 @@ import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.repository.JdlRepository;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystemException;
+import java.util.Optional;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
@@ -34,13 +40,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystemException;
-import java.util.Optional;
 
 @Service
 public class JdlService {
@@ -61,12 +60,15 @@ public class JdlService {
 
     private final ApplicationProperties applicationProperties;
 
-    public JdlService(LogsService logsService,
+    public JdlService(
+        LogsService logsService,
         GitService gitService,
         JHipsterService jHipsterService,
         GithubService githubService,
-        GitlabService gitlabService, JdlRepository jdlRepository,
-        ApplicationProperties applicationProperties) {
+        GitlabService gitlabService,
+        JdlRepository jdlRepository,
+        ApplicationProperties applicationProperties
+    ) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.jHipsterService = jHipsterService;
@@ -80,16 +82,23 @@ public class JdlService {
      * Apply a JDL Model to an existing repository.
      */
     @Async
-    public void applyJdl(User user, String organizationName, String projectName, JdlMetadata jdlMetadata, String
-        applyJdlId, GitProvider gitProvider) {
+    public void applyJdl(
+        User user,
+        String organizationName,
+        String projectName,
+        JdlMetadata jdlMetadata,
+        String applyJdlId,
+        GitProvider gitProvider
+    ) {
         try {
             log.info("Beginning to apply JDL Model {} to {} / {}", jdlMetadata.getId(), organizationName, projectName);
             boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
-            this.logsService.addLog(applyJdlId, "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" +
-                organizationName + "/" + projectName + "`");
+            this.logsService.addLog(
+                    applyJdlId,
+                    "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" + organizationName + "/" + projectName + "`"
+                );
 
-            File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
-                applyJdlId);
+            File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" + applyJdlId);
             FileUtils.forceMkdir(workingDir);
             Git git = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
@@ -100,52 +109,87 @@ public class JdlService {
             this.logsService.addLog(applyJdlId, "Adding JDL file into the project");
             this.generateJdlFile(workingDir, jdlMetadata);
             this.gitService.addAllFilesToRepository(git, workingDir);
-            this.gitService.commit(git, workingDir, "Add JDL Model `" + jdlMetadata.getName() + "`\n\n" +
-                "See https://start.jhipster.tech/jdl-studio/#!/view/" + jdlMetadata.getId());
+            this.gitService.commit(
+                    git,
+                    workingDir,
+                    "Add JDL Model `" +
+                    jdlMetadata.getName() +
+                    "`\n\n" +
+                    "See https://start.jhipster.tech/jdl-studio/#!/view/" +
+                    jdlMetadata.getId()
+                );
 
             this.logsService.addLog(applyJdlId, "Generating entities from JDL Model");
             //this.jHipsterService.installNpmDependencies(applyJdlId, workingDir);
             this.jHipsterService.runImportJdl(applyJdlId, workingDir, this.kebabCaseJdlName(jdlMetadata));
 
             this.gitService.addAllFilesToRepository(git, workingDir);
-            this.gitService.commit(git, workingDir, "Generate entities from JDL Model `" + jdlMetadata.getName() +
-                "`\n\n" +
-                "See https://start.jhipster.tech/jdl-studio/#!/view/" + jdlMetadata.getId());
+            this.gitService.commit(
+                    git,
+                    workingDir,
+                    "Generate entities from JDL Model `" +
+                    jdlMetadata.getName() +
+                    "`\n\n" +
+                    "See https://start.jhipster.tech/jdl-studio/#!/view/" +
+                    jdlMetadata.getId()
+                );
 
-            this.logsService.addLog(applyJdlId, "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab")
-                + " remote repository");
+            this.logsService.addLog(
+                    applyJdlId,
+                    "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " remote repository"
+                );
             this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(applyJdlId, "Application successfully pushed!");
             this.logsService.addLog(applyJdlId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
             String pullRequestTitle = "Add entities using the JDL model `" + jdlMetadata.getName() + "`";
-            String pullRequestBody = "Entities generated by JHipster using the model at https://start.jhipster" +
-                ".tech/jdl-studio/#!/view/" + jdlMetadata.getId();
+            String pullRequestBody =
+                "Entities generated by JHipster using the model at https://start.jhipster" +
+                ".tech/jdl-studio/#!/view/" +
+                jdlMetadata.getId();
 
             if (isGitHub) {
                 int pullRequestNumber =
-                    this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
-                        branchName, pullRequestBody);
-                this.logsService.addLog(applyJdlId, "Pull Request created at " + githubService.getHost() +
-                    "/" +
-                    organizationName +
-                    "/" +
-                    projectName +
-                    "/pull/" +
-                    pullRequestNumber
-                );
+                    this.githubService.createPullRequest(
+                            user,
+                            organizationName,
+                            projectName,
+                            pullRequestTitle,
+                            branchName,
+                            pullRequestBody
+                        );
+                this.logsService.addLog(
+                        applyJdlId,
+                        "Pull Request created at " +
+                        githubService.getHost() +
+                        "/" +
+                        organizationName +
+                        "/" +
+                        projectName +
+                        "/pull/" +
+                        pullRequestNumber
+                    );
             } else {
                 int pullRequestNumber =
-                    this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
-                        branchName, pullRequestBody);
-                this.logsService.addLog(applyJdlId, "Merge Request created at " + gitlabService.getHost() +
-                    "/" +
-                    organizationName +
-                    "/" +
-                    projectName +
-                    "/merge_requests/" +
-                    pullRequestNumber
-                );
+                    this.gitlabService.createPullRequest(
+                            user,
+                            organizationName,
+                            projectName,
+                            pullRequestTitle,
+                            branchName,
+                            pullRequestBody
+                        );
+                this.logsService.addLog(
+                        applyJdlId,
+                        "Merge Request created at " +
+                        gitlabService.getHost() +
+                        "/" +
+                        organizationName +
+                        "/" +
+                        projectName +
+                        "/merge_requests/" +
+                        pullRequestNumber
+                    );
             }
 
             this.gitService.cleanUpDirectory(workingDir);
@@ -163,8 +207,7 @@ public class JdlService {
             if (jdl.isEmpty()) {
                 throw new FileSystemException("Error creating file jhipster-jdl.jh, the JDL could not be found");
             }
-            PrintWriter writer = new PrintWriter(workingDir + "/" + this.kebabCaseJdlName(jdlMetadata) + ".jh",
-                StandardCharsets.UTF_8);
+            PrintWriter writer = new PrintWriter(workingDir + "/" + this.kebabCaseJdlName(jdlMetadata) + ".jh", StandardCharsets.UTF_8);
             writer.print(jdl.get().getContent());
             writer.close();
         } catch (IOException ioe) {

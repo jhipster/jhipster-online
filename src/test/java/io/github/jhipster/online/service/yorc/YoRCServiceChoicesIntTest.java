@@ -19,6 +19,9 @@
 
 package io.github.jhipster.online.service.yorc;
 
+import static java.time.ZonedDateTime.parse;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.repository.YoRCRepository;
@@ -26,19 +29,15 @@ import io.github.jhipster.online.service.DataGenerationFixture;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-
-import static java.time.ZonedDateTime.parse;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
@@ -64,10 +63,7 @@ class YoRCServiceChoicesIntTest {
         assertThat(result)
             .hasSize(2)
             .extracting(TemporalDistributionDTO::getDate)
-            .containsExactly(
-                Instant.parse("2018-01-01T00:00:00Z"),
-                Instant.parse("2019-01-01T00:00:00Z")
-            );
+            .containsExactly(Instant.parse("2018-01-01T00:00:00Z"), Instant.parse("2019-01-01T00:00:00Z"));
 
         Map<String, Long> fst = result.get(0).getValues(); // 2018
         Map<String, Long> snd = result.get(1).getValues(); // 2019

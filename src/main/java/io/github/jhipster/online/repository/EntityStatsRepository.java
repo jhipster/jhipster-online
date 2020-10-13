@@ -24,7 +24,6 @@ import io.github.jhipster.online.domain.GeneratorIdentity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 /**
  * Spring Data  repository for the EntityStats entity.
  */

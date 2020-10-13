@@ -26,16 +26,15 @@ import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing GeneratorIdentity.
@@ -68,13 +67,15 @@ public class GeneratorIdentityResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/generator-identities")
-    public ResponseEntity<GeneratorIdentityDTO> createGeneratorIdentity(@RequestBody GeneratorIdentityDTO generatorIdentity) throws URISyntaxException {
+    public ResponseEntity<GeneratorIdentityDTO> createGeneratorIdentity(@RequestBody GeneratorIdentityDTO generatorIdentity)
+        throws URISyntaxException {
         log.debug("REST request to save GeneratorIdentity : {}", generatorIdentity);
         if (generatorIdentity.getId() != null) {
             throw new BadRequestAlertException("A new generatorIdentity cannot already have an ID", ENTITY_NAME, "idexists");
         }
         GeneratorIdentityDTO result = generatorIdentityService.save(generatorIdentity);
-        return ResponseEntity.created(new URI("/api/generator-identities/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/generator-identities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -94,7 +95,8 @@ public class GeneratorIdentityResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         GeneratorIdentityDTO result = generatorIdentityService.save(generatorIdentity);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, generatorIdentity.getId().toString()))
             .body(result);
     }
@@ -133,7 +135,10 @@ public class GeneratorIdentityResource {
     public ResponseEntity<Void> deleteGeneratorIdentity(@PathVariable Long id) {
         log.debug("REST request to delete GeneratorIdentity : {}", id);
         generatorIdentityService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**
@@ -146,5 +151,4 @@ public class GeneratorIdentityResource {
         log.debug("REST request to get all owned GeneratorIdentities");
         return generatorIdentityService.findAllOwned(userService.getUser());
     }
-
 }

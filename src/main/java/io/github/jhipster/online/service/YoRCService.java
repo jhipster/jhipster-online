@@ -33,21 +33,20 @@ import io.github.jhipster.online.service.dto.*;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.mapper.YoRCMapper;
 import io.github.jhipster.online.service.util.QueryUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing YoRC.
@@ -153,7 +152,8 @@ public class YoRCService {
         Root<YoRC> root = query.from(YoRC.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
 
-        query.select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
+        query
+            .select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
             .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
             .groupBy(root.get(dbTemporalFunction.getFieldName()));
 
@@ -166,11 +166,18 @@ public class YoRCService {
         Root<YoRC> root = query.from(YoRC.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
 
-        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getDatabaseValue()), builder.count(root)))
+        query
+            .select(
+                builder.construct(
+                    RawSQLField.class,
+                    root.get(dbTemporalFunction.getFieldName()),
+                    root.get(field.getDatabaseValue()),
+                    builder.count(root)
+                )
+            )
             .where(builder.greaterThan(root.get(YoRC_.creationDate).as(Instant.class), parameter))
             .groupBy(root.get(field.getDatabaseValue()), root.get(dbTemporalFunction.getFieldName()));
 
         return QueryUtil.createDistributionQueryAndCollectData(after, dbTemporalFunction, query, entityManager);
     }
-
 }

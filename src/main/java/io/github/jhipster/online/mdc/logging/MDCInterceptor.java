@@ -20,14 +20,14 @@
 package io.github.jhipster.online.mdc.logging;
 
 import io.github.jhipster.online.security.SecurityUtils;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-
 public class MDCInterceptor implements AsyncHandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Optional<String> currentUser = SecurityUtils.getCurrentUserLogin();

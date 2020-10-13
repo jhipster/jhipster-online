@@ -20,11 +20,10 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.JdlMetadata;
+import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * Spring Data JPA repository for the JdlMetadata entity.
@@ -32,7 +31,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface JdlMetadataRepository extends JpaRepository<JdlMetadata, String> {
-
     List<JdlMetadata> findAllByUserLogin(String userLogin, Sort sort);
 
     List<JdlMetadata> findAllByUserLogin(String userLogin);

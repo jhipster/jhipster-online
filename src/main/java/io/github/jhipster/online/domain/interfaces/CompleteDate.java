@@ -1,7 +1,6 @@
 package io.github.jhipster.online.domain.interfaces;
 
 public interface CompleteDate {
-
     void setYear(Integer year);
 
     void setMonth(Integer month);
@@ -29,5 +28,4 @@ public interface CompleteDate {
     CompleteDate day(Integer day);
 
     CompleteDate hour(Integer hour);
-
 }

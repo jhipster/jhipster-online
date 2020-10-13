@@ -21,13 +21,12 @@ package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A EntityStats.
@@ -260,6 +259,7 @@ public class EntityStats implements Serializable, CompleteDate {
     public void setOwner(GeneratorIdentity generatorIdentity) {
         this.owner = generatorIdentity;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -284,20 +284,40 @@ public class EntityStats implements Serializable, CompleteDate {
 
     @Override
     public String toString() {
-        return "EntityStats{" +
-            "id=" + getId() +
-            ", year=" + getYear() +
-            ", month=" + getMonth() +
-            ", week=" + getWeek() +
-            ", day=" + getDay() +
-            ", hour=" + getHour() +
-            ", fields=" + getFields() +
-            ", relationships=" + getRelationships() +
-            ", pagination='" + getPagination() + "'" +
-            ", dto='" + getDto() + "'" +
-            ", service='" + getService() + "'" +
-            ", fluentMethods='" + isFluentMethods() + "'" +
-            ", date='" + getDate() + "'" +
-            "}";
+        return (
+            "EntityStats{" +
+            "id=" +
+            getId() +
+            ", year=" +
+            getYear() +
+            ", month=" +
+            getMonth() +
+            ", week=" +
+            getWeek() +
+            ", day=" +
+            getDay() +
+            ", hour=" +
+            getHour() +
+            ", fields=" +
+            getFields() +
+            ", relationships=" +
+            getRelationships() +
+            ", pagination='" +
+            getPagination() +
+            "'" +
+            ", dto='" +
+            getDto() +
+            "'" +
+            ", service='" +
+            getService() +
+            "'" +
+            ", fluentMethods='" +
+            isFluentMethods() +
+            "'" +
+            ", date='" +
+            getDate() +
+            "'" +
+            "}"
+        );
     }
 }

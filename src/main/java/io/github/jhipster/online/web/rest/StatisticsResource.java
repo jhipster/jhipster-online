@@ -31,19 +31,18 @@ import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.util.DateUtil;
 import io.github.jhipster.online.util.SanitizeInputs;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/s")
@@ -65,13 +64,15 @@ public class StatisticsResource {
 
     private final EntityStatsService entityStatService;
 
-    public StatisticsResource(StatisticsService statisticsService,
-                              YoRCService yoRCService,
-                              JdlService jdlService,
-                              SubGenEventService subGenEventService,
-                              UserService userService,
-                              GeneratorIdentityService generatorIdentityService,
-                              EntityStatsService entityStatService) {
+    public StatisticsResource(
+        StatisticsService statisticsService,
+        YoRCService yoRCService,
+        JdlService jdlService,
+        SubGenEventService subGenEventService,
+        UserService userService,
+        GeneratorIdentityService generatorIdentityService,
+        EntityStatsService entityStatService
+    ) {
         this.statisticsService = statisticsService;
         this.yoRCService = yoRCService;
         this.jdlService = jdlService;
@@ -80,7 +81,6 @@ public class StatisticsResource {
         this.generatorIdentityService = generatorIdentityService;
         this.entityStatService = entityStatService;
     }
-
 
     @GetMapping("/count-yo/{frequency}")
     public ResponseEntity<List<TemporalCountDTO>> getCount(@PathVariable String frequency) {
@@ -95,7 +95,10 @@ public class StatisticsResource {
     }
 
     @GetMapping("/yo/{field}/{frequency}")
-    public ResponseEntity<List<TemporalDistributionDTO>> getYoFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
+    public ResponseEntity<List<TemporalDistributionDTO>> getYoFieldCount(
+        @NotNull @PathVariable String field,
+        @NotNull @PathVariable String frequency
+    ) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
         YoRCColumn column = DateUtil.getYoColumnFromField(field);
@@ -108,7 +111,10 @@ public class StatisticsResource {
     }
 
     @GetMapping("/entity/{field}/{frequency}")
-    public ResponseEntity<List<TemporalDistributionDTO>> getEntityFieldCount(@NotNull @PathVariable String field, @NotNull @PathVariable String frequency) {
+    public ResponseEntity<List<TemporalDistributionDTO>> getEntityFieldCount(
+        @NotNull @PathVariable String field,
+        @NotNull @PathVariable String frequency
+    ) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
         TemporalValueType temporalValueType = DateUtil.getTemporalValueTypeFromFrequency(frequency);
         EntityStatColumn column = DateUtil.getEntityColumnFromField(field);
@@ -120,7 +126,6 @@ public class StatisticsResource {
         }
     }
 
-
     @GetMapping("/sub-gen-event/deployment/{frequency}")
     public ResponseEntity<List<TemporalDistributionDTO>> getDeploymentToolsDistribution(@NotNull @PathVariable String frequency) {
         Instant frequencyInstant = DateUtil.getFrequencyInstant(ZonedDateTime.now(), frequency);
@@ -129,7 +134,10 @@ public class StatisticsResource {
         if (frequencyInstant == null || temporalValueType == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(subGenEventService.getDeploymentToolDistribution(frequencyInstant, temporalValueType), HttpStatus.OK);
+            return new ResponseEntity<>(
+                subGenEventService.getDeploymentToolDistribution(frequencyInstant, temporalValueType),
+                HttpStatus.OK
+            );
         }
     }
 

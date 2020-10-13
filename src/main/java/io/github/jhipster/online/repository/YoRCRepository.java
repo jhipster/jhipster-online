@@ -30,7 +30,5 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface YoRCRepository extends JpaRepository<YoRC, Long> {
-
     void deleteAllByOwner(GeneratorIdentity owner);
-
 }

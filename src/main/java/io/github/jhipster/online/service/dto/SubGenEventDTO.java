@@ -7,6 +7,7 @@ import java.time.Instant;
  * A DTO for the {@link io.github.jhipster.online.domain.SubGenEvent} entity.
  */
 public class SubGenEventDTO implements Serializable {
+
     private Long id;
 
     private Integer year;
@@ -109,17 +110,32 @@ public class SubGenEventDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "SubGenEventDTO{" +
-            "id=" + id +
-            ", year=" + year +
-            ", month=" + month +
-            ", week=" + week +
-            ", day=" + day +
-            ", hour=" + hour +
-            ", source='" + source + '\'' +
-            ", type='" + type + '\'' +
-            ", event='" + event + '\'' +
-            ", date=" + date +
-            '}';
+        return (
+            "SubGenEventDTO{" +
+            "id=" +
+            id +
+            ", year=" +
+            year +
+            ", month=" +
+            month +
+            ", week=" +
+            week +
+            ", day=" +
+            day +
+            ", hour=" +
+            hour +
+            ", source='" +
+            source +
+            '\'' +
+            ", type='" +
+            type +
+            '\'' +
+            ", event='" +
+            event +
+            '\'' +
+            ", date=" +
+            date +
+            '}'
+        );
     }
 }

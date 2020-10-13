@@ -31,15 +31,6 @@ import io.github.jhipster.online.service.GitlabService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.GitConfigurationDTO;
 import io.github.jhipster.online.util.SanitizeInputs;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -48,6 +39,14 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api")
@@ -69,10 +68,12 @@ public class GitResource {
 
     private final GitlabService gitlabService;
 
-    public GitResource(ApplicationProperties applicationProperties,
-                       UserService userService,
-                       GithubService githubService,
-                       GitlabService gitlabService) {
+    public GitResource(
+        ApplicationProperties applicationProperties,
+        UserService userService,
+        GithubService githubService,
+        GitlabService gitlabService
+    ) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;
@@ -131,14 +132,14 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 default:
-                    return new ResponseEntity<>(UNKNOWN_GIT_PROVIDER + gitProvider, HttpStatus
-                        .INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<>(UNKNOWN_GIT_PROVIDER + gitProvider, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
             String requestBody = objectMapper.writeValueAsString(request);
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest httpRequest = HttpRequest.newBuilder()
+            HttpRequest httpRequest = HttpRequest
+                .newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
@@ -146,8 +147,7 @@ public class GitResource {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-            CompletableFuture<HttpResponse<String>> response = client.sendAsync(httpRequest,
-                HttpResponse.BodyHandlers.ofString());
+            CompletableFuture<HttpResponse<String>> response = client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
 
             String jsonResponse = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
             GitAccessTokenResponse accessTokenResponse = objectMapper.readValue(jsonResponse, GitAccessTokenResponse.class);
@@ -213,18 +213,31 @@ public class GitResource {
 
         @Override
         public String toString() {
-            return "GitAccessTokenRequest{" +
-                "client_id='" + client_id + '\'' +
-                ", client_secret='" + client_secret + '\'' +
-                ", code='" + code + '\'' +
-                ", grantType='" + grantType + '\'' +
-                ", redirectUri='" + redirectUri + '\'' +
-                '}';
+            return (
+                "GitAccessTokenRequest{" +
+                "client_id='" +
+                client_id +
+                '\'' +
+                ", client_secret='" +
+                client_secret +
+                '\'' +
+                ", code='" +
+                code +
+                '\'' +
+                ", grantType='" +
+                grantType +
+                '\'' +
+                ", redirectUri='" +
+                redirectUri +
+                '\'' +
+                '}'
+            );
         }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class GitAccessTokenResponse {
+
         private String access_token;
 
         public String getAccess_token() {
@@ -254,25 +267,19 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER +
-                        gitProvider);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             switch (gitProvider.toLowerCase()) {
                 case GITHUB:
-                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
-                        e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be " +
-                        "refreshed");
+                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be " + "refreshed");
                 case GITLAB:
-                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
-                        e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " +
-                        "refreshed");
+                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " + "refreshed");
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER +
-                        gitProvider);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
             }
         }
     }
@@ -302,9 +309,11 @@ public class GitResource {
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
-        return maybeGitProvider.<ResponseEntity>map(gitProvider1 ->
-            new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)).orElseGet(() ->
-            new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return maybeGitProvider
+            .<ResponseEntity>map(
+                gitProvider1 -> new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
+            )
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/git/config")
@@ -319,11 +328,11 @@ public class GitResource {
             gitlabService.getClientId(),
             gitlabService.isEnabled(),
             githubService.isConfigured(),
-            gitlabService.isConfigured());
+            gitlabService.isConfigured()
+        );
 
         this.log.debug("Git configuration : {}", result);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }

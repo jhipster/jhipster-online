@@ -31,16 +31,15 @@ import io.github.jhipster.online.service.LogsService;
 import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.util.SanitizeInputs;
 import io.github.jhipster.online.web.rest.vm.JdlVM;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -58,9 +57,13 @@ public class JdlResource {
 
     private final LogsService logsService;
 
-    public JdlResource(UserService userService, JdlMetadataService jdlMetadataService,
-                       JdlRepository jdlRepository, LogsService logsService,
-                       JdlService jdlService) {
+    public JdlResource(
+        UserService userService,
+        JdlMetadataService jdlMetadataService,
+        JdlRepository jdlRepository,
+        LogsService logsService,
+        JdlService jdlService
+    ) {
         this.userService = userService;
         this.jdlMetadataService = jdlMetadataService;
         this.jdlRepository = jdlRepository;
@@ -90,10 +93,12 @@ public class JdlResource {
      */
     @PostMapping("/jdl")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity<JdlMetadata> createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
-        if (!SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()) && !SanitizeInputs.isLettersNumbersAndSpaces(vm.getContent()))
-            throw new IllegalArgumentException("Provided user input is not valid: vm.name: " + vm.getName() + "vm.content: " + vm.getContent());
+    public @ResponseBody ResponseEntity<JdlMetadata> createJdlFile(@RequestBody JdlVM vm) throws URISyntaxException {
+        if (
+            !SanitizeInputs.isLettersNumbersAndSpaces(vm.getName()) && !SanitizeInputs.isLettersNumbersAndSpaces(vm.getContent())
+        ) throw new IllegalArgumentException(
+            "Provided user input is not valid: vm.name: " + vm.getName() + "vm.content: " + vm.getContent()
+        );
         JdlMetadata jdlMetadata = new JdlMetadata();
         if (vm.getName() == null || vm.getName().equals("")) {
             jdlMetadata.setName("New JDL Model");
@@ -101,7 +106,8 @@ public class JdlResource {
             jdlMetadata.setName(vm.getName());
         }
         jdlMetadataService.create(jdlMetadata, vm.getContent());
-        return ResponseEntity.created(new URI("/api/jdl/" + jdlMetadata.getId())) //NOSONAR
+        return ResponseEntity
+            .created(new URI("/api/jdl/" + jdlMetadata.getId())) //NOSONAR
             .body(jdlMetadata);
     }
 
@@ -110,12 +116,11 @@ public class JdlResource {
      */
     @PutMapping("/jdl/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity<String> updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
+    public @ResponseBody ResponseEntity<String> updateJdlFile(@PathVariable String jdlId, @RequestBody JdlVM vm) {
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(jdlId);
         try {
             if (jdlMetadata.isEmpty()) {
-                throw new IllegalArgumentException("jdlMetaData object for jdlId="+ jdlId + " is empty");
+                throw new IllegalArgumentException("jdlMetaData object for jdlId=" + jdlId + " is empty");
             }
             jdlMetadataService.updateJdlContent(jdlMetadata.get(), vm.getContent());
         } catch (Exception e) {
@@ -130,8 +135,7 @@ public class JdlResource {
      */
     @DeleteMapping("/jdl/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity<String> deleteJdlFile(@PathVariable String jdlId) {
+    public @ResponseBody ResponseEntity<String> deleteJdlFile(@PathVariable String jdlId) {
         jdlId = SanitizeInputs.sanitizeInput(jdlId);
         try {
             this.jdlMetadataService.delete(jdlId);
@@ -144,30 +148,37 @@ public class JdlResource {
 
     @PostMapping("/apply-jdl/{gitProvider}/{organizationName}/{projectName}/{jdlId}")
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<String> applyJdl(@PathVariable String gitProvider, @PathVariable String organizationName,
-                                   @PathVariable String projectName,
-                                   @PathVariable String jdlId) {
+    public ResponseEntity<String> applyJdl(
+        @PathVariable String gitProvider,
+        @PathVariable String organizationName,
+        @PathVariable String projectName,
+        @PathVariable String jdlId
+    ) {
         projectName = SanitizeInputs.sanitizeInput(projectName);
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
         jdlId = SanitizeInputs.sanitizeInput(jdlId);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
-        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId,
-            organizationName, projectName);
+        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId, organizationName, projectName);
         User user = userService.getUser();
 
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
         String applyJdlId;
         try {
             if (jdlMetadata.isEmpty()) {
-                throw new IllegalArgumentException("jdlMetaData object for jdlId="+ jdlId + " is empty");
+                throw new IllegalArgumentException("jdlMetaData object for jdlId=" + jdlId + " is empty");
             }
 
             applyJdlId = this.jdlService.kebabCaseJdlName(jdlMetadata.get()) + "-" + System.nanoTime();
-            this.logsService.addLog(applyJdlId, "JDL Model is going to be applied to " + organizationName + "/" +
-                projectName);
+            this.logsService.addLog(applyJdlId, "JDL Model is going to be applied to " + organizationName + "/" + projectName);
 
-            this.jdlService.applyJdl(user, organizationName, projectName, jdlMetadata.get(),
-                applyJdlId, GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null));
+            this.jdlService.applyJdl(
+                    user,
+                    organizationName,
+                    projectName,
+                    jdlMetadata.get(),
+                    applyJdlId,
+                    GitProvider.getGitProviderByValue(gitProvider).orElseThrow(null)
+                );
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(jdlId, "An error has occurred: " + e.getMessage());

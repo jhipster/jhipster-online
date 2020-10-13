@@ -43,7 +43,7 @@ spring:
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
       hibernate.hbm2ddl.auto: validate
-#      hibernate.jdbc.time_zone: UTC
+  #      hibernate.jdbc.time_zone: UTC
   liquibase:
     contexts: test
   mail:

@@ -1,13 +1,13 @@
 package io.github.jhipster.online.service.dto;
 
 import io.github.jhipster.online.domain.User;
-
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link io.github.jhipster.online.domain.GeneratorIdentity} entity.
  */
 public class GeneratorIdentityDTO implements Serializable {
+
     private Long id;
 
     private String host;
@@ -55,11 +55,6 @@ public class GeneratorIdentityDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "GeneratorIdentityDTO{" +
-            "id=" + id +
-            ", host='" + host + '\'' +
-            ", guid='" + guid + '\'' +
-            ", owner=" + owner +
-            '}';
+        return "GeneratorIdentityDTO{" + "id=" + id + ", host='" + host + '\'' + ", guid='" + guid + '\'' + ", owner=" + owner + '}';
     }
 }

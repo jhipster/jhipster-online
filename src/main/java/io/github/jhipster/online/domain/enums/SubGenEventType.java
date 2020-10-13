@@ -47,12 +47,6 @@ public enum SubGenEventType {
     }
 
     public static SubGenEventType[] getDeploymentTools() {
-        return new SubGenEventType[]{
-            HEROKU,
-            CLOUDFOUNDRY,
-            AWS,
-            OPENSHIFT,
-            KUBERNETES
-        };
+        return new SubGenEventType[] { HEROKU, CLOUDFOUNDRY, AWS, OPENSHIFT, KUBERNETES };
     }
 }

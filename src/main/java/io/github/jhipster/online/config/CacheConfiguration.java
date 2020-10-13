@@ -20,6 +20,8 @@
 package io.github.jhipster.online.config;
 
 import io.github.jhipster.config.JHipsterProperties;
+import java.time.Duration;
+import javax.cache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
@@ -30,9 +32,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.cache.CacheManager;
-import java.time.Duration;
 
 @Configuration
 @EnableCaching
@@ -49,17 +48,21 @@ public class CacheConfiguration {
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
         JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
 
-        jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
-            CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
-                ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
-                .build());
+        jcacheConfiguration =
+            Eh107Configuration.fromEhcacheCacheConfiguration(
+                CacheConfigurationBuilder
+                    .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
+                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
+                    .build()
+            );
 
-        statisticsJcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
-            CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
-                ResourcePoolsBuilder.heap(100L))
-                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(5)))
-                .build());
+        statisticsJcacheConfiguration =
+            Eh107Configuration.fromEhcacheCacheConfiguration(
+                CacheConfigurationBuilder
+                    .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder.heap(100L))
+                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(5)))
+                    .build()
+            );
     }
 
     @Bean
@@ -95,9 +98,12 @@ public class CacheConfiguration {
         };
     }
 
-    private void createIfNotExists(CacheManager cacheManager, String cacheName,
-                                   javax.cache.configuration.Configuration<Object, Object> cacheConfiguration) {
-        if(cacheManager.getCache(cacheName) == null) {
+    private void createIfNotExists(
+        CacheManager cacheManager,
+        String cacheName,
+        javax.cache.configuration.Configuration<Object, Object> cacheConfiguration
+    ) {
+        if (cacheManager.getCache(cacheName) == null) {
             cacheManager.createCache(cacheName, cacheConfiguration);
         }
     }

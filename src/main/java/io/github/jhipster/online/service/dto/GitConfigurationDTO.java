@@ -41,13 +41,17 @@ public class GitConfigurationDTO {
 
     private boolean gitlabConfigured;
 
-    public GitConfigurationDTO(String githubHost,
-                               String githubClientId,
-                               boolean githubAvailable,
-                               String gitlabHost,
-                               String gitlabRedirectUri,
-                               String gitlabClientId,
-                               boolean gitlabAvailable, boolean githubConfigured, boolean gitlabConfigured) {
+    public GitConfigurationDTO(
+        String githubHost,
+        String githubClientId,
+        boolean githubAvailable,
+        String gitlabHost,
+        String gitlabRedirectUri,
+        String gitlabClientId,
+        boolean gitlabAvailable,
+        boolean githubConfigured,
+        boolean gitlabConfigured
+    ) {
         this.githubHost = githubHost;
         this.githubClientId = githubClientId;
         this.githubAvailable = githubAvailable;
@@ -133,29 +137,19 @@ public class GitConfigurationDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         GitConfigurationDTO that = (GitConfigurationDTO) o;
 
-        if (githubAvailable != that.githubAvailable)
-            return false;
-        if (gitlabAvailable != that.gitlabAvailable)
-            return false;
-        if (githubConfigured != that.githubConfigured)
-            return false;
-        if (gitlabConfigured != that.gitlabConfigured)
-            return false;
-        if (!Objects.equals(githubHost, that.githubHost))
-            return false;
-        if (!Objects.equals(githubClientId, that.githubClientId))
-            return false;
-        if (!Objects.equals(gitlabHost, that.gitlabHost))
-            return false;
-        if (!Objects.equals(gitlabRedirectUri, that.gitlabRedirectUri))
-            return false;
+        if (githubAvailable != that.githubAvailable) return false;
+        if (gitlabAvailable != that.gitlabAvailable) return false;
+        if (githubConfigured != that.githubConfigured) return false;
+        if (gitlabConfigured != that.gitlabConfigured) return false;
+        if (!Objects.equals(githubHost, that.githubHost)) return false;
+        if (!Objects.equals(githubClientId, that.githubClientId)) return false;
+        if (!Objects.equals(gitlabHost, that.gitlabHost)) return false;
+        if (!Objects.equals(gitlabRedirectUri, that.gitlabRedirectUri)) return false;
         return Objects.equals(gitlabClientId, that.gitlabClientId);
     }
 
@@ -175,16 +169,32 @@ public class GitConfigurationDTO {
 
     @Override
     public String toString() {
-        return "GitConfigurationDTO{" +
-            "githubHost='" + githubHost + '\'' +
-            ", githubClientId='" + githubClientId + '\'' +
-            ", githubAvailable=" + githubAvailable +
-            ", gitlabHost='" + gitlabHost + '\'' +
-            ", gitlabRedirectUri='" + gitlabRedirectUri + '\'' +
-            ", gitlabClientId='" + gitlabClientId + '\'' +
-            ", gitlabAvailable=" + gitlabAvailable +
-            ", githubConfigured=" + githubConfigured +
-            ", gitlabConfigured=" + gitlabConfigured +
-            '}';
+        return (
+            "GitConfigurationDTO{" +
+            "githubHost='" +
+            githubHost +
+            '\'' +
+            ", githubClientId='" +
+            githubClientId +
+            '\'' +
+            ", githubAvailable=" +
+            githubAvailable +
+            ", gitlabHost='" +
+            gitlabHost +
+            '\'' +
+            ", gitlabRedirectUri='" +
+            gitlabRedirectUri +
+            '\'' +
+            ", gitlabClientId='" +
+            gitlabClientId +
+            '\'' +
+            ", gitlabAvailable=" +
+            gitlabAvailable +
+            ", githubConfigured=" +
+            githubConfigured +
+            ", gitlabConfigured=" +
+            gitlabConfigured +
+            '}'
+        );
     }
 }

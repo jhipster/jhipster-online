@@ -26,6 +26,9 @@ import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.JdlMetadataDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +36,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing JdlMetadata.
@@ -74,7 +73,8 @@ public class JdlMetadataResource {
     public ResponseEntity<JdlMetadataDTO> updateJdlMetadata(@Valid @RequestBody JdlMetadataDTO jdlMetadata) {
         log.debug("REST request to update JdlMetadata : {}", jdlMetadata);
         JdlMetadataDTO result = jdlMetadataService.saveJdlMetadata(jdlMetadata);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, jdlMetadata.getId()))
             .body(result);
     }

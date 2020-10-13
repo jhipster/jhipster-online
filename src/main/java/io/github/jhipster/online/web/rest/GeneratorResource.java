@@ -26,6 +26,10 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.*;
 import io.github.jhipster.online.util.SanitizeInputs;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +38,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -56,11 +55,13 @@ public class GeneratorResource {
 
     private final LogsService logsService;
 
-    public GeneratorResource(GeneratorService generatorService,
-                             GithubService githubService,
-                             GitlabService gitlabService,
-                             UserService userService,
-                             LogsService logsService) {
+    public GeneratorResource(
+        GeneratorService generatorService,
+        GithubService githubService,
+        GitlabService gitlabService,
+        UserService userService,
+        LogsService logsService
+    ) {
         this.generatorService = generatorService;
         this.githubService = githubService;
         this.gitlabService = gitlabService;
@@ -76,7 +77,8 @@ public class GeneratorResource {
         User user = userService.getUser();
         log.debug("Reading application configuration");
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
-        GitProvider provider = GitProvider.getGitProviderByValue(JsonPath.read(document, "$.git-provider"))
+        GitProvider provider = GitProvider
+            .getGitProviderByValue(JsonPath.read(document, "$.git-provider"))
             .orElseThrow(() -> new Exception("No git provider"));
         String gitCompany = JsonPath.read(document, "$.git-company");
         String repositoryName = JsonPath.read(document, "$.repository-name");
@@ -84,18 +86,14 @@ public class GeneratorResource {
 
         log.debug("Using provider: {} ({})", provider, JsonPath.read(document, "$.git-provider"));
         log.debug("Generating application in repository id={} - {} / {}", applicationId, gitCompany, repositoryName);
-        this.logsService.addLog(applicationId, "Generating application in repository " + gitCompany + "/" +
-            repositoryName);
+        this.logsService.addLog(applicationId, "Generating application in repository " + gitCompany + "/" + repositoryName);
 
         try {
             if (provider.equals(GitProvider.GITHUB)) {
-                this.githubService.createGitProviderRepository(
-                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
+                this.githubService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             } else if (provider.equals(GitProvider.GITLAB)) {
-                this.gitlabService.createGitProviderRepository(
-                    user, applicationId, applicationConfiguration, gitCompany, repositoryName);
+                this.gitlabService.createGitProviderRepository(user, applicationId, applicationConfiguration, gitCompany, repositoryName);
             }
-
         } catch (Exception e) {
             log.error("Error generating application", e);
             this.logsService.addLog(applicationId, "An error has occurred: " + e.getMessage());
@@ -113,15 +111,13 @@ public class GeneratorResource {
 
     @PostMapping("/download-application")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody
-    ResponseEntity<byte[]> downloadApplication(@RequestBody String applicationConfiguration) {
+    public @ResponseBody ResponseEntity<byte[]> downloadApplication(@RequestBody String applicationConfiguration) {
         applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Downloading application - .yo-rc.json: {}", applicationConfiguration);
         String applicationId = UUID.randomUUID().toString();
         String zippedApplication;
         try {
-            zippedApplication = this.generatorService.generateZippedApplication(applicationId,
-                applicationConfiguration);
+            zippedApplication = this.generatorService.generateZippedApplication(applicationId, applicationConfiguration);
         } catch (IOException ioe) {
             log.error("Error generating application", ioe);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -141,5 +137,4 @@ public class GeneratorResource {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

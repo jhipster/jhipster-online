@@ -18,6 +18,12 @@
  */
 package io.github.jhipster.online.web.rest;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.service.GithubService;
@@ -37,12 +43,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Test class for the GitResource REST controller.
@@ -79,10 +79,12 @@ class GitResourceIntTest {
 
         GitResource gitResource = new GitResource(mockApplicationProperties, mockUserService, mockGithubService, mockGitlabService);
 
-        this.restMvc = MockMvcBuilders.standaloneSetup(gitResource)
-            .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+        this.restMvc =
+            MockMvcBuilders
+                .standaloneSetup(gitResource)
+                .setMessageConverters(httpMessageConverters)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
     }
 
     @Test
@@ -96,9 +98,8 @@ class GitResourceIntTest {
         when(mockGitlabService.getRedirectUri()).thenReturn("http//localhost:9000/api/callback/github");
         when(mockGitlabService.isEnabled()).thenReturn(true);
 
-        restMvc.perform(
-            get("/api/git/config", "TestProvider")
-                .accept(MediaType.APPLICATION_JSON))
+        restMvc
+            .perform(get("/api/git/config", "TestProvider").accept(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
@@ -106,19 +107,16 @@ class GitResourceIntTest {
     @Test
     void testSaveTokenWithUnknownGitProvider() throws Exception {
         final String code = "ret66spihj6sio4bud2";
-        restMvc.perform(
-            post("/api/{gitProvider}/save-token", "TestProvider")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(code))
+        restMvc
+            .perform(post("/api/{gitProvider}/save-token", "TestProvider").contentType(MediaType.APPLICATION_JSON).content(code))
             .andExpect(status().isInternalServerError());
     }
 
     @Test
     void testRefreshGithubWithUnknownProvider() throws Exception {
         final String unavailableGitProvider = "TestProvider";
-        restMvc.perform(
-            post("/api/{gitProvider}/refresh", "TestProvider")
-                .contentType(MediaType.APPLICATION_JSON))
+        restMvc
+            .perform(post("/api/{gitProvider}/refresh", "TestProvider").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string("Unknown git provider: " + unavailableGitProvider));
     }
