@@ -46,7 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class JdlMetadataService {
-
     private final Logger log = LoggerFactory.getLogger(JdlMetadataService.class);
 
     private final JdlMetadataRepository jdlMetadataRepository;
@@ -166,7 +165,7 @@ public class JdlMetadataService {
         if (jdl.isEmpty()) {
             throw new FileSystemException("Error creating updating the JDL, the JDL could not be found: " + id);
         }
-        this.jdlRepository.delete(jdl.get());
+        jdlRepository.delete(jdl.get());
         jdlMetadataRepository.deleteById(id);
     }
 

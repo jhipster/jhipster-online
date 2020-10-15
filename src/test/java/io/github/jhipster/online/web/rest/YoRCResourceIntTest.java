@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.jhipster.online.JhonlineApp;
@@ -38,7 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 class YoRCResourceIntTest {
-
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
 
     private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
@@ -202,6 +203,142 @@ class YoRCResourceIntTest {
     @BeforeEach
     public void initTest() {
         yoRC = createEntity();
+    }
+
+    @Test
+    @Transactional
+    void createYoRC() throws Exception {
+        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
+
+        // Create the EntityStats
+        restYoRCMockMvc
+            .perform(post("/api/yo-rcs").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(yoRC)))
+            .andExpect(status().isCreated());
+
+        // Validate the EntityStats in the database
+        List<YoRC> entityStatsList = yoRCRepository.findAll();
+        assertThat(entityStatsList).hasSize(databaseSizeBeforeCreate + 1);
+
+        final YoRC persisted = entityStatsList.get(0);
+        assertThat(persisted.getJhipsterVersion()).isEqualTo(DEFAULT_JHIPSTER_VERSION);
+        assertThat(persisted.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+        assertThat(persisted.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
+        assertThat(persisted.getNodeVersion()).isEqualTo(DEFAULT_NODE_VERSION);
+        assertThat(persisted.getOs()).isEqualTo(DEFAULT_OS);
+        assertThat(persisted.getArch()).isEqualTo(DEFAULT_ARCH);
+        assertThat(persisted.getCpu()).isEqualTo(DEFAULT_CPU);
+        assertThat(persisted.getCores()).isEqualTo(DEFAULT_CORES);
+        assertThat(persisted.getMemory()).isEqualTo(DEFAULT_MEMORY);
+        assertThat(persisted.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
+        assertThat(persisted.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(persisted.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(persisted.getWeek()).isEqualTo(DEFAULT_WEEK);
+        assertThat(persisted.getDay()).isEqualTo(DEFAULT_DAY);
+        assertThat(persisted.getHour()).isEqualTo(DEFAULT_HOUR);
+        assertThat(persisted.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
+        assertThat(persisted.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
+        assertThat(persisted.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
+        assertThat(persisted.isEnableHibernateCache()).isEqualTo(DEFAULT_ENABLE_HIBERNATE_CACHE);
+        assertThat(persisted.isWebsocket()).isEqualTo(DEFAULT_WEBSOCKET);
+        assertThat(persisted.getDatabaseType()).isEqualTo(DEFAULT_DATABASE_TYPE);
+        assertThat(persisted.getDevDatabaseType()).isEqualTo(DEFAULT_DEV_DATABASE_TYPE);
+        assertThat(persisted.getProdDatabaseType()).isEqualTo(DEFAULT_PROD_DATABASE_TYPE);
+        assertThat(persisted.isSearchEngine()).isEqualTo(DEFAULT_SEARCH_ENGINE);
+        assertThat(persisted.isMessageBroker()).isEqualTo(DEFAULT_MESSAGE_BROKER);
+        assertThat(persisted.isServiceDiscoveryType()).isEqualTo(DEFAULT_SERVICE_DISCOVERY_TYPE);
+        assertThat(persisted.getBuildTool()).isEqualTo(DEFAULT_BUILD_TOOL);
+        assertThat(persisted.isEnableSwaggerCodegen()).isEqualTo(DEFAULT_ENABLE_SWAGGER_CODEGEN);
+        assertThat(persisted.getClientFramework()).isEqualTo(DEFAULT_CLIENT_FRAMEWORK);
+        assertThat(persisted.isUseSass()).isEqualTo(DEFAULT_USE_SASS);
+        assertThat(persisted.getClientPackageManager()).isEqualTo(DEFAULT_CLIENT_PACKAGE_MANAGER);
+        assertThat(persisted.getApplicationType()).isEqualTo(DEFAULT_APPLICATION_TYPE);
+        assertThat(persisted.getJhiPrefix()).isEqualTo(DEFAULT_JHI_PREFIX);
+        assertThat(persisted.isEnableTranslation()).isEqualTo(DEFAULT_ENABLE_TRANSLATION);
+        assertThat(persisted.getNativeLanguage()).isEqualTo(DEFAULT_NATIVE_LANGUAGE);
+        assertThat(persisted.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
+        assertThat(persisted.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
+        assertThat(persisted.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
+    }
+
+    @Test
+    @Transactional
+    void cannotCreateYoRCWithId() throws Exception {
+        int databaseSizeBeforeCreate = yoRCRepository.findAll().size();
+        yoRC.setId(12345L);
+        // Create the EntityStats
+        restYoRCMockMvc
+            .perform(post("/api/yo-rcs").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(yoRC)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the EntityStats in the database
+        List<YoRC> entityStatsList = yoRCRepository.findAll();
+        assertThat(entityStatsList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void updateYoRC() throws Exception {
+        // Initialize the database
+        yoRCRepository.saveAndFlush(yoRC);
+
+        int databaseSizeBeforeUpdate = yoRCRepository.findAll().size();
+
+        // Create the EntityStats
+        restYoRCMockMvc
+            .perform(put("/api/yo-rcs").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(yoRC)))
+            .andExpect(status().isOk());
+
+        // Validate the EntityStats in the database
+        List<YoRC> entityStatsList = yoRCRepository.findAll();
+        assertThat(entityStatsList).hasSize(databaseSizeBeforeUpdate);
+
+        final YoRC persisted = entityStatsList.get(0);
+        assertThat(persisted.getJhipsterVersion()).isEqualTo(DEFAULT_JHIPSTER_VERSION);
+        assertThat(persisted.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
+        assertThat(persisted.getGitProvider()).isEqualTo(DEFAULT_GIT_PROVIDER);
+        assertThat(persisted.getNodeVersion()).isEqualTo(DEFAULT_NODE_VERSION);
+        assertThat(persisted.getOs()).isEqualTo(DEFAULT_OS);
+        assertThat(persisted.getArch()).isEqualTo(DEFAULT_ARCH);
+        assertThat(persisted.getCpu()).isEqualTo(DEFAULT_CPU);
+        assertThat(persisted.getCores()).isEqualTo(DEFAULT_CORES);
+        assertThat(persisted.getMemory()).isEqualTo(DEFAULT_MEMORY);
+        assertThat(persisted.getUserLanguage()).isEqualTo(DEFAULT_USER_LANGUAGE);
+        assertThat(persisted.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(persisted.getMonth()).isEqualTo(DEFAULT_MONTH);
+        assertThat(persisted.getWeek()).isEqualTo(DEFAULT_WEEK);
+        assertThat(persisted.getDay()).isEqualTo(DEFAULT_DAY);
+        assertThat(persisted.getHour()).isEqualTo(DEFAULT_HOUR);
+        assertThat(persisted.getServerPort()).isEqualTo(DEFAULT_SERVER_PORT);
+        assertThat(persisted.getAuthenticationType()).isEqualTo(DEFAULT_AUTHENTICATION_TYPE);
+        assertThat(persisted.getCacheProvider()).isEqualTo(DEFAULT_CACHE_PROVIDER);
+        assertThat(persisted.isEnableHibernateCache()).isEqualTo(DEFAULT_ENABLE_HIBERNATE_CACHE);
+        assertThat(persisted.isWebsocket()).isEqualTo(DEFAULT_WEBSOCKET);
+        assertThat(persisted.getDatabaseType()).isEqualTo(DEFAULT_DATABASE_TYPE);
+        assertThat(persisted.getDevDatabaseType()).isEqualTo(DEFAULT_DEV_DATABASE_TYPE);
+        assertThat(persisted.getProdDatabaseType()).isEqualTo(DEFAULT_PROD_DATABASE_TYPE);
+        assertThat(persisted.isSearchEngine()).isEqualTo(DEFAULT_SEARCH_ENGINE);
+        assertThat(persisted.isMessageBroker()).isEqualTo(DEFAULT_MESSAGE_BROKER);
+        assertThat(persisted.isServiceDiscoveryType()).isEqualTo(DEFAULT_SERVICE_DISCOVERY_TYPE);
+        assertThat(persisted.getBuildTool()).isEqualTo(DEFAULT_BUILD_TOOL);
+        assertThat(persisted.isEnableSwaggerCodegen()).isEqualTo(DEFAULT_ENABLE_SWAGGER_CODEGEN);
+        assertThat(persisted.getClientFramework()).isEqualTo(DEFAULT_CLIENT_FRAMEWORK);
+        assertThat(persisted.isUseSass()).isEqualTo(DEFAULT_USE_SASS);
+        assertThat(persisted.getClientPackageManager()).isEqualTo(DEFAULT_CLIENT_PACKAGE_MANAGER);
+        assertThat(persisted.getApplicationType()).isEqualTo(DEFAULT_APPLICATION_TYPE);
+        assertThat(persisted.getJhiPrefix()).isEqualTo(DEFAULT_JHI_PREFIX);
+        assertThat(persisted.isEnableTranslation()).isEqualTo(DEFAULT_ENABLE_TRANSLATION);
+        assertThat(persisted.getNativeLanguage()).isEqualTo(DEFAULT_NATIVE_LANGUAGE);
+        assertThat(persisted.isHasProtractor()).isEqualTo(DEFAULT_HAS_PROTRACTOR);
+        assertThat(persisted.isHasGatling()).isEqualTo(DEFAULT_HAS_GATLING);
+        assertThat(persisted.isHasCucumber()).isEqualTo(DEFAULT_HAS_CUCUMBER);
+    }
+
+    @Test
+    @Transactional
+    void cannotUpdateYoRCWithoutId() throws Exception {
+        restYoRCMockMvc
+            .perform(put("/api/yo-rcs").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(yoRC)))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
