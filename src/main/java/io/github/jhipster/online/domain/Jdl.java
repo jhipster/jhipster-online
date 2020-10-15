@@ -19,12 +19,11 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A JDL.
@@ -101,8 +100,6 @@ public class Jdl implements Serializable {
 
     @Override
     public String toString() {
-        return "JdlMetadata{" +
-            "id=" + getId() +
-            "}";
+        return "JdlMetadata{" + "id=" + getId() + "}";
     }
 }

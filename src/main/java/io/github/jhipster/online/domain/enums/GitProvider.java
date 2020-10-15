@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum GitProvider {
-
-    GITHUB("github"), GITLAB("gitlab");
+    GITHUB("github"),
+    GITLAB("gitlab");
 
     private final String value;
 
@@ -37,8 +37,6 @@ public enum GitProvider {
     }
 
     public static Optional<GitProvider> getGitProviderByValue(String value) {
-        return Arrays.stream(GitProvider.values())
-            .filter(e -> e.value.equalsIgnoreCase(value))
-            .findFirst();
+        return Arrays.stream(GitProvider.values()).filter(e -> e.value.equalsIgnoreCase(value)).findFirst();
     }
 }

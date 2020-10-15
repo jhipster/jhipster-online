@@ -28,16 +28,15 @@ import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.service.mapper.SubGenEventMapper;
 import io.github.jhipster.online.service.mapper.YoRCMapper;
 import io.github.jhipster.online.util.DateUtil;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StatisticsService {
@@ -58,13 +57,15 @@ public class StatisticsService {
 
     private YoRCMapper yoRCMapper;
 
-    public StatisticsService(YoRCService yoRCService,
-                             GeneratorIdentityService generatorIdentityService,
-                             SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService,
-                             SubGenEventMapper subGenEventMapper,
-                             EntityStatsMapper entityStatsMapper,
-                             YoRCMapper yoRCMapper) {
+    public StatisticsService(
+        YoRCService yoRCService,
+        GeneratorIdentityService generatorIdentityService,
+        SubGenEventService subGenEventService,
+        EntityStatsService entityStatsService,
+        SubGenEventMapper subGenEventMapper,
+        EntityStatsMapper entityStatsMapper,
+        YoRCMapper yoRCMapper
+    ) {
         this.yoRCService = yoRCService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
@@ -96,7 +97,8 @@ public class StatisticsService {
         Instant now = Instant.now();
         DateUtil.setAbsoluteDate(yorc, now);
 
-        yorc.jhipsterVersion(generatorVersion)
+        yorc
+            .jhipsterVersion(generatorVersion)
             .gitProvider(gitProvider)
             .nodeVersion(nodeVersion)
             .os(os)
@@ -124,7 +126,7 @@ public class StatisticsService {
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addSubGenEvent(SubGenEventDTO subGenEventDTO, String generatorGuid)  {
+    public void addSubGenEvent(SubGenEventDTO subGenEventDTO, String generatorGuid) {
         Instant now = Instant.now();
         SubGenEvent subGenEvent = subGenEventMapper.toEntity(subGenEventDTO);
         DateUtil.setAbsoluteDate(subGenEvent, now);
@@ -143,7 +145,7 @@ public class StatisticsService {
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addEntityStats(EntityStatsDTO entityStatsDTO, String generatorGuid)  {
+    public void addEntityStats(EntityStatsDTO entityStatsDTO, String generatorGuid) {
         Instant now = Instant.now();
         EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
         DateUtil.setAbsoluteDate(entityStats, now);

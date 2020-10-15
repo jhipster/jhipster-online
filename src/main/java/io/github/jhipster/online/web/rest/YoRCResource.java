@@ -26,17 +26,16 @@ import io.github.jhipster.online.service.dto.YoRCDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing YoRC.
@@ -72,7 +71,8 @@ public class YoRCResource {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
         }
         YoRCDTO result = yoRCService.save(yoRC);
-        return ResponseEntity.created(new URI("/api/yo-rcs/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/yo-rcs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -93,7 +93,8 @@ public class YoRCResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         YoRCDTO result = yoRCService.save(yoRC);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, yoRC.getId().toString()))
             .body(result);
     }
@@ -135,6 +136,9 @@ public class YoRCResource {
     public ResponseEntity<Void> deleteYoRC(@PathVariable Long id) {
         log.debug("REST request to delete YoRC : {}", id);
         yoRCService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

@@ -22,6 +22,9 @@ package io.github.jhipster.online.service;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RemoteAddCommand;
@@ -34,10 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 @Service
 public class GitService {
 
@@ -49,10 +48,8 @@ public class GitService {
         this.applicationProperties = applicationProperties;
     }
 
-    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName,
-        GitProvider gitProvider)
+    public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
         throws GitAPIException, URISyntaxException {
-
         log.info("Create Git repository for {}", workingDir);
         Git git = Git.init().setDirectory(workingDir).call();
 
@@ -64,8 +61,9 @@ public class GitService {
         if (gitProvider.equals(GitProvider.GITHUB)) {
             urIish = new URIish(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git");
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
-            urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" +
-                applicationName + ".git").setPass(user.getGitlabOAuthToken());
+            urIish =
+                new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
+                .setPass(user.getGitlabOAuthToken());
         }
         RemoteAddCommand remoteAddCommand = git.remoteAdd();
         remoteAddCommand.setName("origin");
@@ -79,48 +77,43 @@ public class GitService {
 
     public void addAllFilesToRepository(Git git, File workingDir) throws GitAPIException {
         log.debug("Adding all files to repository {}", workingDir);
-        git.add()
-            .addFilepattern(".")
-            .call();
+        git.add().addFilepattern(".").call();
     }
 
     public void commit(Git git, File workingDir, String message) throws GitAPIException {
         log.debug("Commiting all files to repository {}", workingDir);
-        git.commit()
-            .setCommitter("JHipster Bot", "jhipster-bot@jhipster.tech")
-            .setMessage(message)
-            .call();
+        git.commit().setCommitter("JHipster Bot", "jhipster-bot@jhipster.tech").setMessage(message).call();
     }
 
-    public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider
-        gitProvider) throws
-        GitAPIException {
+    public void push(Git git, File workingDir, User user, String organization, String applicationName, GitProvider gitProvider)
+        throws GitAPIException {
         log.info("Pushing {} to {} / {} for user {}", workingDir, organization, applicationName, user);
         git.push().setCredentialsProvider(getCredentialProvider(user, gitProvider)).call();
     }
 
-    public Git cloneRepository(User user, File workingDir, String organization, String applicationName, GitProvider
-        gitProvider)
+    public Git cloneRepository(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
         throws GitAPIException {
-
         log.debug("Cloning repository {} / {}", organization, applicationName);
 
         Git git = null;
         if (gitProvider.equals(GitProvider.GITLAB)) {
-            git = Git.cloneRepository()
-                .setURI(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + "" +
-                    ".git")
-                .setDirectory(workingDir)
-                .setCredentialsProvider(getCredentialProvider(user, gitProvider))
-                .setCloneAllBranches(false)
-                .call();
+            git =
+                Git
+                    .cloneRepository()
+                    .setURI(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + "" + ".git")
+                    .setDirectory(workingDir)
+                    .setCredentialsProvider(getCredentialProvider(user, gitProvider))
+                    .setCloneAllBranches(false)
+                    .call();
         } else if (gitProvider.equals(GitProvider.GITHUB)) {
-            git = Git.cloneRepository()
-                .setURI(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git")
-                .setDirectory(workingDir)
-                .setCredentialsProvider(getCredentialProvider(user, gitProvider))
-                .setCloneAllBranches(false)
-                .call();
+            git =
+                Git
+                    .cloneRepository()
+                    .setURI(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git")
+                    .setDirectory(workingDir)
+                    .setCredentialsProvider(getCredentialProvider(user, gitProvider))
+                    .setCloneAllBranches(false)
+                    .call();
         }
 
         log.debug("Repository successfully cloned");
@@ -128,10 +121,7 @@ public class GitService {
     }
 
     public void createBranch(Git git, String branchName) throws GitAPIException {
-        git.checkout()
-            .setName(branchName)
-            .setCreateBranch(true)
-            .call();
+        git.checkout().setName(branchName).setCreateBranch(true).call();
 
         log.debug("Branch successfully created");
     }
@@ -161,11 +151,9 @@ public class GitService {
 
     private CredentialsProvider getCredentialProvider(User user, GitProvider gitProvider) {
         if (gitProvider.equals(GitProvider.GITHUB)) {
-            return new UsernamePasswordCredentialsProvider(user.getGithubUser(),
-                user.getGithubOAuthToken());
+            return new UsernamePasswordCredentialsProvider(user.getGithubUser(), user.getGithubOAuthToken());
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
-            return new UsernamePasswordCredentialsProvider("oauth2",
-                user.getGitlabOAuthToken());
+            return new UsernamePasswordCredentialsProvider("oauth2", user.getGitlabOAuthToken());
         }
         return null;
     }

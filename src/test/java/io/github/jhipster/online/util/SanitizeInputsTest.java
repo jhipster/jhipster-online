@@ -1,9 +1,8 @@
 package io.github.jhipster.online.util;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.Test;
 
 class SanitizeInputsTest {
 
@@ -30,12 +29,12 @@ class SanitizeInputsTest {
 
     @Test
     void isLettersNumbersAndSpaces() {
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces(null)).isFalse();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("This is JHipster")).isTrue();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("442kj32342kd")).isTrue();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23094823023")).isTrue();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/482$3023")).isFalse();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/\n482\r$3\t023")).isFalse();
-       assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23};09/\n482\r$3\t023**")).isFalse();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces(null)).isFalse();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("This is JHipster")).isTrue();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("442kj32342kd")).isTrue();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23094823023")).isTrue();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/482$3023")).isFalse();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/\n482\r$3\t023")).isFalse();
+        assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23};09/\n482\r$3\t023**")).isFalse();
     }
 }

@@ -68,6 +68,7 @@ public class ApplicationProperties {
     }
 
     public static class JhipsterCmd {
+
         private String cmd = "jhipster";
         private Integer timeout = 120;
 
@@ -89,6 +90,7 @@ public class ApplicationProperties {
     }
 
     public static class Github {
+
         private String clientId;
         private String clientSecret;
         private String host = "https://github.com";
@@ -119,6 +121,7 @@ public class ApplicationProperties {
     }
 
     public static class Gitlab {
+
         private String clientId;
         private String clientSecret;
         private String host = "https://gitlab.com";
@@ -169,5 +172,4 @@ public class ApplicationProperties {
             return enable;
         }
     }
-
 }

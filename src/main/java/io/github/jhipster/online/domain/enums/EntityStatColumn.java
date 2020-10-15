@@ -22,7 +22,6 @@ package io.github.jhipster.online.domain.enums;
 import io.github.jhipster.online.domain.interfaces.DatabaseColumn;
 
 public enum EntityStatColumn implements DatabaseColumn {
-
     FIELDS("fields"),
     RELATIONSHIPS("relationships"),
     PAGINATION("pagination"),

@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface GeneratorIdentityMapper extends EntityMapper<GeneratorIdentityDTO, GeneratorIdentity> {
-
     default GeneratorIdentity fromId(Long id) {
         if (id == null) {
             return null;

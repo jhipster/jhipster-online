@@ -24,15 +24,14 @@ import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
 import io.github.jhipster.online.service.mapper.GeneratorIdentityMapper;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Service Implementation for managing GeneratorIdentity.
@@ -47,7 +46,10 @@ public class GeneratorIdentityService {
 
     private final GeneratorIdentityMapper generatorIdentityMapper;
 
-    public GeneratorIdentityService(GeneratorIdentityRepository generatorIdentityRepository, GeneratorIdentityMapper generatorIdentityMapper) {
+    public GeneratorIdentityService(
+        GeneratorIdentityRepository generatorIdentityRepository,
+        GeneratorIdentityMapper generatorIdentityMapper
+    ) {
         this.generatorIdentityRepository = generatorIdentityRepository;
         this.generatorIdentityMapper = generatorIdentityMapper;
     }
@@ -87,7 +89,6 @@ public class GeneratorIdentityService {
 
         return generatorIdentityRepository.findAllByOwner(user);
     }
-
 
     /**
      * Get one generatorIdentity by id.
@@ -142,7 +143,7 @@ public class GeneratorIdentityService {
             return false;
         }
         // Check if the generator has already an owner
-        if(generatorIdentity.get().getOwner() != null) {
+        if (generatorIdentity.get().getOwner() != null) {
             return false;
         }
         generatorIdentity.get().owner(user);
@@ -157,7 +158,7 @@ public class GeneratorIdentityService {
             return false;
         }
 
-        User owner  = maybeGeneratorIdentity.get().getOwner();
+        User owner = maybeGeneratorIdentity.get().getOwner();
         if (owner == null || !owner.equals(user)) {
             return false;
         }

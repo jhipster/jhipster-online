@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface JdlMetadataMapper extends EntityMapper<JdlMetadataDTO, JdlMetadata> {
-
     default JdlMetadata fromId(String id) {
         if (id == null) {
             return null;

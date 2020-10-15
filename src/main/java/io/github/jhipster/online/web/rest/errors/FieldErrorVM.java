@@ -48,5 +48,4 @@ public class FieldErrorVM implements Serializable {
     public String getMessage() {
         return message;
     }
-
 }

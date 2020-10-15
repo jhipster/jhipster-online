@@ -1,5 +1,11 @@
 package io.github.jhipster.online.web.rest;
 
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.repository.EntityStatsRepository;
@@ -7,6 +13,10 @@ import io.github.jhipster.online.service.EntityStatsService;
 import io.github.jhipster.online.service.dto.EntityStatsDTO;
 import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,17 +30,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the EntityStatsResource REST controller.
@@ -106,11 +105,14 @@ class EntityStatsResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final EntityStatsResource entityStatsResource = new EntityStatsResource(entityStatsService);
-        this.restEntityStatsMockMvc = MockMvcBuilders.standaloneSetup(entityStatsResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restEntityStatsMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(entityStatsResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -146,9 +148,10 @@ class EntityStatsResourceIntTest {
         int databaseSizeBeforeCreate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats
-        restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                post("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isCreated());
 
         // Validate the EntityStats in the database
@@ -178,9 +181,10 @@ class EntityStatsResourceIntTest {
         entityStats.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                post("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the EntityStats in the database
@@ -195,7 +199,8 @@ class EntityStatsResourceIntTest {
         entityStatsRepository.saveAndFlush(entityStats);
 
         // Get all the entityStatsList
-        restEntityStatsMockMvc.perform(get("/api/entity-stats?sort=id,desc"))
+        restEntityStatsMockMvc
+            .perform(get("/api/entity-stats?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(entityStats.getId().intValue())))
@@ -220,7 +225,8 @@ class EntityStatsResourceIntTest {
         entityStatsRepository.saveAndFlush(entityStats);
 
         // Get the entityStats
-        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", entityStats.getId()))
+        restEntityStatsMockMvc
+            .perform(get("/api/entity-stats/{id}", entityStats.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(entityStats.getId().intValue()))
@@ -242,8 +248,7 @@ class EntityStatsResourceIntTest {
     @Transactional
     void getNonExistingEntityStats() throws Exception {
         // Get the entityStats
-        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -272,9 +277,12 @@ class EntityStatsResourceIntTest {
             .fluentMethods(UPDATED_FLUENT_METHODS)
             .date(UPDATED_DATE);
 
-        restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEntityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                put("/api/entity-stats")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedEntityStats))
+            )
             .andExpect(status().isOk());
 
         // Validate the EntityStats in the database
@@ -303,9 +311,10 @@ class EntityStatsResourceIntTest {
         // Create the EntityStats
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                put("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the EntityStats in the database
@@ -322,8 +331,8 @@ class EntityStatsResourceIntTest {
         int databaseSizeBeforeDelete = entityStatsRepository.findAll().size();
 
         // Get the entityStats
-        restEntityStatsMockMvc.perform(delete("/api/entity-stats/{id}", entityStatsDTO.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restEntityStatsMockMvc
+            .perform(delete("/api/entity-stats/{id}", entityStatsDTO.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty

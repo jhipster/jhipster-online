@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.jhipster.online.domain.YoRC;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,12 +58,12 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
                         hasCucumber = true;
                         break;
                     default:
-                        // No action necessary as all possible cases are handled above
+                    // No action necessary as all possible cases are handled above
                 }
             }
         }
 
-        Set<String> languages =  getLanguagesFromArrayNode((ArrayNode)node.get("languages"));
+        Set<String> languages = getLanguagesFromArrayNode((ArrayNode) node.get("languages"));
 
         return result
             .serverPort(serverPort)

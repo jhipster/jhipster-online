@@ -21,20 +21,17 @@ package io.github.jhipster.online.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class LogsService {
 
     private final Logger log = LoggerFactory.getLogger(LogsService.class);
 
-    private Cache<String, String> logsCache = CacheBuilder.newBuilder()
-        .expireAfterWrite(5, TimeUnit.MINUTES)
-        .build();
+    private Cache<String, String> logsCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     public synchronized void addLog(String logID, String logMessage) {
         log.info("log `{}` : {}", logID, logMessage);

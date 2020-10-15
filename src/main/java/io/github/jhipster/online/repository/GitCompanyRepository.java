@@ -21,17 +21,15 @@ package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Set;
 
 /**
  * Spring Data JPA repository for the GitCompany entity.
  */
 @Repository
 public interface GitCompanyRepository extends JpaRepository<GitCompany, Long> {
-
     Set<GitCompany> findAllByUserAndGitProvider(User user, String gitProvider);
 
     void deleteAllByUserLoginAndGitProvider(String user, String gitProvider);

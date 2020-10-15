@@ -7,6 +7,7 @@ import java.time.Instant;
  * A DTO for the {@link io.github.jhipster.online.domain.EntityStats} entity.
  */
 public class EntityStatsDTO implements Serializable {
+
     private Long id;
 
     private Integer year;
@@ -139,21 +140,38 @@ public class EntityStatsDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "EntityStatsDTO{" +
-            "id=" + id +
-            ", year=" + year +
-            ", month=" + month +
-            ", week=" + week +
-            ", day=" + day +
-            ", hour=" + hour +
-            ", fields=" + fields +
-            ", relationships=" + relationships +
-            ", pagination='" + pagination + '\'' +
-            ", dto='" + dto + '\'' +
-            ", service='" + service + '\'' +
-            ", fluentMethods=" + fluentMethods +
-            ", date=" + date +
-            '}';
+        return (
+            "EntityStatsDTO{" +
+            "id=" +
+            id +
+            ", year=" +
+            year +
+            ", month=" +
+            month +
+            ", week=" +
+            week +
+            ", day=" +
+            day +
+            ", hour=" +
+            hour +
+            ", fields=" +
+            fields +
+            ", relationships=" +
+            relationships +
+            ", pagination='" +
+            pagination +
+            '\'' +
+            ", dto='" +
+            dto +
+            '\'' +
+            ", service='" +
+            service +
+            '\'' +
+            ", fluentMethods=" +
+            fluentMethods +
+            ", date=" +
+            date +
+            '}'
+        );
     }
 }
-

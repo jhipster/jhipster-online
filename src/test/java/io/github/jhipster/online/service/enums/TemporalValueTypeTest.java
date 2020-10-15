@@ -1,11 +1,10 @@
 package io.github.jhipster.online.service.enums;
 
-import org.junit.jupiter.api.Test;
-
-import java.time.Instant;
-
 import static java.time.Instant.parse;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Instant;
+import org.junit.jupiter.api.Test;
 
 class TemporalValueTypeTest {
 

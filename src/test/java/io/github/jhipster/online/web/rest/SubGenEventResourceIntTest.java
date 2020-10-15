@@ -1,5 +1,11 @@
 package io.github.jhipster.online.web.rest;
 
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.repository.SubGenEventRepository;
@@ -7,6 +13,10 @@ import io.github.jhipster.online.service.SubGenEventService;
 import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.service.mapper.SubGenEventMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,17 +30,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the SubGenEventResource REST controller.
@@ -97,11 +96,14 @@ class SubGenEventResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final SubGenEventResource subGenEventResource = new SubGenEventResource(subGenEventService);
-        this.restSubGenEventMockMvc = MockMvcBuilders.standaloneSetup(subGenEventResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restSubGenEventMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(subGenEventResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -134,9 +136,10 @@ class SubGenEventResourceIntTest {
         int databaseSizeBeforeCreate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent
-        restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                post("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isCreated());
 
         // Validate the SubGenEvent in the database
@@ -163,9 +166,10 @@ class SubGenEventResourceIntTest {
         subGenEvent.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                post("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SubGenEvent in the database
@@ -180,7 +184,8 @@ class SubGenEventResourceIntTest {
         subGenEventRepository.saveAndFlush(subGenEvent);
 
         // Get all the subGenEventList
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events?sort=id,desc"))
+        restSubGenEventMockMvc
+            .perform(get("/api/sub-gen-events?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subGenEvent.getId().intValue())))
@@ -195,7 +200,6 @@ class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
-
     @Test
     @Transactional
     void getSubGenEvent() throws Exception {
@@ -203,7 +207,8 @@ class SubGenEventResourceIntTest {
         subGenEventRepository.saveAndFlush(subGenEvent);
 
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", subGenEvent.getId()))
+        restSubGenEventMockMvc
+            .perform(get("/api/sub-gen-events/{id}", subGenEvent.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(subGenEvent.getId().intValue()))
@@ -217,12 +222,12 @@ class SubGenEventResourceIntTest {
             .andExpect(jsonPath("$.event").value(DEFAULT_EVENT))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
+
     @Test
     @Transactional
     void getNonExistingSubGenEvent() throws Exception {
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -248,9 +253,12 @@ class SubGenEventResourceIntTest {
             .event(UPDATED_EVENT)
             .date(UPDATED_DATE);
 
-        restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSubGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                put("/api/sub-gen-events")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedSubGenEvent))
+            )
             .andExpect(status().isOk());
 
         // Validate the SubGenEvent in the database
@@ -276,9 +284,10 @@ class SubGenEventResourceIntTest {
         // Create the SubGenEvent
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                put("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SubGenEvent in the database
@@ -295,8 +304,8 @@ class SubGenEventResourceIntTest {
         int databaseSizeBeforeDelete = subGenEventRepository.findAll().size();
 
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(delete("/api/sub-gen-events/{id}", subGenEventDTO.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restSubGenEventMockMvc
+            .perform(delete("/api/sub-gen-events/{id}", subGenEventDTO.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty

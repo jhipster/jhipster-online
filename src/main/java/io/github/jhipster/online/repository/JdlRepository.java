@@ -20,10 +20,9 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.Jdl;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Jdl entity.
@@ -31,7 +30,6 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface JdlRepository extends JpaRepository<Jdl, String> {
-
     Optional<Jdl> findOneByJdlMetadataId(String id);
 
     void deleteAllByJdlMetadataId(String id);

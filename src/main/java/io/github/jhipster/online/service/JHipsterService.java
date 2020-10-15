@@ -21,16 +21,15 @@ package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.service.enums.CiCdTool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JHipsterService {
@@ -62,14 +61,32 @@ public class JHipsterService {
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
-        this.runProcess(generationId, workingDir, jhipsterCommand, "--force-insight", "--skip-checks",
-            "--skip-install", "--skip-cache", "--skip-git", "--prettier-java");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "--force-insight",
+                "--skip-checks",
+                "--skip-install",
+                "--skip-cache",
+                "--skip-git",
+                "--prettier-java"
+            );
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
         this.logsService.addLog(generationId, "Running `jhipster import-jdl");
-        this.runProcess(generationId, workingDir, jhipsterCommand, "import-jdl",
-            jdlFileName + ".jh", "--force-insight", "--skip-checks", "--skip-install", "--force");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "import-jdl",
+                jdlFileName + ".jh",
+                "--force-insight",
+                "--skip-checks",
+                "--skip-install",
+                "--force"
+            );
     }
 
     public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws IOException {
@@ -78,8 +95,17 @@ public class JHipsterService {
             throw new IllegalArgumentException("Invalid Continuous Integration system");
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
-        this.runProcess(generationId, workingDir, jhipsterCommand, "ci-cd",
-            "--autoconfigure-" + ciCdTool.command(), "--force-insight", "--skip-checks", "--skip-install", "--force");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "ci-cd",
+                "--autoconfigure-" + ciCdTool.command(),
+                "--force-insight",
+                "--skip-checks",
+                "--skip-install",
+                "--force"
+            );
     }
 
     private void runProcess(String generationId, File workingDir, String... command) throws IOException {
@@ -87,22 +113,25 @@ public class JHipsterService {
         BufferedReader input = null;
         try {
             String line;
-            ProcessBuilder processBuilder = new ProcessBuilder().directory(workingDir).command(command).redirectError(ProcessBuilder.Redirect.DISCARD);
+            ProcessBuilder processBuilder = new ProcessBuilder()
+                .directory(workingDir)
+                .command(command)
+                .redirectError(ProcessBuilder.Redirect.DISCARD);
             Process p = processBuilder.start();
 
-            taskExecutor.execute(() -> {
-                try {
-                    p.waitFor(timeout, TimeUnit.SECONDS);
-                    p.destroyForcibly();
-                } catch (InterruptedException e) {
-                    log.error("Unable to execute process successfully.", e);
-                    Thread.currentThread().interrupt();
+            taskExecutor.execute(
+                () -> {
+                    try {
+                        p.waitFor(timeout, TimeUnit.SECONDS);
+                        p.destroyForcibly();
+                    } catch (InterruptedException e) {
+                        log.error("Unable to execute process successfully.", e);
+                        Thread.currentThread().interrupt();
+                    }
                 }
-            });
+            );
 
-            input =
-                new BufferedReader
-                    (new InputStreamReader(p.getInputStream()));
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
                 log.debug(line);
                 this.logsService.addLog(generationId, line);

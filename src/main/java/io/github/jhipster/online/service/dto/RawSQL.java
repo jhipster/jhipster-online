@@ -53,8 +53,7 @@ public class RawSQL {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RawSQL rawSQL = (RawSQL) o;
-        return Objects.equals(moment, rawSQL.moment) &&
-            Objects.equals(count, rawSQL.count);
+        return Objects.equals(moment, rawSQL.moment) && Objects.equals(count, rawSQL.count);
     }
 
     @Override
@@ -64,9 +63,6 @@ public class RawSQL {
 
     @Override
     public String toString() {
-        return "RawSQL{" +
-            "moment=" + moment +
-            ", count=" + count +
-            '}';
+        return "RawSQL{" + "moment=" + moment + ", count=" + count + '}';
     }
 }

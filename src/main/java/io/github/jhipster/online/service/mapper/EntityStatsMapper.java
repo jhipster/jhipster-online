@@ -9,7 +9,6 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface EntityStatsMapper extends EntityMapper<EntityStatsDTO, EntityStats> {
-
     default EntityStats fromId(Long id) {
         if (id == null) {
             return null;

@@ -20,7 +20,6 @@
 package io.github.jhipster.online.web.rest.vm;
 
 import io.github.jhipster.online.service.dto.UserDTO;
-
 import javax.validation.constraints.Size;
 
 /**

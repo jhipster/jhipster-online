@@ -7,6 +7,7 @@ import java.time.Instant;
  * A DTO for the {@link io.github.jhipster.online.domain.JdlMetadata} entity.
  */
 public class JdlMetadataDTO implements Serializable {
+
     private String id;
 
     private String name;
@@ -59,12 +60,21 @@ public class JdlMetadataDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "JdlMetadataDTO{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            ", createdDate=" + createdDate +
-            ", updatedDate=" + updatedDate +
-            ", isPublic=" + isPublic +
-            '}';
+        return (
+            "JdlMetadataDTO{" +
+            "id='" +
+            id +
+            '\'' +
+            ", name='" +
+            name +
+            '\'' +
+            ", createdDate=" +
+            createdDate +
+            ", updatedDate=" +
+            updatedDate +
+            ", isPublic=" +
+            isPublic +
+            '}'
+        );
     }
 }

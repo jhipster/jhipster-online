@@ -1,26 +1,26 @@
 package io.github.jhipster.online.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.PersistentAuditEvent;
 import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Integration tests for {@link AuditEventService}.
  */
 @SpringBootTest(classes = JhonlineApp.class)
 @Transactional
-class AuditEventServiceIT  {
+class AuditEventServiceIT {
+
     @Autowired
     private AuditEventService auditEventService;
 
@@ -44,7 +44,9 @@ class AuditEventServiceIT  {
         auditEventOld.setAuditEventType("test-type");
 
         auditEventWithinRetention = new PersistentAuditEvent();
-        auditEventWithinRetention.setAuditEventDate(Instant.now().minus(jHipsterProperties.getAuditEvents().getRetentionPeriod() - 1, ChronoUnit.DAYS));
+        auditEventWithinRetention.setAuditEventDate(
+            Instant.now().minus(jHipsterProperties.getAuditEvents().getRetentionPeriod() - 1, ChronoUnit.DAYS)
+        );
         auditEventWithinRetention.setPrincipal("test-user-retention");
         auditEventWithinRetention.setAuditEventType("test-type");
 

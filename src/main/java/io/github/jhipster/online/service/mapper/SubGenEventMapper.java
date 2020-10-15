@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface SubGenEventMapper extends EntityMapper<SubGenEventDTO, SubGenEvent> {
-
     default SubGenEvent fromId(Long id) {
         if (id == null) {
             return null;

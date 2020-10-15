@@ -19,14 +19,13 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A JdlMetadata.
@@ -122,6 +121,7 @@ public class JdlMetadata implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
@@ -146,10 +146,6 @@ public class JdlMetadata implements Serializable {
 
     @Override
     public String toString() {
-        return "JdlMetadata{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", isPublic='" + isIsPublic() + "'" +
-            "}";
+        return "JdlMetadata{" + "id=" + getId() + ", name='" + getName() + "'" + ", isPublic='" + isIsPublic() + "'" + "}";
     }
 }

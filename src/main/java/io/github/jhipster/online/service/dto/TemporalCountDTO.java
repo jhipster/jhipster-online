@@ -54,10 +54,8 @@ public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TemporalCountDTO that = (TemporalCountDTO) o;
-        return Objects.equals(date, that.date) &&
-            Objects.equals(count, that.count);
+        return Objects.equals(date, that.date) && Objects.equals(count, that.count);
     }
-
 
     @Override
     public int hashCode() {
@@ -66,10 +64,7 @@ public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
 
     @Override
     public String toString() {
-        return "TemporalCountDTO{" +
-            "date=" + date +
-            ", count=" + count +
-            '}';
+        return "TemporalCountDTO{" + "date=" + date + ", count=" + count + '}';
     }
 
     @Override

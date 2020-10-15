@@ -21,21 +21,20 @@ package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.jhipster.online.config.Constants;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A user.
@@ -102,35 +101,35 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Instant resetDate = null;
 
     @JsonIgnore
-    @Column(name ="github_company")
+    @Column(name = "github_company")
     private String githubCompany = null;
 
     @JsonIgnore
-    @Column(name ="github_location")
+    @Column(name = "github_location")
     private String githubLocation = null;
 
     @JsonIgnore
-    @Column(name ="gitlab_oauth_token")
+    @Column(name = "gitlab_oauth_token")
     private String gitlabOAuthToken;
 
     @JsonIgnore
-    @Column(name ="github_oauth_token")
+    @Column(name = "github_oauth_token")
     private String githubOAuthToken;
 
     @JsonIgnore
-    @Column(name ="gitlab_user")
+    @Column(name = "gitlab_user")
     private String gitlabUser;
 
     @JsonIgnore
-    @Column(name ="github_user")
+    @Column(name = "github_user")
     private String githubUser;
 
     @JsonIgnore
-    @Column(name ="github_email")
+    @Column(name = "github_email")
     private String githubEmail;
 
     @JsonIgnore
-    @Column(name ="gitlab_email")
+    @Column(name = "gitlab_email")
     private String gitlabEmail;
 
     @JsonIgnore
@@ -142,8 +141,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToMany
     @JoinTable(
         name = "jhi_user_authority",
-        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+        joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "authority_name", referencedColumnName = "name") }
+    )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
@@ -277,9 +277,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.githubOAuthToken = githubOAuthToken;
     }
 
-    public String getGitlabUser() { return gitlabUser; }
+    public String getGitlabUser() {
+        return gitlabUser;
+    }
 
-    public void setGitlabUser(String gitlabUser) { this.gitlabUser = gitlabUser; }
+    public void setGitlabUser(String gitlabUser) {
+        this.gitlabUser = gitlabUser;
+    }
 
     public String getGithubUser() {
         return githubUser;
@@ -331,15 +335,33 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            "}";
+        return (
+            "User{" +
+            "login='" +
+            login +
+            '\'' +
+            ", firstName='" +
+            firstName +
+            '\'' +
+            ", lastName='" +
+            lastName +
+            '\'' +
+            ", email='" +
+            email +
+            '\'' +
+            ", imageUrl='" +
+            imageUrl +
+            '\'' +
+            ", activated='" +
+            activated +
+            '\'' +
+            ", langKey='" +
+            langKey +
+            '\'' +
+            ", activationKey='" +
+            activationKey +
+            '\'' +
+            "}"
+        );
     }
 }

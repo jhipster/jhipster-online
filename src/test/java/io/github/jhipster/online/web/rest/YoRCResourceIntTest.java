@@ -1,5 +1,12 @@
 package io.github.jhipster.online.web.rest;
 
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.YoRC;
 import io.github.jhipster.online.repository.YoRCRepository;
@@ -7,6 +14,8 @@ import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.YoRCDTO;
 import io.github.jhipster.online.service.mapper.YoRCMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,16 +29,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for the YoRCResource REST controller.
@@ -142,11 +141,14 @@ class YoRCResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final YoRCResource yoRCResource = new YoRCResource(yoRCService);
-        this.restYoRCMockMvc = MockMvcBuilders.standaloneSetup(yoRCResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restYoRCMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(yoRCResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -209,7 +211,8 @@ class YoRCResourceIntTest {
         yoRCRepository.saveAndFlush(yoRC);
 
         // Get all the yoRCList
-        restYoRCMockMvc.perform(get("/api/yo-rcs?sort=id,desc"))
+        restYoRCMockMvc
+            .perform(get("/api/yo-rcs?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(yoRC.getId().intValue())))
@@ -253,7 +256,6 @@ class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].hasCucumber").value(hasItem(DEFAULT_HAS_CUCUMBER)));
     }
 
-
     @Test
     @Transactional
     void getYoRC() throws Exception {
@@ -261,7 +263,8 @@ class YoRCResourceIntTest {
         yoRCRepository.saveAndFlush(yoRC);
 
         // Get the yoRC
-        restYoRCMockMvc.perform(get("/api/yo-rcs/{id}", yoRC.getId()))
+        restYoRCMockMvc
+            .perform(get("/api/yo-rcs/{id}", yoRC.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(yoRC.getId().intValue()))
@@ -304,12 +307,12 @@ class YoRCResourceIntTest {
             .andExpect(jsonPath("$.hasGatling").value(DEFAULT_HAS_GATLING))
             .andExpect(jsonPath("$.hasCucumber").value(DEFAULT_HAS_CUCUMBER));
     }
+
     @Test
     @Transactional
     void getNonExistingYoRC() throws Exception {
         // Get the yoRC
-        restYoRCMockMvc.perform(get("/api/yo-rcs/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restYoRCMockMvc.perform(get("/api/yo-rcs/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -321,9 +324,7 @@ class YoRCResourceIntTest {
         int databaseSizeBeforeDelete = yoRCRepository.findAll().size();
 
         // Get the yoRC
-        restYoRCMockMvc.perform(delete("/api/yo-rcs/{id}", yoRCDTO.getId())
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        restYoRCMockMvc.perform(delete("/api/yo-rcs/{id}", yoRCDTO.getId()).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 
         // Validate the database is empty
         List<YoRC> yoRCList = yoRCRepository.findAll();

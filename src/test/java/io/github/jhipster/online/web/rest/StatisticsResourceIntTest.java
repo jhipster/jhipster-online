@@ -1,5 +1,10 @@
 package io.github.jhipster.online.web.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.YoRC;
@@ -18,11 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
@@ -67,7 +67,8 @@ class StatisticsResourceIntTest {
 
     private String generatorId = "cf51ff78-187a-4554-9b09-8f6f95f1a7a5";
 
-    private String dummyYo = "{\n" +
+    private String dummyYo =
+        "{\n" +
         "        \"generator-jhipster\": {\n" +
         "        \"useYarn\": false,\n" +
         "            \"experimental\": false,\n" +
@@ -97,7 +98,9 @@ class StatisticsResourceIntTest {
         "      ],\n" +
         "        \"applicationType\": \"monolith\"\n" +
         "    },\n" +
-        "        \"generator-id\": \"" + generatorId + "\",\n" +
+        "        \"generator-id\": \"" +
+        generatorId +
+        "\",\n" +
         "        \"generator-version\": \"5.1.0\",\n" +
         "        \"git-provider\": \"local\",\n" +
         "        \"node-version\": \"v8.11.1\",\n" +
@@ -120,20 +123,21 @@ class StatisticsResourceIntTest {
             subGenEventService,
             userService,
             generatorIdentityService,
-            entityStatService);
+            entityStatService
+        );
 
-        this.restStatiticsMockMvc = MockMvcBuilders.standaloneSetup(statisticsResource)
-            .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+        this.restStatiticsMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(statisticsResource)
+                .setMessageConverters(httpMessageConverters)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
     }
 
     @Test
     @Transactional
     void shouldNotGetCountWithUnknownFrequency() throws Exception {
-        restStatiticsMockMvc
-            .perform(get("/api/s/count-yo/{frequency}", "every minutes"))
-            .andExpect(status().isBadRequest());
+        restStatiticsMockMvc.perform(get("/api/s/count-yo/{frequency}", "every minutes")).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -149,9 +153,7 @@ class StatisticsResourceIntTest {
     void getYoCount() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc
-            .perform(get("/api/s/count-yo"))
-            .andExpect(status().isOk());
+        restStatiticsMockMvc.perform(get("/api/s/count-yo")).andExpect(status().isOk());
 
         YoRC yorc = new YoRC().owner(new GeneratorIdentity());
         generatorIdentityRepository.saveAndFlush(yorc.getOwner());
@@ -167,9 +169,7 @@ class StatisticsResourceIntTest {
     void addEntry() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc.perform(post("/api/s/entry")
-            .content(dummyYo))
-            .andExpect(status().isCreated());
+        restStatiticsMockMvc.perform(post("/api/s/entry").content(dummyYo)).andExpect(status().isCreated());
 
         int databaseSizeAfterAdd = yoRCRepository.findAll().size();
 

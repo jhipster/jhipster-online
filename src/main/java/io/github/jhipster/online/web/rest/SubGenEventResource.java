@@ -26,17 +26,16 @@ import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing SubGenEvent.
@@ -72,7 +71,8 @@ public class SubGenEventResource {
             throw new BadRequestAlertException("A new subGenEvent cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SubGenEventDTO result = subGenEventService.save(subGenEvent);
-        return ResponseEntity.created(new URI("/api/sub-gen-events/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/sub-gen-events/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -105,7 +105,8 @@ public class SubGenEventResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         SubGenEventDTO result = subGenEventService.save(subGenEvent);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, subGenEvent.getId().toString()))
             .body(result);
     }
@@ -135,6 +136,9 @@ public class SubGenEventResource {
     public ResponseEntity<Void> deleteSubGenEvent(@PathVariable Long id) {
         log.debug("REST request to delete SubGenEvent : {}", id);
         subGenEventService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

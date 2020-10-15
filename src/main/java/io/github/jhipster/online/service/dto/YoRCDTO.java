@@ -7,6 +7,7 @@ import java.time.Instant;
  * A DTO for the {@link io.github.jhipster.online.domain.YoRC} entity.
  */
 public class YoRCDTO implements Serializable {
+
     private Long id;
 
     private String jhipsterVersion;
@@ -399,46 +400,108 @@ public class YoRCDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "YoRCDTO{" +
-            "id=" + id +
-            ", jhipsterVersion='" + jhipsterVersion + '\'' +
-            ", creationDate=" + creationDate +
-            ", gitProvider='" + gitProvider + '\'' +
-            ", nodeVersion='" + nodeVersion + '\'' +
-            ", os='" + os + '\'' +
-            ", arch='" + arch + '\'' +
-            ", cpu='" + cpu + '\'' +
-            ", cores='" + cores + '\'' +
-            ", memory='" + memory + '\'' +
-            ", userLanguage='" + userLanguage + '\'' +
-            ", year=" + year +
-            ", month=" + month +
-            ", week=" + week +
-            ", day=" + day +
-            ", hour=" + hour +
-            ", serverPort='" + serverPort + '\'' +
-            ", authenticationType='" + authenticationType + '\'' +
-            ", cacheProvider='" + cacheProvider + '\'' +
-            ", enableHibernateCache=" + enableHibernateCache +
-            ", websocket=" + websocket +
-            ", databaseType='" + databaseType + '\'' +
-            ", devDatabaseType='" + devDatabaseType + '\'' +
-            ", prodDatabaseType='" + prodDatabaseType + '\'' +
-            ", searchEngine=" + searchEngine +
-            ", messageBroker=" + messageBroker +
-            ", serviceDiscoveryType=" + serviceDiscoveryType +
-            ", buildTool='" + buildTool + '\'' +
-            ", enableSwaggerCodegen=" + enableSwaggerCodegen +
-            ", clientFramework='" + clientFramework + '\'' +
-            ", useSass=" + useSass +
-            ", clientPackageManager='" + clientPackageManager + '\'' +
-            ", applicationType='" + applicationType + '\'' +
-            ", jhiPrefix='" + jhiPrefix + '\'' +
-            ", enableTranslation=" + enableTranslation +
-            ", nativeLanguage='" + nativeLanguage + '\'' +
-            ", hasProtractor=" + hasProtractor +
-            ", hasGatling=" + hasGatling +
-            ", hasCucumber=" + hasCucumber +
-            '}';
+        return (
+            "YoRCDTO{" +
+            "id=" +
+            id +
+            ", jhipsterVersion='" +
+            jhipsterVersion +
+            '\'' +
+            ", creationDate=" +
+            creationDate +
+            ", gitProvider='" +
+            gitProvider +
+            '\'' +
+            ", nodeVersion='" +
+            nodeVersion +
+            '\'' +
+            ", os='" +
+            os +
+            '\'' +
+            ", arch='" +
+            arch +
+            '\'' +
+            ", cpu='" +
+            cpu +
+            '\'' +
+            ", cores='" +
+            cores +
+            '\'' +
+            ", memory='" +
+            memory +
+            '\'' +
+            ", userLanguage='" +
+            userLanguage +
+            '\'' +
+            ", year=" +
+            year +
+            ", month=" +
+            month +
+            ", week=" +
+            week +
+            ", day=" +
+            day +
+            ", hour=" +
+            hour +
+            ", serverPort='" +
+            serverPort +
+            '\'' +
+            ", authenticationType='" +
+            authenticationType +
+            '\'' +
+            ", cacheProvider='" +
+            cacheProvider +
+            '\'' +
+            ", enableHibernateCache=" +
+            enableHibernateCache +
+            ", websocket=" +
+            websocket +
+            ", databaseType='" +
+            databaseType +
+            '\'' +
+            ", devDatabaseType='" +
+            devDatabaseType +
+            '\'' +
+            ", prodDatabaseType='" +
+            prodDatabaseType +
+            '\'' +
+            ", searchEngine=" +
+            searchEngine +
+            ", messageBroker=" +
+            messageBroker +
+            ", serviceDiscoveryType=" +
+            serviceDiscoveryType +
+            ", buildTool='" +
+            buildTool +
+            '\'' +
+            ", enableSwaggerCodegen=" +
+            enableSwaggerCodegen +
+            ", clientFramework='" +
+            clientFramework +
+            '\'' +
+            ", useSass=" +
+            useSass +
+            ", clientPackageManager='" +
+            clientPackageManager +
+            '\'' +
+            ", applicationType='" +
+            applicationType +
+            '\'' +
+            ", jhiPrefix='" +
+            jhiPrefix +
+            '\'' +
+            ", enableTranslation=" +
+            enableTranslation +
+            ", nativeLanguage='" +
+            nativeLanguage +
+            '\'' +
+            ", hasProtractor=" +
+            hasProtractor +
+            ", hasGatling=" +
+            hasGatling +
+            ", hasCucumber=" +
+            hasCucumber +
+            '}'
+        );
     }
 }

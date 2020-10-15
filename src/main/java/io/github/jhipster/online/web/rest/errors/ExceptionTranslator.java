@@ -20,6 +20,11 @@
 package io.github.jhipster.online.web.rest.errors;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +40,6 @@ import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -69,7 +68,8 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
             return entity;
         }
-        ProblemBuilder builder = Problem.builder()
+        ProblemBuilder builder = Problem
+            .builder()
             .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
             .withTitle(problem.getTitle())
@@ -80,10 +80,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                 .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
                 .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
         } else {
-            builder
-                .withCause(((DefaultProblem) problem).getCause())
-                .withDetail(problem.getDetail())
-                .withInstance(problem.getInstance());
+            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
             problem.getParameters().forEach(builder::with);
             if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
                 builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
@@ -95,11 +92,14 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @Override
     public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
-        List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
+        List<FieldErrorVM> fieldErrors = result
+            .getFieldErrors()
+            .stream()
             .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
             .collect(Collectors.toList());
 
-        Problem problem = Problem.builder()
+        Problem problem = Problem
+            .builder()
             .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
             .withTitle("Method argument not valid")
             .withStatus(defaultConstraintViolationStatus())
@@ -110,33 +110,51 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleEmailAlreadyUsedException(io.github.jhipster.online.service.EmailAlreadyUsedException ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleEmailAlreadyUsedException(
+        io.github.jhipster.online.service.EmailAlreadyUsedException ex,
+        NativeWebRequest request
+    ) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(io.github.jhipster.online.service.UsernameAlreadyUsedException ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
+        io.github.jhipster.online.service.UsernameAlreadyUsedException ex,
+        NativeWebRequest request
+    ) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, false, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(io.github.jhipster.online.service.InvalidPasswordException ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleInvalidPasswordException(
+        io.github.jhipster.online.service.InvalidPasswordException ex,
+        NativeWebRequest request
+    ) {
         return create(new InvalidPasswordException(), request);
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(ex, request, HeaderUtil.createFailureAlert(applicationName, false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+        return create(
+            ex,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
+        );
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        Problem problem = Problem.builder()
-            .withStatus(Status.CONFLICT)
-            .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
-            .build();
+        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
         return create(ex, problem, request);
     }
 }

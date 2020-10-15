@@ -20,15 +20,14 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * An authority (a security role) used by Spring Security.
@@ -123,12 +122,21 @@ public class GitCompany implements Serializable {
 
     @Override
     public String toString() {
-        return "GitCompany{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", user=" + user.getLogin() +
-            ", gitProvider='" + gitProvider + '\'' +
-            ", gitProjects=" + gitProjects.size() +
-            '}';
+        return (
+            "GitCompany{" +
+            "id=" +
+            id +
+            ", name='" +
+            name +
+            '\'' +
+            ", user=" +
+            user.getLogin() +
+            ", gitProvider='" +
+            gitProvider +
+            '\'' +
+            ", gitProjects=" +
+            gitProjects.size() +
+            '}'
+        );
     }
 }

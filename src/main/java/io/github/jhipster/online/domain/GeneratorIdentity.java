@@ -20,12 +20,11 @@
 package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A GeneratorIdentity.
@@ -98,6 +97,7 @@ public class GeneratorIdentity implements Serializable {
     public void setOwner(User user) {
         this.owner = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -122,10 +122,6 @@ public class GeneratorIdentity implements Serializable {
 
     @Override
     public String toString() {
-        return "GeneratorIdentity{" +
-            "id=" + getId() +
-            ", host='" + getHost() + "'" +
-            ", guid='" + getGuid() + "'" +
-            "}";
+        return "GeneratorIdentity{" + "id=" + getId() + ", host='" + getHost() + "'" + ", guid='" + getGuid() + "'" + "}";
     }
 }

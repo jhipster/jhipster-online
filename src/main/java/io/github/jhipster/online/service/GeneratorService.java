@@ -22,6 +22,10 @@ package io.github.jhipster.online.service;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -29,11 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import org.zeroturnaround.zip.ZipUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
 
 @Service
 public class GeneratorService {
@@ -48,8 +47,13 @@ public class GeneratorService {
 
     private final LogsService logsService;
 
-    public GeneratorService(ApplicationProperties applicationProperties, GitService gitService, JHipsterService
-        jHipsterService, LogsService logsService, YoRCService yoRCService) {
+    public GeneratorService(
+        ApplicationProperties applicationProperties,
+        GitService gitService,
+        JHipsterService jHipsterService,
+        LogsService logsService,
+        YoRCService yoRCService
+    ) {
         this.applicationProperties = applicationProperties;
         this.gitService = gitService;
         this.jHipsterService = jHipsterService;
@@ -66,9 +70,15 @@ public class GeneratorService {
         return workingDir + ".zip";
     }
 
-    public void generateGitApplication(User user, String applicationId,
-        String applicationConfiguration, String githubOrganization, String repositoryName,
-        GitProvider gitProvider) throws IOException, GitAPIException, URISyntaxException {
+    public void generateGitApplication(
+        User user,
+        String applicationId,
+        String applicationConfiguration,
+        String githubOrganization,
+        String repositoryName,
+        GitProvider gitProvider
+    )
+        throws IOException, GitAPIException, URISyntaxException {
         File workingDir = generateApplication(applicationId, applicationConfiguration);
         this.logsService.addLog(applicationId, "Pushing the application to the Git remote repository");
         this.gitService.pushNewApplicationToGit(user, workingDir, githubOrganization, repositoryName, gitProvider);
@@ -86,9 +96,7 @@ public class GeneratorService {
         return workingDir;
     }
 
-    private void generateYoRc(String applicationId, File workingDir, String applicationConfiguration)
-        throws IOException {
-
+    private void generateYoRc(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
         this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
         try {
             PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", "UTF-8");

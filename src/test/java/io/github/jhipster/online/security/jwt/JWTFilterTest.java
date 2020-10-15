@@ -18,10 +18,13 @@
  */
 package io.github.jhipster.online.security.jwt;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -32,10 +35,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class JWTFilterTest {
 
@@ -127,5 +126,4 @@ class JWTFilterTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
     }
-
 }

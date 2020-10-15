@@ -59,10 +59,6 @@ public class RawSQLField {
 
     @Override
     public String toString() {
-        return "RawSQLField{" +
-            "moment=" + moment +
-            ", field='" + field + '\'' +
-            ", count=" + count +
-            '}';
+        return "RawSQLField{" + "moment=" + moment + ", field='" + field + '\'' + ", count=" + count + '}';
     }
 }
