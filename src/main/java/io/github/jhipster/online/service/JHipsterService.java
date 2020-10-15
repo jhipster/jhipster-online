@@ -75,7 +75,7 @@ public class JHipsterService {
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
-        this.logsService.addLog(generationId, "Running `jhipster import-jdl");
+        this.logsService.addLog(generationId, "Running `jhipster import-jdl`");
         this.runProcess(
                 generationId,
                 workingDir,
@@ -108,7 +108,7 @@ public class JHipsterService {
             );
     }
 
-    private void runProcess(String generationId, File workingDir, String... command) throws IOException {
+    void runProcess(String generationId, File workingDir, String... command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
         BufferedReader input = null;
         try {
