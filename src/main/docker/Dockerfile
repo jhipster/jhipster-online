@@ -9,7 +9,7 @@ RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y nodejs yarn && \
-    yarn global add generator-jhipster@6.10.3
+    yarn global add generator-jhipster@6.10.4
 
 CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \
     sleep ${JHIPSTER_SLEEP} && \
