@@ -10,7 +10,6 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <h4><label for="reviewFullScreen" class="form-control-label">Report :</label></h4>
             <select id="reviewFullScreen" class="form-control" [ngModel]="timeScale" (ngModelChange)="onSelectTimeScale($event)">
                 <optgroup label="Global overviews">
                     <option value="default">Generated applications</option>
@@ -24,10 +23,9 @@
                 </optgroup>
             </select>
         </div>
-        <div class="col-md-6 text-center">
-            <br/>
+        <div class="col-md-6 text-center text-md-left p-2 p-md-0">
             <button class="btn btn-primary" (click)="refreshData()">
-                  <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
+                <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
             </button>
         </div>
     </div>
