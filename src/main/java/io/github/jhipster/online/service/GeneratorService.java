@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
@@ -51,8 +52,7 @@ public class GeneratorService {
         ApplicationProperties applicationProperties,
         GitService gitService,
         JHipsterService jHipsterService,
-        LogsService logsService,
-        YoRCService yoRCService
+        LogsService logsService
     ) {
         this.applicationProperties = applicationProperties;
         this.gitService = gitService;
@@ -98,10 +98,8 @@ public class GeneratorService {
 
     private void generateYoRc(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
         this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
-        try {
-            PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", "UTF-8");
+        try (PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8)) {
             writer.print(applicationConfiguration);
-            writer.close();
         } catch (IOException ioe) {
             log.error("Error creating file .yo-rc.json", ioe);
             throw ioe;
