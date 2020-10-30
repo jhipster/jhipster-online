@@ -114,4 +114,8 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  github:
+    host: https://github.test
+  gitlab:
+    host: https://gitlab.test
