@@ -265,7 +265,7 @@ public class GitlabService implements GitProviderService {
         log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
         int number = gitlab.getProject(group, repositoryName).getId();
-        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(number, branchName, "master", null, title);
+        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(number, branchName, "main", null, title);
         log.info("Merge Request created!");
         return mergeRequest.getIid();
     }
