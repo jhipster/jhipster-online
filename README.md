@@ -5,7 +5,7 @@
 JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
 
-This is an Open Source project ([Apache 2 license](https://github.com/jhipster/jhipster-online/blob/master/LICENSE.txt))
+This is an Open Source project ([Apache 2 license](https://github.com/jhipster/jhipster-online/blob/main/LICENSE.txt))
 that powers the [https://start.jhipster.tech/](https://start.jhipster.tech/) website.
 
 You can use [https://start.jhipster.tech/](https://start.jhipster.tech/) for free, but if you find a bug or need a specific
@@ -187,7 +187,7 @@ docker-compose -f src/main/docker/app.yml up -d
 
 - The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
 
-- Creating a new release triggers the [deploy.yml GitHub Actions workflow](https://github.com/jhipster/jhipster-online/blob/master/.github/workflows/deploy.yml).
+- Creating a new release triggers the [deploy.yml GitHub Actions workflow](https://github.com/jhipster/jhipster-online/blob/main/.github/workflows/deploy.yml).
 
 - The above workflow includes a Docker build and pushes the image to [Google Container Registry](https://cloud.google.com/container-registry/). [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging) are used for
   obtaining application logs and monitoring.
@@ -199,7 +199,7 @@ of the [JHipster project](https://github.com/jhipster/generator-jhipster).
 
 ### If you have an issue, a bug or a feature request
 
-Please follow our [contribution guide](https://github.com/jhipster/jhipster-online/blob/master/CONTRIBUTING.md).
+Please follow our [contribution guide](https://github.com/jhipster/jhipster-online/blob/main/CONTRIBUTING.md).
 
 ### If you have a question or need help
 
@@ -208,7 +208,7 @@ You should [post it on Stack Overflow using the "jhipster" tag](https://stackove
 ### Code of conduct
 
 We have the same code of conduct as the main JHipster project:
-[JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/master/CODE_OF_CONDUCT.md).
+[JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/main/CODE_OF_CONDUCT.md).
 
 [github-actions-jhonline-image]: https://github.com/jhipster/jhipster-online/workflows/Application%20CI/badge.svg
 [github-actions-url]: https://github.com/jhipster/jhipster-online/actions

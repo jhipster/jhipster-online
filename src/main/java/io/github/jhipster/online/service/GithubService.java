@@ -206,7 +206,7 @@ public class GithubService implements GitProviderService {
         GitHub gitHub = this.getConnection(user);
         int number = gitHub
             .getRepository(organization + "/" + repositoryName)
-            .createPullRequest(title, branchName, "master", body)
+            .createPullRequest(title, branchName, "main", body)
             .getNumber();
 
         log.info("Pull Request created!");

@@ -62,7 +62,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
       this.warningMessage = ` To configure Continuous Integration/Continuous Deployment on your ${this.displayedGitProvider} project,
                 you must authorize JHipster Online to access your ${this.displayedGitProvider} account.`;
       this.infoMessage = ` will access your project's ${this.displayedGitProvider} repository and create a new branch
-                with Continuous Integration configuration. You can then decide if you want to merge this branch into your master branch.`;
+                with Continuous Integration configuration. You can then decide if you want to merge this branch into your main branch.`;
     } else if (this.tab === 'generate-application') {
       this.warningMessage = ` To generate your application on ${this.displayedGitProvider}, you must authorize JHipster Online to access
                 your ${this.displayedGitProvider} account. You will only be able to download your application as a Zip file.`;
@@ -73,7 +73,7 @@ export class JhiGitProviderAlertComponent implements OnInit {
       this.warningMessage = ` To apply a JDL Model on a ${this.displayedGitProvider} project, you must authorize JHipster Online to access
                 your ${this.displayedGitProvider} account.`;
       this.infoMessage = ` will access your project's ${this.displayedGitProvider} repository and create a new branch with this model.
-                You can then decide if you want to merge this branch into your master branch.`;
+                You can then decide if you want to merge this branch into your main branch.`;
     }
   }
 
