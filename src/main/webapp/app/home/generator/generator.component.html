@@ -240,6 +240,16 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="withAdminUi">Do you want to generate the admin UI?</label>
+                    <select id="withAdminUi" [(ngModel)]="model.withAdminUi" name="withAdminUi"
+                            class="form-control" #withAdminUi="ngModel">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <hr />
         <h4>Internationalization options</h4>

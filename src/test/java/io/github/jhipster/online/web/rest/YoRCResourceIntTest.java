@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 class YoRCResourceIntTest {
+
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
 
     private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
@@ -97,6 +98,8 @@ class YoRCResourceIntTest {
     private static final Boolean DEFAULT_ENABLE_SWAGGER_CODEGEN = false;
 
     private static final String DEFAULT_CLIENT_FRAMEWORK = "AAAAAAAAAA";
+
+    private static final Boolean DEFAULT_WITH_ADMIN_UI = true;
 
     private static final Boolean DEFAULT_USE_SASS = false;
 
@@ -189,6 +192,7 @@ class YoRCResourceIntTest {
             .buildTool(DEFAULT_BUILD_TOOL)
             .enableSwaggerCodegen(DEFAULT_ENABLE_SWAGGER_CODEGEN)
             .clientFramework(DEFAULT_CLIENT_FRAMEWORK)
+            .withAdminUi(DEFAULT_WITH_ADMIN_UI)
             .useSass(DEFAULT_USE_SASS)
             .clientPackageManager(DEFAULT_CLIENT_PACKAGE_MANAGER)
             .applicationType(DEFAULT_APPLICATION_TYPE)
@@ -382,6 +386,7 @@ class YoRCResourceIntTest {
             .andExpect(jsonPath("$.[*].buildTool").value(hasItem(DEFAULT_BUILD_TOOL)))
             .andExpect(jsonPath("$.[*].enableSwaggerCodegen").value(hasItem(DEFAULT_ENABLE_SWAGGER_CODEGEN)))
             .andExpect(jsonPath("$.[*].clientFramework").value(hasItem(DEFAULT_CLIENT_FRAMEWORK)))
+            .andExpect(jsonPath("$.[*].withAdminUi").value(hasItem(DEFAULT_WITH_ADMIN_UI)))
             .andExpect(jsonPath("$.[*].useSass").value(hasItem(DEFAULT_USE_SASS)))
             .andExpect(jsonPath("$.[*].clientPackageManager").value(hasItem(DEFAULT_CLIENT_PACKAGE_MANAGER)))
             .andExpect(jsonPath("$.[*].applicationType").value(hasItem(DEFAULT_APPLICATION_TYPE)))
@@ -434,6 +439,7 @@ class YoRCResourceIntTest {
             .andExpect(jsonPath("$.buildTool").value(DEFAULT_BUILD_TOOL))
             .andExpect(jsonPath("$.enableSwaggerCodegen").value(DEFAULT_ENABLE_SWAGGER_CODEGEN))
             .andExpect(jsonPath("$.clientFramework").value(DEFAULT_CLIENT_FRAMEWORK))
+            .andExpect(jsonPath("$.withAdminUi").value(DEFAULT_WITH_ADMIN_UI))
             .andExpect(jsonPath("$.useSass").value(DEFAULT_USE_SASS))
             .andExpect(jsonPath("$.clientPackageManager").value(DEFAULT_CLIENT_PACKAGE_MANAGER))
             .andExpect(jsonPath("$.applicationType").value(DEFAULT_APPLICATION_TYPE))

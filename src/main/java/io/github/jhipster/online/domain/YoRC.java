@@ -134,6 +134,9 @@ public class YoRC implements Serializable, CompleteDate {
     @Column(name = "client_framework")
     private String clientFramework;
 
+    @Column(name = "with_admin_ui")
+    private Boolean withAdminUi;
+
     @Column(name = "use_sass")
     private Boolean useSass;
 
@@ -555,6 +558,19 @@ public class YoRC implements Serializable, CompleteDate {
         this.clientFramework = clientFramework;
     }
 
+    public Boolean isWithAdminUi() {
+        return withAdminUi;
+    }
+
+    public YoRC withAdminUi(Boolean withAdminUi) {
+        this.withAdminUi = withAdminUi;
+        return this;
+    }
+
+    public void setWithAdminUi(Boolean withAdminUi) {
+        this.withAdminUi = withAdminUi;
+    }
+
     public Boolean isUseSass() {
         return useSass;
     }
@@ -817,6 +833,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", clientFramework='" +
             getClientFramework() +
+            "'" +
+            ", withAdminUi='" +
+            isWithAdminUi() +
             "'" +
             ", useSass='" +
             isUseSass() +
