@@ -4676,10 +4676,10 @@ gauge@~1.2.5:
     lodash.padend "^4.1.0"
     lodash.padstart "^4.1.0"
 
-generator-jhipster@6.10.4:
-  version "6.10.4"
-  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.10.4.tgz#678f353161c3cbc2449cc848fe9477a06cc28e05"
-  integrity sha512-AuPNTXucH8ekryRtVbiX+EC64jIHozxq7A+hTC/rhEgQyaMMqish+CpPGYaNLgzT2oqAvXFLWFndsiBJ4YdjVw==
+generator-jhipster@6.10.5:
+  version "6.10.5"
+  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.10.5.tgz#843bd2b5d639d636aa8366cc02c1008f015554d3"
+  integrity sha512-5NulSuou7sghjggc1rQuWWWigfJAdlzB0iMB92WQd90nXBC9ZopVFvgkjfLxWpKEgidFPjrwhrt5iWjoA+yo5A==
   dependencies:
     aws-sdk "2.706.0"
     axios "0.19.2"
