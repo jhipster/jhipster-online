@@ -21,6 +21,7 @@ import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 class AuditEventConverterTest {
+
     private AuditEventConverter converter = new AuditEventConverter();
 
     @Test

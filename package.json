@@ -108,6 +108,7 @@
   },
   "scripts": {
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,yaml,yml,java,ts,js,css,scss}\"",
+    "prettier:check": "prettier --check \"{,src/**/}*.{md,json,yaml,yml,java,ts,js,css,scss}\"",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "yarn run lint --fix",
     "ngc": "ngc -p tsconfig.app.json",
