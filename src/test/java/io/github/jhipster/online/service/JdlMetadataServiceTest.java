@@ -38,6 +38,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
 class JdlMetadataServiceTest {
+
     @MockBean
     private JdlMetadataRepository jdlMetadataRepository;
 
