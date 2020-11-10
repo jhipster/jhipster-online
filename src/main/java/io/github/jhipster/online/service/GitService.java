@@ -49,7 +49,7 @@ public class GitService {
     }
 
     public void pushNewApplicationToGit(User user, File workingDir, String organization, String applicationName, GitProvider gitProvider)
-        throws GitAPIException, URISyntaxException {
+        throws GitAPIException, URISyntaxException, IOException {
         log.info("Create Git repository for {}", workingDir);
         Git git = Git.init().setDirectory(workingDir).call();
 
@@ -70,6 +70,10 @@ public class GitService {
         remoteAddCommand.setUri(urIish);
         remoteAddCommand.call();
 
+        String currentBranch = git.getRepository().getFullBranch();
+        if (currentBranch.equals("refs/heads/master")) {
+            git.branchRename().setNewName("main").call();
+        }
         this.push(git, workingDir, user, organization, applicationName, gitProvider);
 
         log.debug("Repository successfully pushed!");
