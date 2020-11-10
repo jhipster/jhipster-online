@@ -47,6 +47,9 @@ jobs:
       - name: Install node.js packages
         run: yarn install
 
+      - name: Run Prettier Check
+        run: yarn run prettier:check
+
       - name: Run backend test
         run: |
           chmod +x mvnw
