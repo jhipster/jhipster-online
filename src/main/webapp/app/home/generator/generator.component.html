@@ -8,7 +8,7 @@
         <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="baseName">Application name</label>
                     <input type="text" class="form-control" id="baseName" [(ngModel)]="model.baseName" name="baseName"
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="repositoryName">Repository name</label>
                     <input type="text" class="form-control" id="repositoryName" [(ngModel)]="repositoryName" name="repositoryName"
@@ -30,7 +30,7 @@
         <h4>Application type</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="applicationType">Which type of application would you like to create?</label>
                     <select id="applicationType" [(ngModel)]="model.applicationType" name="applicationType"
@@ -48,7 +48,7 @@
         <h4>Server side options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="packageName">What is your default Java package name?</label>
                     <input type="text" class="form-control" id="packageName" [(ngModel)]="model.packageName"
@@ -230,7 +230,7 @@
         <h4 [hidden]="model.applicationType === 'microservice'">Client side options</h4>
         <hr [hidden]="model.applicationType === 'microservice'">
         <div class="row" [hidden]="model.applicationType === 'microservice'">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
@@ -245,7 +245,7 @@
         <h4>Internationalization options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="enableTranslation">Would you like to enable internationalization support?</label>
                     <select id="enableTranslation" [(ngModel)]="model.enableTranslation" name="enableTranslation"
@@ -274,7 +274,7 @@
         <h4>Testing options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="testFrameworks">Besides JUnit and Jest, which testing frameworks would you like to
                         use?</label>
@@ -290,7 +290,7 @@
         </div>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="text-center">
                     <p></p>
                     <div [ngSwitch]="!submitted">
