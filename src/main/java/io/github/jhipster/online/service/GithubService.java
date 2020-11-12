@@ -32,10 +32,7 @@ import java.net.ConnectException;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GHMyself;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -204,10 +201,8 @@ public class GithubService implements GitProviderService {
         log.info("Creating Pull Request on repository {} / {}", organization, repositoryName);
 
         GitHub gitHub = this.getConnection(user);
-        int number = gitHub
-            .getRepository(organization + "/" + repositoryName)
-            .createPullRequest(title, branchName, "main", body)
-            .getNumber();
+        GHRepository repository = gitHub.getRepository(organization + "/" + repositoryName);
+        int number = repository.createPullRequest(title, branchName, repository.getDefaultBranch(), body).getNumber();
 
         log.info("Pull Request created!");
         return number;
