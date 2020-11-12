@@ -55,8 +55,10 @@ export class AuthServerProvider {
     const jwt = response.id_token;
     if (rememberMe) {
       this.$localStorage.store('authenticationToken', jwt);
+      this.$sessionStorage.clear('authenticationToken');
     } else {
       this.$sessionStorage.store('authenticationToken', jwt);
+      this.$localStorage.clear('authenticationToken');
     }
   }
 }
