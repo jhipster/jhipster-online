@@ -25,7 +25,13 @@ public enum CiCdTool {
         return format("{0}-{1}-{2}", "jhipster", name().toLowerCase(), complement);
     }
 
-    public String capitalize() {
-        return StringUtils.capitalize(name().toLowerCase());
+    public String getCiCdToolName() {
+        if (name().equals("GITLAB")) {
+            return "GitLab";
+        } else if (name().equals("GITHUB")) {
+            return "GitHub";
+        } else {
+            return StringUtils.capitalize(name().toLowerCase());
+        }
     }
 }
