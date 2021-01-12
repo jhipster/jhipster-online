@@ -97,7 +97,7 @@ public class CiCdService {
             this.jHipsterService.addCiCd(ciCdId, workingDir, ciCdTool);
 
             this.gitService.addAllFilesToRepository(git, workingDir);
-            this.gitService.commit(git, workingDir, "Configure " + ciCdTool.capitalize() + " Continuous Integration");
+            this.gitService.commit(git, workingDir, "Configure " + ciCdTool.getCiCdToolName() + " Continuous Integration");
 
             this.logsService.addLog(
                     ciCdId,
@@ -107,7 +107,7 @@ public class CiCdService {
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
-            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.capitalize();
+            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.getCiCdToolName();
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
             if (isGitHub) {
