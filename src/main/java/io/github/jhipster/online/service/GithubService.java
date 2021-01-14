@@ -247,7 +247,7 @@ public class GithubService implements GitProviderService {
     )
         throws IOException {
         Map<String, GHOrganization> githubOrganizations = gitHub.getMyOrganizations();
-        for (Map.Entry<String,Object> entry : githubOrganizations.entrySet()) {
+        for (Map.Entry<String, GHOrganization> entry : githubOrganizations.entrySet()) {
             String githubOrganizationName = entry.getKey();
             log.debug("Syncing company `{}`", githubOrganizationName);
             GitCompany company;
