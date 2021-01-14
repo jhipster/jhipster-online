@@ -409,7 +409,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<String> getProjects(String organizationName, GitProvider gitProvider) {
         Collection<GitCompany> organizations = this.getOrganizations(gitProvider);
-        if (organizations.size() == 0) {
+        if (organizations.isEmpty()) {
             return Collections.emptyList();
         }
         Optional<GitCompany> organization = organizations.stream().filter(test -> test.getName().equals(organizationName)).findFirst();
