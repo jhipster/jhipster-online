@@ -85,7 +85,6 @@ public class UserService {
         AuthorityRepository authorityRepository,
         GithubService githubService,
         CacheManager cacheManager,
-        MailService mailService,
         JHipsterProperties jHipsterProperties,
         GitCompanyRepository gitCompanyRepository,
         GitlabService gitlabService,
