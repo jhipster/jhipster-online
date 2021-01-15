@@ -158,7 +158,8 @@ public class JdlResource {
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
         jdlId = SanitizeInputs.sanitizeInput(jdlId);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
-        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId, organizationName, projectName);
+        String label = isGitHub ? "GitHub" : "GitLab";
+        log.info("Applying JDL `{}` on {} project {}/{}", jdlId, label, organizationName, projectName);
         User user = userService.getUser();
 
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
