@@ -22,27 +22,27 @@ on:
     - cron: '0 0 31 12 *' # Repeats December 31st every year
 jobs:
   pipeline:
-    name: jhipster-online copyright update
+    name: copyright update
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
     steps:
-      # Checkout with all submodules
+      # Checkout
       - uses: actions/checkout@v2
 
-      # Adjust the copyright date
+      # Update the copyright headers
       - name: Find and Replace
         run: |
           CURRENT_YEAR=$(date +'%Y')
           NEW_YEAR=$(($CURRENT_YEAR + 1))
           grep -rlZ "Copyright 2017-$CURRENT_YEAR" . | xargs -0 sed -i "s/Copyright 2017-$CURRENT_YEAR/Copyright 2017-$NEW_YEAR/g"
 
-      # Create PR in jhipster-online with updated submodules
+      # Create PR
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: 'feat: update copyright dates'
+          commit-message: 'feat: update copyright headers'
           author: 'jhipster-bot <jhipster-bot@users.noreply.github.com>'
-          branch: 'copyright-date-update'
-          title: 'Update Copyright Dates'
-          body: 'This is an automated pull request to update the copyright dates of jhipster-online'
+          branch: 'copyright-header-update'
+          title: 'Update Copyright Headers'
+          body: 'This is an automated pull request to update the copyright headers'
