@@ -50,7 +50,6 @@ export const displayNames = {
   monolithic: 'Monolithic',
   gateway: 'Gateway',
   microservice: 'Microservice',
-  uaa: 'UAA',
 
   default: 'None/Other'
 };

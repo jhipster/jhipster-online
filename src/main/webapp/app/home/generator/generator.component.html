@@ -39,7 +39,6 @@
                         <option value="monolith">Monolithic application (recommended for simple projects)</option>
                         <option value="microservice">Microservice application</option>
                         <option value="gateway">Microservice gateway</option>
-                        <option value="uaa">JHipster UAA server (for microservice OAuth2 authentication)</option>
                     </select>
                 </div>
             </div>
@@ -88,17 +87,7 @@
                         <option value="session" [hidden]="model.serviceDiscoveryType === 'eureka' || model.applicationType !== 'monolith'">HTTP Session
                             Authentication (stateful, default Spring Security mechanism)
                         </option>
-                        <option value="uaa" [hidden]="model.applicationType !== 'gateway' && model.applicationType !== 'microservice'">Authentication
-                            with
-                            JHipster UAA server (the server must be generated separately)
-                        </option>
                     </select>
-                </div>
-                <div class="form-group" [hidden]="model.applicationType !== 'uaa'">
-                    <label for="uaaBaseName">What is the folder path of your UAA application?</label>
-                    <input type="text" class="form-control" id="uaaBaseName" [(ngModel)]="model.uaaBaseName"
-                           name="uaaBaseName" #uaaBaseName="ngModel"
-                           required>
                 </div>
                 <div class="form-group">
                     <label for="databaseType">Which <i>type</i> of database would you like to use?</label>
@@ -109,7 +98,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">Couchbase</option>
                         <option value="neo4j">Neo4j</option>
-                        <option value="no" [hidden]="model.authenticationType === 'uaa'">No database</option>
+                        <option value="no">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
