@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -55,8 +55,10 @@ export class AuthServerProvider {
     const jwt = response.id_token;
     if (rememberMe) {
       this.$localStorage.store('authenticationToken', jwt);
+      this.$sessionStorage.clear('authenticationToken');
     } else {
       this.$sessionStorage.store('authenticationToken', jwt);
+      this.$localStorage.clear('authenticationToken');
     }
   }
 }

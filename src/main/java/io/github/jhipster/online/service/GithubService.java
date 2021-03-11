@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -32,10 +32,7 @@ import java.net.ConnectException;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GHMyself;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -204,10 +201,8 @@ public class GithubService implements GitProviderService {
         log.info("Creating Pull Request on repository {} / {}", organization, repositoryName);
 
         GitHub gitHub = this.getConnection(user);
-        int number = gitHub
-            .getRepository(organization + "/" + repositoryName)
-            .createPullRequest(title, branchName, "main", body)
-            .getNumber();
+        GHRepository repository = gitHub.getRepository(organization + "/" + repositoryName);
+        int number = repository.createPullRequest(title, branchName, repository.getDefaultBranch(), body).getNumber();
 
         log.info("Pull Request created!");
         return number;
@@ -252,7 +247,8 @@ public class GithubService implements GitProviderService {
     )
         throws IOException {
         Map<String, GHOrganization> githubOrganizations = gitHub.getMyOrganizations();
-        for (String githubOrganizationName : githubOrganizations.keySet()) {
+        for (Map.Entry<String, GHOrganization> entry : githubOrganizations.entrySet()) {
+            String githubOrganizationName = entry.getKey();
             log.debug("Syncing company `{}`", githubOrganizationName);
             GitCompany company;
             // Create company if it does not already exist

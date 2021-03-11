@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -97,7 +97,7 @@ public class CiCdService {
             this.jHipsterService.addCiCd(ciCdId, workingDir, ciCdTool);
 
             this.gitService.addAllFilesToRepository(git, workingDir);
-            this.gitService.commit(git, workingDir, "Configure " + ciCdTool.capitalize() + " Continuous Integration");
+            this.gitService.commit(git, workingDir, "Configure " + ciCdTool.getCiCdToolName() + " Continuous Integration");
 
             this.logsService.addLog(
                     ciCdId,
@@ -107,7 +107,7 @@ public class CiCdService {
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
-            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.capitalize();
+            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.getCiCdToolName();
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
             if (isGitHub) {

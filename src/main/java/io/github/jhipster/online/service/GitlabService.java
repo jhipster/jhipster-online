@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -28,14 +28,11 @@ import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.interfaces.GitProviderService;
 import java.io.IOException;
-import java.lang.module.FindException;
 import java.net.ConnectException;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.gitlab.api.GitlabAPI;
-import org.gitlab.api.GitlabAPIException;
 import org.gitlab.api.TokenType;
 import org.gitlab.api.models.GitlabMergeRequest;
 import org.gitlab.api.models.GitlabProject;
@@ -264,8 +261,9 @@ public class GitlabService implements GitProviderService {
         throws IOException {
         log.info("Creating Merge Request on repository {} / {}", group, repositoryName);
         GitlabAPI gitlab = getConnection(user);
-        int number = gitlab.getProject(group, repositoryName).getId();
-        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(number, branchName, "main", null, title);
+        GitlabProject gitlabProject = gitlab.getProject(group, repositoryName);
+        int projectId = gitlabProject.getId();
+        GitlabMergeRequest mergeRequest = gitlab.createMergeRequest(projectId, branchName, gitlabProject.getDefaultBranch(), null, title);
         log.info("Merge Request created!");
         return mergeRequest.getIid();
     }

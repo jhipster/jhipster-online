@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  * <p>
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -36,6 +36,12 @@ public class JHipsterService {
 
     public final Logger log = LoggerFactory.getLogger(JHipsterService.class);
 
+    private static final String FORCE_INSIGHT = "--force-insight";
+
+    private static final String SKIP_CHECKS = "--skip-checks";
+
+    private static final String SKIP_INSTALL = "--skip-install";
+
     private final LogsService logsService;
 
     private final Executor taskExecutor;
@@ -65,9 +71,9 @@ public class JHipsterService {
                 generationId,
                 workingDir,
                 jhipsterCommand,
-                "--force-insight",
-                "--skip-checks",
-                "--skip-install",
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
                 "--skip-cache",
                 "--skip-git",
                 "--prettier-java"
@@ -82,9 +88,9 @@ public class JHipsterService {
                 jhipsterCommand,
                 "import-jdl",
                 jdlFileName + ".jh",
-                "--force-insight",
-                "--skip-checks",
-                "--skip-install",
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
                 "--force"
             );
     }
@@ -101,9 +107,9 @@ public class JHipsterService {
                 jhipsterCommand,
                 "ci-cd",
                 "--autoconfigure-" + ciCdTool.command(),
-                "--force-insight",
-                "--skip-checks",
-                "--skip-install",
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
                 "--force"
             );
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -115,8 +115,7 @@ class CustomAuditEventRepositoryIT {
         assertThat(persistentAuditEvent.getAuditEventType()).isEqualTo(event.getType());
         assertThat(persistentAuditEvent.getData()).containsKey("test-key");
         String actualData = persistentAuditEvent.getData().get("test-key");
-        assertThat(actualData).hasSize(EVENT_DATA_COLUMN_MAX_LENGTH);
-        assertThat(actualData).isSubstringOf(largeData);
+        assertThat(actualData).hasSize(EVENT_DATA_COLUMN_MAX_LENGTH).isSubstringOf(largeData);
         assertThat(persistentAuditEvent.getAuditEventDate().truncatedTo(ChronoUnit.MILLIS))
             .isEqualTo(event.getTimestamp().truncatedTo(ChronoUnit.MILLIS));
     }

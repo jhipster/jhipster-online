@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -158,7 +158,8 @@ public class JdlResource {
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
         jdlId = SanitizeInputs.sanitizeInput(jdlId);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
-        log.info("Applying JDL `{}` on " + (isGitHub ? "GitHub" : "GitLab") + " project {}/{}", jdlId, organizationName, projectName);
+        String label = isGitHub ? "GitHub" : "GitLab";
+        log.info("Applying JDL `{}` on {} project {}/{}", jdlId, label, organizationName, projectName);
         User user = userService.getUser();
 
         Optional<JdlMetadata> jdlMetadata = this.jdlMetadataService.findOne(jdlId);
