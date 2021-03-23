@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,26 +19,26 @@
 import { Route } from '@angular/router';
 
 import { CiCdComponent } from './ci-cd.component';
-import { UserRouteAccessService } from 'app/core';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 
 export const CI_CD_ROUTE: Route = {
-    path: 'ci-cd',
-    component: CiCdComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Continuous Integration'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'ci-cd',
+  component: CiCdComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Continuous Integration'
+  },
+  canActivate: [UserRouteAccessService]
 };
 
 export const CI_CD_OUTPUT_ROUTE: Route = {
-    path: 'ci-cd-output',
-    component: CiCdOutputDialogComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Continuous Integration'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+  path: 'ci-cd-output',
+  component: CiCdOutputDialogComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Continuous Integration'
+  },
+  canActivate: [UserRouteAccessService],
+  outlet: 'popup'
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,23 +19,27 @@
 
 package io.github.jhipster.online.service;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.domain.EntityStats;
+import io.github.jhipster.online.domain.EntityStats_;
+import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.enums.EntityStatColumn;
 import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.dto.*;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.service.util.QueryUtil;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing EntityStats.
@@ -50,20 +54,29 @@ public class EntityStatsService {
 
     private final EntityManager entityManager;
 
-    public EntityStatsService(EntityStatsRepository entityStatsRepository, EntityManager entityManager) {
+    private final EntityStatsMapper entityStatsMapper;
+
+    public EntityStatsService(
+        EntityStatsRepository entityStatsRepository,
+        EntityManager entityManager,
+        EntityStatsMapper entityStatsMapper
+    ) {
         this.entityStatsRepository = entityStatsRepository;
         this.entityManager = entityManager;
+        this.entityStatsMapper = entityStatsMapper;
     }
 
     /**
-     * Save a entityStats.
+     * Save a entityStatsDTO.
      *
-     * @param entityStats the entity to save
+     * @param entityStatsDTO the entity to save
      * @return the persisted entity
      */
-    public EntityStats save(EntityStats entityStats) {
-        log.debug("Request to save EntityStats : {}", entityStats);
-        return entityStatsRepository.save(entityStats);
+    public EntityStatsDTO save(EntityStatsDTO entityStatsDTO) {
+        log.debug("Request to save EntityStats : {}", entityStatsDTO);
+        EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
+        entityStats = entityStatsRepository.save(entityStats);
+        return entityStatsMapper.toDto(entityStats);
     }
 
     /**
@@ -76,7 +89,6 @@ public class EntityStatsService {
         log.debug("Request to get all EntityStats");
         return entityStatsRepository.findAll();
     }
-
 
     /**
      * Get one entityStats by id.
@@ -111,7 +123,8 @@ public class EntityStatsService {
         Root<EntityStats> root = query.from(EntityStats.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
 
-        query.select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
+        query
+            .select(builder.construct(RawSQL.class, root.get(dbTemporalFunction.getFieldName()), builder.count(root)))
             .where(builder.greaterThan(root.get(EntityStats_.date).as(Instant.class), parameter))
             .groupBy(root.get(dbTemporalFunction.getFieldName()));
 
@@ -124,7 +137,15 @@ public class EntityStatsService {
         Root<EntityStats> root = query.from(EntityStats.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
 
-        query.select(builder.construct(RawSQLField.class, root.get(dbTemporalFunction.getFieldName()), root.get(field.getDatabaseValue()).as(String.class), builder.count(root)))
+        query
+            .select(
+                builder.construct(
+                    RawSQLField.class,
+                    root.get(dbTemporalFunction.getFieldName()),
+                    root.get(field.getDatabaseValue()).as(String.class),
+                    builder.count(root)
+                )
+            )
             .where(builder.greaterThan(root.get(EntityStats_.date).as(Instant.class), parameter))
             .groupBy(root.get(field.getDatabaseValue()), root.get(dbTemporalFunction.getFieldName()));
 

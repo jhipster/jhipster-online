@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,26 +19,26 @@
 import { Route } from '@angular/router';
 
 import { GeneratorComponent } from './generator.component';
-import { UserRouteAccessService } from 'app/core';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
 
 export const GENERATOR_ROUTE: Route = {
-    path: 'generate-application',
-    component: GeneratorComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Generate a new application'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'generate-application',
+  component: GeneratorComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Generate a new application'
+  },
+  canActivate: [UserRouteAccessService]
 };
 
 export const GENERATOR_OUTPUT_ROUTE: Route = {
-    path: 'generate-application-output',
-    component: GeneratorOutputDialogComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Generating an application'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+  path: 'generate-application-output',
+  component: GeneratorOutputDialogComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Generating an application'
+  },
+  canActivate: [UserRouteAccessService],
+  outlet: 'popup'
 };

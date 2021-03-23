@@ -1,44 +1,61 @@
+/**
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.service.enums;
-
-import org.junit.jupiter.api.Test;
-
-import java.time.Instant;
 
 import static java.time.Instant.parse;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TemporalValueTypeTest {
+import java.time.Instant;
+import org.junit.jupiter.api.Test;
+
+class TemporalValueTypeTest {
 
     @Test
-    public void assertThatYearToInstantIsCorrect() {
+    void assertThatYearToInstantIsCorrect() {
         Instant result = TemporalValueType.absoluteMomentToInstant(2018L, TemporalValueType.YEAR);
 
         assertThat(result).isEqualTo(parse("2018-01-01T00:00:00.000Z"));
     }
 
     @Test
-    public void assertThatAbsoluteMonthToInstantIsCorrect() {
+    void assertThatAbsoluteMonthToInstantIsCorrect() {
         Instant result = TemporalValueType.absoluteMomentToInstant(583L, TemporalValueType.MONTH);
 
         assertThat(result).isEqualTo(parse("2018-08-01T00:00:00.000Z"));
     }
 
     @Test
-    public void assertThatAbsoluteWeekToInstantIsCorrect() {
+    void assertThatAbsoluteWeekToInstantIsCorrect() {
         Instant result = TemporalValueType.absoluteMomentToInstant(2535L, TemporalValueType.WEEK);
 
         assertThat(result).isEqualTo(parse("2018-08-02T00:00:00.000Z"));
     }
 
     @Test
-    public void assertThatAbsoluteDayToInstantIsCorrect() {
+    void assertThatAbsoluteDayToInstantIsCorrect() {
         Instant result = TemporalValueType.absoluteMomentToInstant(17745L, TemporalValueType.DAY);
 
         assertThat(result).isEqualTo(parse("2018-08-02T00:00:00.000Z"));
     }
 
     @Test
-    public void assertThatAbsoluteHourToInstantIsCorrect() {
+    void assertThatAbsoluteHourToInstantIsCorrect() {
         Instant result = TemporalValueType.absoluteMomentToInstant(425885L, TemporalValueType.HOUR);
 
         assertThat(result).isEqualTo(parse("2018-08-02T05:00:00.000Z"));

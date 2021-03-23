@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,40 +17,23 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
-import { Principal } from '../auth/principal.service';
-import { AuthServerProvider } from '../auth/auth-jwt.service';
+import { Account } from 'app/core/user/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
+import { Login } from './login.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-    constructor(private principal: Principal, private authServerProvider: AuthServerProvider) {}
+  constructor(private accountService: AccountService, private authServerProvider: AuthServerProvider) {}
 
-    login(credentials, callback?) {
-        const cb = callback || function() {};
+  login(credentials: Login): Observable<Account | null> {
+    return this.authServerProvider.login(credentials).pipe(flatMap(() => this.accountService.identity(true)));
+  }
 
-        return new Promise((resolve, reject) => {
-            this.authServerProvider.login(credentials).subscribe(
-                data => {
-                    this.principal.identity(true).then(account => {
-                        resolve(data);
-                    });
-                    return cb();
-                },
-                err => {
-                    this.logout();
-                    reject(err);
-                    return cb(err);
-                }
-            );
-        });
-    }
-
-    loginWithToken(jwt, rememberMe) {
-        return this.authServerProvider.loginWithToken(jwt, rememberMe);
-    }
-
-    logout() {
-        this.authServerProvider.logout().subscribe();
-        this.principal.authenticate(null);
-    }
+  logout(): void {
+    this.authServerProvider.logout().subscribe(null, null, () => this.accountService.authenticate(null));
+  }
 }

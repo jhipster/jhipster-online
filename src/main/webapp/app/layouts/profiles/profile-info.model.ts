@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,9 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+export interface InfoResponse {
+  'display-ribbon-on-profiles'?: string;
+  git?: any;
+  build?: any;
+  activeProfiles?: string[];
+}
+
 export class ProfileInfo {
-    activeProfiles: string[];
-    ribbonEnv: string;
-    inProduction: boolean;
-    swaggerEnabled: boolean;
+  constructor(
+    public activeProfiles?: string[],
+    public ribbonEnv?: string,
+    public inProduction?: boolean,
+    public swaggerEnabled?: boolean
+  ) {}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,30 +19,28 @@
 
 package io.github.jhipster.online.service.yorc;
 
+import static java.time.ZonedDateTime.parse;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+
+import io.github.jhipster.online.JhonlineApp;
+import io.github.jhipster.online.repository.YoRCRepository;
+import io.github.jhipster.online.service.DataGenerationFixture;
+import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 import java.time.Instant;
 import java.util.List;
-
-import io.github.jhipster.online.service.DataGenerationFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import io.github.jhipster.online.JhonlineApp;
-import io.github.jhipster.online.repository.YoRCRepository;
-import io.github.jhipster.online.service.YoRCService;
-import io.github.jhipster.online.service.dto.TemporalCountDTO;
-import io.github.jhipster.online.service.enums.TemporalValueType;
 import org.springframework.transaction.annotation.Transactional;
-
-import static java.time.ZonedDateTime.parse;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class YoRCServiceCountsIntTest {
+class YoRCServiceCountsIntTest {
 
     @Autowired
     private YoRCRepository yoRCRepository;
@@ -52,7 +50,7 @@ public class YoRCServiceCountsIntTest {
 
     @Transactional
     @Test
-    public void assertThatYearCountIsCorrect() {
+    void assertThatYearCountIsCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalCountDTO> result = yoRCService.getCount(
@@ -63,15 +61,12 @@ public class YoRCServiceCountsIntTest {
         assertThat(result)
             .hasSize(2)
             .extracting(TemporalCountDTO::getDate, TemporalCountDTO::getCount)
-            .contains(
-                tuple(Instant.parse("2018-01-01T00:00:00Z"), 8L),
-                tuple(Instant.parse("2019-01-01T00:00:00Z"), 4L)
-            );
+            .contains(tuple(Instant.parse("2018-01-01T00:00:00Z"), 8L), tuple(Instant.parse("2019-01-01T00:00:00Z"), 4L));
     }
 
     @Transactional
     @Test
-    public void assertThatMonthCountIsCorrect() {
+    void assertThatMonthCountIsCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalCountDTO> result = yoRCService.getCount(
@@ -95,7 +90,7 @@ public class YoRCServiceCountsIntTest {
 
     @Transactional
     @Test
-    public void assertThatWeekCountIsCorrect() {
+    void assertThatWeekCountIsCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalCountDTO> result = yoRCService.getCount(
@@ -115,7 +110,7 @@ public class YoRCServiceCountsIntTest {
 
     @Transactional
     @Test
-    public void assertThatDayCountIsCorrect() {
+    void assertThatDayCountIsCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalCountDTO> result = yoRCService.getCount(
@@ -137,7 +132,7 @@ public class YoRCServiceCountsIntTest {
 
     @Transactional
     @Test
-    public void assertThatHourCountIsCorrect() {
+    void assertThatHourCountIsCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalCountDTO> result = yoRCService.getCount(

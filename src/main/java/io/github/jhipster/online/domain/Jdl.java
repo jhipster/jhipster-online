@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,13 +18,12 @@
  */
 package io.github.jhipster.online.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A JDL.
@@ -87,11 +86,11 @@ public class Jdl implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Jdl jdlMetadata = (Jdl) o;
-        if (jdlMetadata.getId() == null || getId() == null) {
+        Jdl jdlMetadataObject = (Jdl) o;
+        if (jdlMetadataObject.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), jdlMetadata.getId());
+        return Objects.equals(getId(), jdlMetadataObject.getId());
     }
 
     @Override
@@ -101,8 +100,6 @@ public class Jdl implements Serializable {
 
     @Override
     public String toString() {
-        return "JdlMetadata{" +
-            "id=" + getId() +
-            "}";
+        return "JdlMetadata{" + "id=" + getId() + "}";
     }
 }

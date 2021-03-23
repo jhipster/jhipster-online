@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,39 +17,30 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { flatMap } from 'rxjs/operators';
 
-import { LoginModalService } from 'app/core';
+import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivateService } from './activate.service';
 
 @Component({
-    selector: 'jhi-activate',
-    templateUrl: './activate.component.html'
+  selector: 'jhi-activate',
+  templateUrl: './activate.component.html'
 })
 export class ActivateComponent implements OnInit {
-    error: string;
-    success: string;
-    modalRef: NgbModalRef;
+  error = false;
+  success = false;
 
-    constructor(private activateService: ActivateService, private loginModalService: LoginModalService, private route: ActivatedRoute) {}
+  constructor(private activateService: ActivateService, private loginModalService: LoginModalService, private route: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.route.queryParams.subscribe(params => {
-            this.activateService.get(params['key']).subscribe(
-                () => {
-                    this.error = null;
-                    this.success = 'OK';
-                },
-                () => {
-                    this.success = null;
-                    this.error = 'ERROR';
-                }
-            );
-        });
-    }
+  ngOnInit(): void {
+    this.route.queryParams.pipe(flatMap(params => this.activateService.get(params.key))).subscribe(
+      () => (this.success = true),
+      () => (this.error = true)
+    );
+  }
 
-    login() {
-        this.modalRef = this.loginModalService.open();
-    }
+  login(): void {
+    this.loginModalService.open();
+  }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,22 +19,24 @@
 
 package io.github.jhipster.online.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jhipster.online.domain.*;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
+import io.github.jhipster.online.service.mapper.SubGenEventMapper;
+import io.github.jhipster.online.service.mapper.YoRCMapper;
+import io.github.jhipster.online.util.DateUtil;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
-import io.github.jhipster.online.web.rest.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.github.jhipster.online.domain.*;
 
 @Service
 public class StatisticsService {
@@ -49,14 +51,28 @@ public class StatisticsService {
 
     private final EntityStatsService entityStatsService;
 
-    public StatisticsService(YoRCService yoRCService,
-                             GeneratorIdentityService generatorIdentityService,
-                             SubGenEventService subGenEventService,
-                             EntityStatsService entityStatsService) {
+    private final SubGenEventMapper subGenEventMapper;
+
+    private final EntityStatsMapper entityStatsMapper;
+
+    private YoRCMapper yoRCMapper;
+
+    public StatisticsService(
+        YoRCService yoRCService,
+        GeneratorIdentityService generatorIdentityService,
+        SubGenEventService subGenEventService,
+        EntityStatsService entityStatsService,
+        SubGenEventMapper subGenEventMapper,
+        EntityStatsMapper entityStatsMapper,
+        YoRCMapper yoRCMapper
+    ) {
         this.yoRCService = yoRCService;
         this.generatorIdentityService = generatorIdentityService;
         this.subGenEventService = subGenEventService;
         this.entityStatsService = entityStatsService;
+        this.subGenEventMapper = subGenEventMapper;
+        this.entityStatsMapper = entityStatsMapper;
+        this.yoRCMapper = yoRCMapper;
     }
 
     @Transactional
@@ -81,7 +97,8 @@ public class StatisticsService {
         Instant now = Instant.now();
         DateUtil.setAbsoluteDate(yorc, now);
 
-        yorc.jhipsterVersion(generatorVersion)
+        yorc
+            .jhipsterVersion(generatorVersion)
             .gitProvider(gitProvider)
             .nodeVersion(nodeVersion)
             .os(os)
@@ -104,13 +121,14 @@ public class StatisticsService {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
 
-        yoRCService.save(yorc);
+        yoRCService.save(yoRCMapper.toDto(yorc));
     }
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addSubGenEvent(SubGenEvent subGenEvent, String generatorGuid)  {
+    public void addSubGenEvent(SubGenEventDTO subGenEventDTO, String generatorGuid) {
         Instant now = Instant.now();
+        SubGenEvent subGenEvent = subGenEventMapper.toEntity(subGenEventDTO);
         DateUtil.setAbsoluteDate(subGenEvent, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
@@ -122,13 +140,14 @@ public class StatisticsService {
         } else {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
-        subGenEventService.save(subGenEvent);
+        subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
     }
 
     @Transactional
     @Async("statisticsExecutor")
-    public void addEntityStats(EntityStats entityStats, String generatorGuid)  {
+    public void addEntityStats(EntityStatsDTO entityStatsDTO, String generatorGuid) {
         Instant now = Instant.now();
+        EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
         DateUtil.setAbsoluteDate(entityStats, now);
 
         this.tryToCreateGeneratorIdentityAndIgnoreErrors(generatorGuid);
@@ -140,7 +159,7 @@ public class StatisticsService {
         } else {
             log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
         }
-        entityStatsService.save(entityStats);
+        entityStatsService.save(entityStatsMapper.toDto(entityStats));
     }
 
     @Transactional

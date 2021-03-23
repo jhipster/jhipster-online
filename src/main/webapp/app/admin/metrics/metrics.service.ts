@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -22,15 +22,20 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 
+export type MetricsKey = 'jvm' | 'http.server.requests' | 'cache' | 'services' | 'databases' | 'garbageCollector' | 'processMetrics';
+export type Metrics = { [key in MetricsKey]: any };
+export type Thread = any;
+export type ThreadDump = { threads: Thread[] };
+
 @Injectable({ providedIn: 'root' })
-export class JhiMetricsService {
-    constructor(private http: HttpClient) {}
+export class MetricsService {
+  constructor(private http: HttpClient) {}
 
-    getMetrics(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/metrics');
-    }
+  getMetrics(): Observable<Metrics> {
+    return this.http.get<Metrics>(SERVER_API_URL + 'management/jhimetrics');
+  }
 
-    threadDump(): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'management/threaddump');
-    }
+  threadDump(): Observable<ThreadDump> {
+    return this.http.get<ThreadDump>(SERVER_API_URL + 'management/threaddump');
+  }
 }

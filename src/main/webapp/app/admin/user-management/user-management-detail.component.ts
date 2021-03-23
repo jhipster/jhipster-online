@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,23 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from 'app/core';
+import { User } from 'app/core/user/user.model';
 
 @Component({
-    selector: 'jhi-user-mgmt-detail',
-    templateUrl: './user-management-detail.component.html'
+  selector: 'jhi-user-mgmt-detail',
+  templateUrl: './user-management-detail.component.html'
 })
-export class UserMgmtDetailComponent implements OnInit {
-    user: User;
+export class UserManagementDetailComponent implements OnInit {
+  user: User | null = null;
 
-    constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.route.data.subscribe(({ user }) => {
-            this.user = user.body ? user.body : user;
-        });
-    }
+  ngOnInit(): void {
+    this.route.data.subscribe(({ user }) => (this.user = user));
+  }
 }

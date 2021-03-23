@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,13 +18,13 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GithubCallbackService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    saveToken(gitProvider: string, token: string): Observable<HttpResponse<string>> {
-        return this.http.post<string>(`api/${gitProvider}/save-token`, token, { observe: 'response' });
-    }
+  saveToken(gitProvider: string, token: string): Observable<HttpResponse<string>> {
+    return this.http.post<string>(`api/${gitProvider}/save-token`, token, { observe: 'response' });
+  }
 }

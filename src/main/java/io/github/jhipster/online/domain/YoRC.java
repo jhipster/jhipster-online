@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,19 +19,18 @@
 
 package io.github.jhipster.online.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.*;
-import javax.persistence.*;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import io.github.jhipster.online.domain.deserializer.YoRCDeserializer;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A YoRC.
@@ -134,6 +133,9 @@ public class YoRC implements Serializable, CompleteDate {
 
     @Column(name = "client_framework")
     private String clientFramework;
+
+    @Column(name = "with_admin_ui")
+    private Boolean withAdminUi;
 
     @Column(name = "use_sass")
     private Boolean useSass;
@@ -556,6 +558,19 @@ public class YoRC implements Serializable, CompleteDate {
         this.clientFramework = clientFramework;
     }
 
+    public Boolean isWithAdminUi() {
+        return withAdminUi;
+    }
+
+    public YoRC withAdminUi(Boolean withAdminUi) {
+        this.withAdminUi = withAdminUi;
+        return this;
+    }
+
+    public void setWithAdminUi(Boolean withAdminUi) {
+        this.withAdminUi = withAdminUi;
+    }
+
     public Boolean isUseSass() {
         return useSass;
     }
@@ -708,6 +723,7 @@ public class YoRC implements Serializable, CompleteDate {
     public void setOwner(GeneratorIdentity ownerIdentity) {
         this.owner = ownerIdentity;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -732,46 +748,123 @@ public class YoRC implements Serializable, CompleteDate {
 
     @Override
     public String toString() {
-        return "YoRC{" +
-            "id=" + getId() +
-            ", jhipsterVersion='" + getJhipsterVersion() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
-            ", gitProvider='" + getGitProvider() + "'" +
-            ", nodeVersion='" + getNodeVersion() + "'" +
-            ", os='" + getOs() + "'" +
-            ", arch='" + getArch() + "'" +
-            ", cpu='" + getCpu() + "'" +
-            ", cores='" + getCores() + "'" +
-            ", memory='" + getMemory() + "'" +
-            ", userLanguage='" + getUserLanguage() + "'" +
-            ", year=" + getYear() +
-            ", month=" + getMonth() +
-            ", week=" + getWeek() +
-            ", day=" + getDay() +
-            ", hour=" + getHour() +
-            ", serverPort='" + getServerPort() + "'" +
-            ", authenticationType='" + getAuthenticationType() + "'" +
-            ", cacheProvider='" + getCacheProvider() + "'" +
-            ", enableHibernateCache='" + isEnableHibernateCache() + "'" +
-            ", websocket='" + isWebsocket() + "'" +
-            ", databaseType='" + getDatabaseType() + "'" +
-            ", devDatabaseType='" + getDevDatabaseType() + "'" +
-            ", prodDatabaseType='" + getProdDatabaseType() + "'" +
-            ", searchEngine='" + isSearchEngine() + "'" +
-            ", messageBroker='" + isMessageBroker() + "'" +
-            ", serviceDiscoveryType='" + isServiceDiscoveryType() + "'" +
-            ", buildTool='" + getBuildTool() + "'" +
-            ", enableSwaggerCodegen='" + isEnableSwaggerCodegen() + "'" +
-            ", clientFramework='" + getClientFramework() + "'" +
-            ", useSass='" + isUseSass() + "'" +
-            ", clientPackageManager='" + getClientPackageManager() + "'" +
-            ", applicationType='" + getApplicationType() + "'" +
-            ", jhiPrefix='" + getJhiPrefix() + "'" +
-            ", enableTranslation='" + isEnableTranslation() + "'" +
-            ", nativeLanguage='" + getNativeLanguage() + "'" +
-            ", hasProtractor='" + isHasProtractor() + "'" +
-            ", hasGatling='" + isHasGatling() + "'" +
-            ", hasCucumber='" + isHasCucumber() + "'" +
-            "}";
+        return (
+            "YoRC{" +
+            "id=" +
+            getId() +
+            ", jhipsterVersion='" +
+            getJhipsterVersion() +
+            "'" +
+            ", creationDate='" +
+            getCreationDate() +
+            "'" +
+            ", gitProvider='" +
+            getGitProvider() +
+            "'" +
+            ", nodeVersion='" +
+            getNodeVersion() +
+            "'" +
+            ", os='" +
+            getOs() +
+            "'" +
+            ", arch='" +
+            getArch() +
+            "'" +
+            ", cpu='" +
+            getCpu() +
+            "'" +
+            ", cores='" +
+            getCores() +
+            "'" +
+            ", memory='" +
+            getMemory() +
+            "'" +
+            ", userLanguage='" +
+            getUserLanguage() +
+            "'" +
+            ", year=" +
+            getYear() +
+            ", month=" +
+            getMonth() +
+            ", week=" +
+            getWeek() +
+            ", day=" +
+            getDay() +
+            ", hour=" +
+            getHour() +
+            ", serverPort='" +
+            getServerPort() +
+            "'" +
+            ", authenticationType='" +
+            getAuthenticationType() +
+            "'" +
+            ", cacheProvider='" +
+            getCacheProvider() +
+            "'" +
+            ", enableHibernateCache='" +
+            isEnableHibernateCache() +
+            "'" +
+            ", websocket='" +
+            isWebsocket() +
+            "'" +
+            ", databaseType='" +
+            getDatabaseType() +
+            "'" +
+            ", devDatabaseType='" +
+            getDevDatabaseType() +
+            "'" +
+            ", prodDatabaseType='" +
+            getProdDatabaseType() +
+            "'" +
+            ", searchEngine='" +
+            isSearchEngine() +
+            "'" +
+            ", messageBroker='" +
+            isMessageBroker() +
+            "'" +
+            ", serviceDiscoveryType='" +
+            isServiceDiscoveryType() +
+            "'" +
+            ", buildTool='" +
+            getBuildTool() +
+            "'" +
+            ", enableSwaggerCodegen='" +
+            isEnableSwaggerCodegen() +
+            "'" +
+            ", clientFramework='" +
+            getClientFramework() +
+            "'" +
+            ", withAdminUi='" +
+            isWithAdminUi() +
+            "'" +
+            ", useSass='" +
+            isUseSass() +
+            "'" +
+            ", clientPackageManager='" +
+            getClientPackageManager() +
+            "'" +
+            ", applicationType='" +
+            getApplicationType() +
+            "'" +
+            ", jhiPrefix='" +
+            getJhiPrefix() +
+            "'" +
+            ", enableTranslation='" +
+            isEnableTranslation() +
+            "'" +
+            ", nativeLanguage='" +
+            getNativeLanguage() +
+            "'" +
+            ", hasProtractor='" +
+            isHasProtractor() +
+            "'" +
+            ", hasGatling='" +
+            isHasGatling() +
+            "'" +
+            ", hasCucumber='" +
+            isHasCucumber() +
+            "'" +
+            "}"
+        );
     }
 }

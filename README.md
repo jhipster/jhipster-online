@@ -1,11 +1,11 @@
 # JHipster Online
 
-[![Azure DevOps Build Status][azure-devops-image]][azure-devops-url-main]  [![Build Status][travis-image]][travis-url]  [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
+[![Build Status][github-actions-jhonline-image]][github-actions-url] [![Docker Pulls](https://img.shields.io/docker/pulls/jhipster/jhipster-online.svg)](https://hub.docker.com/r/jhipster/jhipster-online/)
 
 JHipster Online is a Web application that allows to generate [JHipster applications](https://www.jhipster.tech/)
 without installing JHipster on your machine.
 
-This is an Open Source project ([Apache 2 license](https://github.com/jhipster/jhipster-online/blob/master/LICENSE.txt))
+This is an Open Source project ([Apache 2 license](https://github.com/jhipster/jhipster-online/blob/main/LICENSE.txt))
 that powers the [https://start.jhipster.tech/](https://start.jhipster.tech/) website.
 
 You can use [https://start.jhipster.tech/](https://start.jhipster.tech/) for free, but if you find a bug or need a specific
@@ -22,21 +22,21 @@ the next section for details on configuring the application.
 
 - Install and run the front-end:
 
-
-    yarn install && yarn start
-
+```
+yarn install && yarn start
+```
 
 - Run the database:
 
-
-    docker-compose -f src/main/docker/mysql.yml up -d
-
+```
+docker-compose -f src/main/docker/mysql.yml up -d
+```
 
 - Run the back-end:
 
-
-    ./mvnw
-
+```
+./mvnw
+```
 
 ## Specific configuration
 
@@ -53,10 +53,10 @@ command line to work, you need to have JHipster installed on your machine.
 We recommend you use the "Yarn installation" from the official [JHipster installation documentation](https://www.jhipster.tech/installation/).
 
 If you need more configuration options for running the JHipster command, you can modify:
- 
+
 - the location of the `jhipster` command
 - the timeout value for that command (the default is 120 seconds - please note that on our production server a generation usually
- takes 5 to 6 seconds)
+  takes 5 to 6 seconds)
 - the temporary folder in which the application will be generated (`/tmp` by default)
 
 Those are customized using the Spring Boot `application-*.yml` files as usual, for example:
@@ -79,10 +79,10 @@ files, using the standard `spring.datasource` keys.
 JHipster Online uses JWT to secure the application. For a production application, it is therefore **mandatory** that:
 
 - The `jhipster.security.authentication.jwt.key` is configured, and that key is stored securely (**not** commited in your application's Git repository).
-We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
-in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
+  We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
+  in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 - The application is only available through HTTPS. You can configure it using Spring Boot (please read the comments in the `application-prod.yml` file), or
-using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
+  using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 
 ### Mail
 
@@ -93,6 +93,7 @@ To configure e-mail sending, you need to configure the `jhipster.mail` keys (see
 and the Spring Boot standard `spring.mail` keys.
 
 When running the app with the `dev` profile, make sure to start the development mail server with:
+
 ```
 docker-compose -f src/main/docker/mailserver.yml up -d
 ```
@@ -113,8 +114,6 @@ behalf. JHipster Online uses `https://your-jhipster-online-url/api/github/callba
 
 JHipster Online also needs to have a specific "JHipster Bot" user configured, like the  
 [https://github.com/jhipster-bot](https://github.com/jhipster-bot) used by the official [JHipster Online website](https://start.jhipster.tech/).
-In order for JHipster Online to use that bot, it will need its OAuth token: log in as the "JHipster Bot" user, and go to
-"Settings > Developer Settings > Personal access tokens" and generate a new token.
 
 Here is the final configuration, that should be set up inside the `application-dev.yml` file for
 development, and inside the `application-prod.yml` file for production.
@@ -125,7 +124,6 @@ application:
         host: https://github.com # The GitHub to connect to (by default: the public GitHub instance)
         client-id: XXX # The OAuth Client ID of the application on GitHub
         client-secret: XXX # The OAuth Client secret of the application on GitHub
-        jhipster-bot-oauth-token: XXX # The "personal access token" of the JHipster Bot
 ```
 
 ### GitLab configuration
@@ -142,9 +140,9 @@ JHipster Online needs to have a specific "JHipster Bot" user configured: create 
 Once logged in, the required API credentials can be created by going to "Settings > Applications > Add new application".
 Create a new application:
 
- - Its name is `jhipster`
- - The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
- - It has the `api` and `read_user` scopes
+- Its name is `jhipster`
+- The redirect URI is `https://your-jhipster-online-url/api/gitlab/callback`
+- It has the `api` and `read_user` scopes
 
 Save that new application and store safely the `Application Id` and `Secret` values, so you can use them to configure
 the `application-*.yml` files.
@@ -166,22 +164,33 @@ application:
 
 To generate a production build, like any normal JHipster application, please run:
 
-    ./mvnw -Pprod clean package
+```
+./mvnw -Pprod clean package
+```
 
 ### Using Docker
+
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw package -Pprod dockerfile:build
+```
+./mvnw package -Pprod dockerfile:build
+```
 
 Then run:
 
-    docker-compose -f src/main/docker/app.yml up -d
+```
+docker-compose -f src/main/docker/app.yml up -d
+```
 
-## Building for GCP environment (include sql proxy)
+## Deployment to Google App Engine (GAE) Flexible Environment
 
-    ./mvnw clean package -Pgcp
+- The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
 
+- Creating a new release triggers the [deploy.yml GitHub Actions workflow](https://github.com/jhipster/jhipster-online/blob/main/.github/workflows/deploy.yml).
+
+- The above workflow includes a Docker build and pushes the image to [Google Container Registry](https://cloud.google.com/container-registry/). [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging) are used for
+  obtaining application logs and monitoring.
 
 ## Help and contribution to the project
 
@@ -190,7 +199,7 @@ of the [JHipster project](https://github.com/jhipster/generator-jhipster).
 
 ### If you have an issue, a bug or a feature request
 
-Please follow our [contribution guide](https://github.com/jhipster/jhipster-online/blob/master/CONTRIBUTING.md).
+Please follow our [contribution guide](https://github.com/jhipster/jhipster-online/blob/main/CONTRIBUTING.md).
 
 ### If you have a question or need help
 
@@ -199,10 +208,7 @@ You should [post it on Stack Overflow using the "jhipster" tag](https://stackove
 ### Code of conduct
 
 We have the same code of conduct as the main JHipster project:
-[JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/master/CODE_OF_CONDUCT.md).
+[JHipster code of conduct](https://github.com/jhipster/jhipster-online/blob/main/CODE_OF_CONDUCT.md).
 
-[azure-devops-image]: https://dev.azure.com/jhipster/jhipster-online/_apis/build/status/jhipster.jhipster-online?branchName=master
-[azure-devops-url-main]: https://dev.azure.com/jhipster/jhipster-online/_build
-
-[travis-image]: https://travis-ci.org/jhipster/jhipster-online.svg?branch=master
-[travis-url]: https://travis-ci.org/jhipster/jhipster-online
+[github-actions-jhonline-image]: https://github.com/jhipster/jhipster-online/workflows/Application%20CI/badge.svg
+[github-actions-url]: https://github.com/jhipster/jhipster-online/actions

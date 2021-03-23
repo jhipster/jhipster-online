@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -22,56 +22,56 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JdlService } from './jdl.service';
 
 @Component({
-    selector: 'jhi-jdl-output-dialog',
-    templateUrl: './jdl.output.component.html'
+  selector: 'jhi-jdl-output-dialog',
+  templateUrl: './jdl.output.component.html'
 })
 export class JdlOutputDialogComponent implements OnInit {
-    logs = '';
+  logs = '';
 
-    applyJdlId: string;
+  applyJdlId: string | undefined;
 
-    displayBranchUrl = false;
+  displayBranchUrl = false;
 
-    selectedGitProvider: string;
-    selectedGitCompany: string;
-    selectedGitRepository: string;
+  selectedGitProvider: string | undefined;
+  selectedGitCompany: string | undefined;
+  selectedGitRepository: string | undefined;
 
-    gitlabHost: string;
-    githubHost: string;
+  gitlabHost: string | undefined;
+  githubHost: string | undefined;
 
-    constructor(private activeModal: NgbActiveModal, private jdlService: JdlService) {}
+  constructor(private activeModal: NgbActiveModal, private jdlService: JdlService) {}
 
-    ngOnInit() {
+  ngOnInit(): void {
+    this.updateLogsData();
+  }
+
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
+
+  updateLogsData(): void {
+    if (this.applyJdlId === undefined) {
+      setTimeout(() => {
         this.updateLogsData();
-    }
-
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    updateLogsData() {
-        if (this.applyJdlId === undefined) {
+      }, 2000);
+    } else {
+      this.jdlService.getApplyJdlLogs(this.applyJdlId).subscribe(
+        (data: string) => {
+          this.logs += data;
+          if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
             setTimeout(() => {
-                this.updateLogsData();
+              this.updateLogsData();
             }, 2000);
-        } else {
-            this.jdlService.getApplyJdlLogs(this.applyJdlId).subscribe(
-                (data: string) => {
-                    this.logs += data;
-                    if (!data.endsWith('Generation finished\n') && !data.endsWith('Generation failed\n')) {
-                        setTimeout(() => {
-                            this.updateLogsData();
-                        }, 2000);
-                    } else {
-                        if (data.endsWith('Generation finished\n')) {
-                            this.displayBranchUrl = true;
-                        }
-                    }
-                },
-                () => {
-                    this.logs += 'Server disconnected...';
-                }
-            );
+          } else {
+            if (data.endsWith('Generation finished\n')) {
+              this.displayBranchUrl = true;
+            }
+          }
+        },
+        () => {
+          this.logs += 'Server disconnected...';
         }
+      );
     }
+  }
 }

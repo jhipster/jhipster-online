@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,6 +17,12 @@
  * limitations under the License.
  */
 package io.github.jhipster.online.web.rest;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.config.ApplicationProperties;
@@ -38,12 +44,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 /**
  * Test class for the GitResource REST controller.
  *
@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GitResourceIntTest {
+class GitResourceIntTest {
 
     @Autowired
     private HttpMessageConverter<?>[] httpMessageConverters;
@@ -79,14 +79,16 @@ public class GitResourceIntTest {
 
         GitResource gitResource = new GitResource(mockApplicationProperties, mockUserService, mockGithubService, mockGitlabService);
 
-        this.restMvc = MockMvcBuilders.standaloneSetup(gitResource)
-            .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+        this.restMvc =
+            MockMvcBuilders
+                .standaloneSetup(gitResource)
+                .setMessageConverters(httpMessageConverters)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
     }
 
     @Test
-    public void testGetGitConfiguration() throws Exception {
+    void testGetGitConfiguration() throws Exception {
         when(mockGithubService.getClientId()).thenReturn("fzerfzer54fer8gf48");
         when(mockGithubService.getHost()).thenReturn("http://github.com");
         when(mockGithubService.isEnabled()).thenReturn(true);
@@ -96,29 +98,25 @@ public class GitResourceIntTest {
         when(mockGitlabService.getRedirectUri()).thenReturn("http//localhost:9000/api/callback/github");
         when(mockGitlabService.isEnabled()).thenReturn(true);
 
-        restMvc.perform(
-            get("/api/git/config", "TestProvider")
-                .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
+        restMvc
+            .perform(get("/api/git/config", "TestProvider").accept(MediaType.APPLICATION_JSON))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 
     @Test
-    public void testSaveTokenWithUnknownGitProvider() throws Exception {
+    void testSaveTokenWithUnknownGitProvider() throws Exception {
         final String code = "ret66spihj6sio4bud2";
-        restMvc.perform(
-            post("/api/{gitProvider}/save-token", "TestProvider")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(code))
+        restMvc
+            .perform(post("/api/{gitProvider}/save-token", "TestProvider").contentType(MediaType.APPLICATION_JSON).content(code))
             .andExpect(status().isInternalServerError());
     }
 
     @Test
-    public void testRefreshGithubWithUnknownProvider() throws Exception {
+    void testRefreshGithubWithUnknownProvider() throws Exception {
         final String unavailableGitProvider = "TestProvider";
-        restMvc.perform(
-            post("/api/{gitProvider}/refresh", "TestProvider")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8))
+        restMvc
+            .perform(post("/api/{gitProvider}/refresh", "TestProvider").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string("Unknown git provider: " + unavailableGitProvider));
     }

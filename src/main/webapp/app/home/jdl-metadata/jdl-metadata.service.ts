@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,39 +18,40 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
 
-import { createRequestOption } from 'app/shared';
+import { createRequestOption } from 'app/shared/util/request-util';
 import { JdlMetadata } from './jdl-metadata.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JdlMetadataService {
-    private metadataUrl = 'api/jdl-metadata';
+  private metadataUrl = 'api/jdl-metadata';
 
-    private jdlUrl = 'api/jdl';
+  private jdlUrl = 'api/jdl';
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    update(jdlMetadata: JdlMetadata): Observable<JdlMetadata> {
-        const copy = this.convert(jdlMetadata);
-        return this.http.put<JdlMetadata>(this.metadataUrl, copy).map((res: JdlMetadata) => res);
-    }
+  update(jdlMetadata: JdlMetadata): Observable<JdlMetadata> {
+    const copy = this.convert(jdlMetadata);
+    return this.http.put<JdlMetadata>(this.metadataUrl, copy).pipe(map((res: JdlMetadata) => res));
+  }
 
-    find(id: number): Observable<JdlMetadata> {
-        return this.http.get<JdlMetadata>(`${this.metadataUrl}/${id}`);
-    }
+  find(id: number): Observable<JdlMetadata> {
+    return this.http.get<JdlMetadata>(`${this.metadataUrl}/${id}`);
+  }
 
-    query(req?: any): Observable<JdlMetadata[]> {
-        const options = createRequestOption(req);
-        return this.http.get<JdlMetadata[]>(this.metadataUrl, { params: options });
-    }
+  query(req?: any): Observable<JdlMetadata[]> {
+    const options = createRequestOption(req);
+    return this.http.get<JdlMetadata[]>(this.metadataUrl, { params: options });
+  }
 
-    delete(id: string): Observable<any> {
-        return this.http.delete<any>(`${this.jdlUrl}/${id}`);
-    }
+  delete(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.jdlUrl}/${id}`);
+  }
 
-    private convert(jdlMetadata: JdlMetadata): JdlMetadata {
-        const copy: JdlMetadata = Object.assign({}, jdlMetadata);
-        return copy;
-    }
+  private convert(jdlMetadata: JdlMetadata): JdlMetadata {
+    const copy: JdlMetadata = Object.assign({}, jdlMetadata);
+    return copy;
+  }
 }

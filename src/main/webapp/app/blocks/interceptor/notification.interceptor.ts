@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,44 +18,34 @@
  */
 import { JhiAlertService } from 'ng-jhipster';
 import { HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+@Injectable()
 export class NotificationInterceptor implements HttpInterceptor {
-    private alertService: JhiAlertService;
+  constructor(private alertService: JhiAlertService) {}
 
-    // tslint:disable-next-line: no-unused-variable
-    constructor(private injector: Injector) {
-        setTimeout(() => (this.alertService = injector.get(JhiAlertService)));
-    }
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(request).pipe(
+      tap((event: HttpEvent<any>) => {
+        if (event instanceof HttpResponse) {
+          let alert: string | null = null;
+          let alertParams = null;
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(request).pipe(
-            tap(
-                (event: HttpEvent<any>) => {
-                    if (event instanceof HttpResponse) {
-                        const arr = event.headers.keys();
-                        let alert = null;
-                        let alertParams = null;
-                        arr.forEach(entry => {
-                            if (entry.toLowerCase().endsWith('app-alert')) {
-                                alert = event.headers.get(entry);
-                            } else if (entry.toLowerCase().endsWith('app-params')) {
-                                alertParams = event.headers.get(entry);
-                            }
-                        });
-                        if (alert) {
-                            if (typeof alert === 'string') {
-                                if (this.alertService) {
-                                    this.alertService.success(alert, { param: alertParams }, null);
-                                }
-                            }
-                        }
-                    }
-                },
-                (err: any) => {}
-            )
-        );
-    }
+          event.headers.keys().forEach(entry => {
+            if (entry.toLowerCase().endsWith('app-alert')) {
+              alert = event.headers.get(entry);
+            } else if (entry.toLowerCase().endsWith('app-params')) {
+              alertParams = event.headers.get(entry);
+            }
+          });
+
+          if (alert) {
+            this.alertService.success(alert, { param: alertParams });
+          }
+        }
+      })
+    );
+  }
 }

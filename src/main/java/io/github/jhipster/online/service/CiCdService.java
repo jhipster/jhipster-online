@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,21 +19,17 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.File;
-
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.domain.User;
+import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.service.enums.CiCdTool;
+import java.io.File;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
-
-import io.github.jhipster.online.config.ApplicationProperties;
-import io.github.jhipster.online.domain.User;
-import io.github.jhipster.online.domain.enums.GitProvider;
 
 @Service
 public class CiCdService {
@@ -52,12 +48,14 @@ public class CiCdService {
 
     private final ApplicationProperties applicationProperties;
 
-    public CiCdService(LogsService logsService,
+    public CiCdService(
+        LogsService logsService,
         GitService gitService,
         GithubService githubService,
         GitlabService gitlabService,
         JHipsterService jHipsterService,
-        ApplicationProperties applicationProperties) {
+        ApplicationProperties applicationProperties
+    ) {
         this.logsService = logsService;
         this.gitService = gitService;
         this.githubService = githubService;
@@ -67,21 +65,26 @@ public class CiCdService {
     }
 
     /**
-     * Apply a JDL Model to an existing repository.
+     * Apply a CI-CD configuration to an existing repository.
      */
     @Async
-    public void configureCiCd(User user, String organizationName, String projectName, CiCdTool ciCdTool, String ciCdId,
-        GitProvider gitProvider) {
-        StopWatch watch = new StopWatch();
-        watch.start();
+    public void configureCiCd(
+        User user,
+        String organizationName,
+        String projectName,
+        CiCdTool ciCdTool,
+        String ciCdId,
+        GitProvider gitProvider
+    ) {
         try {
             log.info("Beginning to configure CI with {} to {} / {}", ciCdTool, organizationName, projectName);
             boolean isGitHub = gitProvider.equals(GitProvider.GITHUB);
-            this.logsService.addLog(ciCdId, "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" +
-                organizationName + "/" + projectName + "`");
+            this.logsService.addLog(
+                    ciCdId,
+                    "Cloning " + (isGitHub ? "GitHub" : "GitLab") + " repository `" + organizationName + "/" + projectName + "`"
+                );
 
-            File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" +
-                ciCdId);
+            File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" + ciCdId);
             FileUtils.forceMkdir(workingDir);
             Git git = this.gitService.cloneRepository(user, workingDir, organizationName, projectName, gitProvider);
 
@@ -94,44 +97,61 @@ public class CiCdService {
             this.jHipsterService.addCiCd(ciCdId, workingDir, ciCdTool);
 
             this.gitService.addAllFilesToRepository(git, workingDir);
-            this.gitService.commit(git, workingDir, "Configure " +
-                ciCdTool.capitalize() +
-                " Continuous Integration");
+            this.gitService.commit(git, workingDir, "Configure " + ciCdTool.getCiCdToolName() + " Continuous Integration");
 
-            this.logsService.addLog(ciCdId, "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " " +
-                "remote repository");
+            this.logsService.addLog(
+                    ciCdId,
+                    "Pushing the application to the " + (isGitHub ? "GitHub" : "GitLab") + " " + "remote repository"
+                );
             this.gitService.push(git, workingDir, user, organizationName, projectName, gitProvider);
             this.logsService.addLog(ciCdId, "Application successfully pushed!");
             this.logsService.addLog(ciCdId, "Creating " + (isGitHub ? "Pull" : "Merge") + " Request");
 
-            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.capitalize();
+            String pullRequestTitle = "Configure Continuous Integration with " + ciCdTool.getCiCdToolName();
             String pullRequestBody = "Continuous Integration configured by JHipster";
 
             if (isGitHub) {
                 int pullRequestNumber =
-                    this.githubService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
-                        branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at " + applicationProperties.getGitlab()
-                    .getHost() +
-                    "/" +
-                    organizationName +
-                    "/" +
-                    projectName +
-                    "/pull/" +
-                    pullRequestNumber
-                );
+                    this.githubService.createPullRequest(
+                            user,
+                            organizationName,
+                            projectName,
+                            pullRequestTitle,
+                            branchName,
+                            pullRequestBody
+                        );
+                this.logsService.addLog(
+                        ciCdId,
+                        "Pull Request created at " +
+                        applicationProperties.getGitlab().getHost() +
+                        "/" +
+                        organizationName +
+                        "/" +
+                        projectName +
+                        "/pull/" +
+                        pullRequestNumber
+                    );
             } else if (gitProvider.equals(GitProvider.GITLAB)) {
                 int pullRequestNumber =
-                    this.gitlabService.createPullRequest(user, organizationName, projectName, pullRequestTitle,
-                        branchName, pullRequestBody);
-                this.logsService.addLog(ciCdId, "Pull Request created at " + gitlabService.getHost() +
-                    "/" +
-                    organizationName +
-                    "/" +
-                    projectName +
-                    "/merge_requests/" +
-                    pullRequestNumber
-                );
+                    this.gitlabService.createPullRequest(
+                            user,
+                            organizationName,
+                            projectName,
+                            pullRequestTitle,
+                            branchName,
+                            pullRequestBody
+                        );
+                this.logsService.addLog(
+                        ciCdId,
+                        "Pull Request created at " +
+                        gitlabService.getHost() +
+                        "/" +
+                        organizationName +
+                        "/" +
+                        projectName +
+                        "/merge_requests/" +
+                        pullRequestNumber
+                    );
             }
 
             this.gitService.cleanUpDirectory(workingDir);
@@ -139,9 +159,8 @@ public class CiCdService {
             this.logsService.addLog(ciCdId, "Generation finished");
         } catch (Exception e) {
             this.logsService.addLog(ciCdId, "Error during generation: " + e.getMessage());
-            e.printStackTrace();
+            log.error("Generation failed", e);
             this.logsService.addLog(ciCdId, "Generation failed");
         }
-        watch.stop();
     }
 }

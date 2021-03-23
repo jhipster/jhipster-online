@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,54 +16,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { LoginModalService, Principal, Account, GitConfigurationService, GitConfigurationModel } from 'app/core';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
 
 @Component({
-    selector: 'jhi-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['home.scss']
+  selector: 'jhi-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['home.scss']
 })
-export class HomeComponent implements OnInit {
-    account: Account;
-    modalRef: NgbModalRef;
+export class HomeComponent implements OnInit, OnDestroy {
+  account: Account | null = null;
+  authSubscription?: Subscription;
+  gitConfig: GitConfigurationModel;
 
-    gitConfig: GitConfigurationModel;
+  constructor(
+    private accountService: AccountService,
+    private loginModalService: LoginModalService,
+    private gitConfigurationService: GitConfigurationService
+  ) {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+  }
 
-    constructor(
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private gitConfigurationService: GitConfigurationService,
-        private eventManager: JhiEventManager
-    ) {}
+  ngOnInit(): void {
+    this.gitConfigurationService.sharedData.subscribe((config: any) => (this.gitConfig = config));
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account;
+      this.gitConfigurationService.setupGitConfiguration();
+    });
+  }
 
-    ngOnInit() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.gitConfigurationService.sharedData.subscribe(config => (this.gitConfig = config));
-        this.principal.identity().then(account => {
-            this.account = account;
-            this.gitConfigurationService.setupGitConfiguration();
-        });
-        this.registerAuthenticationSuccess();
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
+
+  login(): void {
+    this.loginModalService.open();
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
-
-    registerAuthenticationSuccess() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.eventManager.subscribe('authenticationSuccess', () => {
-            this.principal.identity().then(account => {
-                this.account = account;
-            });
-        });
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
-
-    login() {
-        this.modalRef = this.loginModalService.open();
-    }
+  }
 }

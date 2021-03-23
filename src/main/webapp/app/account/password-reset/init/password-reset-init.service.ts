@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,13 +19,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordResetInitService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    save(mail: string): Observable<any> {
-        return this.http.post(SERVER_API_URL + 'api/account/reset-password/init', mail);
-    }
+  save(mail: string): Observable<{}> {
+    return this.http.post(SERVER_API_URL + 'api/account/reset-password/init', mail);
+  }
 }

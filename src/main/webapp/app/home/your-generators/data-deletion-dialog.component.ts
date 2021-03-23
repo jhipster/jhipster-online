@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -24,27 +24,27 @@ import { JhiEventManager } from 'ng-jhipster';
 import { GeneratorIdentityService } from './generator-identity.service';
 
 @Component({
-    selector: 'jhi-data-deletion',
-    templateUrl: './data-deletion-dialog.component.html'
+  selector: 'jhi-data-deletion',
+  templateUrl: './data-deletion-dialog.component.html'
 })
 export class DataDeletionDialogComponent {
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private eventManager: JhiEventManager,
-        private activeModal: NgbActiveModal
-    ) {}
+  constructor(
+    private generatorIdentityService: GeneratorIdentityService,
+    private eventManager: JhiEventManager,
+    private activeModal: NgbActiveModal
+  ) {}
 
-    confirmDeletion() {
-        this.generatorIdentityService.deleteStatistics().subscribe(() => {
-            this.eventManager.broadcast({
-                name: 'statisticsModification',
-                content: 'Delete all user related statistics'
-            });
-            this.activeModal.close();
-        });
-    }
+  confirmDeletion(): void {
+    this.generatorIdentityService.deleteStatistics().subscribe(() => {
+      this.eventManager.broadcast({
+        name: 'statisticsModification',
+        content: 'Delete all user related statistics'
+      });
+      this.activeModal.close();
+    });
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
 }

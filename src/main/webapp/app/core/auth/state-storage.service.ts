@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -21,44 +21,19 @@ import { SessionStorageService } from 'ngx-webstorage';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-    constructor(private $sessionStorage: SessionStorageService) {}
+  private previousUrlKey = 'previousUrl';
 
-    getPreviousState() {
-        return this.$sessionStorage.retrieve('previousState');
-    }
+  constructor(private $sessionStorage: SessionStorageService) {}
 
-    resetPreviousState() {
-        this.$sessionStorage.clear('previousState');
-    }
+  storeUrl(url: string): void {
+    this.$sessionStorage.store(this.previousUrlKey, url);
+  }
 
-    storePreviousState(previousStateName, previousStateParams) {
-        const previousState = { name: previousStateName, params: previousStateParams };
-        this.$sessionStorage.store('previousState', previousState);
-    }
+  getUrl(): string | null | undefined {
+    return this.$sessionStorage.retrieve(this.previousUrlKey);
+  }
 
-    getDestinationState() {
-        return this.$sessionStorage.retrieve('destinationState');
-    }
-
-    storeUrl(url: string) {
-        this.$sessionStorage.store('previousUrl', url);
-    }
-
-    getUrl() {
-        return this.$sessionStorage.retrieve('previousUrl');
-    }
-
-    storeDestinationState(destinationState, destinationStateParams, fromState) {
-        const destinationInfo = {
-            destination: {
-                name: destinationState.name,
-                data: destinationState.data
-            },
-            params: destinationStateParams,
-            from: {
-                name: fromState.name
-            }
-        };
-        this.$sessionStorage.store('destinationState', destinationInfo);
-    }
+  clearUrl(): void {
+    this.$sessionStorage.clear(this.previousUrlKey);
+  }
 }

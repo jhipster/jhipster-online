@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,22 +18,19 @@
  */
 package io.github.jhipster.online;
 
+import io.github.jhipster.config.DefaultProfileUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import io.github.jhipster.online.config.DefaultProfileUtil;
-
 /**
- * This is a helper Java class that provides an alternative to creating a web.xml.
+ * This is a helper Java class that provides an alternative to creating a {@code web.xml}.
  * This will be invoked only when the application is deployed to a Servlet container like Tomcat, JBoss etc.
  */
 public class ApplicationWebXml extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        /**
-         * set a default to use when no profile is configured.
-         */
+        // set a default to use when no profile is configured.
         DefaultProfileUtil.addDefaultProfile(application.application());
         return application.sources(JhonlineApp.class);
     }

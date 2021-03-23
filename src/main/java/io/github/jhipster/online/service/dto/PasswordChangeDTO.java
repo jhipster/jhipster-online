@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,7 +20,7 @@
 package io.github.jhipster.online.service.dto;
 
 /**
- * A DTO representing a password change requried data - current and new password.
+ * A DTO representing a password change required data - current and new password.
  */
 public class PasswordChangeDTO {
 
@@ -37,7 +37,6 @@ public class PasswordChangeDTO {
     }
 
     public String getCurrentPassword() {
-
         return currentPassword;
     }
 

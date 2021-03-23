@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,10 +19,13 @@
 
 package io.github.jhipster.online.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
-import io.github.jhipster.online.repository.UserRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,14 +35,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class GeneratorIdentityServiceTest {
+class GeneratorIdentityServiceTest {
 
     @MockBean
     private GeneratorIdentityRepository generatorIdentityRepository;
@@ -53,12 +51,12 @@ public class GeneratorIdentityServiceTest {
     }
 
     @Test
-    public void shouldFindOneByGuid() {
+    void shouldFindOneByGuid() {
         GeneratorIdentity expected = new GeneratorIdentity().guid("123");
         when(generatorIdentityRepository.findFirstByGuidEquals("123")).thenReturn(Optional.of(expected));
 
         GeneratorIdentity result = generatorIdentityService.findOneByGuid("123").orElse(null);
 
-        assertThat(result).extracting(GeneratorIdentity::getGuid).containsExactly("123");
+        assertThat(result).extracting(GeneratorIdentity::getGuid).isEqualTo("123");
     }
 }

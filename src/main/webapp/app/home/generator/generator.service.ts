@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,40 +18,40 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GeneratorService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    download(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<HttpResponse<Blob>> {
-        return this.http.post(
-            'api/download-application',
-            { 'generator-jhipster': jhipsterConfigurationModel },
-            { observe: 'response', responseType: 'blob' }
-        );
-    }
+  download(jhipsterConfigurationModel: JHipsterConfigurationModel): Observable<HttpResponse<Blob>> {
+    return this.http.post(
+      'api/download-application',
+      { 'generator-jhipster': jhipsterConfigurationModel },
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
 
-    generateOnGit(
-        jhipsterConfigurationModel: JHipsterConfigurationModel,
-        gitProvider: string,
-        gitCompany: string,
-        repositoryName: string
-    ): Observable<string> {
-        return this.http.post(
-            'api/generate-application',
-            {
-                'generator-jhipster': jhipsterConfigurationModel,
-                'git-provider': gitProvider,
-                'git-company': gitCompany,
-                'repository-name': repositoryName
-            },
-            { responseType: 'text' }
-        );
-    }
+  generateOnGit(
+    jhipsterConfigurationModel: JHipsterConfigurationModel,
+    gitProvider: string,
+    gitCompany: string,
+    repositoryName: string
+  ): Observable<string> {
+    return this.http.post(
+      'api/generate-application',
+      {
+        'generator-jhipster': jhipsterConfigurationModel,
+        'git-provider': gitProvider,
+        'git-company': gitCompany,
+        'repository-name': repositoryName
+      },
+      { responseType: 'text' }
+    );
+  }
 
-    getGenerationData(applicationId: string): Observable<string> {
-        return this.http.get('api/generate-application/' + applicationId, { responseType: 'text' });
-    }
+  getGenerationData(applicationId: string): Observable<string> {
+    return this.http.get('api/generate-application/' + applicationId, { responseType: 'text' });
+  }
 }

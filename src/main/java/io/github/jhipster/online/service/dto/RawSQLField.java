@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -59,10 +59,6 @@ public class RawSQLField {
 
     @Override
     public String toString() {
-        return "RawSQLField{" +
-            "moment=" + moment +
-            ", field='" + field + '\'' +
-            ", count=" + count +
-            '}';
+        return "RawSQLField{" + "moment=" + moment + ", field='" + field + '\'' + ", count=" + count + '}';
     }
 }

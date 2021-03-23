@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,14 +19,17 @@
 
 package io.github.jhipster.online.service.enums;
 
-import java.time.*;
-import java.time.temporal.ChronoUnit;
-
 import static java.time.Instant.parse;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public enum TemporalValueType {
     YEAR("year", ChronoUnit.DAYS, 365),
-    MONTH("month",ChronoUnit.DAYS, 31),
+    MONTH("month", ChronoUnit.DAYS, 31),
     WEEK("week", ChronoUnit.DAYS, 7),
     DAY("day", ChronoUnit.DAYS, 1),
     HOUR("hour", ChronoUnit.HOURS, 1);
@@ -66,11 +69,13 @@ public enum TemporalValueType {
                 return parse(yearFromMonthValue + "-" + actualMonth + "-01T00:00:00.000Z");
             case WEEK:
             case DAY:
-                return ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
+                return ZonedDateTime
+                    .ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
                     .plus(Duration.of(value * valueType.getDayMultiplier(), ChronoUnit.DAYS))
                     .toInstant();
             case HOUR:
-                return ZonedDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
+                return ZonedDateTime
+                    .ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC)
                     .plus(Duration.of(value * valueType.getDayMultiplier(), valueType.getUnit()))
                     .toInstant();
             default:

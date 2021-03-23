@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -26,17 +26,19 @@ import io.github.jhipster.online.repository.JdlMetadataRepository;
 import io.github.jhipster.online.repository.JdlRepository;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.SecurityUtils;
+import io.github.jhipster.online.service.dto.JdlMetadataDTO;
+import io.github.jhipster.online.service.mapper.JdlMetadataMapper;
+import java.nio.file.FileSystemException;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service Implementation for managing JdlMetadata.
@@ -53,12 +55,18 @@ public class JdlMetadataService {
 
     private final UserRepository userRepository;
 
-    public JdlMetadataService(JdlMetadataRepository jdlMetadataRepository, JdlRepository jdlRepository,
-        UserRepository userRepository) {
+    private final JdlMetadataMapper jdlMetadataMapper;
 
+    public JdlMetadataService(
+        JdlMetadataRepository jdlMetadataRepository,
+        JdlRepository jdlRepository,
+        UserRepository userRepository,
+        JdlMetadataMapper jdlMetadataMapper
+    ) {
         this.jdlMetadataRepository = jdlMetadataRepository;
         this.jdlRepository = jdlRepository;
         this.userRepository = userRepository;
+        this.jdlMetadataMapper = jdlMetadataMapper;
     }
 
     /**
@@ -85,26 +93,27 @@ public class JdlMetadataService {
     }
 
     /**
-     * Save a jdlMetadata.
+     * Save a jdlMetadataDTO.
      *
-     * @param jdlMetadata the entity to saveJdlMetadata
+     * @param jdlMetadataDTO the entity to saveJdlMetadata
      * @return the persisted entity
      */
-    public JdlMetadata saveJdlMetadata(JdlMetadata jdlMetadata) {
-        log.debug("Request to save JdlMetadata : {}", jdlMetadata);
+    public JdlMetadataDTO saveJdlMetadata(JdlMetadataDTO jdlMetadataDTO) {
+        log.debug("Request to save JdlMetadata : {}", jdlMetadataDTO);
+        JdlMetadata jdlMetadata = jdlMetadataMapper.toEntity(jdlMetadataDTO);
         User user = this.getUser();
         jdlMetadata.setUser(user);
-        return jdlMetadataRepository.save(jdlMetadata);
+        jdlMetadata = jdlMetadataRepository.save(jdlMetadata);
+        return jdlMetadataMapper.toDto(jdlMetadata);
     }
 
-    public void updateJdlContent(JdlMetadata jdlMetadata, String content) throws Exception {
+    public void updateJdlContent(JdlMetadata jdlMetadata, String content) throws FileSystemException {
         log.debug("Request to update JDL : {}", jdlMetadata);
         jdlMetadata.setUpdatedDate(Instant.now());
         jdlMetadataRepository.save(jdlMetadata);
         Optional<Jdl> jdl = jdlRepository.findOneByJdlMetadataId(jdlMetadata.getId());
-        if (!jdl.isPresent()) {
-            log.error("Error creating updating the JDL, the JDL could not be found: {}", jdlMetadata);
-            throw new Exception("JDL could not be found");
+        if (jdl.isEmpty()) {
+            throw new FileSystemException("Error creating updating the JDL, the JDL could not be found: " + jdlMetadata);
         }
         jdl.get().setContent(content);
     }
@@ -136,7 +145,7 @@ public class JdlMetadataService {
     public Optional<JdlMetadata> findOne(String id) {
         log.debug("Request to get JdlMetadata : {}", id);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataRepository.findById(id);
-        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && jdlMetadata.get().isIsPublic()) {
+        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && Boolean.TRUE.equals(jdlMetadata.get().isIsPublic())) {
             return jdlMetadata;
         } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(this.getUser())) {
             return jdlMetadata;
@@ -150,15 +159,14 @@ public class JdlMetadataService {
      *
      *  @param id the id of the entity
      */
-    public void delete(String id) throws Exception {
+    public void delete(String id) throws FileSystemException {
         log.debug("Request to delete JdlMetadata : {}", id);
         this.findOne(id); // Checks if the user has access to this JDL
         Optional<Jdl> jdl = jdlRepository.findOneByJdlMetadataId(id);
-        if (!jdl.isPresent()) {
-            log.error("Error creating updating the JDL, the JDL could not be found: {}", id);
-            throw new Exception("JDL could not be found");
+        if (jdl.isEmpty()) {
+            throw new FileSystemException("Error creating updating the JDL, the JDL could not be found: " + id);
         }
-        this.jdlRepository.delete(jdl.get());
+        jdlRepository.delete(jdl.get());
         jdlMetadataRepository.deleteById(id);
     }
 

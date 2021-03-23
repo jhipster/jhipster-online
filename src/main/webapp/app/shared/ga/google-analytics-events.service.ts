@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,14 +19,14 @@
 
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class GoogleAnalyticsEventsService {
-    public emitEvent(eventCategory: string, eventAction: string, eventLabel: string = null, eventValue: number = null) {
-        ga('send', 'event', {
-            eventCategory,
-            eventLabel,
-            eventAction,
-            eventValue
-        });
-    }
+  public emitEvent(eventCategory: string, eventAction: string, eventLabel: string | null = null, eventValue: number | null = null): any {
+    ga('send', 'event', {
+      eventCategory,
+      eventLabel,
+      eventAction,
+      eventValue
+    });
+  }
 }

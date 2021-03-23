@@ -1,0 +1,43 @@
+# ===================================================================
+# Spring Boot configuration for the "gcp" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+  datasource:
+    url: jdbc:mysql://google/${DATABASE_NAME}?cloudSqlInstance=${GCP_PROJECT_ID}:${GCP_REGION}:${SQL_INSTANCE_ID}&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+server:
+  port: ${PORT}
+jhipster:
+  mail: # specific JHipster mail property, for standard properties see MailProperties
+    enabled: true
+    base-url: https://start.jhipster.tech
+  security:
+    authentication:
+      jwt:
+        base64-secret: ${BASE64_SECRET}
+application:
+  github:
+    client-id: ${CLIENT_ID_GITHUB}
+    client-secret: ${CLIENT_SECRET_GITHUB}
+  gitlab:
+    client-id: ${GITLAB_CLIENT_ID}
+    client-secret: ${GITLAB_CLIENT_SECRET}
+    redirect-uri: ${GITLAB_REDIRECT_URI}

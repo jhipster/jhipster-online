@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  * <p>
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,21 +19,28 @@
 
 package io.github.jhipster.online.service;
 
-import java.io.*;
+import io.github.jhipster.online.config.ApplicationProperties;
+import io.github.jhipster.online.service.enums.CiCdTool;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-
-import io.github.jhipster.online.service.enums.CiCdTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import io.github.jhipster.online.config.ApplicationProperties;
 
 @Service
 public class JHipsterService {
 
     public final Logger log = LoggerFactory.getLogger(JHipsterService.class);
+
+    private static final String FORCE_INSIGHT = "--force-insight";
+
+    private static final String SKIP_CHECKS = "--skip-checks";
+
+    private static final String SKIP_INSTALL = "--skip-install";
 
     private final LogsService logsService;
 
@@ -55,61 +62,93 @@ public class JHipsterService {
 
     public void installNpmDependencies(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
-        this.runProcess(generationId, workingDir, "npm install --ignore-scripts --package-lock-only");
+        this.runProcess(generationId, workingDir, "npm", "install", "--ignore-scripts", "--package-lock-only");
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
-        this.runProcess(generationId, workingDir, jhipsterCommand + " --force-insight --skip-checks " +
-            "--skip-install --skip-cache --skip-git --prettier-java");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
+                "--skip-cache",
+                "--skip-git",
+                "--prettier-java"
+            );
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
-        this.logsService.addLog(generationId, "Running `jhipster import-jdl");
-        this.runProcess(generationId, workingDir, jhipsterCommand + " import-jdl " +
-            jdlFileName + ".jh " +
-            "--force-insight --skip-checks --skip-install --force ");
+        this.logsService.addLog(generationId, "Running `jhipster import-jdl`");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "import-jdl",
+                jdlFileName + ".jh",
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
+                "--force"
+            );
     }
 
-    public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws Exception {
+    public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws IOException {
         if (ciCdTool == null) {
             this.logsService.addLog(generationId, "Continuous Integration system not supported, aborting");
-            throw new Exception("Invalid Continuous Integration system");
+            throw new IllegalArgumentException("Invalid Continuous Integration system");
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
-        this.runProcess(generationId, workingDir, jhipsterCommand + " ci-cd " +
-            "--autoconfigure-" + ciCdTool.command() + " --force-insight --skip-checks --skip-install --force ");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "ci-cd",
+                "--autoconfigure-" + ciCdTool.command(),
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
+                "--force"
+            );
     }
 
-    private void runProcess(String generationId, File workingDir, String command) throws IOException {
+    void runProcess(String generationId, File workingDir, String... command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
+        BufferedReader input = null;
         try {
             String line;
-            Process p = Runtime.getRuntime().exec
-                (command, null, workingDir);
+            ProcessBuilder processBuilder = new ProcessBuilder()
+                .directory(workingDir)
+                .command(command)
+                .redirectError(ProcessBuilder.Redirect.DISCARD);
+            Process p = processBuilder.start();
 
-            taskExecutor.execute(() -> {
-                try {
-                    p.waitFor(timeout, TimeUnit.SECONDS);
-                    if (p.isAlive()) {
+            taskExecutor.execute(
+                () -> {
+                    try {
+                        p.waitFor(timeout, TimeUnit.SECONDS);
                         p.destroyForcibly();
+                    } catch (InterruptedException e) {
+                        log.error("Unable to execute process successfully.", e);
+                        Thread.currentThread().interrupt();
                     }
-                } catch (InterruptedException e) {
-                    log.error("Unable to execute process successfully.", e);
-                    Thread.currentThread().interrupt();
                 }
-            });
+            );
 
-            BufferedReader input =
-                new BufferedReader
-                    (new InputStreamReader(p.getInputStream()));
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
                 log.debug(line);
                 this.logsService.addLog(generationId, line);
             }
+
             input.close();
         } catch (Exception e) {
             log.error("Error while running the process", e);
+            if (input != null) {
+                input.close();
+            }
             throw e;
         }
     }

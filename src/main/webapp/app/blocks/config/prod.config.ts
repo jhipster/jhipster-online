@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,9 +19,9 @@
 import { enableProdMode } from '@angular/core';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 
-export function ProdConfig() {
-    // disable debug data on prod profile to improve performance
-    if (!DEBUG_INFO_ENABLED) {
-        enableProdMode();
-    }
+export function ProdConfig(): void {
+  // disable debug data on prod profile to improve performance
+  if (!DEBUG_INFO_ENABLED) {
+    enableProdMode();
+  }
 }

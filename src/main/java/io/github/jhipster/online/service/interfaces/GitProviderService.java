@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,25 +19,29 @@
 package io.github.jhipster.online.service.interfaces;
 
 import io.github.jhipster.online.domain.User;
+import java.io.IOException;
 
 public interface GitProviderService {
-
     boolean isEnabled();
 
     String getHost();
 
     String getClientId();
 
-    void syncUserFromGitProvider() throws Exception;
+    void syncUserFromGitProvider() throws IOException;
 
-    User getSyncedUserFromGitProvider(User user) throws Exception;
+    User getSyncedUserFromGitProvider(User user) throws IOException;
 
-    void createGitProviderRepository(User user, String applicationId, String applicationConfiguration, String
-        organization, String repositoryName);
+    void createGitProviderRepository(
+        User user,
+        String applicationId,
+        String applicationConfiguration,
+        String organization,
+        String repositoryName
+    );
 
-    int createPullRequest(User user, String organization, String applicationName,
-        String title, String branchName, String body) throws Exception;
+    int createPullRequest(User user, String organization, String applicationName, String title, String branchName, String body)
+        throws IOException;
 
     boolean isConfigured();
-
 }

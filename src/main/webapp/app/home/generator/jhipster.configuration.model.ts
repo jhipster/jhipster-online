@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,31 +18,31 @@
  */
 
 export class JHipsterConfigurationModel {
-    public applicationType = 'monolith';
-    public gitCompany = '';
-    public baseName = 'jhipsterSampleApplication';
-    public packageName = 'com.mycompany.myapp';
-    public packageFolder = 'com/mycompany/myapp';
-    public serverPort = 8080;
-    public serviceDiscoveryType: any = false;
-    public authenticationType = 'jwt';
-    public uaaBaseName = '../uaa';
-    public cacheProvider = 'ehcache';
-    public enableHibernateCache = true;
-    public websocket: any = false;
-    public databaseType = 'sql';
-    public devDatabaseType = 'h2Disk';
-    public prodDatabaseType = 'postgresql';
-    public searchEngine: any = false;
-    public enableSwaggerCodegen: any = false;
-    public messageBroker: any = false;
-    public buildTool = 'maven';
-    public useSass = true;
-    public clientPackageManager = 'npm';
-    public testFrameworks: string[] = [];
-    public enableTranslation = true;
-    public nativeLanguage = 'en';
-    public languages = ['en'];
-    public clientFramework = 'angularX';
-    public jhiPrefix = 'jhi';
+  public applicationType = 'monolith';
+  public gitCompany = '';
+  public baseName = 'jhipsterSampleApplication';
+  public packageName = 'com.mycompany.myapp';
+  public packageFolder = 'com/mycompany/myapp';
+  public serverPort = 8080;
+  public serviceDiscoveryType: any = false;
+  public authenticationType = 'jwt';
+  public cacheProvider = 'ehcache';
+  public enableHibernateCache = true;
+  public websocket: any = false;
+  public databaseType = 'sql';
+  public devDatabaseType = 'h2Disk';
+  public prodDatabaseType = 'postgresql';
+  public searchEngine: any = false;
+  public enableSwaggerCodegen: any = false;
+  public messageBroker: any = false;
+  public buildTool = 'maven';
+  public useSass = true;
+  public clientPackageManager = 'npm';
+  public testFrameworks: string[] = [];
+  public enableTranslation = true;
+  public nativeLanguage = 'en';
+  public languages = ['en'];
+  public clientFramework = 'angularX';
+  public jhiPrefix = 'jhi';
+  public withAdminUi = true;
 }

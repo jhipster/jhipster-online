@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,23 +17,24 @@
  * limitations under the License.
  */
 import { Component } from '@angular/core';
-import { Principal } from 'app/core/auth/principal.service';
 
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
-    selector: 'jhi-welcome',
-    templateUrl: './welcome.component.html',
-    styleUrls: ['welcome.scss']
+  selector: 'jhi-welcome',
+  templateUrl: './welcome.component.html',
+  styleUrls: ['welcome.scss']
 })
 export class WelcomeComponent {
-    gitConfig: GitConfigurationModel;
+  gitConfig: GitConfigurationModel;
 
-    constructor(private principal: Principal, private gitConfigurationService: GitConfigurationService) {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-    }
+  constructor(private accountService: AccountService, private gitConfigurationService: GitConfigurationService) {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+  }
 
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
+  }
 }

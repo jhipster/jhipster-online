@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,18 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { User } from 'app/core';
+import { User } from 'app/core/user/user.model';
 
 export class JdlMetadata {
-    constructor(
-        public id?: string,
-        public key?: string,
-        public name?: string,
-        public isPublic?: boolean,
-        public createdDate?: Date,
-        public updatedDate?: Date,
-        public user?: User
-    ) {
-        this.isPublic = false;
-    }
+  constructor(
+    public id?: string,
+    public key?: string,
+    public name?: string,
+    public isPublic?: boolean,
+    public createdDate?: Date,
+    public updatedDate?: Date,
+    public user?: User
+  ) {
+    this.isPublic = false;
+  }
 }

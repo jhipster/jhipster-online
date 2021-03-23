@@ -1,0 +1,25 @@
+runtime: custom
+env: flex
+resources:
+  cpu: 1
+  memory_gb: 4.0
+  disk_size_gb: 10
+manual_scaling:
+  instances: 1
+env_variables:
+  DATABASE_NAME:
+  GCP_PROJECT_ID:
+  GCP_REGION:
+  SQL_INSTANCE_ID:
+  DATABASE_USERNAME:
+  DATABASE_PASSWORD:
+  MAIL_HOST:
+  MAIL_PORT:
+  MAIL_USERNAME:
+  MAIL_PASSWORD:
+  BASE64_SECRET:
+  CLIENT_ID_GITHUB:
+  CLIENT_SECRET_GITHUB:
+  GITLAB_CLIENT_ID:
+  GITLAB_CLIENT_SECRET:
+  GITLAB_REDIRECT_URI:

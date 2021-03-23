@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,79 +19,87 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { GitConfigurationModel, GitConfigurationService } from 'app/core';
+import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { GitConfigurationService } from 'app/core/git/git-configuration.service';
+
 import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 import { CiCdService } from './ci-cd.service';
 
 @Component({
-    selector: 'jhi-generator',
-    templateUrl: './ci-cd.component.html',
-    styleUrls: ['ci-cd.scss']
+  selector: 'jhi-generator',
+  templateUrl: './ci-cd.component.html'
 })
 export class CiCdComponent implements OnInit {
-    submitted = false;
+  submitted = false;
 
-    ciCdId = '';
+  ciCdId = '';
 
-    ciCdTool = 'travis';
+  ciCdTool = 'travis';
 
-    selectedGitProvider: string;
-    selectedGitCompany: string;
-    selectedGitRepository: string;
+  selectedGitProvider: string | undefined;
+  selectedGitCompany: string | undefined;
+  selectedGitRepository: string | undefined;
 
-    isGitProviderComponentValid = false;
+  isGitProviderComponentValid = false;
 
-    githubConfigured = false;
-    gitlabConfigured = false;
+  githubConfigured = false;
+  gitlabConfigured = false;
 
-    gitConfig: GitConfigurationModel;
+  gitConfig: GitConfigurationModel | undefined;
 
-    constructor(
-        private modalService: NgbModal,
-        private gitConfigurationService: GitConfigurationService,
-        private ciCdService: CiCdService
-    ) {}
+  constructor(private modalService: NgbModal, private gitConfigurationService: GitConfigurationService, private ciCdService: CiCdService) {}
 
-    ngOnInit() {
-        this.gitConfig = this.gitConfigurationService.gitConfig;
-        this.gitlabConfigured = this.gitConfig.gitlabConfigured;
-        this.githubConfigured = this.gitConfig.githubConfigured;
-        this.gitConfigurationService.sharedData.subscribe(gitConfig => {
-            this.gitlabConfigured = gitConfig.gitlabConfigured;
-            this.githubConfigured = gitConfig.githubConfigured;
-        });
+  ngOnInit(): void {
+    this.gitConfig = this.gitConfigurationService.gitConfig;
+    if (this.gitConfig) {
+      this.gitlabConfigured = this.gitConfig.gitlabConfigured || false;
+      this.githubConfigured = this.gitConfig.githubConfigured || false;
     }
 
-    updateSharedData(data: any) {
-        this.selectedGitProvider = data.selectedGitProvider;
-        this.selectedGitCompany = data.selectedGitCompany;
-        this.selectedGitRepository = data.selectedGitRepository;
-        this.isGitProviderComponentValid = data.isValid;
-    }
+    this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
+      this.gitConfig = gitConfig;
+      this.gitlabConfigured = gitConfig.gitlabConfigured || false;
+      this.githubConfigured = gitConfig.githubConfigured || false;
+    });
+  }
 
-    applyCiCd() {
-        this.ciCdService.addCiCd(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.ciCdTool).subscribe(
-            res => {
-                this.openOutputModal(res);
-                this.submitted = false;
-            },
-            () => console.log('Error configuring CI/CD.')
-        );
-    }
+  updateSharedData(data: any): void {
+    this.selectedGitProvider = data.selectedGitProvider;
+    this.selectedGitCompany = data.selectedGitCompany;
+    this.selectedGitRepository = data.selectedGitRepository;
+    this.isGitProviderComponentValid = data.isValid;
+  }
 
-    openOutputModal(ciCdId: string) {
-        const modalRef = this.modalService.open(CiCdOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
-
-        modalRef.ciCdId = ciCdId;
-        modalRef.ciCdTool = this.ciCdTool;
-        modalRef.gitlabHost = this.gitConfig.gitlabHost;
-        modalRef.githubHost = this.gitConfig.githubHost;
-        modalRef.selectedGitProvider = this.selectedGitProvider;
-        modalRef.selectedGitCompany = this.selectedGitCompany;
-        modalRef.selectedGitRepository = this.selectedGitRepository;
+  applyCiCd(): void {
+    if (this.selectedGitProvider && this.selectedGitCompany && this.selectedGitRepository) {
+      this.ciCdService.addCiCd(this.selectedGitProvider, this.selectedGitCompany, this.selectedGitRepository, this.ciCdTool).subscribe(
+        (res: any) => {
+          this.openOutputModal(res);
+          this.submitted = false;
+        },
+        // eslint-disable-next-line no-console
+        () => console.log('Error configuring CI/CD.')
+      );
     }
+  }
 
-    isAtLeastOneGitProviderAvailableAndConfigured() {
-        return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.githubAvailable && this.gitlabConfigured);
-    }
+  openOutputModal(ciCdId: string): void {
+    const modalRef = this.modalService.open(CiCdOutputDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
+
+    modalRef.ciCdId = ciCdId;
+    modalRef.ciCdTool = this.ciCdTool;
+    modalRef.gitlabHost = this.gitConfig!.gitlabHost;
+    modalRef.githubHost = this.gitConfig!.githubHost;
+    modalRef.selectedGitProvider = this.selectedGitProvider;
+    modalRef.selectedGitCompany = this.selectedGitCompany;
+    modalRef.selectedGitRepository = this.selectedGitRepository;
+  }
+
+  isAtLeastOneGitProviderAvailableAndConfigured(): boolean {
+    return (
+      (this.gitConfig &&
+        ((this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured))) ||
+      false
+    );
+  }
 }

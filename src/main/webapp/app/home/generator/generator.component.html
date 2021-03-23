@@ -8,7 +8,7 @@
         <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="baseName">Application name</label>
                     <input type="text" class="form-control" id="baseName" [(ngModel)]="model.baseName" name="baseName"
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="repositoryName">Repository name</label>
                     <input type="text" class="form-control" id="repositoryName" [(ngModel)]="repositoryName" name="repositoryName"
@@ -30,7 +30,7 @@
         <h4>Application type</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="applicationType">Which type of application would you like to create?</label>
                     <select id="applicationType" [(ngModel)]="model.applicationType" name="applicationType"
@@ -39,7 +39,6 @@
                         <option value="monolith">Monolithic application (recommended for simple projects)</option>
                         <option value="microservice">Microservice application</option>
                         <option value="gateway">Microservice gateway</option>
-                        <option value="uaa">JHipster UAA server (for microservice OAuth2 authentication)</option>
                     </select>
                 </div>
             </div>
@@ -48,7 +47,7 @@
         <h4>Server side options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="packageName">What is your default Java package name?</label>
                     <input type="text" class="form-control" id="packageName" [(ngModel)]="model.packageName"
@@ -88,17 +87,7 @@
                         <option value="session" [hidden]="model.serviceDiscoveryType === 'eureka' || model.applicationType !== 'monolith'">HTTP Session
                             Authentication (stateful, default Spring Security mechanism)
                         </option>
-                        <option value="uaa" [hidden]="model.applicationType !== 'gateway' && model.applicationType !== 'microservice'">Authentication
-                            with
-                            JHipster UAA server (the server must be generated separately)
-                        </option>
                     </select>
-                </div>
-                <div class="form-group" [hidden]="model.applicationType !== 'uaa'">
-                    <label for="uaaBaseName">What is the folder path of your UAA application?</label>
-                    <input type="text" class="form-control" id="uaaBaseName" [(ngModel)]="model.uaaBaseName"
-                           name="uaaBaseName" #uaaBaseName="ngModel"
-                           required>
                 </div>
                 <div class="form-group">
                     <label for="databaseType">Which <i>type</i> of database would you like to use?</label>
@@ -109,9 +98,7 @@
                         <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
                         <option value="couchbase">Couchbase</option>
                         <option value="neo4j">Neo4j</option>
-                        <option value="no"
-                                [hidden]="!((model.authenticationType !== 'oauth2' && model.applicationType === 'microservice')
-                    || (model.authenticationType === 'uaa' && model.applicationType === 'gateway'))">No database</option>
+                        <option value="no">No database</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -232,13 +219,24 @@
         <h4 [hidden]="model.applicationType === 'microservice'">Client side options</h4>
         <hr [hidden]="model.applicationType === 'microservice'">
         <div class="row" [hidden]="model.applicationType === 'microservice'">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
                     <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
                             class="form-control" #clientFramework="ngModel">
                         <option value="angularX">Angular</option>
                         <option value="react">React</option>
+                        <option value="vue">Vue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="withAdminUi">Do you want to generate the admin UI?</label>
+                    <select id="withAdminUi" [(ngModel)]="model.withAdminUi" name="withAdminUi"
+                            class="form-control" #withAdminUi="ngModel">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
                     </select>
                 </div>
             </div>
@@ -247,7 +245,7 @@
         <h4>Internationalization options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="enableTranslation">Would you like to enable internationalization support?</label>
                     <select id="enableTranslation" [(ngModel)]="model.enableTranslation" name="enableTranslation"
@@ -276,7 +274,7 @@
         <h4>Testing options</h4>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="form-group">
                     <label for="testFrameworks">Besides JUnit and Jest, which testing frameworks would you like to
                         use?</label>
@@ -292,7 +290,7 @@
         </div>
         <hr />
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="text-center">
                     <p></p>
                     <div [ngSwitch]="!submitted">

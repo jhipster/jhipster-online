@@ -1,0 +1,76 @@
+#
+# Copyright 2017-2021 the original author or authors from the JHipster project.
+#
+# This file is part of the JHipster project, see https://www.jhipster.tech/
+# for more information.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Deploy JHipster Online
+on:
+  release:
+    types: [published]
+jobs:
+  pipeline:
+    name: jhipster-online deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      # Checkout with all submodules
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      # Substitutes the variables/secrets
+      - uses: microsoft/variable-substitution@v1
+        with:
+          files: '${{ github.workspace }}/app.yaml'
+        env:
+          env_variables.DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          env_variables.GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          env_variables.GCP_REGION: ${{ secrets.GCP_REGION }}
+          env_variables.SQL_INSTANCE_ID: ${{ secrets.SQL_INSTANCE_ID }}
+          env_variables.DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          env_variables.DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          env_variables.MAIL_HOST: ${{ secrets.MAIL_HOST }}
+          env_variables.MAIL_PORT: ${{ secrets.MAIL_PORT }}
+          env_variables.MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          env_variables.MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          env_variables.BASE64_SECRET: ${{ secrets.BASE64_SECRET }}
+          env_variables.CLIENT_ID_GITHUB: ${{ secrets.CLIENT_ID_GITHUB }}
+          env_variables.CLIENT_SECRET_GITHUB: ${{ secrets.CLIENT_SECRET_GITHUB }}
+          env_variables.GITLAB_CLIENT_ID: ${{ secrets.GITLAB_CLIENT_ID }}
+          env_variables.GITLAB_CLIENT_SECRET: ${{ secrets.GITLAB_CLIENT_SECRET }}
+          env_variables.GITLAB_REDIRECT_URI: ${{ secrets.GITLAB_REDIRECT_URI }}
+
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Build and push docker image to GCR
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v1
+        with:
+          username: _json_key
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: eu.gcr.io
+          repository: jhipster-online/appengine
+          tag_with_sha: true
+
+      # Deploy to App Engine Flexible
+      - name: Deploy
+        run: VERSION_TAG=${GITHUB_REF:10} && gcloud app deploy --image-url eu.gcr.io/jhipster-online/appengine:sha-${GITHUB_SHA::7} --version ${VERSION_TAG//./-}

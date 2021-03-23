@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -53,8 +53,7 @@ public class RawSQL {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RawSQL rawSQL = (RawSQL) o;
-        return Objects.equals(moment, rawSQL.moment) &&
-            Objects.equals(count, rawSQL.count);
+        return Objects.equals(moment, rawSQL.moment) && Objects.equals(count, rawSQL.count);
     }
 
     @Override
@@ -64,9 +63,6 @@ public class RawSQL {
 
     @Override
     public String toString() {
-        return "RawSQL{" +
-            "moment=" + moment +
-            ", count=" + count +
-            '}';
+        return "RawSQL{" + "moment=" + moment + ", count=" + count + '}';
     }
 }

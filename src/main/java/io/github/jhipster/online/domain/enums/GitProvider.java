@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum GitProvider {
-
-    GITHUB("github"), GITLAB("gitlab");
+    GITHUB("github"),
+    GITLAB("gitlab");
 
     private final String value;
 
@@ -37,8 +37,6 @@ public enum GitProvider {
     }
 
     public static Optional<GitProvider> getGitProviderByValue(String value) {
-        return Arrays.stream(GitProvider.values())
-            .filter(e -> e.value.equals(value.toLowerCase()))
-            .findFirst();
+        return Arrays.stream(GitProvider.values()).filter(e -> e.value.equalsIgnoreCase(value)).findFirst();
     }
 }

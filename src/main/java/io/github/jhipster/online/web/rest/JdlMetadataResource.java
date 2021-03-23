@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,29 +19,23 @@
 
 package io.github.jhipster.online.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.online.domain.JdlMetadata;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.service.JdlMetadataService;
 import io.github.jhipster.online.service.UserService;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
+import io.github.jhipster.online.service.dto.JdlMetadataDTO;
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing JdlMetadata.
@@ -54,6 +48,9 @@ public class JdlMetadataResource {
     private final Logger log = LoggerFactory.getLogger(JdlMetadataResource.class);
 
     private static final String ENTITY_NAME = "jdlMetadata";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private final JdlMetadataService jdlMetadataService;
 
@@ -71,15 +68,14 @@ public class JdlMetadataResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated jdlMetadata,
      * or with status 400 (Bad Request) if the jdlMetadata is not valid,
      * or with status 500 (Internal Server Error) if the jdlMetadata couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/jdl-metadata")
-    @Timed
-    public ResponseEntity<JdlMetadata> updateJdlMetadata(@Valid @RequestBody JdlMetadata jdlMetadata) {
+    public ResponseEntity<JdlMetadataDTO> updateJdlMetadata(@Valid @RequestBody JdlMetadataDTO jdlMetadata) {
         log.debug("REST request to update JdlMetadata : {}", jdlMetadata);
-        JdlMetadata result = jdlMetadataService.saveJdlMetadata(jdlMetadata);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, jdlMetadata.getId()))
+        JdlMetadataDTO result = jdlMetadataService.saveJdlMetadata(jdlMetadata);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, jdlMetadata.getId()))
             .body(result);
     }
 
@@ -89,7 +85,6 @@ public class JdlMetadataResource {
      * @return the ResponseEntity with status 200 (OK) and the list of jdlMetadata in body
      */
     @GetMapping("/jdl-metadata")
-    @Timed
     public List<JdlMetadata> getAllJdlMetadata(Sort sort) {
         log.debug("REST request to get all JdlMetadata");
         return jdlMetadataService.findAllForUser(userService.getUser(), sort);
@@ -102,10 +97,9 @@ public class JdlMetadataResource {
      * @return the ResponseEntity with status 200 (OK) and with body the jdlMetadata, or with status 404 (Not Found)
      */
     @GetMapping("/jdl-metadata/{id}")
-    @Timed
     public ResponseEntity<JdlMetadata> getJdlMetadata(@PathVariable String id) {
         log.debug("REST request to get JdlMetadata : {}", id);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(jdlMetadata.get()));
+        return ResponseUtil.wrapOrNotFound(jdlMetadata);
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,24 +20,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { createRequestOption } from 'app/shared';
+import { createRequestOption, Pagination } from 'app/shared/util/request-util';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Audit } from './audit.model';
 
+export interface AuditsQuery extends Pagination {
+  fromDate: string;
+  toDate: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuditsService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    query(req: any): Observable<HttpResponse<Audit[]>> {
-        const params: HttpParams = createRequestOption(req);
-        params.set('fromDate', req.fromDate);
-        params.set('toDate', req.toDate);
+  query(req: AuditsQuery): Observable<HttpResponse<Audit[]>> {
+    const params: HttpParams = createRequestOption(req);
 
-        const requestURL = SERVER_API_URL + 'management/audits';
+    const requestURL = SERVER_API_URL + 'management/audits';
 
-        return this.http.get<Audit[]>(requestURL, {
-            params,
-            observe: 'response'
-        });
-    }
+    return this.http.get<Audit[]>(requestURL, {
+      params,
+      observe: 'response'
+    });
+  }
 }

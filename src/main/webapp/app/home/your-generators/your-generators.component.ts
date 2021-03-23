@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,76 +17,77 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
-import { Principal } from 'app/core';
 import { GeneratorIdentityService } from './generator-identity.service';
 import { RemoveGeneratorDialogComponent } from 'app/home/your-generators/remove-generator-dialog.component';
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
-    selector: 'jhi-your-generators',
-    templateUrl: './your-generators.component.html',
-    styleUrls: ['your-generators.scss']
+  selector: 'jhi-your-generators',
+  templateUrl: './your-generators.component.html'
 })
 export class YourGeneratorsComponent implements OnInit, OnDestroy {
-    generatorIdentities: IGeneratorIdentity[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  generatorIdentities: IGeneratorIdentity[] | null | undefined;
+  currentAccount: any;
+  eventSubscriber: Subscription | undefined;
 
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal,
-        private modalService: NgbModal
-    ) {}
+  constructor(
+    private generatorIdentityService: GeneratorIdentityService,
+    private jhiAlertService: JhiAlertService,
+    private eventManager: JhiEventManager,
+    private accountService: AccountService,
+    private modalService: NgbModal
+  ) {}
 
-    refresh() {
-        this.generatorIdentityService.query().subscribe(
-            (res: HttpResponse<IGeneratorIdentity[]>) => {
-                this.generatorIdentities = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  refresh(): void {
+    this.generatorIdentityService.query().subscribe(
+      (res: HttpResponse<IGeneratorIdentity[]>) => {
+        this.generatorIdentities = res.body;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+  }
+
+  ngOnInit(): void {
+    this.refresh();
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInGeneratorIdentities();
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
     }
+  }
 
-    ngOnInit() {
-        this.refresh();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInGeneratorIdentities();
-    }
+  openUnbindModal(generatorId: string): void {
+    const modalRef = this.modalService.open(RemoveGeneratorDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+    modalRef.generatorId = generatorId;
+  }
 
-    openUnbindModal(generatorId: string) {
-        const modalRef = this.modalService.open(RemoveGeneratorDialogComponent, { size: 'lg', backdrop: 'static' }).componentInstance;
+  openDataDeletionModal(): void {
+    this.modalService.open(DataDeletionDialogComponent, { size: 'lg', backdrop: 'static' });
+  }
 
-        modalRef.generatorId = generatorId;
-    }
+  trackId(index: number, item: IGeneratorIdentity): any {
+    return item.id;
+  }
 
-    openDataDeletionModal() {
-        this.modalService.open(DataDeletionDialogComponent, { size: 'lg', backdrop: 'static' });
-    }
+  registerChangeInGeneratorIdentities(): void {
+    this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', () => this.refresh());
+  }
 
-    trackId(index: number, item: IGeneratorIdentity) {
-        return item.id;
-    }
-
-    registerChangeInGeneratorIdentities() {
-        this.eventSubscriber = this.eventManager.subscribe('generatorIdentityListModification', () => this.refresh());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  private onError(errorMessage: string): void {
+    this.jhiAlertService.error(errorMessage, null);
+  }
 }

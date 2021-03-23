@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,20 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Route } from '@angular/router';
-import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { Route } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
 
 import { AuditsComponent } from './audits.component';
 
 export const auditsRoute: Route = {
-    path: 'audits',
-    component: AuditsComponent,
-    resolve: {
-        pagingParams: JhiResolvePagingParams
-    },
-    data: {
-        pageTitle: 'Audits',
-        defaulSort: 'auditEventDate,desc'
-    }
+  path: '',
+  component: AuditsComponent,
+  resolve: {
+    pagingParams: JhiResolvePagingParams
+  },
+  data: {
+    pageTitle: 'Audits',
+    defaultSort: 'auditEventDate,desc'
+  }
 };

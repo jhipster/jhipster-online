@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,8 +18,8 @@
  */
 import { Route } from '@angular/router';
 
-import { HomeComponent } from './';
-import { UserRouteAccessService } from 'app/core/';
+import { HomeComponent } from './home.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { GENERATOR_ROUTE } from 'app/home/generator/generator.route';
 import { GIT_ROUTE } from 'app/home/git/git.route';
 import { WELCOME_ROUTE } from 'app/home/welcome/welcome.route';
@@ -29,22 +29,22 @@ import { CI_CD_OUTPUT_ROUTE, CI_CD_ROUTE } from 'app/home/ci-cd/ci-cd.route';
 import { YourGeneratorsRoute, YourGeneratorsDialogueRoutes } from 'app/home/your-generators/your-generators.route';
 
 export const HOME_ROUTE: Route = {
-    path: '',
-    component: HomeComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'JHipster Online'
-    },
-    canActivate: [UserRouteAccessService],
-    children: [
-        GENERATOR_ROUTE,
-        WELCOME_ROUTE,
-        GIT_ROUTE,
-        GITHUB_CALLBACK_ROUTE,
-        CI_CD_ROUTE,
-        YourGeneratorsRoute,
-        ...YourGeneratorsDialogueRoutes,
-        CI_CD_OUTPUT_ROUTE,
-        ...jdlMetadataRoute
-    ]
+  path: '',
+  component: HomeComponent,
+  data: {
+    authorities: [],
+    pageTitle: 'JHipster Online'
+  },
+  canActivate: [UserRouteAccessService],
+  children: [
+    GENERATOR_ROUTE,
+    WELCOME_ROUTE,
+    GIT_ROUTE,
+    GITHUB_CALLBACK_ROUTE,
+    CI_CD_ROUTE,
+    YourGeneratorsRoute,
+    ...YourGeneratorsDialogueRoutes,
+    CI_CD_OUTPUT_ROUTE,
+    ...jdlMetadataRoute
+  ]
 };

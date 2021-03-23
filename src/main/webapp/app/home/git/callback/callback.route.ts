@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -22,11 +22,11 @@ import { CallbackComponent } from './callback.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const GITHUB_CALLBACK_ROUTE: Route = {
-    path: ':provider/callback/:token',
-    component: CallbackComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'Git provider configuration'
-    },
-    canActivate: [UserRouteAccessService]
+  path: ':provider/callback/:token',
+  component: CallbackComponent,
+  data: {
+    authorities: ['ROLE_USER'],
+    pageTitle: 'Git provider configuration'
+  },
+  canActivate: [UserRouteAccessService]
 };

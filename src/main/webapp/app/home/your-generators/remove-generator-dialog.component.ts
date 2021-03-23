@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -24,29 +24,31 @@ import { JhiEventManager } from 'ng-jhipster';
 import { GeneratorIdentityService } from './generator-identity.service';
 
 @Component({
-    selector: 'jhi-remove-generator-dialog',
-    templateUrl: './remove-generator-dialog.component.html'
+  selector: 'jhi-remove-generator-dialog',
+  templateUrl: './remove-generator-dialog.component.html'
 })
 export class RemoveGeneratorDialogComponent {
-    generatorId: string;
+  generatorId: string | undefined;
 
-    constructor(
-        private generatorIdentityService: GeneratorIdentityService,
-        private eventManager: JhiEventManager,
-        private activeModal: NgbActiveModal
-    ) {}
+  constructor(
+    private generatorIdentityService: GeneratorIdentityService,
+    private eventManager: JhiEventManager,
+    private activeModal: NgbActiveModal
+  ) {}
 
-    confirmUnbind() {
-        this.generatorIdentityService.unbind(this.generatorId).subscribe(() => {
-            this.eventManager.broadcast({
-                name: 'generatorIdentityListModification',
-                content: 'Remove a generatorIdentity'
-            });
-            this.activeModal.close();
+  confirmUnbind(): void {
+    if (this.generatorId) {
+      this.generatorIdentityService.unbind(this.generatorId).subscribe(() => {
+        this.eventManager.broadcast({
+          name: 'generatorIdentityListModification',
+          content: 'Remove a generatorIdentity'
         });
+        this.activeModal.close();
+      });
     }
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
+  clear(): void {
+    this.activeModal.dismiss('cancel');
+  }
 }

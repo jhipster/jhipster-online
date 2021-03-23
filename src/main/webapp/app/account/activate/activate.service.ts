@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -24,11 +24,11 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class ActivateService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    get(key: string): Observable<any> {
-        return this.http.get(SERVER_API_URL + 'api/activate', {
-            params: new HttpParams().set('key', key)
-        });
-    }
+  get(key: string): Observable<{}> {
+    return this.http.get(SERVER_API_URL + 'api/activate', {
+      params: new HttpParams().set('key', key)
+    });
+  }
 }

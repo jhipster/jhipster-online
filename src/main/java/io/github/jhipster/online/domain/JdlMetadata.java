@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,16 +18,14 @@
  */
 package io.github.jhipster.online.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A JdlMetadata.
@@ -123,6 +121,7 @@ public class JdlMetadata implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
@@ -147,10 +146,6 @@ public class JdlMetadata implements Serializable {
 
     @Override
     public String toString() {
-        return "JdlMetadata{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", isPublic='" + isIsPublic() + "'" +
-            "}";
+        return "JdlMetadata{" + "id=" + getId() + ", name='" + getName() + "'" + ", isPublic='" + isIsPublic() + "'" + "}";
     }
 }

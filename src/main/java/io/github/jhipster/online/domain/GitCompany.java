@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,16 +19,15 @@
 
 package io.github.jhipster.online.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * An authority (a security role) used by Spring Security.
@@ -113,7 +112,7 @@ public class GitCompany implements Serializable {
 
         GitCompany authority = (GitCompany) o;
 
-        return !(id != null ? !id.equals(authority.id) : authority.id != null);
+        return Objects.equals(id, authority.id);
     }
 
     @Override
@@ -123,12 +122,21 @@ public class GitCompany implements Serializable {
 
     @Override
     public String toString() {
-        return "GitCompany{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", user=" + user.getLogin() +
-            ", gitProvider='" + gitProvider + '\'' +
-            ", gitProjects=" + gitProjects.size() +
-            '}';
+        return (
+            "GitCompany{" +
+            "id=" +
+            id +
+            ", name='" +
+            name +
+            '\'' +
+            ", user=" +
+            user.getLogin() +
+            ", gitProvider='" +
+            gitProvider +
+            '\'' +
+            ", gitProjects=" +
+            gitProjects.size() +
+            '}'
+        );
     }
 }

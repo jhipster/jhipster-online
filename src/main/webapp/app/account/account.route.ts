@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,13 +18,18 @@
  */
 import { Routes } from '@angular/router';
 
-import { activateRoute, passwordRoute, passwordResetFinishRoute, passwordResetInitRoute, registerRoute, settingsRoute } from './';
+import { activateRoute } from './activate/activate.route';
+import { passwordRoute } from './password/password.route';
+import { passwordResetFinishRoute } from './password-reset/finish/password-reset-finish.route';
+import { passwordResetInitRoute } from './password-reset/init/password-reset-init.route';
+import { registerRoute } from './register/register.route';
+import { settingsRoute } from './settings/settings.route';
 
 const ACCOUNT_ROUTES = [activateRoute, passwordRoute, passwordResetFinishRoute, passwordResetInitRoute, registerRoute, settingsRoute];
 
 export const accountState: Routes = [
-    {
-        path: '',
-        children: ACCOUNT_ROUTES
-    }
+  {
+    path: '',
+    children: ACCOUNT_ROUTES
+  }
 ];

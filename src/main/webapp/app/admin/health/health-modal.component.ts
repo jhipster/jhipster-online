@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,41 +19,37 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { JhiHealthService } from './health.service';
+import { HealthKey, HealthDetails } from './health.service';
 
 @Component({
-    selector: 'jhi-health-modal',
-    templateUrl: './health-modal.component.html'
+  selector: 'jhi-health-modal',
+  templateUrl: './health-modal.component.html'
 })
-export class JhiHealthModalComponent {
-    currentHealth: any;
+export class HealthModalComponent {
+  health?: { key: HealthKey; value: HealthDetails };
 
-    constructor(private healthService: JhiHealthService, public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal) {}
 
-    baseName(name) {
-        return this.healthService.getBaseName(name);
+  readableValue(value: any): string {
+    if (this.health && this.health.key === 'diskSpace') {
+      // Should display storage space in an human readable unit
+      const val = value / 1073741824;
+      if (val > 1) {
+        // Value
+        return val.toFixed(2) + ' GB';
+      } else {
+        return (value / 1048576).toFixed(2) + ' MB';
+      }
     }
 
-    subSystemName(name) {
-        return this.healthService.getSubSystemName(name);
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    } else {
+      return value.toString();
     }
+  }
 
-    readableValue(value: number) {
-        if (this.currentHealth.name === 'diskSpace') {
-            // Should display storage space in an human readable unit
-            const val = value / 1073741824;
-            if (val > 1) {
-                // Value
-                return val.toFixed(2) + ' GB';
-            } else {
-                return (value / 1048576).toFixed(2) + ' MB';
-            }
-        }
-
-        if (typeof value === 'object') {
-            return JSON.stringify(value);
-        } else {
-            return value.toString();
-        }
-    }
+  dismiss(): void {
+    this.activeModal.dismiss();
+  }
 }

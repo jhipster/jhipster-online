@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,34 +16,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { JhonlineSharedLibsModule } from './shared-libs.module';
+import { AlertComponent } from './alert/alert.component';
+import { AlertErrorComponent } from './alert/alert-error.component';
+import { LoginModalComponent } from './login/login.component';
+import { JhiGitProviderAlertComponent, JhiGitProviderComponent } from './git-provider/git-provider.component';
+import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { RouterModule } from '@angular/router';
-import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
-
-import { NgbDateMomentAdapter } from './util/datepicker-adapter';
-import { GoogleAnalyticsEventsService } from './ga/google-analytics-events.service';
-
-import {
-    JhonlineSharedLibsModule,
-    JhiGitProviderComponent,
-    JhiGitProviderAlertComponent,
-    JhonlineSharedCommonModule,
-    JhiLoginModalComponent,
-    HasAnyAuthorityDirective
-} from 'app/shared';
 
 @NgModule({
-    imports: [JhonlineSharedLibsModule, JhonlineSharedCommonModule, RouterModule],
-    declarations: [JhiLoginModalComponent, JhiGitProviderComponent, JhiGitProviderAlertComponent, HasAnyAuthorityDirective],
-    providers: [{ provide: NgbDateAdapter, useClass: NgbDateMomentAdapter }, GoogleAnalyticsEventsService],
-    entryComponents: [JhiLoginModalComponent],
-    exports: [
-        JhonlineSharedCommonModule,
-        JhiLoginModalComponent,
-        JhiGitProviderComponent,
-        JhiGitProviderAlertComponent,
-        HasAnyAuthorityDirective
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [JhonlineSharedLibsModule, RouterModule],
+  declarations: [
+    AlertComponent,
+    AlertErrorComponent,
+    LoginModalComponent,
+    HasAnyAuthorityDirective,
+    JhiGitProviderComponent,
+    JhiGitProviderAlertComponent
+  ],
+  entryComponents: [LoginModalComponent],
+  exports: [
+    JhonlineSharedLibsModule,
+    AlertComponent,
+    AlertErrorComponent,
+    LoginModalComponent,
+    HasAnyAuthorityDirective,
+    JhiGitProviderComponent,
+    JhiGitProviderAlertComponent
+  ]
 })
 export class JhonlineSharedModule {}

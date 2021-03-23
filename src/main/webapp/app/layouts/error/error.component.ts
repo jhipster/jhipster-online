@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,23 +20,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'jhi-error',
-    templateUrl: './error.component.html'
+  selector: 'jhi-error',
+  templateUrl: './error.component.html'
 })
 export class ErrorComponent implements OnInit {
-    errorMessage: string;
-    error403: boolean;
+  errorMessage?: string;
 
-    constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.route.data.subscribe(routeData => {
-            if (routeData.error403) {
-                this.error403 = routeData.error403;
-            }
-            if (routeData.errorMessage) {
-                this.errorMessage = routeData.errorMessage;
-            }
-        });
-    }
+  ngOnInit(): void {
+    this.route.data.subscribe(routeData => {
+      if (routeData.errorMessage) {
+        this.errorMessage = routeData.errorMessage;
+      }
+    });
+  }
 }

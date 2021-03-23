@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,15 +19,13 @@
 
 package io.github.jhipster.online.repository;
 
+import io.github.jhipster.online.domain.GeneratorIdentity;
+import io.github.jhipster.online.domain.User;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import io.github.jhipster.online.domain.GeneratorIdentity;
-import io.github.jhipster.online.domain.User;
 
 /**
  * Spring Data JPA repository for the GeneratorIdentity entity.
@@ -35,11 +33,12 @@ import io.github.jhipster.online.domain.User;
 @SuppressWarnings("unused")
 @Repository
 public interface GeneratorIdentityRepository extends JpaRepository<GeneratorIdentity, Long> {
-
     Optional<GeneratorIdentity> findFirstByGuidEquals(String guid);
 
     List<GeneratorIdentity> findAllByOwner(User owner);
 
-    @Query("select generator_identity from GeneratorIdentity generator_identity where generator_identity.owner.login = ?#{principal.username}")
+    @Query(
+        "select generator_identity from GeneratorIdentity generator_identity where generator_identity.owner.login = ?#{principal.username}"
+    )
     List<GeneratorIdentity> findByOwnerIsCurrentUser();
 }

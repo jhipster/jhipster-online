@@ -1,11 +1,39 @@
+/**
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.web.rest;
+
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.repository.GeneratorIdentityRepository;
 import io.github.jhipster.online.service.GeneratorIdentityService;
 import io.github.jhipster.online.service.UserService;
+import io.github.jhipster.online.service.dto.GeneratorIdentityDTO;
+import io.github.jhipster.online.service.mapper.GeneratorIdentityMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,15 +48,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Test class for the GeneratorIdentityResource REST controller.
  *
@@ -36,7 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class GeneratorIdentityResourceIntTest {
+class GeneratorIdentityResourceIntTest {
 
     private static final String DEFAULT_HOST = "AAAAAAAAAA";
     private static final String UPDATED_HOST = "BBBBBBBBBB";
@@ -52,6 +71,9 @@ public class GeneratorIdentityResourceIntTest {
 
     @Autowired
     private GeneratorIdentityService generatorIdentityService;
+
+    @Autowired
+    private GeneratorIdentityMapper generatorIdentityMapper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -73,11 +95,14 @@ public class GeneratorIdentityResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final GeneratorIdentityResource generatorIdentityResource = new GeneratorIdentityResource(generatorIdentityService, userService);
-        this.restGeneratorIdentityMockMvc = MockMvcBuilders.standaloneSetup(generatorIdentityResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restGeneratorIdentityMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(generatorIdentityResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -87,10 +112,7 @@ public class GeneratorIdentityResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static GeneratorIdentity createEntity(EntityManager em) {
-        GeneratorIdentity generatorIdentity = new GeneratorIdentity()
-            .host(DEFAULT_HOST)
-            .guid(DEFAULT_GUID);
-        return generatorIdentity;
+        return new GeneratorIdentity().host(DEFAULT_HOST).guid(DEFAULT_GUID);
     }
 
     @BeforeEach
@@ -100,13 +122,16 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void createGeneratorIdentity() throws Exception {
+    void createGeneratorIdentity() throws Exception {
         int databaseSizeBeforeCreate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity
-        restGeneratorIdentityMockMvc.perform(post("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
+        restGeneratorIdentityMockMvc
+            .perform(
+                post("/api/generator-identities")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(generatorIdentity))
+            )
             .andExpect(status().isCreated());
 
         // Validate the GeneratorIdentity in the database
@@ -119,16 +144,19 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void createGeneratorIdentityWithExistingId() throws Exception {
+    void createGeneratorIdentityWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity with an existing ID
         generatorIdentity.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restGeneratorIdentityMockMvc.perform(post("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
+        restGeneratorIdentityMockMvc
+            .perform(
+                post("/api/generator-identities")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(generatorIdentity))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the GeneratorIdentity in the database
@@ -138,61 +166,63 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllGeneratorIdentities() throws Exception {
+    void getAllGeneratorIdentities() throws Exception {
         // Initialize the database
         generatorIdentityRepository.saveAndFlush(generatorIdentity);
 
         // Get all the generatorIdentityList
-        restGeneratorIdentityMockMvc.perform(get("/api/generator-identities?sort=id,desc"))
+        restGeneratorIdentityMockMvc
+            .perform(get("/api/generator-identities?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(generatorIdentity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST.toString())))
-            .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID.toString())));
+            .andExpect(jsonPath("$.[*].host").value(hasItem(DEFAULT_HOST)))
+            .andExpect(jsonPath("$.[*].guid").value(hasItem(DEFAULT_GUID)));
     }
-
 
     @Test
     @Transactional
-    public void getGeneratorIdentity() throws Exception {
+    void getGeneratorIdentity() throws Exception {
         // Initialize the database
         generatorIdentityRepository.saveAndFlush(generatorIdentity);
 
         // Get the generatorIdentity
-        restGeneratorIdentityMockMvc.perform(get("/api/generator-identities/{id}", generatorIdentity.getId()))
+        restGeneratorIdentityMockMvc
+            .perform(get("/api/generator-identities/{id}", generatorIdentity.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(generatorIdentity.getId().intValue()))
-            .andExpect(jsonPath("$.host").value(DEFAULT_HOST.toString()))
-            .andExpect(jsonPath("$.guid").value(DEFAULT_GUID.toString()));
-    }
-    @Test
-    @Transactional
-    public void getNonExistingGeneratorIdentity() throws Exception {
-        // Get the generatorIdentity
-        restGeneratorIdentityMockMvc.perform(get("/api/generator-identities/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+            .andExpect(jsonPath("$.host").value(DEFAULT_HOST))
+            .andExpect(jsonPath("$.guid").value(DEFAULT_GUID));
     }
 
     @Test
     @Transactional
-    public void updateGeneratorIdentity() throws Exception {
+    void getNonExistingGeneratorIdentity() throws Exception {
+        // Get the generatorIdentity
+        restGeneratorIdentityMockMvc.perform(get("/api/generator-identities/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    void updateGeneratorIdentity() throws Exception {
         // Initialize the database
-        generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO generatorIdentityDTO = generatorIdentityService.save(generatorIdentityMapper.toDto(generatorIdentity));
 
         int databaseSizeBeforeUpdate = generatorIdentityRepository.findAll().size();
 
         // Update the generatorIdentity
-        GeneratorIdentity updatedGeneratorIdentity = generatorIdentityRepository.findById(generatorIdentity.getId()).get();
+        GeneratorIdentity updatedGeneratorIdentity = generatorIdentityRepository.findById(generatorIdentityDTO.getId()).get();
         // Disconnect from session so that the updates on updatedGeneratorIdentity are not directly saved in db
         em.detach(updatedGeneratorIdentity);
-        updatedGeneratorIdentity
-            .host(UPDATED_HOST)
-            .guid(UPDATED_GUID);
+        updatedGeneratorIdentity.host(UPDATED_HOST).guid(UPDATED_GUID);
 
-        restGeneratorIdentityMockMvc.perform(put("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedGeneratorIdentity)))
+        restGeneratorIdentityMockMvc
+            .perform(
+                put("/api/generator-identities")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedGeneratorIdentity))
+            )
             .andExpect(status().isOk());
 
         // Validate the GeneratorIdentity in the database
@@ -205,15 +235,18 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingGeneratorIdentity() throws Exception {
+    void updateNonExistingGeneratorIdentity() throws Exception {
         int databaseSizeBeforeUpdate = generatorIdentityRepository.findAll().size();
 
         // Create the GeneratorIdentity
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restGeneratorIdentityMockMvc.perform(put("/api/generator-identities")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(generatorIdentity)))
+        restGeneratorIdentityMockMvc
+            .perform(
+                put("/api/generator-identities")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(generatorIdentity))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the GeneratorIdentity in the database
@@ -223,15 +256,15 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteGeneratorIdentity() throws Exception {
+    void deleteGeneratorIdentity() throws Exception {
         // Initialize the database
-        generatorIdentityService.save(generatorIdentity);
+        GeneratorIdentityDTO generatorIdentityDTO = generatorIdentityService.save(generatorIdentityMapper.toDto(generatorIdentity));
 
         int databaseSizeBeforeDelete = generatorIdentityRepository.findAll().size();
 
         // Get the generatorIdentity
-        restGeneratorIdentityMockMvc.perform(delete("/api/generator-identities/{id}", generatorIdentity.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+        restGeneratorIdentityMockMvc
+            .perform(delete("/api/generator-identities/{id}", generatorIdentityDTO.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty
@@ -241,7 +274,7 @@ public class GeneratorIdentityResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(GeneratorIdentity.class);
         GeneratorIdentity generatorIdentity1 = new GeneratorIdentity();
         generatorIdentity1.setId(1L);

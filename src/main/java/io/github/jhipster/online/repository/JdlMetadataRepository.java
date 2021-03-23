@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,11 +20,10 @@
 package io.github.jhipster.online.repository;
 
 import io.github.jhipster.online.domain.JdlMetadata;
+import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * Spring Data JPA repository for the JdlMetadata entity.
@@ -32,7 +31,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface JdlMetadataRepository extends JpaRepository<JdlMetadata, String> {
-
     List<JdlMetadata> findAllByUserLogin(String userLogin, Sort sort);
 
     List<JdlMetadata> findAllByUserLogin(String userLogin);

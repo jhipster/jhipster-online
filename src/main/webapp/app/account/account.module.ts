@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,36 +16,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { JhonlineSharedModule } from 'app/shared';
+import { JhonlineSharedModule } from 'app/shared/shared.module';
 
-import {
-    PasswordStrengthBarComponent,
-    RegisterComponent,
+import { PasswordStrengthBarComponent } from './password/password-strength-bar.component';
+import { RegisterComponent } from './register/register.component';
+import { ActivateComponent } from './activate/activate.component';
+import { PasswordComponent } from './password/password.component';
+import { PasswordResetInitComponent } from './password-reset/init/password-reset-init.component';
+import { PasswordResetFinishComponent } from './password-reset/finish/password-reset-finish.component';
+import { SettingsComponent } from './settings/settings.component';
+import { DeleteAccountDialogComponent } from './settings/delete-account-dialog.component';
+import { accountState } from './account.route';
+
+@NgModule({
+  imports: [JhonlineSharedModule, RouterModule.forChild(accountState)],
+  declarations: [
     ActivateComponent,
+    RegisterComponent,
     PasswordComponent,
+    PasswordStrengthBarComponent,
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
-    DeleteAccountDialogComponent,
-    accountState
-} from './';
-
-@NgModule({
-    imports: [JhonlineSharedModule, RouterModule.forChild(accountState)],
-    declarations: [
-        ActivateComponent,
-        RegisterComponent,
-        PasswordComponent,
-        PasswordStrengthBarComponent,
-        PasswordResetInitComponent,
-        PasswordResetFinishComponent,
-        SettingsComponent,
-        DeleteAccountDialogComponent
-    ],
-    entryComponents: [DeleteAccountDialogComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    DeleteAccountDialogComponent
+  ],
+  entryComponents: [DeleteAccountDialogComponent]
 })
-export class JhonlineAccountModule {}
+export class AccountModule {}

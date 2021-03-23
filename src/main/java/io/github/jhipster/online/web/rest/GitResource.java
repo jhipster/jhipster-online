@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,27 +19,34 @@
 
 package io.github.jhipster.online.web.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
-
-import com.codahale.metrics.annotation.Timed;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.enums.GitProvider;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.security.SecurityUtils;
-import io.github.jhipster.online.service.*;
+import io.github.jhipster.online.service.GithubService;
+import io.github.jhipster.online.service.GitlabService;
+import io.github.jhipster.online.service.UserService;
 import io.github.jhipster.online.service.dto.GitConfigurationDTO;
+import io.github.jhipster.online.util.SanitizeInputs;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api")
@@ -51,6 +58,8 @@ public class GitResource {
 
     private static final String GITLAB = "gitlab";
 
+    private static final String UNKNOWN_GIT_PROVIDER = "Unknown git provider: ";
+
     private final ApplicationProperties applicationProperties;
 
     private final UserService userService;
@@ -59,10 +68,12 @@ public class GitResource {
 
     private final GitlabService gitlabService;
 
-    public GitResource(ApplicationProperties applicationProperties,
-                       UserService userService,
-                       GithubService githubService,
-                       GitlabService gitlabService) {
+    public GitResource(
+        ApplicationProperties applicationProperties,
+        UserService userService,
+        GithubService githubService,
+        GitlabService gitlabService
+    ) {
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.githubService = githubService;
@@ -73,17 +84,22 @@ public class GitResource {
      * Handles the callback code returned by the OAuth2 authentication.
      */
     @GetMapping("/{gitProvider}/callback")
-    @Timed
     public RedirectView callback(@PathVariable String gitProvider, String code) {
+        gitProvider = SanitizeInputs.sanitizeInput(gitProvider);
+        code = SanitizeInputs.sanitizeInput(code);
+        if (!SanitizeInputs.isAlphaNumeric(code)) {
+            log.error("Invalid code: {}", code);
+            return null;
+        }
         switch (gitProvider.toLowerCase()) {
             case GITHUB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/github/callback/" + code);
+                return new RedirectView("/github/callback/" + code);
             case GITLAB:
                 log.debug("GitHub callback received: {}", code);
-                return new RedirectView("/#/gitlab/callback/" + code);
+                return new RedirectView("/gitlab/callback/" + code);
             default:
-                log.error("Unknown git provider : {}", gitProvider);
+                log.error("Unknown git provider: {}", gitProvider);
                 return null;
         }
     }
@@ -92,12 +108,9 @@ public class GitResource {
      * Saves the callback code returned by the OAuth2 authentication.
      */
     @PostMapping("/{gitProvider}/save-token")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity saveToken(@PathVariable String gitProvider, @RequestBody String code) {
-
+    public @ResponseBody ResponseEntity<String> saveToken(@PathVariable String gitProvider, @RequestBody String code) {
         try {
-            RestTemplate restTemplate = new RestTemplate();
             String url;
             GitProvider gitProviderEnum;
             GitAccessTokenRequest request = new GitAccessTokenRequest();
@@ -119,16 +132,29 @@ public class GitResource {
                     request.setCode(code);
                     break;
                 default:
-                    return new ResponseEntity<>("Unknown git provider: " + gitProvider, HttpStatus
-                        .INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<>(UNKNOWN_GIT_PROVIDER + gitProvider, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            ResponseEntity<GitAccessTokenResponse> response =
-                restTemplate.postForEntity(url, request, GitAccessTokenResponse.class);
-            this.userService.saveToken(response.getBody().getAccess_token(), gitProviderEnum);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String requestBody = objectMapper.writeValueAsString(request);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest
+                .newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .header("Accept", MediaType.APPLICATION_JSON_VALUE)
+                .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+            CompletableFuture<HttpResponse<String>> response = client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            String jsonResponse = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
+            GitAccessTokenResponse accessTokenResponse = objectMapper.readValue(jsonResponse, GitAccessTokenResponse.class);
+            this.userService.saveToken(accessTokenResponse.getAccess_token(), gitProviderEnum);
         } catch (Exception e) {
-            log.error("OAuth2 token could not saved: {}", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("OAuth2 token could not saved: ", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -187,16 +213,29 @@ public class GitResource {
 
         @Override
         public String toString() {
-            return "GitAccessTokenRequest{" +
-                "client_id='" + client_id + '\'' +
-                ", client_secret='" + client_secret + '\'' +
-                ", code='" + code + '\'' +
-                ", grantType='" + grantType + '\'' +
-                ", redirectUri='" + redirectUri + '\'' +
-                '}';
+            return (
+                "GitAccessTokenRequest{" +
+                "client_id='" +
+                client_id +
+                '\'' +
+                ", client_secret='" +
+                client_secret +
+                '\'' +
+                ", code='" +
+                code +
+                '\'' +
+                ", grantType='" +
+                grantType +
+                '\'' +
+                ", redirectUri='" +
+                redirectUri +
+                '\'' +
+                '}'
+            );
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class GitAccessTokenResponse {
 
         private String access_token;
@@ -214,9 +253,8 @@ public class GitResource {
      * Refresh Github data for the current user.
      */
     @PostMapping("/{gitProvider}/refresh")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity refreshGitProvider(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity<String> refreshGitProvider(@PathVariable String gitProvider) {
         log.info("Refreshing git provider");
         try {
             switch (gitProvider.toLowerCase()) {
@@ -229,25 +267,19 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
-                        gitProvider);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             switch (gitProvider.toLowerCase()) {
                 case GITHUB:
-                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
-                        e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be " +
-                        "refreshed");
+                    log.error("Could not refresh GitHub data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitHub data could not be " + "refreshed");
                 case GITLAB:
-                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(),
-                        e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " +
-                        "refreshed");
+                    log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " + "refreshed");
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown git provider: " +
-                        gitProvider);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
             }
         }
     }
@@ -256,15 +288,14 @@ public class GitResource {
      * Get the current user's GitHub companies.
      */
     @GetMapping("/{gitProvider}/companies")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getUserCompanies(@PathVariable String gitProvider) {
+    public @ResponseBody ResponseEntity<Collection<GitCompany>> getUserCompanies(@PathVariable String gitProvider) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
-        if (!maybeGitProvider.isPresent()) {
+        if (maybeGitProvider.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Collection<GitCompany> organizations = this.userService.getOrganizations(maybeGitProvider.get());
-        if (organizations.size() == 0) {
+        if (organizations.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(organizations, HttpStatus.OK);
@@ -275,19 +306,19 @@ public class GitResource {
      * Get the projects belonging to an organization.
      */
     @GetMapping("/{gitProvider}/companies/{companyName}/projects")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
-        return maybeGitProvider.<ResponseEntity>map(gitProvider1 ->
-            new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return maybeGitProvider
+            .<ResponseEntity>map(
+                gitProvider1 -> new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
+            )
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/git/config")
-    @Timed
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getGitlabConfig() {
+    public @ResponseBody ResponseEntity<GitConfigurationDTO> getGitlabConfig() {
         GitConfigurationDTO result = new GitConfigurationDTO(
             githubService.getHost(),
             githubService.getClientId(),
@@ -297,11 +328,11 @@ public class GitResource {
             gitlabService.getClientId(),
             gitlabService.isEnabled(),
             githubService.isConfigured(),
-            gitlabService.isConfigured());
+            gitlabService.isConfigured()
+        );
 
         this.log.debug("Git configuration : {}", result);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }

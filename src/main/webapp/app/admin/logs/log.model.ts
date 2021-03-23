@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,6 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+export type Level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'OFF';
+
+export interface Logger {
+  configuredLevel: Level | null;
+  effectiveLevel: Level;
+}
+
+export interface LoggersResponse {
+  levels: Level[];
+  loggers: { [key: string]: Logger };
+}
+
 export class Log {
-    constructor(public name: string, public level: string) {}
+  constructor(public name: string, public level: Level) {}
 }

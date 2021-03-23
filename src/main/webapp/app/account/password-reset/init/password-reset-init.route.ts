@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,15 +18,13 @@
  */
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
 import { PasswordResetInitComponent } from './password-reset-init.component';
 
 export const passwordResetInitRoute: Route = {
-    path: 'reset/request',
-    component: PasswordResetInitComponent,
-    data: {
-        authorities: [],
-        pageTitle: 'Password'
-    },
-    canActivate: [UserRouteAccessService]
+  path: 'reset/request',
+  component: PasswordResetInitComponent,
+  data: {
+    authorities: [],
+    pageTitle: 'Password'
+  }
 };

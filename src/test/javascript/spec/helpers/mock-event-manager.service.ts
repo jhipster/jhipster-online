@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,15 +16,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SpyObject } from './spyobject';
-import { JhiEventManager } from 'ng-jhipster';
 import Spy = jasmine.Spy;
+import { JhiEventManager } from 'ng-jhipster';
+
+import { SpyObject } from './spyobject';
 
 export class MockEventManager extends SpyObject {
-    broadcastSpy: Spy;
+  broadcastSpy: Spy;
 
-    constructor() {
-        super(JhiEventManager);
-        this.broadcastSpy = this.spy('broadcast').andReturn(this);
-    }
+  constructor() {
+    super(JhiEventManager);
+    this.broadcastSpy = this.spy('broadcast').andReturn(this);
+  }
 }

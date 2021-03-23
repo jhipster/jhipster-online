@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 export class Account {
-    constructor(
-        public activated: boolean,
-        public authorities: string[],
-        public email: string,
-        public firstName: string,
-        public langKey: string,
-        public lastName: string,
-        public login: string,
-        public imageUrl: string
-    ) {}
+  constructor(
+    public activated: boolean,
+    public authorities: string[],
+    public email: string,
+    public firstName: string,
+    public langKey: string,
+    public lastName: string,
+    public login: string,
+    public imageUrl: string
+  ) {}
 }

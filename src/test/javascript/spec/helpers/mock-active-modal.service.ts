@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,15 +16,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SpyObject } from './spyobject';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import Spy = jasmine.Spy;
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { SpyObject } from './spyobject';
 
 export class MockActiveModal extends SpyObject {
-    dismissSpy: Spy;
+  dismissSpy: Spy;
+  closeSpy: Spy;
 
-    constructor() {
-        super(NgbActiveModal);
-        this.dismissSpy = this.spy('dismiss').andReturn(this);
-    }
+  constructor() {
+    super(NgbActiveModal);
+    this.dismissSpy = this.spy('dismiss').andReturn(this);
+    this.closeSpy = this.spy('close').andReturn(this);
+  }
 }

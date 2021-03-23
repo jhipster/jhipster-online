@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,18 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import './polyfills';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 import { ProdConfig } from './blocks/config/prod.config';
 import { JhonlineAppModule } from './app.module';
 
 ProdConfig();
 
 if (module['hot']) {
-    module['hot'].accept();
+  module['hot'].accept();
 }
 
 platformBrowserDynamic()
-    .bootstrapModule(JhonlineAppModule, { preserveWhitespaces: true })
-    .then(() => console.log(`Application started`))
-    .catch(err => console.error(err));
+  .bootstrapModule(JhonlineAppModule, { preserveWhitespaces: true })
+  // eslint-disable-next-line no-console
+  .then(() => console.log('Application started'))
+  .catch(err => console.error(err));

@@ -1,4 +1,27 @@
+/**
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.web.rest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.GeneratorIdentity;
@@ -19,14 +42,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class StatisticsResourceIntTest {
+class StatisticsResourceIntTest {
 
     @Autowired
     private YoRCService yoRCService;
@@ -67,7 +85,8 @@ public class StatisticsResourceIntTest {
 
     private String generatorId = "cf51ff78-187a-4554-9b09-8f6f95f1a7a5";
 
-    private String dummyYo = "{\n" +
+    private String dummyYo =
+        "{\n" +
         "        \"generator-jhipster\": {\n" +
         "        \"useYarn\": false,\n" +
         "            \"experimental\": false,\n" +
@@ -88,6 +107,7 @@ public class StatisticsResourceIntTest {
         "            \"authenticationType\": \"jwt\",\n" +
         "            \"serverPort\": \"8080\",\n" +
         "            \"clientFramework\": \"angularX\",\n" +
+        "            \"withAdminUi\": \"true\",\n" +
         "            \"useSass\": false,\n" +
         "            \"testFrameworks\": [],\n" +
         "        \"enableTranslation\": true,\n" +
@@ -97,7 +117,9 @@ public class StatisticsResourceIntTest {
         "      ],\n" +
         "        \"applicationType\": \"monolith\"\n" +
         "    },\n" +
-        "        \"generator-id\": \"" + generatorId + "\",\n" +
+        "        \"generator-id\": \"" +
+        generatorId +
+        "\",\n" +
         "        \"generator-version\": \"5.1.0\",\n" +
         "        \"git-provider\": \"local\",\n" +
         "        \"node-version\": \"v8.11.1\",\n" +
@@ -120,25 +142,26 @@ public class StatisticsResourceIntTest {
             subGenEventService,
             userService,
             generatorIdentityService,
-            entityStatService);
+            entityStatService
+        );
 
-        this.restStatiticsMockMvc = MockMvcBuilders.standaloneSetup(statisticsResource)
-            .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+        this.restStatiticsMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(statisticsResource)
+                .setMessageConverters(httpMessageConverters)
+                .setControllerAdvice(exceptionTranslator)
+                .build();
     }
 
     @Test
     @Transactional
-    public void shouldNotGetCountWithUnknownFrequency() throws Exception {
-        restStatiticsMockMvc
-            .perform(get("/api/s/count-yo/{frequency}", "every minutes"))
-            .andExpect(status().isBadRequest());
+    void shouldNotGetCountWithUnknownFrequency() throws Exception {
+        restStatiticsMockMvc.perform(get("/api/s/count-yo/{frequency}", "every minutes")).andExpect(status().isBadRequest());
     }
 
     @Test
     @Transactional
-    public void shouldNotGetFieldCountWithUnknownFieldOrFrequency() throws Exception {
+    void shouldNotGetFieldCountWithUnknownFieldOrFrequency() throws Exception {
         restStatiticsMockMvc
             .perform(get("/api/s/yo/{field}/{frequency}", "clientFramework", "every minutes"))
             .andExpect(status().isBadRequest());
@@ -146,12 +169,10 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void getYoCount() throws Exception {
+    void getYoCount() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc
-            .perform(get("/api/s/count-yo"))
-            .andExpect(status().isOk());
+        restStatiticsMockMvc.perform(get("/api/s/count-yo")).andExpect(status().isOk());
 
         YoRC yorc = new YoRC().owner(new GeneratorIdentity());
         generatorIdentityRepository.saveAndFlush(yorc.getOwner());
@@ -164,12 +185,10 @@ public class StatisticsResourceIntTest {
 
     @Test
     @Transactional
-    public void addEntry() throws Exception {
+    void addEntry() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc.perform(post("/api/s/entry")
-            .content(dummyYo))
-            .andExpect(status().isCreated());
+        restStatiticsMockMvc.perform(post("/api/s/entry").content(dummyYo)).andExpect(status().isCreated());
 
         int databaseSizeAfterAdd = yoRCRepository.findAll().size();
 

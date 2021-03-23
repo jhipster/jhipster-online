@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,15 +19,14 @@
 
 package io.github.jhipster.online.service;
 
+import static java.time.ZonedDateTime.parse;
+
+import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.repository.YoRCRepository;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
-import io.github.jhipster.online.domain.*;
-import io.github.jhipster.online.repository.*;
-
-import static java.time.ZonedDateTime.parse;
 
 public class DataGenerationFixture {
 
@@ -61,7 +60,8 @@ public class DataGenerationFixture {
     }
 
     public static YoRC yorc(Instant createdDate, String clientFramework) {
-        YoRC yorc = new YoRC().serverPort("8080")
+        YoRC yorc = new YoRC()
+            .serverPort("8080")
             .authenticationType("jwt")
             .cacheProvider("ehcache")
             .enableHibernateCache(true)
@@ -75,6 +75,7 @@ public class DataGenerationFixture {
             .buildTool("maven")
             .enableSwaggerCodegen(true)
             .clientFramework(clientFramework)
+            .withAdminUi(true)
             .useSass(true)
             .clientPackageManager("npm")
             .applicationType("monolith")

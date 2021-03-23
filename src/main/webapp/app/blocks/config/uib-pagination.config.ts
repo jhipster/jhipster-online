@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,15 +18,14 @@
  */
 import { Injectable } from '@angular/core';
 import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ITEMS_PER_PAGE } from 'app/shared';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PaginationConfig {
-    // tslint:disable-next-line: no-unused-variable
-    constructor(private config: NgbPaginationConfig) {
-        config.boundaryLinks = true;
-        config.maxSize = 5;
-        config.pageSize = ITEMS_PER_PAGE;
-        config.size = 'sm';
-    }
+  constructor(config: NgbPaginationConfig) {
+    config.boundaryLinks = true;
+    config.maxSize = 5;
+    config.pageSize = ITEMS_PER_PAGE;
+    config.size = 'sm';
+  }
 }

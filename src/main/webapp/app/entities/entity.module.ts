@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,24 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { STATISTICS_ROUTE } from './statistics/statistics.route';
-import { JhonlineSharedModule } from 'app/shared';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
-    // prettier-ignore
-    imports: [
-        JhonlineSharedModule,
-        RouterModule.forRoot([STATISTICS_ROUTE], { useHash: true })
+  // prettier-ignore
+  imports: [
+    RouterModule.forChild([
+        {
+          path: 'statistics',
+          loadChildren: () => import('./statistics/statistics.module').then(m => m.JhonlineStatisticsModule),
+        }
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [StatisticsComponent],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    ]),
+  ]
 })
 export class JhonlineEntityModule {}

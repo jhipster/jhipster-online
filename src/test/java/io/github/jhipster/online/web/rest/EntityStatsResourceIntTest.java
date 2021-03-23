@@ -1,10 +1,40 @@
+/**
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.web.rest;
+
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.EntityStats;
 import io.github.jhipster.online.repository.EntityStatsRepository;
 import io.github.jhipster.online.service.EntityStatsService;
+import io.github.jhipster.online.service.dto.EntityStatsDTO;
+import io.github.jhipster.online.service.mapper.EntityStatsMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,17 +49,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Test class for the EntityStatsResource REST controller.
  *
@@ -37,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class EntityStatsResourceIntTest {
+class EntityStatsResourceIntTest {
 
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
@@ -82,6 +101,9 @@ public class EntityStatsResourceIntTest {
     private EntityStatsService entityStatsService;
 
     @Autowired
+    private EntityStatsMapper entityStatsMapper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -101,11 +123,14 @@ public class EntityStatsResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final EntityStatsResource entityStatsResource = new EntityStatsResource(entityStatsService);
-        this.restEntityStatsMockMvc = MockMvcBuilders.standaloneSetup(entityStatsResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restEntityStatsMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(entityStatsResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -115,7 +140,7 @@ public class EntityStatsResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static EntityStats createEntity(EntityManager em) {
-        EntityStats entityStats = new EntityStats()
+        return new EntityStats()
             .year(DEFAULT_YEAR)
             .month(DEFAULT_MONTH)
             .week(DEFAULT_WEEK)
@@ -128,7 +153,6 @@ public class EntityStatsResourceIntTest {
             .service(DEFAULT_SERVICE)
             .fluentMethods(DEFAULT_FLUENT_METHODS)
             .date(DEFAULT_DATE);
-        return entityStats;
     }
 
     @BeforeEach
@@ -138,13 +162,14 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void createEntityStats() throws Exception {
+    void createEntityStats() throws Exception {
         int databaseSizeBeforeCreate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats
-        restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                post("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isCreated());
 
         // Validate the EntityStats in the database
@@ -167,16 +192,17 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void createEntityStatsWithExistingId() throws Exception {
+    void createEntityStatsWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats with an existing ID
         entityStats.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restEntityStatsMockMvc.perform(post("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                post("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the EntityStats in the database
@@ -186,14 +212,15 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllEntityStats() throws Exception {
+    void getAllEntityStats() throws Exception {
         // Initialize the database
         entityStatsRepository.saveAndFlush(entityStats);
 
         // Get all the entityStatsList
-        restEntityStatsMockMvc.perform(get("/api/entity-stats?sort=id,desc"))
+        restEntityStatsMockMvc
+            .perform(get("/api/entity-stats?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(entityStats.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
@@ -202,23 +229,24 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].fields").value(hasItem(DEFAULT_FIELDS)))
             .andExpect(jsonPath("$.[*].relationships").value(hasItem(DEFAULT_RELATIONSHIPS)))
-            .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION.toString())))
-            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO.toString())))
-            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE.toString())))
-            .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS.booleanValue())))
+            .andExpect(jsonPath("$.[*].pagination").value(hasItem(DEFAULT_PAGINATION)))
+            .andExpect(jsonPath("$.[*].dto").value(hasItem(DEFAULT_DTO)))
+            .andExpect(jsonPath("$.[*].service").value(hasItem(DEFAULT_SERVICE)))
+            .andExpect(jsonPath("$.[*].fluentMethods").value(hasItem(DEFAULT_FLUENT_METHODS)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
     @Test
     @Transactional
-    public void getEntityStats() throws Exception {
+    void getEntityStats() throws Exception {
         // Initialize the database
         entityStatsRepository.saveAndFlush(entityStats);
 
         // Get the entityStats
-        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", entityStats.getId()))
+        restEntityStatsMockMvc
+            .perform(get("/api/entity-stats/{id}", entityStats.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(entityStats.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
@@ -227,31 +255,30 @@ public class EntityStatsResourceIntTest {
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.fields").value(DEFAULT_FIELDS))
             .andExpect(jsonPath("$.relationships").value(DEFAULT_RELATIONSHIPS))
-            .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION.toString()))
-            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO.toString()))
-            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE.toString()))
-            .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS.booleanValue()))
+            .andExpect(jsonPath("$.pagination").value(DEFAULT_PAGINATION))
+            .andExpect(jsonPath("$.dto").value(DEFAULT_DTO))
+            .andExpect(jsonPath("$.service").value(DEFAULT_SERVICE))
+            .andExpect(jsonPath("$.fluentMethods").value(DEFAULT_FLUENT_METHODS))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
     @Test
     @Transactional
-    public void getNonExistingEntityStats() throws Exception {
+    void getNonExistingEntityStats() throws Exception {
         // Get the entityStats
-        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restEntityStatsMockMvc.perform(get("/api/entity-stats/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateEntityStats() throws Exception {
+    void updateEntityStats() throws Exception {
         // Initialize the database
-        entityStatsService.save(entityStats);
+        EntityStatsDTO entityStatsDTO = entityStatsService.save(entityStatsMapper.toDto(entityStats));
 
         int databaseSizeBeforeUpdate = entityStatsRepository.findAll().size();
 
         // Update the entityStats
-        EntityStats updatedEntityStats = entityStatsRepository.findById(entityStats.getId()).get();
+        EntityStats updatedEntityStats = entityStatsRepository.findById(entityStatsDTO.getId()).get();
         // Disconnect from session so that the updates on updatedEntityStats are not directly saved in db
         em.detach(updatedEntityStats);
         updatedEntityStats
@@ -268,9 +295,12 @@ public class EntityStatsResourceIntTest {
             .fluentMethods(UPDATED_FLUENT_METHODS)
             .date(UPDATED_DATE);
 
-        restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEntityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                put("/api/entity-stats")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedEntityStats))
+            )
             .andExpect(status().isOk());
 
         // Validate the EntityStats in the database
@@ -293,15 +323,16 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingEntityStats() throws Exception {
+    void updateNonExistingEntityStats() throws Exception {
         int databaseSizeBeforeUpdate = entityStatsRepository.findAll().size();
 
         // Create the EntityStats
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restEntityStatsMockMvc.perform(put("/api/entity-stats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(entityStats)))
+        restEntityStatsMockMvc
+            .perform(
+                put("/api/entity-stats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(entityStats))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the EntityStats in the database
@@ -311,15 +342,15 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteEntityStats() throws Exception {
+    void deleteEntityStats() throws Exception {
         // Initialize the database
-        entityStatsService.save(entityStats);
+        EntityStatsDTO entityStatsDTO = entityStatsService.save(entityStatsMapper.toDto(entityStats));
 
         int databaseSizeBeforeDelete = entityStatsRepository.findAll().size();
 
         // Get the entityStats
-        restEntityStatsMockMvc.perform(delete("/api/entity-stats/{id}", entityStats.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+        restEntityStatsMockMvc
+            .perform(delete("/api/entity-stats/{id}", entityStatsDTO.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty
@@ -329,7 +360,7 @@ public class EntityStatsResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(EntityStats.class);
         EntityStats entityStats1 = new EntityStats();
         entityStats1.setId(1L);

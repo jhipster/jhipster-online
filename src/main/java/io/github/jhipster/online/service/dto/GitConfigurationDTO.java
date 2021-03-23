@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,6 +18,8 @@
  */
 
 package io.github.jhipster.online.service.dto;
+
+import java.util.Objects;
 
 public class GitConfigurationDTO {
 
@@ -39,13 +41,17 @@ public class GitConfigurationDTO {
 
     private boolean gitlabConfigured;
 
-    public GitConfigurationDTO(String githubHost,
-                               String githubClientId,
-                               boolean githubAvailable,
-                               String gitlabHost,
-                               String gitlabRedirectUri,
-                               String gitlabClientId,
-                               boolean gitlabAvailable, boolean githubConfigured, boolean gitlabConfigured) {
+    public GitConfigurationDTO(
+        String githubHost,
+        String githubClientId,
+        boolean githubAvailable,
+        String gitlabHost,
+        String gitlabRedirectUri,
+        String gitlabClientId,
+        boolean gitlabAvailable,
+        boolean githubConfigured,
+        boolean gitlabConfigured
+    ) {
         this.githubHost = githubHost;
         this.githubClientId = githubClientId;
         this.githubAvailable = githubAvailable;
@@ -131,31 +137,20 @@ public class GitConfigurationDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         GitConfigurationDTO that = (GitConfigurationDTO) o;
 
-        if (githubAvailable != that.githubAvailable)
-            return false;
-        if (gitlabAvailable != that.gitlabAvailable)
-            return false;
-        if (githubConfigured != that.githubConfigured)
-            return false;
-        if (gitlabConfigured != that.gitlabConfigured)
-            return false;
-        if (githubHost != null ? !githubHost.equals(that.githubHost) : that.githubHost != null)
-            return false;
-        if (githubClientId != null ? !githubClientId.equals(that.githubClientId) : that.githubClientId != null)
-            return false;
-        if (gitlabHost != null ? !gitlabHost.equals(that.gitlabHost) : that.gitlabHost != null)
-            return false;
-        if (gitlabRedirectUri != null ? !gitlabRedirectUri.equals(that.gitlabRedirectUri) : that.gitlabRedirectUri !=
-            null)
-            return false;
-        return gitlabClientId != null ? gitlabClientId.equals(that.gitlabClientId) : that.gitlabClientId == null;
+        if (githubAvailable != that.githubAvailable) return false;
+        if (gitlabAvailable != that.gitlabAvailable) return false;
+        if (githubConfigured != that.githubConfigured) return false;
+        if (gitlabConfigured != that.gitlabConfigured) return false;
+        if (!Objects.equals(githubHost, that.githubHost)) return false;
+        if (!Objects.equals(githubClientId, that.githubClientId)) return false;
+        if (!Objects.equals(gitlabHost, that.gitlabHost)) return false;
+        if (!Objects.equals(gitlabRedirectUri, that.gitlabRedirectUri)) return false;
+        return Objects.equals(gitlabClientId, that.gitlabClientId);
     }
 
     @Override
@@ -174,16 +169,32 @@ public class GitConfigurationDTO {
 
     @Override
     public String toString() {
-        return "GitConfigurationDTO{" +
-            "githubHost='" + githubHost + '\'' +
-            ", githubClientId='" + githubClientId + '\'' +
-            ", githubAvailable=" + githubAvailable +
-            ", gitlabHost='" + gitlabHost + '\'' +
-            ", gitlabRedirectUri='" + gitlabRedirectUri + '\'' +
-            ", gitlabClientId='" + gitlabClientId + '\'' +
-            ", gitlabAvailable=" + gitlabAvailable +
-            ", githubConfigured=" + githubConfigured +
-            ", gitlabConfigured=" + gitlabConfigured +
-            '}';
+        return (
+            "GitConfigurationDTO{" +
+            "githubHost='" +
+            githubHost +
+            '\'' +
+            ", githubClientId='" +
+            githubClientId +
+            '\'' +
+            ", githubAvailable=" +
+            githubAvailable +
+            ", gitlabHost='" +
+            gitlabHost +
+            '\'' +
+            ", gitlabRedirectUri='" +
+            gitlabRedirectUri +
+            '\'' +
+            ", gitlabClientId='" +
+            gitlabClientId +
+            '\'' +
+            ", gitlabAvailable=" +
+            gitlabAvailable +
+            ", githubConfigured=" +
+            githubConfigured +
+            ", gitlabConfigured=" +
+            gitlabConfigured +
+            '}'
+        );
     }
 }

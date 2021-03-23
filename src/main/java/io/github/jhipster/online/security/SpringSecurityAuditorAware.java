@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,15 +18,13 @@
  */
 package io.github.jhipster.online.security;
 
+import io.github.jhipster.online.config.Constants;
 import java.util.Optional;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
-import io.github.jhipster.online.config.Constants;
-
 /**
- * Implementation of AuditorAware based on Spring Security.
+ * Implementation of {@link AuditorAware} based on Spring Security.
  */
 @Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {

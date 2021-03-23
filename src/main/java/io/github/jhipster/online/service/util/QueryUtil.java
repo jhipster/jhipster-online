@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,14 +19,18 @@
 
 package io.github.jhipster.online.service.util;
 
+import io.github.jhipster.online.service.dto.RawSQL;
+import io.github.jhipster.online.service.dto.RawSQLField;
+import io.github.jhipster.online.service.dto.TemporalCountDTO;
+import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
+import io.github.jhipster.online.service.enums.TemporalValueType;
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-
-import io.github.jhipster.online.service.dto.*;
-import io.github.jhipster.online.service.enums.TemporalValueType;
 
 public final class QueryUtil {
 
@@ -34,10 +38,16 @@ public final class QueryUtil {
 
     public static final String TYPE = "type";
 
-    public static List<TemporalDistributionDTO> createDistributionQueryAndCollectData(Instant after,
-                                                                                      TemporalValueType dbTemporalFunction,
-                                                                                      CriteriaQuery<RawSQLField> query,
-                                                                                      EntityManager entityManager) {
+    private QueryUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static List<TemporalDistributionDTO> createDistributionQueryAndCollectData(
+        Instant after,
+        TemporalValueType dbTemporalFunction,
+        CriteriaQuery<RawSQLField> query,
+        EntityManager entityManager
+    ) {
         return entityManager
             .createQuery(query)
             .setParameter(DATE, after)
@@ -46,25 +56,35 @@ public final class QueryUtil {
             .collect(Collectors.groupingBy(RawSQLField::getMoment))
             .entrySet()
             .stream()
-            .map(entry -> {
-                Instant date = TemporalValueType.absoluteMomentToInstant(entry.getKey().longValue(), dbTemporalFunction);
-                Map<String, Long> values = new TreeMap<>();
-                entry.getValue().forEach(e -> values.put(e.getField(), e.getCount()));
-                return new TemporalDistributionDTO(date, values);
-            }).collect(Collectors.toList());
+            .map(
+                entry -> {
+                    Instant date = TemporalValueType.absoluteMomentToInstant(entry.getKey().longValue(), dbTemporalFunction);
+                    Map<String, Long> values = new TreeMap<>();
+                    entry.getValue().forEach(e -> values.put(e.getField(), e.getCount()));
+                    return new TemporalDistributionDTO(date, values);
+                }
+            )
+            .collect(Collectors.toList());
     }
 
-    public static List<TemporalCountDTO> createCountQueryAndCollectData(Instant after,
-                                                                        TemporalValueType dbTemporalFunction,
-                                                                        CriteriaQuery<RawSQL> query,
-                                                                        EntityManager entityManager) {
+    public static List<TemporalCountDTO> createCountQueryAndCollectData(
+        Instant after,
+        TemporalValueType dbTemporalFunction,
+        CriteriaQuery<RawSQL> query,
+        EntityManager entityManager
+    ) {
         return entityManager
             .createQuery(query)
             .setParameter(DATE, after)
             .getResultList()
             .stream()
-            .map(item ->
-                new TemporalCountDTO(TemporalValueType.absoluteMomentToInstant(item.getMoment().longValue(), dbTemporalFunction), item.getCount()))
+            .map(
+                item ->
+                    new TemporalCountDTO(
+                        TemporalValueType.absoluteMomentToInstant(item.getMoment().longValue(), dbTemporalFunction),
+                        item.getCount()
+                    )
+            )
             .sorted(TemporalCountDTO::compareTo)
             .collect(Collectors.toList());
     }

@@ -35,7 +35,7 @@
             <div class="col-md-2" *ngIf="simpleMode">
                 <div class="form-group">
                     <label>&nbsp;</label><br/>
-                    <button class="btn btn-info btn-sm" (click)="refreshGitCompanyListByGitProvider(data.selectedGitProvider)">
+                    <button class="btn btn-info btn-sm" (click)="refreshGitCompanyListByGitProvider(data?.selectedGitProvider)">
                         <fa-icon [icon]="'sync'" [spin]="data.gitCompanyListRefresh"></fa-icon>
                         <span>
                         Refresh

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,7 +20,6 @@
 package io.github.jhipster.online.service.dto;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
@@ -55,10 +54,8 @@ public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TemporalCountDTO that = (TemporalCountDTO) o;
-        return Objects.equals(date, that.date) &&
-            Objects.equals(count, that.count);
+        return Objects.equals(date, that.date) && Objects.equals(count, that.count);
     }
-
 
     @Override
     public int hashCode() {
@@ -67,10 +64,7 @@ public class TemporalCountDTO implements Comparable<TemporalCountDTO> {
 
     @Override
     public String toString() {
-        return "TemporalCountDTO{" +
-            "date=" + date +
-            ", count=" + count +
-            '}';
+        return "TemporalCountDTO{" + "date=" + date + ", count=" + count + '}';
     }
 
     @Override

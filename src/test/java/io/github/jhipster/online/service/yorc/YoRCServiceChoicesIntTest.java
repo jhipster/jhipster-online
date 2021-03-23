@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,6 +19,9 @@
 
 package io.github.jhipster.online.service.yorc;
 
+import static java.time.ZonedDateTime.parse;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.enums.YoRCColumn;
 import io.github.jhipster.online.repository.YoRCRepository;
@@ -26,6 +29,9 @@ import io.github.jhipster.online.service.DataGenerationFixture;
 import io.github.jhipster.online.service.YoRCService;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +39,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-
-import static java.time.ZonedDateTime.parse;
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class YoRCServiceChoicesIntTest {
+class YoRCServiceChoicesIntTest {
 
     @Autowired
     private YoRCService yoRCService;
@@ -52,7 +51,7 @@ public class YoRCServiceChoicesIntTest {
 
     @Transactional
     @Test
-    public void assertThatYearlyProportionsAreCorrect() {
+    void assertThatYearlyProportionsAreCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalDistributionDTO> result = yoRCService.getFieldCount(
@@ -64,25 +63,18 @@ public class YoRCServiceChoicesIntTest {
         assertThat(result)
             .hasSize(2)
             .extracting(TemporalDistributionDTO::getDate)
-            .containsExactly(
-                Instant.parse("2018-01-01T00:00:00Z"),
-                Instant.parse("2019-01-01T00:00:00Z")
-            );
+            .containsExactly(Instant.parse("2018-01-01T00:00:00Z"), Instant.parse("2019-01-01T00:00:00Z"));
 
         Map<String, Long> fst = result.get(0).getValues(); // 2018
         Map<String, Long> snd = result.get(1).getValues(); // 2019
 
-        assertThat(fst).containsEntry("react", 1L);
-        assertThat(fst).containsEntry("angularX", 5L);
-        assertThat(fst).containsEntry("vuejs", 2L);
-
-        assertThat(snd).containsEntry("react", 2L);
-        assertThat(snd).containsEntry("vuejs", 2L);
+        assertThat(fst).containsEntry("react", 1L).containsEntry("angularX", 5L).containsEntry("vuejs", 2L);
+        assertThat(snd).containsEntry("react", 2L).containsEntry("vuejs", 2L);
     }
 
     @Transactional
     @Test
-    public void assertThatMonthlyProportionsAreCorrect() {
+    void assertThatMonthlyProportionsAreCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalDistributionDTO> result = yoRCService.getFieldCount(
@@ -120,16 +112,13 @@ public class YoRCServiceChoicesIntTest {
         assertThat(may).containsEntry("angularX", 1L);
         assertThat(jun).containsEntry("angularX", 1L);
 
-        assertThat(sep).containsEntry("angularX", 1L);
-        assertThat(sep).containsEntry("vuejs", 2L);
-
-        assertThat(jan).containsEntry("react", 2L);
-        assertThat(jan).containsEntry("vuejs", 2L);
+        assertThat(sep).containsEntry("angularX", 1L).containsEntry("vuejs", 2L);
+        assertThat(jan).containsEntry("react", 2L).containsEntry("vuejs", 2L);
     }
 
     @Transactional
     @Test
-    public void assertThatWeeklyProportionsAreCorrect() {
+    void assertThatWeeklyProportionsAreCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalDistributionDTO> result = yoRCService.getFieldCount(
@@ -151,18 +140,16 @@ public class YoRCServiceChoicesIntTest {
         Map<String, Long> snd = result.get(1).getValues(); // thu 13/09/2018
         Map<String, Long> thr = result.get(2).getValues(); // thu 27/09/2018
 
-        assertThat(fst).containsEntry("react", 2L);
-        assertThat(fst).containsEntry("vuejs", 2L);
+        assertThat(fst).containsEntry("react", 2L).containsEntry("vuejs", 2L);
 
-        assertThat(snd).containsEntry("angularX", 1L);
-        assertThat(snd).containsEntry("vuejs", 1L);
+        assertThat(snd).containsEntry("angularX", 1L).containsEntry("vuejs", 1L);
 
         assertThat(thr).containsEntry("vuejs", 1L);
     }
 
     @Transactional
     @Test
-    public void assertThatDailyProportionsAreCorrect() {
+    void assertThatDailyProportionsAreCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalDistributionDTO> result = yoRCService.getFieldCount(
@@ -190,11 +177,9 @@ public class YoRCServiceChoicesIntTest {
 
         assertThat(fst).containsEntry("vuejs", 1L);
 
-        assertThat(snd).containsEntry("react", 1L);
-        assertThat(snd).containsEntry("vuejs", 1L);
+        assertThat(snd).containsEntry("react", 1L).containsEntry("vuejs", 1L);
 
-        assertThat(thr).containsEntry("react", 1L);
-        assertThat(thr).containsEntry("vuejs", 1L);
+        assertThat(thr).containsEntry("react", 1L).containsEntry("vuejs", 1L);
 
         assertThat(fou).containsEntry("angularX", 1L);
 
@@ -203,7 +188,7 @@ public class YoRCServiceChoicesIntTest {
 
     @Transactional
     @Test
-    public void assertThatHourlyProportionsAreCorrect() {
+    void assertThatHourlyProportionsAreCorrect() {
         DataGenerationFixture.fillDatabaseWithYoRCs(yoRCRepository);
 
         List<TemporalDistributionDTO> result = yoRCService.getFieldCount(
@@ -227,8 +212,7 @@ public class YoRCServiceChoicesIntTest {
 
         assertThat(fst).containsEntry("react", 1L);
 
-        assertThat(snd).containsEntry("react", 1L);
-        assertThat(snd).containsEntry("vuejs", 1L);
+        assertThat(snd).containsEntry("react", 1L).containsEntry("vuejs", 1L);
 
         assertThat(thr).containsEntry("vuejs", 1L);
     }

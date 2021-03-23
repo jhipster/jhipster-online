@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,15 +17,15 @@
  * limitations under the License.
  */
 export class GitProviderModel {
-    constructor(
-        public availableGitProviders: any,
-        public selectedGitProvider: string,
-        public selectedGitCompany: string,
-        public selectedGitRepository: string,
-        public gitCompanies: any,
-        public gitProjects: any,
-        public gitCompanyListRefresh: boolean,
-        public gitProjectListRefresh: boolean,
-        public isValid: boolean
-    ) {}
+  constructor(
+    public gitCompanyListRefresh: boolean,
+    public gitProjectListRefresh: boolean,
+    public isValid: boolean,
+    public availableGitProviders: any,
+    public gitCompanies: any,
+    public gitProjects: any,
+    public selectedGitProvider?: string,
+    public selectedGitCompany?: string,
+    public selectedGitRepository?: string
+  ) {}
 }

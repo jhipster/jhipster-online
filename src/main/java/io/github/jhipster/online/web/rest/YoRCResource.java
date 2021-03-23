@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,25 +19,23 @@
 
 package io.github.jhipster.online.web.rest;
 
+import io.github.jhipster.online.domain.YoRC;
+import io.github.jhipster.online.security.AuthoritiesConstants;
+import io.github.jhipster.online.service.YoRCService;
+import io.github.jhipster.online.service.dto.YoRCDTO;
+import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import io.github.jhipster.online.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import com.codahale.metrics.annotation.Timed;
-
-import io.github.jhipster.online.domain.YoRC;
-import io.github.jhipster.online.service.YoRCService;
-import io.github.jhipster.online.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.online.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing YoRC.
@@ -49,6 +47,9 @@ public class YoRCResource {
     private final Logger log = LoggerFactory.getLogger(YoRCResource.class);
 
     private static final String ENTITY_NAME = "yoRC";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private final YoRCService yoRCService;
 
@@ -64,15 +65,15 @@ public class YoRCResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/yo-rcs")
-    @Timed
-    public ResponseEntity<YoRC> createYoRC(@RequestBody YoRC yoRC) throws URISyntaxException {
+    public ResponseEntity<YoRCDTO> createYoRC(@RequestBody YoRCDTO yoRC) throws URISyntaxException {
         log.debug("REST request to save YoRC : {}", yoRC);
         if (yoRC.getId() != null) {
             throw new BadRequestAlertException("A new yoRC cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        YoRC result = yoRCService.save(yoRC);
-        return ResponseEntity.created(new URI("/api/yo-rcs/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+        YoRCDTO result = yoRCService.save(yoRC);
+        return ResponseEntity
+            .created(new URI("/api/yo-rcs/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -83,19 +84,18 @@ public class YoRCResource {
      * @return the ResponseEntity with status 200 (OK) and with body the updated yoRC,
      * or with status 400 (Bad Request) if the yoRC is not valid,
      * or with status 500 (Internal Server Error) if the yoRC couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/yo-rcs")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
-    public ResponseEntity<YoRC> updateYoRC(@RequestBody YoRC yoRC) {
+    public ResponseEntity<YoRCDTO> updateYoRC(@RequestBody YoRCDTO yoRC) {
         log.debug("REST request to update YoRC : {}", yoRC);
         if (yoRC.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        YoRC result = yoRCService.save(yoRC);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, yoRC.getId().toString()))
+        YoRCDTO result = yoRCService.save(yoRC);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, yoRC.getId().toString()))
             .body(result);
     }
 
@@ -106,7 +106,6 @@ public class YoRCResource {
      */
     @GetMapping("/yo-rcs")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public List<YoRC> getAllYoRCS() {
         log.debug("REST request to get all YoRCS");
         return yoRCService.findAll();
@@ -120,7 +119,6 @@ public class YoRCResource {
      */
     @GetMapping("/yo-rcs/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<YoRC> getYoRC(@PathVariable Long id) {
         log.debug("REST request to get YoRC : {}", id);
         Optional<YoRC> yoRC = yoRCService.findOne(id);
@@ -135,10 +133,12 @@ public class YoRCResource {
      */
     @DeleteMapping("/yo-rcs/{id}")
     @Secured(AuthoritiesConstants.ADMIN)
-    @Timed
     public ResponseEntity<Void> deleteYoRC(@PathVariable Long id) {
         log.debug("REST request to delete YoRC : {}", id);
         yoRCService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

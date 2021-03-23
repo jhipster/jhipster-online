@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,20 +19,17 @@
 
 package io.github.jhipster.online.repository;
 
-import java.util.Set;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import io.github.jhipster.online.domain.GitCompany;
 import io.github.jhipster.online.domain.User;
+import java.util.Set;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Spring Data JPA repository for the GitCompany entity.
  */
 @Repository
 public interface GitCompanyRepository extends JpaRepository<GitCompany, Long> {
-
     Set<GitCompany> findAllByUserAndGitProvider(User user, String gitProvider);
 
     void deleteAllByUserLoginAndGitProvider(String user, String gitProvider);

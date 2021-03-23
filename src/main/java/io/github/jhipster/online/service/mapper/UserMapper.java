@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online for more
  * information.
@@ -15,17 +15,18 @@
  */
 package io.github.jhipster.online.service.mapper;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import io.github.jhipster.online.domain.Authority;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.service.dto.UserDTO;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
- * Mapper for the entity User and its DTO called UserDTO.
+ * Mapper for the entity {@link User} and its DTO called {@link UserDTO}.
  *
  * Normal mappers are generated using MapStruct, this one is hand-coded as MapStruct
  * support is still in beta, and requires a manual step with an IDE.
@@ -33,15 +34,16 @@ import io.github.jhipster.online.service.dto.UserDTO;
 @Service
 public class UserMapper {
 
+    public List<UserDTO> usersToUserDTOs(List<User> users) {
+        return users.stream().filter(Objects::nonNull).map(this::userToUserDTO).collect(Collectors.toList());
+    }
+
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
     }
 
-    public List<UserDTO> usersToUserDTOs(List<User> users) {
-        return users.stream()
-            .filter(Objects::nonNull)
-            .map(this::userToUserDTO)
-            .collect(Collectors.toList());
+    public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
+        return userDTOs.stream().filter(Objects::nonNull).map(this::userDTOToUser).collect(Collectors.toList());
     }
 
     public User userDTOToUser(UserDTO userDTO) {
@@ -58,18 +60,29 @@ public class UserMapper {
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
-            if (authorities != null) {
-                user.setAuthorities(authorities);
-            }
+            user.setAuthorities(authorities);
             return user;
         }
     }
 
-    public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
-        return userDTOs.stream()
-            .filter(Objects::nonNull)
-            .map(this::userDTOToUser)
-            .collect(Collectors.toList());
+    private Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
+        Set<Authority> authorities = new HashSet<>();
+
+        if (authoritiesAsString != null) {
+            authorities =
+                authoritiesAsString
+                    .stream()
+                    .map(
+                        string -> {
+                            Authority auth = new Authority();
+                            auth.setName(string);
+                            return auth;
+                        }
+                    )
+                    .collect(Collectors.toSet());
+        }
+
+        return authorities;
     }
 
     public User userFromId(Long id) {
@@ -79,13 +92,5 @@ public class UserMapper {
         User user = new User();
         user.setId(id);
         return user;
-    }
-
-    public Set<Authority> authoritiesFromStrings(Set<String> strings) {
-        return strings.stream().map(string -> {
-            Authority auth = new Authority();
-            auth.setName(string);
-            return auth;
-        }).collect(Collectors.toSet());
     }
 }

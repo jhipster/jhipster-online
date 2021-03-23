@@ -1,10 +1,40 @@
+/**
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
+ *
+ * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
+ * for more information.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.jhipster.online.web.rest;
+
+import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.repository.SubGenEventRepository;
 import io.github.jhipster.online.service.SubGenEventService;
+import io.github.jhipster.online.service.dto.SubGenEventDTO;
+import io.github.jhipster.online.service.mapper.SubGenEventMapper;
 import io.github.jhipster.online.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,17 +49,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static io.github.jhipster.online.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Test class for the SubGenEventResource REST controller.
  *
@@ -37,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = JhonlineApp.class)
-public class SubGenEventResourceIntTest {
+class SubGenEventResourceIntTest {
 
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
@@ -69,10 +88,11 @@ public class SubGenEventResourceIntTest {
     @Autowired
     private SubGenEventRepository subGenEventRepository;
 
-
-
     @Autowired
     private SubGenEventService subGenEventService;
+
+    @Autowired
+    private SubGenEventMapper subGenEventMapper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -94,11 +114,14 @@ public class SubGenEventResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final SubGenEventResource subGenEventResource = new SubGenEventResource(subGenEventService);
-        this.restSubGenEventMockMvc = MockMvcBuilders.standaloneSetup(subGenEventResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restSubGenEventMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(subGenEventResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .build();
     }
 
     /**
@@ -108,7 +131,7 @@ public class SubGenEventResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static SubGenEvent createEntity(EntityManager em) {
-        SubGenEvent subGenEvent = new SubGenEvent()
+        return new SubGenEvent()
             .year(DEFAULT_YEAR)
             .month(DEFAULT_MONTH)
             .week(DEFAULT_WEEK)
@@ -118,7 +141,6 @@ public class SubGenEventResourceIntTest {
             .type(DEFAULT_TYPE)
             .event(DEFAULT_EVENT)
             .date(DEFAULT_DATE);
-        return subGenEvent;
     }
 
     @BeforeEach
@@ -128,13 +150,14 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void createSubGenEvent() throws Exception {
+    void createSubGenEvent() throws Exception {
         int databaseSizeBeforeCreate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent
-        restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                post("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isCreated());
 
         // Validate the SubGenEvent in the database
@@ -154,16 +177,17 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void createSubGenEventWithExistingId() throws Exception {
+    void createSubGenEventWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent with an existing ID
         subGenEvent.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSubGenEventMockMvc.perform(post("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                post("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SubGenEvent in the database
@@ -173,66 +197,67 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllSubGenEvents() throws Exception {
+    void getAllSubGenEvents() throws Exception {
         // Initialize the database
         subGenEventRepository.saveAndFlush(subGenEvent);
 
         // Get all the subGenEventList
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events?sort=id,desc"))
+        restSubGenEventMockMvc
+            .perform(get("/api/sub-gen-events?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subGenEvent.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH)))
             .andExpect(jsonPath("$.[*].week").value(hasItem(DEFAULT_WEEK)))
             .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY)))
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
-            .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT.toString())))
+            .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].event").value(hasItem(DEFAULT_EVENT)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
-
     @Test
     @Transactional
-    public void getSubGenEvent() throws Exception {
+    void getSubGenEvent() throws Exception {
         // Initialize the database
         subGenEventRepository.saveAndFlush(subGenEvent);
 
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", subGenEvent.getId()))
+        restSubGenEventMockMvc
+            .perform(get("/api/sub-gen-events/{id}", subGenEvent.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(subGenEvent.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH))
             .andExpect(jsonPath("$.week").value(DEFAULT_WEEK))
             .andExpect(jsonPath("$.day").value(DEFAULT_DAY))
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
-            .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.event").value(DEFAULT_EVENT.toString()))
+            .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.event").value(DEFAULT_EVENT))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
-    }
-    @Test
-    @Transactional
-    public void getNonExistingSubGenEvent() throws Exception {
-        // Get the subGenEvent
-        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateSubGenEvent() throws Exception {
+    void getNonExistingSubGenEvent() throws Exception {
+        // Get the subGenEvent
+        restSubGenEventMockMvc.perform(get("/api/sub-gen-events/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    void updateSubGenEvent() throws Exception {
         // Initialize the database
-        subGenEventService.save(subGenEvent);
+        SubGenEventDTO subGenEventDTO = subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
 
         int databaseSizeBeforeUpdate = subGenEventRepository.findAll().size();
 
         // Update the subGenEvent
-        SubGenEvent updatedSubGenEvent = subGenEventRepository.findById(subGenEvent.getId()).get();
+        SubGenEvent updatedSubGenEvent = subGenEventRepository.findById(subGenEventDTO.getId()).get();
         // Disconnect from session so that the updates on updatedSubGenEvent are not directly saved in db
         em.detach(updatedSubGenEvent);
         updatedSubGenEvent
@@ -246,9 +271,12 @@ public class SubGenEventResourceIntTest {
             .event(UPDATED_EVENT)
             .date(UPDATED_DATE);
 
-        restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSubGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                put("/api/sub-gen-events")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedSubGenEvent))
+            )
             .andExpect(status().isOk());
 
         // Validate the SubGenEvent in the database
@@ -268,15 +296,16 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void updateNonExistingSubGenEvent() throws Exception {
+    void updateNonExistingSubGenEvent() throws Exception {
         int databaseSizeBeforeUpdate = subGenEventRepository.findAll().size();
 
         // Create the SubGenEvent
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSubGenEventMockMvc.perform(put("/api/sub-gen-events")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(subGenEvent)))
+        restSubGenEventMockMvc
+            .perform(
+                put("/api/sub-gen-events").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(subGenEvent))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SubGenEvent in the database
@@ -286,15 +315,15 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void deleteSubGenEvent() throws Exception {
+    void deleteSubGenEvent() throws Exception {
         // Initialize the database
-        subGenEventService.save(subGenEvent);
+        SubGenEventDTO subGenEventDTO = subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
 
         int databaseSizeBeforeDelete = subGenEventRepository.findAll().size();
 
         // Get the subGenEvent
-        restSubGenEventMockMvc.perform(delete("/api/sub-gen-events/{id}", subGenEvent.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+        restSubGenEventMockMvc
+            .perform(delete("/api/sub-gen-events/{id}", subGenEventDTO.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         // Validate the database is empty
@@ -304,7 +333,7 @@ public class SubGenEventResourceIntTest {
 
     @Test
     @Transactional
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(SubGenEvent.class);
         SubGenEvent subGenEvent1 = new SubGenEvent();
         subGenEvent1.setId(1L);

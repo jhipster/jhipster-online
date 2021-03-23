@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2020 the original author or authors from the JHipster Online project.
+ * Copyright 2017-2021 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,17 +18,17 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class JdlService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    doApplyJdl(gitProvider: string, organizationName: string, projectName: string, jdlId: string): Observable<string> {
-        return this.http.post(`api/apply-jdl/${gitProvider}/${organizationName}/${projectName}/${jdlId}`, '', { responseType: 'text' });
-    }
+  doApplyJdl(gitProvider: string, organizationName: string, projectName: string, jdlId: string): Observable<string> {
+    return this.http.post(`api/apply-jdl/${gitProvider}/${organizationName}/${projectName}/${jdlId}`, '', { responseType: 'text' });
+  }
 
-    getApplyJdlLogs(applyJdlId: string): Observable<string> {
-        return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
-    }
+  getApplyJdlLogs(applyJdlId: string): Observable<string> {
+    return this.http.get('api/apply-jdl-logs/' + applyJdlId, { responseType: 'text' });
+  }
 }
