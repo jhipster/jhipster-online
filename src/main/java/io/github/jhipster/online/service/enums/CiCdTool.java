@@ -29,7 +29,8 @@ public enum CiCdTool {
     JENKINS,
     GITLAB,
     AZURE,
-    GITHUB;
+    GITHUB,
+    CIRCLE;
 
     public static Optional<CiCdTool> getByName(String name) {
         return Stream.of(values()).filter(ciCdTool -> ciCdTool.name().equalsIgnoreCase(name)).findFirst();
