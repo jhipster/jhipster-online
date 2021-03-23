@@ -31,7 +31,7 @@ export class JHipsterConfigurationModel {
   public websocket: any = false;
   public databaseType = 'sql';
   public devDatabaseType = 'h2Disk';
-  public prodDatabaseType = 'mysql';
+  public prodDatabaseType = 'postgresql';
   public searchEngine: any = false;
   public enableSwaggerCodegen: any = false;
   public messageBroker: any = false;
