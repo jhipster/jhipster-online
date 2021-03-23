@@ -86,6 +86,8 @@ public class YoRCDTO implements Serializable {
 
     private String clientFramework;
 
+    private Boolean withAdminUi;
+
     private Boolean useSass;
 
     private String clientPackageManager;
@@ -344,6 +346,14 @@ public class YoRCDTO implements Serializable {
         this.clientFramework = clientFramework;
     }
 
+    public Boolean getWithAdminUi() {
+        return withAdminUi;
+    }
+
+    public void setWithAdminUi(Boolean withAdminUi) {
+        this.withAdminUi = withAdminUi;
+    }
+
     public Boolean getUseSass() {
         return useSass;
     }
@@ -496,6 +506,9 @@ public class YoRCDTO implements Serializable {
             enableSwaggerCodegen +
             ", clientFramework='" +
             clientFramework +
+            '\'' +
+            ", withAdminUi='" +
+            withAdminUi +
             '\'' +
             ", useSass=" +
             useSass +

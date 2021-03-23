@@ -75,6 +75,7 @@ public class DataGenerationFixture {
             .buildTool("maven")
             .enableSwaggerCodegen(true)
             .clientFramework(clientFramework)
+            .withAdminUi(true)
             .useSass(true)
             .clientPackageManager("npm")
             .applicationType("monolith")

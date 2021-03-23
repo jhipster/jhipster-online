@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Moment } from 'moment';
-import { IGeneratorIdentity } from 'app/shared/model//generator-identity.model';
+import { IGeneratorIdentity } from 'app/shared/model/generator-identity.model';
 
 export interface IYoRC {
   id?: number;
@@ -50,6 +50,7 @@ export interface IYoRC {
   buildTool?: string;
   enableSwaggerCodegen?: boolean;
   clientFramework?: string;
+  withAdminUi?: boolean;
   useSass?: boolean;
   clientPackageManager?: string;
   applicationType?: string;
@@ -94,6 +95,7 @@ export class YoRC implements IYoRC {
     public buildTool?: string,
     public enableSwaggerCodegen?: boolean,
     public clientFramework?: string,
+    public withAdminUi?: boolean,
     public useSass?: boolean,
     public clientPackageManager?: string,
     public applicationType?: string,
@@ -105,16 +107,17 @@ export class YoRC implements IYoRC {
     public hasCucumber?: boolean,
     public owner?: IGeneratorIdentity
   ) {
-    this.enableHibernateCache = false;
-    this.websocket = false;
-    this.searchEngine = false;
-    this.messageBroker = false;
-    this.serviceDiscoveryType = false;
-    this.enableSwaggerCodegen = false;
-    this.useSass = false;
-    this.enableTranslation = false;
-    this.hasProtractor = false;
-    this.hasGatling = false;
-    this.hasCucumber = false;
+    this.enableHibernateCache = this.enableHibernateCache || false;
+    this.websocket = this.websocket || false;
+    this.searchEngine = this.searchEngine || false;
+    this.messageBroker = this.messageBroker || false;
+    this.serviceDiscoveryType = this.serviceDiscoveryType || false;
+    this.enableSwaggerCodegen = this.enableSwaggerCodegen || false;
+    this.withAdminUi = this.withAdminUi || false;
+    this.useSass = this.useSass || false;
+    this.enableTranslation = this.enableTranslation || false;
+    this.hasProtractor = this.hasProtractor || false;
+    this.hasGatling = this.hasGatling || false;
+    this.hasCucumber = this.hasCucumber || false;
   }
 }

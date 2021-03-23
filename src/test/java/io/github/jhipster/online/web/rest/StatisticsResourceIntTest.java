@@ -107,6 +107,7 @@ class StatisticsResourceIntTest {
         "            \"authenticationType\": \"jwt\",\n" +
         "            \"serverPort\": \"8080\",\n" +
         "            \"clientFramework\": \"angularX\",\n" +
+        "            \"withAdminUi\": \"true\",\n" +
         "            \"useSass\": false,\n" +
         "            \"testFrameworks\": [],\n" +
         "        \"enableTranslation\": true,\n" +

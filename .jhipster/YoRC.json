@@ -118,6 +118,10 @@
             "fieldType": "String"
         },
         {
+          "fieldName": "withAdminUi",
+          "fieldType": "Boolean"
+        },
+        {
             "fieldName": "useSass",
             "fieldType": "Boolean"
         },

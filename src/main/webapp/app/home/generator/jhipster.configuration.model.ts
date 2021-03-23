@@ -44,4 +44,5 @@ export class JHipsterConfigurationModel {
   public languages = ['en'];
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
+  public withAdminUi = true;
 }
