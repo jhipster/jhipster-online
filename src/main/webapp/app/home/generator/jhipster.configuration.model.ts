@@ -26,7 +26,6 @@ export class JHipsterConfigurationModel {
   public serverPort = 8080;
   public serviceDiscoveryType: any = false;
   public authenticationType = 'jwt';
-  public uaaBaseName = '../uaa';
   public cacheProvider = 'ehcache';
   public enableHibernateCache = true;
   public websocket: any = false;

@@ -217,8 +217,6 @@ export class GeneratorComponent implements OnInit {
     // server port
     if (this.model.applicationType === 'microservice') {
       this.model.serverPort = 8081;
-    } else if (this.model.applicationType === 'uaa') {
-      this.model.serverPort = 9999;
     } else {
       this.model.serverPort = 8080;
     }

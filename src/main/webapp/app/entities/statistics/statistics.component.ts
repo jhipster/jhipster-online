@@ -338,7 +338,7 @@ export class StatisticsComponent implements AfterViewInit {
   }
 
   private prettifyApplicationTypeData(lowerCaseKey: string, prev: any, currentProperty: string, current: any): void {
-    if (!['gateway', 'microservice', 'monolith', 'uaa', 'none'].some(k => lowerCaseKey.includes(k))) {
+    if (!['gateway', 'microservice', 'monolith', 'none'].some(k => lowerCaseKey.includes(k))) {
       return;
     }
 
@@ -349,8 +349,6 @@ export class StatisticsComponent implements AfterViewInit {
       key = displayNames.microservice;
     } else if (lowerCaseKey.includes('monolith')) {
       key = displayNames.monolithic;
-    } else if (lowerCaseKey.includes('uaa')) {
-      key = displayNames.uaa;
     } else {
       key = displayNames.default;
     }
