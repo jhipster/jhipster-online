@@ -64,12 +64,13 @@ jobs:
 
       # Build and push docker image to GCR
       - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v5
+        uses: docker/build-push-action@v1
         with:
           username: _json_key
           password: ${{ secrets.DOCKER_PASSWORD }}
           registry: eu.gcr.io
-          image: jhipster-online/appengine
+          repository: jhipster-online/appengine
+          tag_with_sha: true
 
       # Deploy to App Engine Flexible
       - name: Deploy
