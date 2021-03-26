@@ -62,16 +62,16 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      # Build and push docker image to GCR
+      # Authenticate and push docker image to Artifact registry
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v1
-        with:
-          username: _json_key
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: eu.gcr.io
-          repository: jhipster-online/appengine
-          tag_with_sha: true
+        run: >-
+          gcloud auth configure-docker us-central1-docker.pkg.dev &&
+          docker build -t us-central1-docker.pkg.dev/jhipster-online/jhipster-online/jhipster-online:${GITHUB_SHA} . &&
+          docker push us-central1-docker.pkg.dev/jhipster-online/jhipster-online/jhipster-online:${GITHUB_SHA}
 
       # Deploy to App Engine Flexible
       - name: Deploy
-        run: VERSION_TAG=${GITHUB_REF:10} && gcloud app deploy --image-url eu.gcr.io/jhipster-online/appengine:sha-${GITHUB_SHA::7} --version ${VERSION_TAG//./-}
+        run: VERSION_TAG=${GITHUB_REF:10} && gcloud app deploy --image-url us-central1-docker.pkg.dev/jhipster-online/jhipster-online/jhipster-online:${GITHUB_SHA} --version ${VERSION_TAG//./-}
+
+
+
