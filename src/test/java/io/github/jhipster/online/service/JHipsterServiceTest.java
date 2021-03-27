@@ -101,6 +101,7 @@ class JHipsterServiceTest {
                 generationId,
                 tempDir.toFile(),
                 applicationProperties.getJhipsterCmd().getCmd(),
+                "--force-insight",
                 "--skip" + "-checks",
                 "--skip-install",
                 "--skip-cache",
@@ -115,6 +116,7 @@ class JHipsterServiceTest {
                 generationId,
                 tempDir.toFile(),
                 applicationProperties.getJhipsterCmd().getCmd(),
+                "--force-insight",
                 "--skip" + "-checks",
                 "--skip-install",
                 "--skip-cache",
@@ -134,6 +136,7 @@ class JHipsterServiceTest {
                 applicationProperties.getJhipsterCmd().getCmd(),
                 "import-jdl",
                 jdlFileName + ".jh",
+                "--force-insight",
                 "--skip-checks",
                 "--skip-install",
                 "--force"
@@ -149,6 +152,7 @@ class JHipsterServiceTest {
                 applicationProperties.getJhipsterCmd().getCmd(),
                 "import-jdl",
                 jdlFileName + ".jh",
+                "--force-insight",
                 "--skip-checks",
                 "--skip-install",
                 "--force"
@@ -167,6 +171,7 @@ class JHipsterServiceTest {
                 applicationProperties.getJhipsterCmd().getCmd(),
                 "ci-cd",
                 "--autoconfigure-" + ciCdTool.command(),
+                "--force-insight",
                 "--skip-checks",
                 "--skip-install",
                 "--force"
@@ -182,6 +187,7 @@ class JHipsterServiceTest {
                 applicationProperties.getJhipsterCmd().getCmd(),
                 "ci-cd",
                 "--autoconfigure-" + ciCdTool.command(),
+                "--force-insight",
                 "--skip-checks",
                 "--skip-install",
                 "--force"
