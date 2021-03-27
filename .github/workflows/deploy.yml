@@ -72,6 +72,3 @@ jobs:
       # Deploy to App Engine Flexible
       - name: Deploy
         run: VERSION_TAG=${GITHUB_REF:10} && gcloud app deploy --image-url us-central1-docker.pkg.dev/jhipster-online/jhipster-online/jhipster-online:${GITHUB_SHA} --version ${VERSION_TAG//./-}
-
-
-
