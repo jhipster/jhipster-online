@@ -36,6 +36,8 @@ public class JHipsterService {
 
     public final Logger log = LoggerFactory.getLogger(JHipsterService.class);
 
+    private static final String FORCE_INSIGHT = "--force-insight";
+
     private static final String SKIP_CHECKS = "--skip-checks";
 
     private static final String SKIP_INSTALL = "--skip-install";
@@ -65,12 +67,22 @@ public class JHipsterService {
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
-        this.runProcess(generationId, workingDir, jhipsterCommand, SKIP_CHECKS, SKIP_INSTALL, "--skip-cache", "--skip-git");
+        this.runProcess(generationId, workingDir, jhipsterCommand, FORCE_INSIGHT, SKIP_CHECKS, SKIP_INSTALL, "--skip-cache", "--skip-git");
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
         this.logsService.addLog(generationId, "Running `jhipster import-jdl`");
-        this.runProcess(generationId, workingDir, jhipsterCommand, "import-jdl", jdlFileName + ".jh", SKIP_CHECKS, SKIP_INSTALL, "--force");
+        this.runProcess(
+                generationId,
+                workingDir,
+                jhipsterCommand,
+                "import-jdl",
+                jdlFileName + ".jh",
+                FORCE_INSIGHT,
+                SKIP_CHECKS,
+                SKIP_INSTALL,
+                "--force"
+            );
     }
 
     public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws IOException {
@@ -85,6 +97,7 @@ public class JHipsterService {
                 jhipsterCommand,
                 "ci-cd",
                 "--autoconfigure-" + ciCdTool.command(),
+                FORCE_INSIGHT,
                 SKIP_CHECKS,
                 SKIP_INSTALL,
                 "--force"
