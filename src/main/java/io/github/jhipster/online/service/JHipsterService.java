@@ -36,7 +36,7 @@ public class JHipsterService {
 
     public final Logger log = LoggerFactory.getLogger(JHipsterService.class);
 
-    private static final String FORCE_INSIGHT = "--force-insight";
+    private static final String FORCE_INSIGHT = "--no-insight"; // for now we disable the stats (https://github.com/jhipster/generator-jhipster/pull/14485)
 
     private static final String SKIP_CHECKS = "--skip-checks";
 
