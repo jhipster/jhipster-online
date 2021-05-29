@@ -13,7 +13,7 @@
             <select id="reviewFullScreen" class="form-control" [ngModel]="timeScale" (ngModelChange)="onSelectTimeScale($event)">
                 <optgroup label="Global overviews">
                     <option value="default">Generated applications</option>
-                    <option value="clientFramework">Angular vs. React</option>
+                    <option value="clientFramework">Client framework</option>
                     <option value="buildTool">Maven vs. Gradle</option>
                 </optgroup>
                 <optgroup label="Time scale">
@@ -94,7 +94,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="categoryChart card card-body text-center text-dark">
-                    <h4>React/Angular distribution</h4>
+                    <h4>Client framework distribution</h4>
                     <hr />
                     <div class="row col-md-11 chartBoxContainer">
                         <div #chartFrameworkLine class="chartBox chart card card-body text-center text-dark bg-light"></div>
