@@ -28,8 +28,7 @@ export const GENERATOR_ROUTE: Route = {
   data: {
     authorities: ['ROLE_USER'],
     pageTitle: 'Generate a new application'
-  },
-  canActivate: [UserRouteAccessService]
+  }
 };
 
 export const GENERATOR_OUTPUT_ROUTE: Route = {

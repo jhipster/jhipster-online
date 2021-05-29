@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
 
 import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
@@ -30,8 +31,16 @@ import { AccountService } from 'app/core/auth/account.service';
 export class WelcomeComponent {
   gitConfig: GitConfigurationModel;
 
-  constructor(private accountService: AccountService, private gitConfigurationService: GitConfigurationService) {
+  constructor(
+    private accountService: AccountService,
+    private gitConfigurationService: GitConfigurationService,
+    private loginModalService: LoginModalService
+  ) {
     this.gitConfig = this.gitConfigurationService.gitConfig;
+  }
+
+  login(): void {
+    this.loginModalService.open();
   }
 
   isAuthenticated(): boolean {

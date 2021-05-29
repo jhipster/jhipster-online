@@ -19,7 +19,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
@@ -35,11 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   authSubscription?: Subscription;
   gitConfig: GitConfigurationModel;
 
-  constructor(
-    private accountService: AccountService,
-    private loginModalService: LoginModalService,
-    private gitConfigurationService: GitConfigurationService
-  ) {
+  constructor(private accountService: AccountService, private gitConfigurationService: GitConfigurationService) {
     this.gitConfig = this.gitConfigurationService.gitConfig;
   }
 
@@ -53,10 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
-  }
-
-  login(): void {
-    this.loginModalService.open();
   }
 
   ngOnDestroy(): void {

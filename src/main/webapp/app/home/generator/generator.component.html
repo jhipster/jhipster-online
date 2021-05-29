@@ -5,8 +5,8 @@
     <div class="container">
         <h4>Project configuration</h4>
         <hr />
-        <jhi-git-provider-alert [tab]="'generate-application'"></jhi-git-provider-alert>
-        <jhi-git-provider (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
+        <jhi-git-provider-alert *ngIf="isAuthenticated()" [tab]="'generate-application'"></jhi-git-provider-alert>
+        <jhi-git-provider *ngIf="isAuthenticated()" (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">

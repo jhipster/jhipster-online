@@ -21,6 +21,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
@@ -52,7 +53,8 @@ export class GeneratorComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private generatorService: GeneratorService,
-    private gitConfigurationService: GitConfigurationService
+    private gitConfigurationService: GitConfigurationService,
+    private accountService: AccountService
   ) {}
 
   /**
@@ -310,5 +312,9 @@ export class GeneratorComponent implements OnInit {
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
     }
+  }
+
+  isAuthenticated(): boolean {
+    return this.accountService.isAuthenticated();
   }
 }
