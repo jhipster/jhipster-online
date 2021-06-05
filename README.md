@@ -192,6 +192,12 @@ docker-compose -f src/main/docker/app.yml up -d
 - The above workflow includes a Docker build and pushes the image to [Google Container Registry](https://cloud.google.com/container-registry/). [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging) are used for
   obtaining application logs and monitoring.
 
+#### Steps for Deployment
+
+- Increment the version numbers in [`pom.xml`](https://github.com/jhipster/jhipster-online/blob/d61bdbc3b6354516756c57626455be180eb4352e/pom.xml#L8) and [`package.json`](https://github.com/jhipster/jhipster-online/blob/d61bdbc3b6354516756c57626455be180eb4352e/package.json#L3).
+- Create a tagged release. All you have to do is got to the [releases section](https://github.com/jhipster/jhipster-online/releases)
+  and edit the draft created by `github-actions`.
+
 ## Help and contribution to the project
 
 Please note that this project is part of the [JHipster organization](https://github.com/jhipster) and it follows the rules
