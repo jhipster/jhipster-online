@@ -110,7 +110,6 @@ public class GeneratorResource {
     }
 
     @PostMapping("/download-application")
-    @Secured(AuthoritiesConstants.USER)
     public @ResponseBody ResponseEntity<byte[]> downloadApplication(@RequestBody String applicationConfiguration) {
         applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Downloading application - .yo-rc.json: {}", applicationConfiguration);

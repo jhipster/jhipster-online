@@ -11,6 +11,67 @@
 </div>
 <div [ngSwitch]="isAuthenticated()">
     <hr/>
+    <div *ngSwitchCase="false">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <fa-icon icon="sign-in-alt"></fa-icon>
+                            &nbsp;Authentication
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Sign in</h4>
+                            <p class="card-text">If you already have an account:</p>
+                            <button type="button" class="btn btn-info" (click)="login()">Please sign in</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <fa-icon icon="user-plus"></fa-icon>
+                            &nbsp;Registration
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Register</h4>
+                            <p class="card-text">If you want to create a new account:</p>
+                            <a class="btn btn-info" routerLink="account/register">Please register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+                    <h4>JHipster is an Open Source, widely popular application generator</h4>
+                    <p>
+                       If you want more information on JHipster:
+                    </p>
+                    <ul>
+                        <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">JHipster homepage (with documentation, slides, tutorials, etc.)</a></li>
+                        <li><a href="https://github.com/jhipster/generator-jhipster" target="_blank"
+                               rel="noopener noreferrer">JHipster source code on GitHub</a></li>
+                        <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">JHipster on Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+                    <h4>JHipster Online is also Open Source!</h4>
+                    <p>
+                        The application on <a href="https://start.jhipster.tech/" target="_blank" rel="noopener noreferrer">https://start.jhipster.tech/</a> is the
+                        official JHipster Online instance, which is managed by the JHipster team.
+                    </p>
+                    <p>
+                        If you want to look at our source code, or if in your company wants to host (and modify!) its own version of JHipster Online, the
+                        project is available on GitHub at <a href="https://github.com/jhipster/jhipster-online" target="_blank" rel="noopener noreferrer">https://github.com/jhipster/jhipster-online</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div *ngSwitchCase="true">
         <h3 *ngIf="gitConfig.gitlabAvailable || gitConfig.githubAvailable">
             Using JHipster Online with
