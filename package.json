@@ -1,6 +1,6 @@
 {
   "name": "jhonline",
-  "version": "2.8.1",
+  "version": "2.9.0",
   "description": "JHipster Online is the best place to generate JHipster applications, with no installation required!",
   "license": "Apache-2.0",
   "keywords": [
@@ -65,7 +65,7 @@
     "eslint-loader": "3.0.3",
     "file-loader": "5.0.2",
     "friendly-errors-webpack-plugin": "1.7.0",
-    "generator-jhipster": "7.0.1",
+    "generator-jhipster": "7.1.0",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
     "husky": "3.1.0",
