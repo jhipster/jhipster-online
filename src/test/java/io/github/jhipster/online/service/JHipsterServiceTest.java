@@ -81,15 +81,17 @@ class JHipsterServiceTest {
     @Test
     void shouldInstallNpmDependencies(@TempDir Path tempDir) throws IOException {
         String generationId = "generation-id";
+        final String os = System.getProperty("os.name");
+        final String command = os.contains("indows") ? JHipsterService.NPM_WIN : JHipsterService.NPM_NIX;
         willDoNothing()
             .given(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), "npm", "install", "--ignore" + "-scripts", "--package-lock-only");
+            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore" + "-scripts", "--package-lock-only");
 
         jHipsterServiceSpy.installNpmDependencies(generationId, tempDir.toFile());
 
         verify(logsService).addLog(generationId, "Installing the JHipster version used by the project");
         verify(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), "npm", "install", "--ignore-scripts", "--package" + "-lock" + "-only");
+            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore-scripts", "--package" + "-lock" + "-only");
     }
 
     @Test

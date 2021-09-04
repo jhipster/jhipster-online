@@ -70,9 +70,12 @@ class GeneratorServiceTest {
 
     @Test
     void generateZippedApplication() throws IOException {
-        String result = generatorService.generateZippedApplication(applicationId, applicationConfiguration);
+        final String expected = "/tmp/jhipster/applications/app-id.zip";
+        final String result = generatorService.generateZippedApplication(applicationId, applicationConfiguration);
+        final String os = System.getProperty("os.name");
+        final String workingCopy = os.contains("indows") ? result.replaceAll("\\\\", "/") : result;
 
-        assertThat(result).isEqualTo("/tmp/jhipster/applications/app-id.zip");
+        assertThat(workingCopy).isEqualTo(expected);
         verify(logsService).addLog(applicationId, "Creating `.yo-rc.json` file");
         verify(jHipsterService).generateApplication(applicationId, new File("/tmp/jhipster/applications/app-id"));
         assertThat(new File("/tmp/jhipster/applications/app-id/.yo-rc.json")).isFile().hasContent(applicationConfiguration);
