@@ -98,12 +98,10 @@ public class GeneratorService {
 
     private void generateYoRc(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
         this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
-        try (PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8)) {
-            writer.print(applicationConfiguration);
-        } catch (IOException ioe) {
-            log.error("Error creating file .yo-rc.json", ioe);
-            throw ioe;
-        }
+        // removed the catch/log/throw since the exception is handled in calling code.
+        PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8);
+        writer.print(applicationConfiguration);
+        writer.close();
     }
 
     private void zipResult(File workingDir) {

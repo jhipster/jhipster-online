@@ -66,7 +66,7 @@ public class CiCdResource {
         organizationName = SanitizeInputs.sanitizeInput(organizationName);
         ciCdTool = SanitizeInputs.sanitizeInput(ciCdTool);
         boolean isGitHub = gitProvider.equalsIgnoreCase("github");
-        log.info("Configuring CI: {} on " + (isGitHub ? "GitHub" : "GitLab") + " {}/{}", ciCdTool, organizationName, projectName);
+        log.info("Configuring CI: {} on {} {}/{}", ciCdTool, (isGitHub ? "GitHub" : "GitLab"), organizationName, projectName);
         User user = userService.getUser();
         String ciCdId = "ci-" + System.nanoTime();
 
