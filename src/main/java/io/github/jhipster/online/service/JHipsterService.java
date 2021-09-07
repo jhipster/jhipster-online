@@ -109,40 +109,30 @@ public class JHipsterService {
 
     void runProcess(String generationId, File workingDir, String... command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
-        BufferedReader input = null;
-        try {
-            String line;
-            ProcessBuilder processBuilder = new ProcessBuilder()
-                .directory(workingDir)
-                .command(command)
-                .redirectError(ProcessBuilder.Redirect.DISCARD);
-            Process p = processBuilder.start();
+        ProcessBuilder processBuilder = new ProcessBuilder()
+            .directory(workingDir)
+            .command(command)
+            .redirectError(ProcessBuilder.Redirect.DISCARD);
+        Process p = processBuilder.start();
 
-            taskExecutor.execute(
-                () -> {
-                    try {
-                        p.waitFor(timeout, TimeUnit.SECONDS);
-                        p.destroyForcibly();
-                    } catch (InterruptedException e) {
-                        log.error("Unable to execute process successfully.", e);
-                        Thread.currentThread().interrupt();
-                    }
+        taskExecutor.execute(
+            () -> {
+                try {
+                    p.waitFor(timeout, TimeUnit.SECONDS);
+                    p.destroyForcibly();
+                } catch (InterruptedException e) {
+                    log.error("Unable to execute process successfully.", e);
+                    Thread.currentThread().interrupt();
                 }
-            );
-
-            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
-                log.debug(line);
-                this.logsService.addLog(generationId, line);
             }
+        );
 
-            input.close();
-        } catch (Exception e) {
-            log.error("Error while running the process", e);
-            if (input != null) {
-                input.close();
-            }
-            throw e;
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            log.debug(line);
+            this.logsService.addLog(generationId, line);
         }
+        input.close();
     }
 }

@@ -43,6 +43,8 @@ public class StatisticsService {
 
     private final Logger log = LoggerFactory.getLogger(StatisticsService.class);
 
+    public static final String GENERATOR_IDENTITY_WAS_NOT_CORRECTLY_CREATED = "GeneratorIdentity {} was not correctly created";
+
     private final YoRCService yoRCService;
 
     private final GeneratorIdentityService generatorIdentityService;
@@ -118,7 +120,7 @@ public class StatisticsService {
             generatorIdentity.get().host(host);
             yorc.owner(generatorIdentity.get());
         } else {
-            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+            log.info(GENERATOR_IDENTITY_WAS_NOT_CORRECTLY_CREATED, generatorGuid);
         }
 
         yoRCService.save(yoRCMapper.toDto(yorc));
@@ -138,7 +140,7 @@ public class StatisticsService {
         if (generatorIdentity.isPresent()) {
             subGenEvent.owner(generatorIdentity.get());
         } else {
-            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+            log.info(GENERATOR_IDENTITY_WAS_NOT_CORRECTLY_CREATED, generatorGuid);
         }
         subGenEventService.save(subGenEventMapper.toDto(subGenEvent));
     }
@@ -157,7 +159,7 @@ public class StatisticsService {
         if (generatorIdentity.isPresent()) {
             entityStats.owner(generatorIdentity.get());
         } else {
-            log.info("GeneratorIdentity {} was not correctly created", generatorGuid);
+            log.info(GENERATOR_IDENTITY_WAS_NOT_CORRECTLY_CREATED, generatorGuid);
         }
         entityStatsService.save(entityStatsMapper.toDto(entityStats));
     }
