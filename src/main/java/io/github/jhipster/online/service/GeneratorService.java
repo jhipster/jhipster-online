@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +96,9 @@ public class GeneratorService {
     }
 
     private File generateApplication(String applicationId, String applicationConfiguration) throws IOException {
-        final File workingDir = new File(String.join(FILE_SEPARATOR, OS_TEMP_DIR, JHIPSTER, APPLICATIONS, applicationId));
+        final String fromConfig = applicationProperties.getTmpFolder();
+        final String tempDir = StringUtils.isBlank(fromConfig) ? OS_TEMP_DIR : fromConfig;
+        final File workingDir = new File(String.join(FILE_SEPARATOR, tempDir, JHIPSTER, APPLICATIONS, applicationId));
         FileUtils.forceMkdir(workingDir);
         this.generateYoRc(applicationId, workingDir, applicationConfiguration);
         log.info(".yo-rc.json created");

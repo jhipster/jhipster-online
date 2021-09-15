@@ -42,15 +42,13 @@ public class JHipsterService {
 
     private static final String SKIP_INSTALL = "--skip-install";
 
-    public static final String NPM_NIX = "npm";
-
-    public static final String NPM_WIN = "npm.cmd";
-
     private final LogsService logsService;
 
     private final Executor taskExecutor;
 
     private final String jhipsterCommand;
+
+    private final String npmCommand;
 
     private final Integer timeout;
 
@@ -59,6 +57,7 @@ public class JHipsterService {
         this.taskExecutor = taskExecutor;
 
         jhipsterCommand = applicationProperties.getJhipsterCmd().getCmd();
+        npmCommand = applicationProperties.getNpmCmd().getCmd();
         timeout = applicationProperties.getJhipsterCmd().getTimeout();
 
         log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
@@ -66,9 +65,7 @@ public class JHipsterService {
 
     public void installNpmDependencies(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
-        final String os = System.getProperty("os.name");
-        final String command = os.contains("indows") ? NPM_WIN : NPM_NIX;
-        this.runProcess(generationId, workingDir, command, "install", "--ignore-scripts", "--package-lock-only");
+        this.runProcess(generationId, workingDir, npmCommand, "install", "--ignore-scripts", "--package-lock-only");
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {

@@ -30,6 +30,7 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,11 +101,12 @@ class GeneratorServiceTest {
     }
 
     private String buildCwdPath() {
-        String workingCopy = OS_TEMP_DIR; // will be /tmp in linux, C:\Users\CurrentUser\AppData\Local\Temp\ in windows
+        final String fromConfig = applicationProperties.getTmpFolder();
+        String workingCopy = StringUtils.isBlank(fromConfig) ? OS_TEMP_DIR : fromConfig;
         // handling the trailing file separator in case we are in windows
-        if (OS_TEMP_DIR.endsWith(FILE_SEPARATOR)) {
-            int length = OS_TEMP_DIR.length();
-            workingCopy = OS_TEMP_DIR.substring(0, length - 1);
+        if (workingCopy.endsWith(FILE_SEPARATOR)) {
+            int length = workingCopy.length();
+            workingCopy = workingCopy.substring(0, length - 1);
         }
         return String.join(FILE_SEPARATOR, asList(workingCopy, JHIPSTER, APPLICATIONS, applicationId));
     }
