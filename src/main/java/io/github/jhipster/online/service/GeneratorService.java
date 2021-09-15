@@ -38,6 +38,14 @@ import org.zeroturnaround.zip.ZipUtil;
 @Service
 public class GeneratorService {
 
+    public static final String JHIPSTER = "jhipster";
+
+    public static final String APPLICATIONS = "applications";
+
+    public static final String OS_TEMP_DIR = System.getProperty("java.io.tmpdir");
+
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
     private final Logger log = LoggerFactory.getLogger(GeneratorService.class);
 
     private final ApplicationProperties applicationProperties;
@@ -87,7 +95,7 @@ public class GeneratorService {
     }
 
     private File generateApplication(String applicationId, String applicationConfiguration) throws IOException {
-        File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" + applicationId);
+        final File workingDir = new File(String.join(FILE_SEPARATOR, OS_TEMP_DIR, JHIPSTER, APPLICATIONS, applicationId));
         FileUtils.forceMkdir(workingDir);
         this.generateYoRc(applicationId, workingDir, applicationConfiguration);
         log.info(".yo-rc.json created");
