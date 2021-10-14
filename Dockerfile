@@ -1,4 +1,4 @@
-FROM ghcr.io/jhipster/generator-jhipster:v7.2.0-0
+FROM jhipster/jhipster:v7.3.0
 USER jhipster
 COPY --chown=jhipster:jhipster . /home/jhipster/jhipster-online/
 RUN \
