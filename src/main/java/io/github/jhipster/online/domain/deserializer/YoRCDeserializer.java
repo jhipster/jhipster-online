@@ -64,7 +64,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String applicationType = getDefaultIfNull(node.get("applicationType"), "");
         boolean enableTranslation = getDefaultIfNull(node.get("enableTranslation"), false);
         String nativeLanguage = getDefaultIfNull(node.get("nativeLanguage"), "");
-        String creationDate = getDefaultIfNull(node.get("creationTimestamp"), "");
+        String creationDate = getDefaultIfNull(node.get("creationTimestamp"), Instant.now().toString());
         boolean hasProtractor = false;
         boolean hasGatling = false;
         boolean hasCucumber = false;
