@@ -115,7 +115,6 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
             .hasCucumber(hasCucumber)
             .selectedLanguages(languages)
             .creationDate(Instant.parse(creationDate));
-
     }
 
     private String getDefaultIfNull(JsonNode node, String defaultValue) {
