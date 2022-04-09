@@ -29,7 +29,7 @@
     "@ngx-translate/http-loader": "4.0.0",
     "bootstrap": "4.4.1",
     "echarts": "4.2.1",
-    "moment": "2.24.0",
+    "moment": "2.29.2",
     "ng-jhipster": "0.12.0",
     "ngx-cookie": "4.0.2",
     "ngx-echarts": "4.2.2",
