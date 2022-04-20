@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2021 the original author or authors from the JHipster project.
+ * Copyright 2017-2022 the original author or authors from the JHipster project.
  * <p>
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.

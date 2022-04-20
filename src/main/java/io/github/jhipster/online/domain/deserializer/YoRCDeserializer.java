@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2021 the original author or authors from the JHipster project.
+ * Copyright 2017-2022 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -25,8 +25,14 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.jhipster.online.domain.YoRC;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 public class YoRCDeserializer extends StdDeserializer<YoRC> {
 
@@ -58,6 +64,7 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String applicationType = getDefaultIfNull(node.get("applicationType"), "");
         boolean enableTranslation = getDefaultIfNull(node.get("enableTranslation"), false);
         String nativeLanguage = getDefaultIfNull(node.get("nativeLanguage"), "");
+        String creationDate = getDefaultIfNull(node.get("creationTimestamp"), Instant.now().toString());
         boolean hasProtractor = false;
         boolean hasGatling = false;
         boolean hasCucumber = false;
@@ -106,7 +113,8 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
             .hasProtractor(hasProtractor)
             .hasGatling(hasGatling)
             .hasCucumber(hasCucumber)
-            .selectedLanguages(languages);
+            .selectedLanguages(languages)
+            .creationDate(Instant.parse(creationDate));
     }
 
     private String getDefaultIfNull(JsonNode node, String defaultValue) {
