@@ -64,7 +64,8 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
         String applicationType = getDefaultIfNull(node.get("applicationType"), "");
         boolean enableTranslation = getDefaultIfNull(node.get("enableTranslation"), false);
         String nativeLanguage = getDefaultIfNull(node.get("nativeLanguage"), "");
-        String creationDate = getDefaultIfNull(node.get("creationTimestamp"), Instant.now().toString());
+        Instant creationDate = getCreationDate(node.get("creationTimestamp"));
+
         boolean hasProtractor = false;
         boolean hasGatling = false;
         boolean hasCucumber = false;
@@ -114,7 +115,15 @@ public class YoRCDeserializer extends StdDeserializer<YoRC> {
             .hasGatling(hasGatling)
             .hasCucumber(hasCucumber)
             .selectedLanguages(languages)
-            .creationDate(Instant.parse(creationDate));
+            .creationDate(creationDate);
+    }
+
+    private Instant getCreationDate(JsonNode node) {
+        if (node == null) {
+            return Instant.now();
+        }
+
+        return Instant.ofEpochMilli(node.asLong());
     }
 
     private String getDefaultIfNull(JsonNode node, String defaultValue) {

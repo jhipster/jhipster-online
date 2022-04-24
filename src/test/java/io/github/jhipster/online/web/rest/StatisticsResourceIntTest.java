@@ -85,9 +85,41 @@ class StatisticsResourceIntTest {
 
     private String generatorId = "cf51ff78-187a-4554-9b09-8f6f95f1a7a5";
 
-    private String dummyYo =
+    private final String generatorJhipsterWithCreationTimestamp =
         "{\n" +
-        "        \"generator-jhipster\": {\n" +
+        "        \"useYarn\": false,\n" +
+        "            \"experimental\": false,\n" +
+        "            \"skipI18nQuestion\": true,\n" +
+        "            \"logo\": false,\n" +
+        "            \"clientPackageManager\": \"npm\",\n" +
+        "            \"creationTimestamp\": 1650832223564,\n" +
+        "            \"cacheProvider\": \"ehcache\",\n" +
+        "            \"enableHibernateCache\": true,\n" +
+        "            \"websocket\": false,\n" +
+        "            \"databaseType\": \"sql\",\n" +
+        "            \"devDatabaseType\": \"h2Disk\",\n" +
+        "            \"prodDatabaseType\": \"mysql\",\n" +
+        "            \"searchEngine\": false,\n" +
+        "            \"messageBroker\": false,\n" +
+        "            \"serviceDiscoveryType\": false,\n" +
+        "            \"buildTool\": \"maven\",\n" +
+        "            \"enableSwaggerCodegen\": false,\n" +
+        "            \"authenticationType\": \"jwt\",\n" +
+        "            \"serverPort\": \"8080\",\n" +
+        "            \"clientFramework\": \"angularX\",\n" +
+        "            \"withAdminUi\": \"true\",\n" +
+        "            \"useSass\": false,\n" +
+        "            \"testFrameworks\": [],\n" +
+        "        \"enableTranslation\": true,\n" +
+        "            \"nativeLanguage\": \"en\",\n" +
+        "            \"languages\": [\n" +
+        "        \"en\"\n" +
+        "      ],\n" +
+        "        \"applicationType\": \"monolith\"\n" +
+        "    },\n";
+
+    private final String generatorJhipsterWithoutCreationTimestamp =
+        "{\n" +
         "        \"useYarn\": false,\n" +
         "            \"experimental\": false,\n" +
         "            \"skipI18nQuestion\": true,\n" +
@@ -116,21 +148,29 @@ class StatisticsResourceIntTest {
         "        \"en\"\n" +
         "      ],\n" +
         "        \"applicationType\": \"monolith\"\n" +
-        "    },\n" +
-        "        \"generator-id\": \"" +
-        generatorId +
-        "\",\n" +
-        "        \"generator-version\": \"5.1.0\",\n" +
-        "        \"git-provider\": \"local\",\n" +
-        "        \"node-version\": \"v8.11.1\",\n" +
-        "        \"os\": \"linux:4.15.0-29-generic\",\n" +
-        "        \"arch\": \"x64\",\n" +
-        "        \"cpu\": \"Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz\",\n" +
-        "        \"cores\": 8,\n" +
-        "        \"memory\": 16776642560,\n" +
-        "        \"user-language\": \"en_GB\",\n" +
-        "        \"isARegeneration\": true\n" +
-        "    }";
+        "    },\n";
+
+    private String dummyYo(String dummyGeneratorJhipsterData) {
+        return (
+            "{\n" +
+            "        \"generator-jhipster\":" +
+            dummyGeneratorJhipsterData +
+            "        \"generator-id\": \"" +
+            generatorId +
+            "\",\n" +
+            "        \"generator-version\": \"5.1.0\",\n" +
+            "        \"git-provider\": \"local\",\n" +
+            "        \"node-version\": \"v8.11.1\",\n" +
+            "        \"os\": \"linux:4.15.0-29-generic\",\n" +
+            "        \"arch\": \"x64\",\n" +
+            "        \"cpu\": \"Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz\",\n" +
+            "        \"cores\": 8,\n" +
+            "        \"memory\": 16776642560,\n" +
+            "        \"user-language\": \"en_GB\",\n" +
+            "        \"isARegeneration\": true\n" +
+            "    }"
+        );
+    }
 
     @BeforeEach
     public void setup() {
@@ -188,7 +228,23 @@ class StatisticsResourceIntTest {
     void addEntry() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc.perform(post("/api/s/entry").content(dummyYo)).andExpect(status().isCreated());
+        final String content = dummyYo(generatorJhipsterWithoutCreationTimestamp);
+
+        restStatiticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
+
+        int databaseSizeAfterAdd = yoRCRepository.findAll().size();
+
+        assertThat(databaseSizeAfterAdd).isEqualTo(databaseSizeBeforeAdd + 1);
+    }
+
+    @Test
+    @Transactional
+    void addEntryWithCreationTimestamp() throws Exception {
+        int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
+
+        final String content = dummyYo(generatorJhipsterWithCreationTimestamp);
+
+        restStatiticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
 
         int databaseSizeAfterAdd = yoRCRepository.findAll().size();
 
