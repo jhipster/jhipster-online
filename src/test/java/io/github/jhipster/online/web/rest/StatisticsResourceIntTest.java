@@ -81,7 +81,7 @@ class StatisticsResourceIntTest {
 
     private MockMvc restStatisticsMockMvc;
 
-    private String generatorId = "cf51ff78-187a-4554-9b09-8f6f95f1a7a5";
+    private final String generatorId = "cf51ff78-187a-4554-9b09-8f6f95f1a7a5";
 
     private final String generatorJhipsterWithCreationTimestamp =
         "{\n" +
