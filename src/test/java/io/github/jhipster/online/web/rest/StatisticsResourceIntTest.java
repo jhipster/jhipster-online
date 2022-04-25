@@ -79,7 +79,7 @@ class StatisticsResourceIntTest {
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
-    private MockMvc restStatiticsMockMvc;
+    private MockMvc restStatisticsMockMvc;
 
     private YoRC yoRC;
 
@@ -185,7 +185,7 @@ class StatisticsResourceIntTest {
             entityStatService
         );
 
-        this.restStatiticsMockMvc =
+        this.restStatisticsMockMvc =
             MockMvcBuilders
                 .standaloneSetup(statisticsResource)
                 .setMessageConverters(httpMessageConverters)
@@ -196,13 +196,13 @@ class StatisticsResourceIntTest {
     @Test
     @Transactional
     void shouldNotGetCountWithUnknownFrequency() throws Exception {
-        restStatiticsMockMvc.perform(get("/api/s/count-yo/{frequency}", "every minutes")).andExpect(status().isBadRequest());
+        restStatisticsMockMvc.perform(get("/api/s/count-yo/{frequency}", "every minutes")).andExpect(status().isBadRequest());
     }
 
     @Test
     @Transactional
     void shouldNotGetFieldCountWithUnknownFieldOrFrequency() throws Exception {
-        restStatiticsMockMvc
+        restStatisticsMockMvc
             .perform(get("/api/s/yo/{field}/{frequency}", "clientFramework", "every minutes"))
             .andExpect(status().isBadRequest());
     }
@@ -212,7 +212,7 @@ class StatisticsResourceIntTest {
     void getYoCount() throws Exception {
         int databaseSizeBeforeAdd = yoRCRepository.findAll().size();
 
-        restStatiticsMockMvc.perform(get("/api/s/count-yo")).andExpect(status().isOk());
+        restStatisticsMockMvc.perform(get("/api/s/count-yo")).andExpect(status().isOk());
 
         YoRC yorc = new YoRC().owner(new GeneratorIdentity());
         generatorIdentityRepository.saveAndFlush(yorc.getOwner());
@@ -230,7 +230,7 @@ class StatisticsResourceIntTest {
 
         final String content = dummyYo(generatorJhipsterWithoutCreationTimestamp);
 
-        restStatiticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
+        restStatisticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
 
         int databaseSizeAfterAdd = yoRCRepository.findAll().size();
 
@@ -244,7 +244,7 @@ class StatisticsResourceIntTest {
 
         final String content = dummyYo(generatorJhipsterWithCreationTimestamp);
 
-        restStatiticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
+        restStatisticsMockMvc.perform(post("/api/s/entry").content(content)).andExpect(status().isCreated());
 
         int databaseSizeAfterAdd = yoRCRepository.findAll().size();
 
