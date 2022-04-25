@@ -25,14 +25,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.jhipster.online.domain.YoRC;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TimeZone;
 
 public class YoRCDeserializer extends StdDeserializer<YoRC> {
 
