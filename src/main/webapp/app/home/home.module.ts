@@ -38,7 +38,7 @@ import { YourGeneratorsComponent } from 'app/home/your-generators/your-generator
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @NgModule({
-  imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE])],
+  imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { relativeLinkResolution: 'legacy' })],
   declarations: [
     HomeComponent,
     GeneratorComponent,

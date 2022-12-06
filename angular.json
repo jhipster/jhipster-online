@@ -26,7 +26,62 @@
         }
       },
       "prefix": "jhi",
-      "architect": {}
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack/webpack.custom.js"
+            },
+            "outputPath": "target/classes/static/",
+            "index": "src/main/webapp/index.html",
+            "main": "src/main/webapp/main.ts",
+            "polyfills": "src/main/webapp/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/main/webapp/content",
+              "src/main/webapp/favicon.ico",
+              "src/main/webapp/manifest.webapp",
+              "src/main/webapp/robots.txt"
+            ],
+            "styles": ["src/main/webapp/content/scss/vendor.scss", "src/main/webapp/content/scss/global.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
     }
   },
   "defaultProject": "jhonline",
