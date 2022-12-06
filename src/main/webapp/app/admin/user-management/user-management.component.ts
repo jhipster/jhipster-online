@@ -20,7 +20,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -59,17 +59,18 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data
       .pipe(
-        flatMap(
-          () => this.accountService.identity(),
-          (data, account) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.ascending = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-            this.currentAccount = account;
-            this.loadAll();
-            this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
-          }
+        mergeMap(data =>
+          this.accountService.identity().pipe(
+            map(account => {
+              this.page = data.pagingParams.page;
+              this.previousPage = data.pagingParams.page;
+              this.ascending = data.pagingParams.ascending;
+              this.predicate = data.pagingParams.predicate;
+              this.currentAccount = account;
+              this.loadAll();
+              this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
+            })
+          )
         )
       )
       .subscribe();

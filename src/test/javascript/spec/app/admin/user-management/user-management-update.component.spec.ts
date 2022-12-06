@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -37,21 +37,23 @@ describe('Component Tests', () => {
       data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') })
     } as any) as ActivatedRoute;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [UserManagementUpdateComponent],
-        providers: [
-          FormBuilder,
-          {
-            provide: ActivatedRoute,
-            useValue: route
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [UserManagementUpdateComponent],
+          providers: [
+            FormBuilder,
+            {
+              provide: ActivatedRoute,
+              useValue: route
+            }
+          ]
+        })
+          .overrideTemplate(UserManagementUpdateComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(UserManagementUpdateComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(UserManagementUpdateComponent);

@@ -81,7 +81,7 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
 export class JhonlineCoreModule {
   constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
     registerLocaleData(locale);
-    iconLibrary.addIcons(...fontAwesomeIcons);
+    iconLibrary.addIcons(...(fontAwesomeIcons as any));
     dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
   }
 }

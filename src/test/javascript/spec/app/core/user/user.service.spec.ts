@@ -37,8 +37,8 @@ describe('Service Tests', () => {
         providers: [JhiDateUtils]
       });
 
-      service = TestBed.get(UserService);
-      httpMock = TestBed.get(HttpTestingController);
+      service = TestBed.inject(UserService);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
@@ -81,8 +81,10 @@ describe('Service Tests', () => {
       it('should propagate not found response', () => {
         let expectedResult = 0;
 
-        service.find('user').subscribe(null, (error: HttpErrorResponse) => {
-          expectedResult = error.status;
+        service.find('user').subscribe({
+          error(error: HttpErrorResponse): void {
+            expectedResult = error.status;
+          }
         });
 
         const req = httpMock.expectOne({ method: 'GET' });
