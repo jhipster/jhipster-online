@@ -35,7 +35,6 @@ import { RouterModule } from '@angular/router';
     JhiGitProviderComponent,
     JhiGitProviderAlertComponent
   ],
-  entryComponents: [LoginModalComponent],
   exports: [
     JhonlineSharedLibsModule,
     AlertComponent,

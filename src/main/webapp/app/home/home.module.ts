@@ -55,13 +55,6 @@ import { DataDeletionDialogComponent } from 'app/home/your-generators/data-delet
     CiCdOutputDialogComponent,
     RemoveGeneratorDialogComponent,
     DataDeletionDialogComponent
-  ],
-  entryComponents: [
-    GeneratorOutputDialogComponent,
-    JdlOutputDialogComponent,
-    CiCdOutputDialogComponent,
-    RemoveGeneratorDialogComponent,
-    DataDeletionDialogComponent
   ]
 })
 export class JhonlineHomeModule {}

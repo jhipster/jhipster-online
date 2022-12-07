@@ -1,13 +1,13 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint/tslint"],
+  "plugins": ["@angular-eslint/eslint-plugin", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@angular-eslint/recommended",
     "prettier",
-    "prettier/@typescript-eslint",
     "eslint-config-prettier"
   ],
   "env": {
@@ -29,6 +29,7 @@
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
     "no-shadow": "off",
 
     "@typescript-eslint/member-ordering": [
@@ -59,12 +60,6 @@
     "eqeqeq": ["error", "always", { "null": "ignore" }],
     "prefer-const": "error",
     "object-shorthand": ["error", "always", { "avoidExplicitReturnArrows": true }],
-    "@typescript-eslint/tslint/config": [
-      "error",
-      {
-        "lintFile": "./tslint.json"
-      }
-    ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
