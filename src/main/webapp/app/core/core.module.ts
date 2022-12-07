@@ -26,7 +26,7 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NgJhipsterModule } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
 

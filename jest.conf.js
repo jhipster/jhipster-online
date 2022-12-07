@@ -6,10 +6,9 @@ const {
 const environment = require('./webpack/environment');
 
 module.exports = {
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|dayjs/esm)'],
   testRunner: 'jest-jasmine2',
-  preset: 'jest-preset-angular',
   setupFiles: ['jest-date-mock'],
-  setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
   cacheDirectory: '<rootDir>/target/jest-cache',
   coverageDirectory: '<rootDir>/target/test-results/',
   globals: {
@@ -23,8 +22,9 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: `<rootDir>/${baseUrl}/` }),
   reporters: ['default', ['jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' }]],
   testResultsProcessor: 'jest-sonar-reporter',
-  transformIgnorePatterns: ['node_modules/'],
   testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
-  testURL: 'http://localhost/',
+  testEnvironmentOptions: {
+    url: 'http://localhost/'
+  },
   roots: ['<rootDir>', `<rootDir>/${baseUrl}`]
 };

@@ -18,7 +18,7 @@
  */
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -49,7 +49,7 @@ export class RegisterComponent implements AfterViewInit {
   constructor(
     private loginModalService: LoginModalService,
     private registerService: RegisterService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private passwordResetService: PasswordResetService
   ) {}
 

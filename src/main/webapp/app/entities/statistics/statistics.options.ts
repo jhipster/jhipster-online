@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { Frequency } from './statistics.model';
 import { StatisticsUtils } from './statistics.utils';

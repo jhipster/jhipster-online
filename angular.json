@@ -106,8 +106,12 @@
       }
     }
   },
-  "defaultProject": "jhonline",
   "cli": {
+    "cache": {
+      "enabled": true,
+      "path": "./target/angular/",
+      "environment": "all"
+    },
     "packageManager": "yarn"
   }
 }
