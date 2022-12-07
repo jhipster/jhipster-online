@@ -22,7 +22,6 @@ import { TestBed } from '@angular/core/testing';
 import { JhiDateUtils } from 'ng-jhipster';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 
-import { SERVER_API_URL } from 'app/app.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { Authority } from 'app/shared/constants/authority.constants';

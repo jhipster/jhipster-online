@@ -35,8 +35,8 @@
             },
             "outputPath": "target/classes/static/",
             "index": "src/main/webapp/index.html",
-            "main": "src/main/webapp/main.ts",
-            "polyfills": "src/main/webapp/polyfills.ts",
+            "main": "src/main/webapp/app/app.main.ts",
+            "polyfills": "src/main/webapp/app/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -61,7 +61,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -80,6 +80,28 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "jhonline:build:development",
+            "port": 4200
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "jhonline:build:production"
+            },
+            "development": {
+              "browserTarget": "jhonline:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "configPath": "jest.conf.js"
+          }
         }
       }
     }
