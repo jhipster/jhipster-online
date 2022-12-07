@@ -9512,10 +9512,10 @@ ngx-infinite-scroll@14.0.1:
   dependencies:
     tslib "^2.3.0"
 
-ngx-webstorage@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-8.0.0.tgz#c469cb3afcfb7a443527cbbaa43b0e9b02e64c99"
-  integrity sha512-dpHgboSi6adnYpwiAQ2/PRJe8dcvSbM2qWTacTCUPVPeWlhLvTCtIl1GA9BNDiZzYuyA3dmXyqlcDl/Th9Pi2A==
+ngx-webstorage@10:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-10.0.1.tgz#5d4116194e33061c81754fa661f68702038b1fa5"
+  integrity sha512-OWmzAzby+/UrbRY/5d229Y4NzFn1a/u2WSEeZqzY5lwB/3d8ODZ6mlW/BZGIuuZ48Hp8tXMM3pFCz9+pEyzvDA==
   dependencies:
     tslib "^2.0.0"
 

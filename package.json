@@ -36,7 +36,7 @@
     "ngx-cookie": "6.0.1",
     "ngx-echarts": "14.0.0",
     "ngx-infinite-scroll": "14.0.1",
-    "ngx-webstorage": "8.0.0",
+    "ngx-webstorage": "10.0.1",
     "popper.js": "1.16.1",
     "resize-observer-polyfill": "1.5.1",
     "rxjs": "6.6.7",
