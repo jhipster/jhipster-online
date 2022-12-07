@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import moment from 'moment';
+import dayjs from 'dayjs/esm';
 
 import { Frequency } from './statistics.model';
 import { StatisticsUtils } from './statistics.utils';
@@ -37,7 +37,7 @@ const prettifyDate = (date: string, frequency?: Frequency): string => {
       break;
   }
 
-  return moment(new Date(date)).format(format);
+  return dayjs(new Date(date)).format(format);
 };
 
 export const lineChartOptions = (data: any, frequency: Frequency) => {

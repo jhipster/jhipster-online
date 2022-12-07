@@ -21,21 +21,21 @@
  */
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Moment } from 'moment';
-import moment from 'moment';
+import { Dayjs } from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 @Injectable()
-export class NgbDateMomentAdapter extends NgbDateAdapter<Moment> {
-  fromModel(date: Moment): NgbDateStruct {
-    if (date && moment.isMoment(date) && date.isValid()) {
+export class NgbDateDayjsAdapter extends NgbDateAdapter<Dayjs> {
+  fromModel(date: Dayjs): NgbDateStruct {
+    if (date && dayjs.isDayjs(date) && date.isValid()) {
       return { year: date.year(), month: date.month() + 1, day: date.date() };
     }
     // ! can be removed after https://github.com/ng-bootstrap/ng-bootstrap/issues/1544 is resolved
     return null!;
   }
 
-  toModel(date: NgbDateStruct): Moment {
+  toModel(date: NgbDateStruct): Dayjs {
     // ! after null can be removed after https://github.com/ng-bootstrap/ng-bootstrap/issues/1544 is resolved
-    return date ? moment(date.year + '-' + date.month + '-' + date.day, 'YYYY-MM-DD') : null!;
+    return date ? dayjs(date.year + '-' + date.month + '-' + date.day, 'YYYY-MM-DD') : null!;
   }
 }

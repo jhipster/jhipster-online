@@ -6,7 +6,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const WebpackNotifierPlugin = require('webpack-notifier');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 
@@ -80,14 +79,6 @@ module.exports = async (config, options, targetOptions) => {
         // Webpack statistics in target folder
         reportFilename: '../stats.html',
       })
-    );
-
-    config.plugins.push(
-      new MomentLocalesPlugin({
-        localesToKeep: [
-            // jhipster-needle-i18n-language-moment-webpack - JHipster will add/remove languages in this array
-        ]
-      }),
     );
 
     config.plugins.push(
