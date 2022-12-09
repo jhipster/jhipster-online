@@ -18,7 +18,6 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgxEchartsModule } from 'ngx-echarts';
 
 import { GitComponent } from './git/git.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -38,7 +37,7 @@ import { YourGeneratorsComponent } from 'app/home/your-generators/your-generator
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
 
 @NgModule({
-  imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE], { relativeLinkResolution: 'legacy' })],
+  imports: [JhonlineSharedModule, RouterModule.forRoot([HOME_ROUTE], { relativeLinkResolution: 'legacy' })],
   declarations: [
     HomeComponent,
     GeneratorComponent,

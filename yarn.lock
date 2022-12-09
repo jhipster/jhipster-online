@@ -2555,10 +2555,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/echarts@^4.6.0":
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.0.tgz#0dbf5c35db16ed23f9e61370179989fcd62c2678"
-  integrity sha512-Unz/VUdQ3KwD3vtCh8bI295F3p6rFSApivwGPQJ1Mu6837xeit7C1YuX+75gRwfahotbaazmG8e2rLBNEzrfFg==
+"@types/echarts@^4.9.16":
+  version "4.9.16"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.16.tgz#7156aea4623f3543b083200f6c65e04d3693bcc8"
+  integrity sha512-bfiagfPw3dWauAIJ9fgoJQoL4hLWlGcltqwbE6LGye0NIY5xnbZau+mDmadCzGojic3MWuFDCUiO25kl4sRGeA==
   dependencies:
     "@types/zrender" "*"
 
@@ -5257,7 +5257,7 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echarts@5.4.0:
+echarts@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/echarts/-/echarts-5.4.0.tgz#a9a8e5367293a397408d3bf3e2638b869249ce04"
   integrity sha512-uPsO9VRUIKAdFOoH3B0aNg7NRVdN7aM39/OjovjO9MwmWsAkfGyeXJhK+dbRi51iDrQWliXV60/XwLA7kg3z0w==
@@ -9447,13 +9447,6 @@ ngx-cookie@6.0.1:
   integrity sha512-TfQPROUaWBOOtPrI6bWqYQelkc7PKwZich5a3bNNgxlH6+v9VgH4D3GoNzTc1Cs2s8dfIw4nGuOHkLiH+FZqiw==
   dependencies:
     tslib "^2.0.0"
-
-ngx-echarts@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-echarts/-/ngx-echarts-14.0.0.tgz#6f6e03ae1d41f7805e302d293f8d0df2ef01180b"
-  integrity sha512-Q8J/DXiWqYM2vqTfQq16A7KyxbWECZSiAApS0rBjsAJCPjG/VZogUe0snZ/i3mA6bV3vYm41imTYOaH+Rl97QA==
-  dependencies:
-    tslib "^2.3.0"
 
 ngx-infinite-scroll@14.0.1:
   version "14.0.1"
