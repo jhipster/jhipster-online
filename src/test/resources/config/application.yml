@@ -33,7 +33,7 @@ spring:
     serialization:
       write-durations-as-timestamps: false
   jpa:
-    database-platform: org.hibernate.dialect.MySQL57Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     show-sql: false
     hibernate:
