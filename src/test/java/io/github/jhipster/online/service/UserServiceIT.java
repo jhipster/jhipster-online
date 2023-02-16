@@ -26,7 +26,6 @@ import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.service.dto.UserDTO;
-import io.github.jhipster.security.RandomUtil;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -43,6 +42,7 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.security.RandomUtil;
 
 /**
  * Integration tests for {@link UserService}.

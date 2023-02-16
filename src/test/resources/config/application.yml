@@ -18,17 +18,22 @@ spring:
     name: jhonline
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:jhonline;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    name:
-    username:
+    url: jdbc:tc:mysql:8://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
     password:
     hikari:
+      poolName: Hikari
       auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
   jackson:
     serialization:
       write-durations-as-timestamps: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: org.hibernate.dialect.MySQL57Dialect
     open-in-view: false
     show-sql: false
     hibernate:
@@ -53,8 +58,8 @@ spring:
   messages:
     basename: i18n/messages
   mvc:
-    favicon:
-      enabled: false
+    pathmatch:
+      matching-strategy: ant_path_matcher
   task:
     execution:
       thread-name-prefix: jhonline-task-
@@ -100,10 +105,6 @@ jhipster:
         base64-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: true
-      report-frequency: 60 # in seconds
 
 # ===================================================================
 # Application specific properties

@@ -20,12 +20,6 @@ logging:
     io.github.jhipster.online: DEBUG
 
 spring:
-  profiles:
-    active: dev
-    include:
-      - swagger
-      # Uncomment to activate TLS for the dev profile
-      #- tls
   devtools:
     restart:
       enabled: true
@@ -56,7 +50,7 @@ spring:
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
-  #     hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+  #     hibernate.cache.region.factory_class: tech.jhipster.config.jcache.NoDefaultJCacheRegionFactory
   liquibase:
     contexts: dev
   mail:
@@ -103,10 +97,6 @@ jhipster:
     enabled: true
     from: jhipster-online@jhipster.tech
     base-url: http://127.0.0.1:8080
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: false
-      report-frequency: 60 # in seconds
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration

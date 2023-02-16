@@ -19,7 +19,6 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.config.audit.AuditEventConverter;
 import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
 import java.time.Instant;
@@ -33,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Service for managing audit events.
