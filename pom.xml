@@ -22,7 +22,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
         <node.version>v16.19.0</node.version>
         <yarn.version>v1.22.19</yarn.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
