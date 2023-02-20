@@ -56,7 +56,6 @@ spring:
     password:
   thymeleaf:
     cache: true
-    prefix: classpath:/templates
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
