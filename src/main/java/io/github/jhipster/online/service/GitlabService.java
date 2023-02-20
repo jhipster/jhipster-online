@@ -201,7 +201,7 @@ public class GitlabService implements GitProviderService {
                         List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                         List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                         company.setGitProjects(projects);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
                     }
                 }

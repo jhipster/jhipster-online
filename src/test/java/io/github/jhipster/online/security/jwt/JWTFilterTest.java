@@ -20,7 +20,6 @@ package io.github.jhipster.online.security.jwt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -35,6 +34,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
+import tech.jhipster.config.JHipsterProperties;
 
 class JWTFilterTest {
 

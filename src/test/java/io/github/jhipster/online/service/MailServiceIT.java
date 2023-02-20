@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.User;
@@ -54,6 +53,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Integration tests for {@link MailService}.
