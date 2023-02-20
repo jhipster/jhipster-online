@@ -56,7 +56,7 @@ jobs:
 
       # Setup gcloud CLI
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@main
+        uses: google-github-actions/setup-gcloud@v1
         with:
           version: '418.0.0'
           service_account_key: ${{ secrets.GCP_SA_KEY }}
