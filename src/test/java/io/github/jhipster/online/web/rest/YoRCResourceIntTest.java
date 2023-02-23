@@ -61,7 +61,7 @@ class YoRCResourceIntTest {
 
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
 
-    private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(1000L);
 
     private static final String DEFAULT_GIT_PROVIDER = "AAAAAAAAAA";
 

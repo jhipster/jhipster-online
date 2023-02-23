@@ -35,7 +35,8 @@
     <logger name="liquibase" level="WARN"/>
     <logger name="LiquibaseSchemaResolver" level="INFO"/>
     <logger name="sun.rmi.transport" level="WARN"/>
-
+    <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="org.testcontainers" level="INFO"/>
     <root>
         <level>WARN</level>
         <appender-ref ref="CONSOLE"/>

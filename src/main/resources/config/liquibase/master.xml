@@ -24,4 +24,5 @@
     <include file="config/liquibase/changelog/20180620133843_gitlab.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180730134859_statistics.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201108212700_update_entity_YoRC.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230216080000_update_column_types.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

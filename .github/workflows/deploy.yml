@@ -28,7 +28,7 @@ jobs:
 
     steps:
       # Checkout with all submodules
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'true'
 
@@ -54,12 +54,16 @@ jobs:
           env_variables.GITLAB_CLIENT_SECRET: ${{ secrets.GITLAB_CLIENT_SECRET }}
           env_variables.GITLAB_REDIRECT_URI: ${{ secrets.GITLAB_REDIRECT_URI }}
 
-      # Setup gcloud CLI
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@main
+      # Setup Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v1'
         with:
-          version: '290.0.1'
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '418.0.0'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       # Authenticate and push docker image to Artifact registry

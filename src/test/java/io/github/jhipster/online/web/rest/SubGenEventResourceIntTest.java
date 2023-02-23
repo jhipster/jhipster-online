@@ -82,7 +82,7 @@ class SubGenEventResourceIntTest {
     private static final String DEFAULT_EVENT = "AAAAAAAAAA";
     private static final String UPDATED_EVENT = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(1000L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired

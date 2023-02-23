@@ -91,7 +91,7 @@ class EntityStatsResourceIntTest {
     private static final Boolean DEFAULT_FLUENT_METHODS = false;
     private static final Boolean UPDATED_FLUENT_METHODS = true;
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(1000L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
