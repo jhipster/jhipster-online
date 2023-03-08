@@ -45,4 +45,13 @@ export class JHipsterConfigurationModel {
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
+
+  constructor(data?: Partial<JHipsterConfigurationModel>) {
+    if (data) {
+      const dataCopy = { ...data };
+      dataCopy.testFrameworks = [...(data.testFrameworks || [])];
+      dataCopy.languages = [...(data.languages || [])];
+      Object.assign(this, data);
+    }
+  }
 }
