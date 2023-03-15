@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PasswordStrengthBarComponent } from 'app/account/password/password-strength-bar.component';
 
@@ -25,13 +25,15 @@ describe('Component Tests', () => {
     let comp: PasswordStrengthBarComponent;
     let fixture: ComponentFixture<PasswordStrengthBarComponent>;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        declarations: [PasswordStrengthBarComponent]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          declarations: [PasswordStrengthBarComponent]
+        })
+          .overrideTemplate(PasswordStrengthBarComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(PasswordStrengthBarComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(PasswordStrengthBarComponent);

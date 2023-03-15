@@ -35,7 +35,6 @@ import { UserMgmtResetDialogComponent } from 'app/admin/user-management/user-man
     UserManagementUpdateComponent,
     UserManagementDeleteDialogComponent,
     UserMgmtResetDialogComponent
-  ],
-  entryComponents: [UserManagementDeleteDialogComponent]
+  ]
 })
 export class UserManagementModule {}

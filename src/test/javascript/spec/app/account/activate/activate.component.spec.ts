@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TestBed, async, tick, fakeAsync, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, tick, fakeAsync, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
@@ -29,20 +29,22 @@ describe('Component Tests', () => {
   describe('ActivateComponent', () => {
     let comp: ActivateComponent;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [ActivateComponent],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: new MockActivatedRoute({ key: 'ABC123' })
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [ActivateComponent],
+          providers: [
+            {
+              provide: ActivatedRoute,
+              useValue: new MockActivatedRoute({ key: 'ABC123' })
+            }
+          ]
+        })
+          .overrideTemplate(ActivateComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(ActivateComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       const fixture = TestBed.createComponent(ActivateComponent);

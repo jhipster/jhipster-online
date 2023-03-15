@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { PasswordResetInitService } from './password-reset-init.service';
 
@@ -34,7 +34,7 @@ export class PasswordResetInitComponent implements AfterViewInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
   });
 
-  constructor(private passwordResetInitService: PasswordResetInitService, private fb: FormBuilder) {}
+  constructor(private passwordResetInitService: PasswordResetInitService, private fb: UntypedFormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.email) {

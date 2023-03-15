@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
@@ -30,21 +30,23 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<AlertErrorComponent>;
     let eventManager: JhiEventManager;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [AlertErrorComponent],
-        providers: [
-          JhiEventManager,
-          {
-            provide: JhiAlertService,
-            useClass: MockAlertService
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [AlertErrorComponent],
+          providers: [
+            JhiEventManager,
+            {
+              provide: JhiAlertService,
+              useClass: MockAlertService
+            }
+          ]
+        })
+          .overrideTemplate(AlertErrorComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(AlertErrorComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(AlertErrorComponent);

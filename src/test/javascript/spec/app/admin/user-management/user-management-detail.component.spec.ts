@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -33,20 +33,22 @@ describe('Component Tests', () => {
       data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') })
     } as any) as ActivatedRoute;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [UserManagementDetailComponent],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: route
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [UserManagementDetailComponent],
+          providers: [
+            {
+              provide: ActivatedRoute,
+              useValue: route
+            }
+          ]
+        })
+          .overrideTemplate(UserManagementDetailComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(UserManagementDetailComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(UserManagementDetailComponent);

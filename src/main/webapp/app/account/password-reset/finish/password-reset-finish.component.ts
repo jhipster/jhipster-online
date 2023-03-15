@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -46,7 +46,7 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     private passwordResetFinishService: PasswordResetFinishService,
     private loginModalService: LoginModalService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit(): void {

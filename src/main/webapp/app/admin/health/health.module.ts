@@ -27,7 +27,6 @@ import { healthRoute } from './health.route';
 
 @NgModule({
   imports: [JhonlineSharedModule, RouterModule.forChild([healthRoute])],
-  declarations: [HealthComponent, HealthModalComponent],
-  entryComponents: [HealthModalComponent]
+  declarations: [HealthComponent, HealthModalComponent]
 })
 export class HealthModule {}

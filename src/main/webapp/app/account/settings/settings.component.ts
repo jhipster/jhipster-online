@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
     email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
   });
 
-  constructor(private accountService: AccountService, private fb: FormBuilder, private modalService: NgbModal) {}
+  constructor(private accountService: AccountService, private fb: UntypedFormBuilder, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {

@@ -19,8 +19,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { NgxEchartsModule } from 'ngx-echarts';
-import './vendor';
 import { JhonlineSharedModule } from 'app/shared/shared.module';
 import { JhonlineCoreModule } from 'app/core/core.module';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
@@ -48,7 +46,6 @@ export function setupGitConfiguration(gitConfigurationService: GitConfigurationS
     JhonlineHomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     JhonlineEntityModule,
-    NgxEchartsModule,
     JhonlineAppRoutingModule
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
