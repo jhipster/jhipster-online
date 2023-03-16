@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
   gitConfig: GitConfigurationModel;
-  enableAzure: boolean = false;
+  enableAzure = false;
 
   constructor(
     private accountService: AccountService,
