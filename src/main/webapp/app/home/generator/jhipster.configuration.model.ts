@@ -17,6 +17,10 @@
  * limitations under the License.
  */
 
+export interface BlueprintModel {
+  name: string;
+}
+
 export class JHipsterConfigurationModel {
   public applicationType = 'monolith';
   public gitCompany = '';
@@ -45,6 +49,7 @@ export class JHipsterConfigurationModel {
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
+  public blueprints: BlueprintModel[] = [];
 
   constructor(data?: Partial<JHipsterConfigurationModel>) {
     if (data) {

@@ -47,5 +47,6 @@ export class AzureGeneratorComponent implements OnInit {
     this.azureJHipsterModel.prodDatabaseType = 'postgresql';
     this.azureJHipsterModel.cacheProvider = 'no';
     this.azureJHipsterModel.clientFramework = 'react';
+    this.azureJHipsterModel.blueprints.push({ name: 'generator-jhipster-kotlin' });
   }
 }
