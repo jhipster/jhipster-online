@@ -37,6 +37,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
 
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'

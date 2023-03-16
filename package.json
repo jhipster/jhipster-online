@@ -105,7 +105,7 @@
     "test:watch": "yarn run test --watch",
     "webapp:build": "yarn run clean-www && yarn run webapp:build:dev",
     "webapp:build:dev": "ng build --configuration development",
-    "webapp:build:prod": "ng build --configuration production",
+    "webapp:build:prod": "ng build --configuration production --delete-output-path false",
     "webapp:dev": "ng serve",
     "webapp:dev-ssl": "ng serve --ssl",
     "webapp:dev-verbose": "ng serve --verbose",
