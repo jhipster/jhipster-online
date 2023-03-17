@@ -23,6 +23,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
 import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-home',
@@ -33,8 +34,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
   gitConfig: GitConfigurationModel;
+  enableAzure = false;
 
-  constructor(private accountService: AccountService, private gitConfigurationService: GitConfigurationService) {
+  constructor(
+    private accountService: AccountService,
+    private gitConfigurationService: GitConfigurationService,
+    public route: ActivatedRoute
+  ) {
     this.gitConfig = this.gitConfigurationService.gitConfig;
   }
 
@@ -44,6 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.account = account;
       this.gitConfigurationService.setupGitConfiguration();
     });
+    // TODO: remove this feature flag once the Azure generator is ready
+    this.enableAzure = Boolean(this.route.snapshot.queryParams['enableAzure']);
   }
 
   isAuthenticated(): boolean {
