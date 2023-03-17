@@ -23,7 +23,7 @@
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>11</java.version>
-        <node.version>v16.19.0</node.version>
+        <node.version>v16.19.1</node.version>
         <yarn.version>v1.22.19</yarn.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -843,60 +843,6 @@
                         -->
                     </configuration>
 
-                </plugin>
-                <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>dockerfile-maven-plugin</artifactId>
-                    <version>${dockerfile-maven-plugin.version}</version>
-                    <executions>
-                        <!--
-                         Uncomment the section below to build the docker image with mvn package and and push it with mvn deploy
-                        <execution>
-                            <id>default</id>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>push</goal>
-                            </goals>
-                        </execution>
-                        -->
-                        <execution>
-                            <id>tag-latest</id>
-                            <phase>none</phase>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>tag</goal>
-                                <goal>push</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>version</id>
-                            <phase>none</phase>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>tag</goal>
-                                <goal>push</goal>
-                            </goals>
-                            <configuration>
-                                <tag>${project.version}</tag>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>commit</id>
-                            <phase>none</phase>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>tag</goal>
-                                <goal>push</goal>
-                            </goals>
-                            <configuration>
-                                <tag>${git.commit.id.describe}</tag>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <repository>jhonline</repository>
-                        <contextDirectory>${project.build.directory}</contextDirectory>
-                    </configuration>
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
             </plugins>
