@@ -8,8 +8,10 @@ RUN \
     sleep 1 && \
     ./mvnw package -Pgcp -DskipTests && \
     mv /home/jhipster/jhipster-online/target/*.war /home/jhipster && \
-    rm -Rf /home/jhipster/jhipster-online/ /home/jhipster/.m2 /home/jhipster/.cache /tmp/* /var/tmp/* && \
-    cd && \
+    rm -Rf /home/jhipster/jhipster-online/ /home/jhipster/.m2 /home/jhipster/.cache /tmp/* /var/tmp/*
+
+USER root
+RUN \
     npm install -g generator-jhipster-azure-spring-apps
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
