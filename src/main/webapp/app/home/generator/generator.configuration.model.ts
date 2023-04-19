@@ -45,11 +45,14 @@ export type ProdDatabaseType =
 export type DevDatabaseType = 'h2Disk' | 'h2Memory' | ProdDatabaseType;
 
 export interface GeneratorConfigurationModel {
+  hideRepositoryName?: boolean;
   hideApplicationType?: boolean;
   hideServiceDiscoveryType?: boolean;
   hideAuthenticationType?: boolean;
   hideDatabaseType?: boolean;
+  hideProdDatabaseType?: boolean;
   hideProdDatabaseTypeOptions?: ProdDatabaseType[];
+  hideDevDatabaseType?: boolean;
   hideDevDatabaseTypeOptions?: DevDatabaseType[];
   hideCacheProvider?: boolean;
   hideBuildTool?: boolean;

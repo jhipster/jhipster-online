@@ -27,12 +27,25 @@ import { JHipsterConfigurationModel } from '../generator/jhipster.configuration.
 })
 export class AzureGeneratorComponent implements OnInit {
   azureGeneratorConfig: GeneratorConfigurationModel = {
+    hideRepositoryName: true,
     hideApplicationType: true,
     hideServiceDiscoveryType: true,
     hideAuthenticationType: true,
     hideDatabaseType: true,
-    hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j'],
-    hideDevDatabaseTypeOptions: ['h2Disk', 'h2Memory', 'mysql', 'mariadb', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j'],
+    hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j', 'no'],
+    hideDevDatabaseTypeOptions: [
+      'h2Disk',
+      'h2Memory',
+      'mysql',
+      'mariadb',
+      'oracle',
+      'mssql',
+      'mongodb',
+      'cassandra',
+      'couchbase',
+      'neo4j',
+      'no'
+    ],
     hideCacheProvider: true,
     hideBuildTool: true,
     hideOtherComponents: true,

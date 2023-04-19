@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!config.hideRepositoryName">
             <div class="col-md-8">
                 <div class="form-group">
                     <label for="repositoryName">Repository name</label>
@@ -104,7 +104,7 @@
                         <option value="no">No database</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideProdDatabaseType">
                     <label for="prodDatabaseType">Which <i>production</i> database would you like to use?</label>
                     <select id="prodDatabaseType" [(ngModel)]="model.prodDatabaseType" name="prodDatabaseType"
                             class="form-control" #prodDatabaseType="ngModel" (change)="changeProdDatabaseType()">
@@ -119,10 +119,10 @@
                         <option value="cassandra" [hidden]="isProdDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
                         <option value="couchbase" [hidden]="isProdDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
                         <option value="neo4j" [hidden]="isProdDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" [hidden]="isProdDatabaseOptionHidden('no', 'no') && !config.hideDatabaseType">No database</option>
+                        <option value="no" [hidden]="isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideDevDatabaseType">
                     <label for="devDatabaseType">Which <i>development</i> database would you like to use?</label>
                     <select id="devDatabaseType" [(ngModel)]="model.devDatabaseType" name="devDatabaseType"
                             class="form-control" #devDatabaseType="ngModel">
@@ -139,7 +139,7 @@
                         <option value="cassandra" [hidden]="isDevDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
                         <option value="couchbase" [hidden]="isDevDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
                         <option value="neo4j" [hidden]="isDevDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" [hidden]="isDevDatabaseOptionHidden('no', 'no') && !config.hideDatabaseType">No database</option>
+                        <option value="no" [hidden]="isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideCacheProvider">
