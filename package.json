@@ -96,7 +96,7 @@
     "lint:fix": "yarn run lint --fix",
     "cleanup": "rimraf target/classes/static/{index.html,favicon.ico,manifest.webapp,robots.txt,app/,content/,swagger-ui/} target/classes/aot",
     "clean-www": "rimraf target/classes/static/app/{src,target/}",
-    "start": "ng serve --hmr",
+    "start": "ng serve",
     "start-tls": "yarn run webapp:dev-ssl",
     "serve": "yarn run start",
     "build": "yarn run webapp:prod",

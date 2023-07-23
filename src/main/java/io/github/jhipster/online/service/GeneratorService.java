@@ -89,6 +89,10 @@ public class GeneratorService {
     private File generateApplication(String applicationId, String applicationConfiguration) throws IOException {
         File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" + applicationId);
         FileUtils.forceMkdir(workingDir);
+        if (workingDir.exists()) {
+            log.info("Working directory exists.");
+        }
+        if (!workingDir.exists() && !workingDir.mkdirs()) throw new IOException("Could not create directory " + workingDir);
         this.generateYoRc(applicationId, workingDir, applicationConfiguration);
         log.info(".yo-rc.json created");
         this.jHipsterService.generateApplication(applicationId, workingDir);
