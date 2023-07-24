@@ -1,1 +1,1 @@
-FROM node:16.19.1
+FROM jhipster/jhipster:v8.0.0-beta.2

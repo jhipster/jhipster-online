@@ -113,8 +113,8 @@ public class GeneratorResource {
     public @ResponseBody ResponseEntity<byte[]> downloadApplication(@RequestBody String applicationConfiguration) {
         applicationConfiguration = SanitizeInputs.sanitizeInput(applicationConfiguration);
         log.info("Downloading application - .yo-rc.json: {}", applicationConfiguration);
-        // String applicationId = UUID.randomUUID().toString();
-        String applicationId = "1".toString();
+        String applicationId = UUID.randomUUID().toString();
+        // String applicationId = "1".toString();
         String zippedApplication;
         try {
             zippedApplication = this.generatorService.generateZippedApplication(applicationId, applicationConfiguration);
