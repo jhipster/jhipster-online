@@ -60,25 +60,20 @@
                     <div *ngIf="packageName.errors" class="alert alert-danger">The package name you have provided is not a valid Java package name.</div>
                 </div>
                 <div class="form-group">
-                    <label for="serverPort">On which port would like your server to run? It should be unique to avoid
-                        port
-                        conflicts.</label>
+                    <label for="serverPort">On which port would like your server to run? It should be unique to avoid port conflicts.</label>
                     <input type="number" class="form-control" id="serverPort" [(ngModel)]="model.serverPort"
                            name="serverPort" #serverPort="ngModel"
                            required>
                 </div>
-                <div class="form-group" *ngIf="!config.hideServiceDiscoveryType">
-                    <label for="serviceDiscoveryType">Do you want to use the JHipster Registry to configure, monitor and
-                        scale your application?</label>
+                <div class="form-group" *ngIf="!config.hideServiceDiscoveryType" [hidden]="model.applicationType === 'monolith'">
+                    <label for="serviceDiscoveryType">Do you want to use the Consul as a service registry?</label>
                     <select id="serviceDiscoveryType" [(ngModel)]="model.serviceDiscoveryType"
                             name="serviceDiscoveryType"
                             class="form-control"
                             #serviceDiscoveryType="ngModel" (change)="changeServiceDiscoveryType()">
+                        <option value="consul">Yes</option>
                         <option value="false">No</option>
-                        <option value="eureka">Yes</option>
-                        <option value="consul" [hidden]="model.applicationType === 'monolith'">No, use Consul as an alternative solution (uses Spring Cloud
-                            Consul)
-                        </option>
+                        <option value="eureka">Use JHipster Registry (deprecated) instead</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideAuthenticationType">
