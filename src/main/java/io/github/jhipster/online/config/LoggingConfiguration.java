@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,17 +18,17 @@
  */
 package io.github.jhipster.online.config;
 
-import static io.github.jhipster.config.logging.LoggingUtils.*;
+import static tech.jhipster.config.logging.LoggingUtils.*;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jhipster.config.JHipsterProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import tech.jhipster.config.JHipsterProperties;
 
 /*
  * Configures the console and Logstash log appenders from the app properties
@@ -61,9 +61,6 @@ public class LoggingConfiguration {
         }
         if (loggingProperties.isUseJsonFormat() || logstashProperties.isEnabled()) {
             addContextListener(context, customFields, loggingProperties);
-        }
-        if (jHipsterProperties.getMetrics().getLogs().isEnabled()) {
-            setMetricsMarkerLogbackFilter(context, loggingProperties.isUseJsonFormat());
         }
     }
 }

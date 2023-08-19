@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,8 +18,6 @@
  */
 package io.github.jhipster.online;
 
-import io.github.jhipster.config.DefaultProfileUtil;
-import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.online.config.ApplicationProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -34,6 +32,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import tech.jhipster.config.DefaultProfileUtil;
+import tech.jhipster.config.JHipsterConstants;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })

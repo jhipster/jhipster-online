@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordResetService } from 'app/core/auth/password-reset.service';
 import { UserMgmtResetDialogComponent } from 'app/admin/user-management/user-management-reset-dialog.component';
@@ -30,15 +30,17 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<UserMgmtResetDialogComponent>;
     let service: PasswordResetService;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [UserMgmtResetDialogComponent],
-        providers: [PasswordResetService]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [UserMgmtResetDialogComponent],
+          providers: [PasswordResetService]
+        })
+          .overrideTemplate(UserMgmtResetDialogComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(UserMgmtResetDialogComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(UserMgmtResetDialogComponent);

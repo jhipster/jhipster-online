@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -162,15 +162,15 @@ class YoRCServiceChoicesIntTest {
             .hasSize(5)
             .extracting(TemporalDistributionDTO::getDate)
             .containsExactly(
-                Instant.parse("2018-09-27T00:00:00Z"),
                 Instant.parse("2019-01-01T00:00:00Z"),
+                Instant.parse("2018-09-27T00:00:00Z"),
                 Instant.parse("2019-01-02T00:00:00Z"),
                 Instant.parse("2018-09-13T00:00:00Z"),
                 Instant.parse("2018-09-14T00:00:00Z")
             );
 
-        Map<String, Long> fst = result.get(0).getValues(); // 27 sept 2018
-        Map<String, Long> snd = result.get(1).getValues(); // 01 jan 2019
+        Map<String, Long> snd = result.get(0).getValues(); // 01 jan 2019
+        Map<String, Long> fst = result.get(1).getValues(); // 27 sept 2018
         Map<String, Long> thr = result.get(2).getValues(); // 02 jan 2019
         Map<String, Long> fou = result.get(3).getValues(); // 13 sept 2018
         Map<String, Long> fiv = result.get(4).getValues(); // 14 sept 2018

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,7 +18,6 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgxEchartsModule } from 'ngx-echarts';
 
 import { GitComponent } from './git/git.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -36,13 +35,15 @@ import { HomeComponent } from './home.component';
 import { GeneratorComponent } from 'app/home/generator/generator.component';
 import { YourGeneratorsComponent } from 'app/home/your-generators/your-generators.component';
 import { DataDeletionDialogComponent } from 'app/home/your-generators/data-deletion-dialog.component';
+import { AzureGeneratorComponent } from './azure-generator/azure-generator.component';
 
 @NgModule({
-  imports: [JhonlineSharedModule, NgxEchartsModule, RouterModule.forRoot([HOME_ROUTE])],
+  imports: [JhonlineSharedModule, RouterModule.forRoot([HOME_ROUTE], { relativeLinkResolution: 'legacy' })],
   declarations: [
     HomeComponent,
     GeneratorComponent,
     GeneratorOutputDialogComponent,
+    AzureGeneratorComponent,
     WelcomeComponent,
     GitComponent,
     CallbackComponent,
@@ -52,13 +53,6 @@ import { DataDeletionDialogComponent } from 'app/home/your-generators/data-delet
     JdlOutputDialogComponent,
     CiCdComponent,
     YourGeneratorsComponent,
-    CiCdOutputDialogComponent,
-    RemoveGeneratorDialogComponent,
-    DataDeletionDialogComponent
-  ],
-  entryComponents: [
-    GeneratorOutputDialogComponent,
-    JdlOutputDialogComponent,
     CiCdOutputDialogComponent,
     RemoveGeneratorDialogComponent,
     DataDeletionDialogComponent

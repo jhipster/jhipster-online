@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,7 +19,6 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.domain.User;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -35,6 +34,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.

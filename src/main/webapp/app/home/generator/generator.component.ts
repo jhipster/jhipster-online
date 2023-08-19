@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
@@ -26,12 +26,22 @@ import { AccountService } from 'app/core/auth/account.service';
 import { JHipsterConfigurationModel } from './jhipster.configuration.model';
 import { GeneratorService } from './generator.service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
+import {
+  AllDevDatabaseTypes,
+  AllProdDatabaseTypes,
+  DevDatabaseType,
+  GeneratorConfigurationModel,
+  ProdDatabaseType
+} from './generator.configuration.model';
 
 @Component({
   selector: 'jhi-generator',
   templateUrl: './generator.component.html'
 })
 export class GeneratorComponent implements OnInit {
+  @Input() config: GeneratorConfigurationModel = {};
+  @Input() defaultModel: Partial<JHipsterConfigurationModel> | undefined;
+
   model: JHipsterConfigurationModel = new JHipsterConfigurationModel();
 
   submitted = false;
@@ -211,7 +221,7 @@ export class GeneratorComponent implements OnInit {
   }
 
   newGenerator(): void {
-    this.model = new JHipsterConfigurationModel();
+    this.model = new JHipsterConfigurationModel(this.defaultModel);
     this.repositoryName = 'jhipster-sample-application';
   }
 
@@ -263,24 +273,24 @@ export class GeneratorComponent implements OnInit {
 
   changeDatabaseType(): void {
     if (this.model.databaseType === 'sql') {
-      this.model.devDatabaseType = 'h2Disk';
-      this.model.prodDatabaseType = 'mysql';
+      this.model.prodDatabaseType = AllProdDatabaseTypes.find(type => !this.isProdDatabaseOptionHidden('sql', type)) || 'mysql';
+      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) || 'h2Disk';
       this.model.cacheProvider = 'ehcache';
       this.model.enableHibernateCache = true;
     } else if (this.model.databaseType === 'mongodb') {
-      this.model.devDatabaseType = 'mongodb';
       this.model.prodDatabaseType = 'mongodb';
+      this.model.devDatabaseType = 'mongodb';
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
     } else if (this.model.databaseType === 'cassandra') {
-      this.model.devDatabaseType = 'cassandra';
       this.model.prodDatabaseType = 'cassandra';
+      this.model.devDatabaseType = 'cassandra';
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
       this.model.searchEngine = false;
     } else if (this.model.databaseType === 'couchbase') {
-      this.model.devDatabaseType = 'couchbase';
       this.model.prodDatabaseType = 'couchbase';
+      this.model.devDatabaseType = 'couchbase';
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
       this.model.searchEngine = false;
@@ -297,8 +307,10 @@ export class GeneratorComponent implements OnInit {
     if (this.model.devDatabaseType === this.model.prodDatabaseType) {
       return;
     }
+
     if (this.model.databaseType === 'sql') {
-      this.model.devDatabaseType = 'h2Disk';
+      // Find first allowed dev database type
+      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) || 'h2Disk';
     } else if (this.model.prodDatabaseType === 'mongodb') {
       this.model.devDatabaseType = 'mongodb';
       this.model.cacheProvider = 'no';
@@ -316,5 +328,17 @@ export class GeneratorComponent implements OnInit {
 
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
+  }
+
+  isProdDatabaseOptionHidden(validDatabaseType: string, databaseName: ProdDatabaseType): boolean {
+    return this.model.databaseType !== validDatabaseType || Boolean(this.config?.hideProdDatabaseTypeOptions?.includes(databaseName));
+  }
+
+  isDevDatabaseOptionHidden(validDatabaseType: string, databaseName: DevDatabaseType): boolean {
+    return (
+      this.model.databaseType !== validDatabaseType ||
+      Boolean(this.config?.hideDevDatabaseTypeOptions?.includes(databaseName)) ||
+      (databaseName !== 'h2Disk' && databaseName !== 'h2Memory' && this.model.prodDatabaseType !== databaseName)
+    );
   }
 }
