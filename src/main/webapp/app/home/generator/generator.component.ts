@@ -228,7 +228,7 @@ export class GeneratorComponent implements OnInit {
     }
     // service discovery
     if (this.model.applicationType === 'gateway' || this.model.applicationType === 'microservice') {
-      this.model.serviceDiscoveryType = 'eureka';
+      this.model.serviceDiscoveryType = 'consul';
     }
     // database
     if (this.model.databaseType === 'no') {
