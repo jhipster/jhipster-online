@@ -23,7 +23,7 @@
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>11</java.version>
-        <node.version>v16.19.1</node.version>
+        <node.version>v16.20.2</node.version>
         <yarn.version>v1.22.19</yarn.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -703,7 +703,7 @@
                             </requireMavenVersion>
                             <requireJavaVersion>
                                 <message>You are running an incompatible version of Java. JHipster supports JDK 8 to 13.</message>
-                                <version>[1.8,20)</version>
+                                <version>[1.8,21)</version>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
