@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
