@@ -111,7 +111,7 @@
     "webapp:dev-verbose": "ng serve --verbose",
     "webapp:prod": "yarn run clean-www && yarn run webapp:build:prod",
     "webapp:test": "yarn run test",
-    "update-jdl-studio": "cd src/main/resources/static/jdl-studio && git pull origin gh-pages && cd .. && git add jdl-studio && git commit -m 'jdl-studio submodule updated'"
+    "update-jdl-studio": "cd src/main/resources/static/jdl-studio && git pull origin gh-pages --rebase && cd .. && git add jdl-studio && git commit -m 'jdl-studio submodule updated'"
   },
   "jestSonar": {
     "reportPath": "target/test-results/jest",
