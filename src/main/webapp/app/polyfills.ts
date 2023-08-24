@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -31,6 +31,5 @@
  *
  * Learn more in https://angular.io/docs/ts/latest/guide/browser-support.html
  */
-import 'zone.js/dist/zone';
+import 'zone.js';
 import '@angular/localize/init';
-require('../manifest.webapp');

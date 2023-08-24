@@ -65,6 +65,12 @@ spring:
     # Otherwise, it will be filled in by maven when building the JAR file
     # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     active: #spring.profiles.active#
+    group:
+      dev:
+        - dev
+        - api-docs
+        # Uncomment to activate TLS for the dev profile
+        #- tls
   jmx:
     enabled: false
   data:
@@ -96,8 +102,8 @@ spring:
   main:
     allow-bean-definition-overriding: true
   mvc:
-    favicon:
-      enabled: false
+    pathmatch:
+      matching-strategy: ant_path_matcher
   task:
     execution:
       thread-name-prefix: jhonline-task-
@@ -146,17 +152,6 @@ jhipster:
   #     max-age: 1800
   mail:
     from: no-reply@jhipster.tech
-  swagger:
-    default-include-pattern: /api/.*
-    title: jhonline API
-    description: jhonline API documentation
-    version: 0.0.1
-    terms-of-service-url:
-    contact-name:
-    contact-url:
-    contact-email:
-    license:
-    license-url:
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

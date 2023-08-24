@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,7 +20,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LogsService } from 'app/admin/logs/logs.service';
-import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
   describe('Logs Service', () => {
@@ -32,8 +31,8 @@ describe('Service Tests', () => {
         imports: [HttpClientTestingModule]
       });
 
-      service = TestBed.get(LogsService);
-      httpMock = TestBed.get(HttpTestingController);
+      service = TestBed.inject(LogsService);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {

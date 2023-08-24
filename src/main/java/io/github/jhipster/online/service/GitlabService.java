@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -201,7 +201,7 @@ public class GitlabService implements GitProviderService {
                         List<GitlabProject> projectList = gitlab.getGroupProjects(group);
                         List<String> projects = projectList.stream().map(GitlabProject::getName).collect(Collectors.toList());
                         company.setGitProjects(projects);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         log.error("Could not sync GitLab repositories for user `{}`: {}", user.getLogin(), e.getMessage());
                     }
                 }

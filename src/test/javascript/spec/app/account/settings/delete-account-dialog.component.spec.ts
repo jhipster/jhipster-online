@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async, inject, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync } from '@angular/core/testing';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { DeleteAccountDialogComponent } from 'app/account/settings/delete-account-dialog.component';
@@ -27,14 +27,16 @@ describe('Component Tests', () => {
     let comp: DeleteAccountDialogComponent;
     let fixture: ComponentFixture<DeleteAccountDialogComponent>;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [DeleteAccountDialogComponent]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [DeleteAccountDialogComponent]
+        })
+          .overrideTemplate(DeleteAccountDialogComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(DeleteAccountDialogComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(DeleteAccountDialogComponent);

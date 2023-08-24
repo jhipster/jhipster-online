@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { User } from 'app/core/user/user.model';
@@ -43,7 +43,7 @@ export class UserManagementUpdateComponent implements OnInit {
     authorities: []
   });
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private userService: UserService, private route: ActivatedRoute, private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {

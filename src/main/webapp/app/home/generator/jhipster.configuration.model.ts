@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,6 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+export interface BlueprintModel {
+  name: string;
+}
 
 export class JHipsterConfigurationModel {
   public applicationType = 'monolith';
@@ -45,4 +49,14 @@ export class JHipsterConfigurationModel {
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
+  public blueprints: BlueprintModel[] = [];
+
+  constructor(data?: Partial<JHipsterConfigurationModel>) {
+    if (data) {
+      const dataCopy = { ...data };
+      dataCopy.testFrameworks = [...(data.testFrameworks || [])];
+      dataCopy.languages = [...(data.languages || [])];
+      Object.assign(this, data);
+    }
+  }
 }

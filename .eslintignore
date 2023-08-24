@@ -2,7 +2,8 @@ node_modules/
 src/main/docker/
 src/main/resources/static/jdl-studio/
 src/test/javascript/protractor.conf.js
-src/test/javascript/jest.conf.js
+jest.conf.js
+coverage/
 webpack/
 target/
 build/
