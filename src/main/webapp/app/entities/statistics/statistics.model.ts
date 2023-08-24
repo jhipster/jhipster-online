@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 import { ElementRef } from '@angular/core';
+import * as echarts from 'echarts';
 
 export enum Frequency {
   DEFAULT = 'default',

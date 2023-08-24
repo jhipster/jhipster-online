@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 import { DatePipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -69,6 +70,6 @@ import { MockEventManager } from './helpers/mock-event-manager.service';
       useValue: null
     }
   ],
-  imports: [HttpClientTestingModule]
+  imports: [HttpClientTestingModule, ReactiveFormsModule]
 })
 export class JhonlineTestModule {}

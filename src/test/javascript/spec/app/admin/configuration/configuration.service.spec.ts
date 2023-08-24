@@ -20,7 +20,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ConfigurationService, ConfigProps, Env, Bean, PropertySource } from 'app/admin/configuration/configuration.service';
-import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
   describe('Logs Service', () => {
@@ -34,8 +33,8 @@ describe('Service Tests', () => {
       });
 
       expectedResult = null;
-      service = TestBed.get(ConfigurationService);
-      httpMock = TestBed.get(HttpTestingController);
+      service = TestBed.inject(ConfigurationService);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {

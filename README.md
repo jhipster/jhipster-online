@@ -174,13 +174,13 @@ You can also fully dockerize your application and all the services that it depen
 To achieve this, first build a docker image of your app by running:
 
 ```
-./mvnw package -Pprod dockerfile:build
+docker build -t jhonline .
 ```
 
 Then run:
 
 ```
-docker-compose -f src/main/docker/app.yml up -d
+docker compose -f src/main/docker/app.yml up -d
 ```
 
 ## Deployment to Google App Engine (GAE) Flexible Environment

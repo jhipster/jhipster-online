@@ -20,7 +20,6 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { MetricsService, Metrics, ThreadDump } from 'app/admin/metrics/metrics.service';
-import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
   describe('Logs Service', () => {
@@ -31,8 +30,8 @@ describe('Service Tests', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
-      service = TestBed.get(MetricsService);
-      httpMock = TestBed.get(HttpTestingController);
+      service = TestBed.inject(MetricsService);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {

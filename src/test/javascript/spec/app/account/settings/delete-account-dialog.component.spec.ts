@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async, inject, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync } from '@angular/core/testing';
 
 import { JhonlineTestModule } from '../../../test.module';
 import { DeleteAccountDialogComponent } from 'app/account/settings/delete-account-dialog.component';
@@ -27,14 +27,16 @@ describe('Component Tests', () => {
     let comp: DeleteAccountDialogComponent;
     let fixture: ComponentFixture<DeleteAccountDialogComponent>;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [DeleteAccountDialogComponent]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [DeleteAccountDialogComponent]
+        })
+          .overrideTemplate(DeleteAccountDialogComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(DeleteAccountDialogComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(DeleteAccountDialogComponent);

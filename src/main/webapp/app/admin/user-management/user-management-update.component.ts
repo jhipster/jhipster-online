@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { User } from 'app/core/user/user.model';
@@ -43,7 +43,7 @@ export class UserManagementUpdateComponent implements OnInit {
     authorities: []
   });
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private userService: UserService, private route: ActivatedRoute, private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {

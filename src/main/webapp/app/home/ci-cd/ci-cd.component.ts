@@ -26,7 +26,7 @@ import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 import { CiCdService } from './ci-cd.service';
 
 @Component({
-  selector: 'jhi-generator',
+  selector: 'jhi-cicd',
   templateUrl: './ci-cd.component.html'
 })
 export class CiCdComponent implements OnInit {

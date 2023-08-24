@@ -24,7 +24,6 @@ import { JhiDateUtils } from 'ng-jhipster';
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
-import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
   describe('User Service', () => {
@@ -37,8 +36,8 @@ describe('Service Tests', () => {
         providers: [JhiDateUtils]
       });
 
-      service = TestBed.get(UserService);
-      httpMock = TestBed.get(HttpTestingController);
+      service = TestBed.inject(UserService);
+      httpMock = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
@@ -81,8 +80,10 @@ describe('Service Tests', () => {
       it('should propagate not found response', () => {
         let expectedResult = 0;
 
-        service.find('user').subscribe(null, (error: HttpErrorResponse) => {
-          expectedResult = error.status;
+        service.find('user').subscribe({
+          error(error: HttpErrorResponse): void {
+            expectedResult = error.status;
+          }
         });
 
         const req = httpMock.expectOne({ method: 'GET' });

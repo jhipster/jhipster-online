@@ -42,7 +42,6 @@ import { accountState } from './account.route';
     PasswordResetFinishComponent,
     SettingsComponent,
     DeleteAccountDialogComponent
-  ],
-  entryComponents: [DeleteAccountDialogComponent]
+  ]
 })
 export class AccountModule {}

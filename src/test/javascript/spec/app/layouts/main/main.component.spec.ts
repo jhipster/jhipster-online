@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -33,22 +33,24 @@ describe('Component Tests', () => {
     const routerEventsSubject = new Subject<RouterEvent>();
     let titleService: Title;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [MainComponent],
-        providers: [Title]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [MainComponent],
+          providers: [Title]
+        })
+          .overrideTemplate(MainComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(MainComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(MainComponent);
       comp = fixture.componentInstance;
-      router = TestBed.get(Router);
+      router = TestBed.inject(Router) as any;
       router.setEvents(routerEventsSubject.asObservable());
-      titleService = TestBed.get(Title);
+      titleService = TestBed.inject(Title);
     });
 
     describe('page title', () => {

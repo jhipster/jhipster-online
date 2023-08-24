@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 
@@ -30,14 +30,16 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<HealthComponent>;
     let service: HealthService;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [HealthComponent]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [HealthComponent]
+        })
+          .overrideTemplate(HealthComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(HealthComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(HealthComponent);
