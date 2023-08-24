@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { PasswordResetInitService } from './password-reset-init.service';
 
@@ -34,7 +34,7 @@ export class PasswordResetInitComponent implements AfterViewInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
   });
 
-  constructor(private passwordResetInitService: PasswordResetInitService, private fb: FormBuilder) {}
+  constructor(private passwordResetInitService: PasswordResetInitService, private fb: UntypedFormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.email) {

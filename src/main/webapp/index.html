@@ -32,7 +32,7 @@
                 <h1>An error has occurred :-(</h1>
                 <h2>Usual error causes</h2>
                 <ol>
-                    <li>You started the application from an IDE and you didn't run <code style="color:red">yarn start</code> or <code style="color:red">yarn run webpack:build</code>.</li>
+                    <li>You started the application from an IDE and you didn't run <code style="color:red">yarn start</code> or <code style="color:red">yarn run webapp:build</code>.</li>
                     <li>You had a network error while running <code style="color:red">yarn install</code>. If you are behind a corporate proxy, it is likely that this error was caused by your proxy. Have a look at the JHipster error logs, you will probably have the cause of the error.</li>
                     <li>You installed a Node.js version that doesn't work with JHipster: please use an LTS (long-term support) version, as it's the only version we support.</li>
                 </ol>
@@ -41,7 +41,7 @@
                 <p>If you want to have more control, so you can debug your issue more easily, you should follow the following steps:</p>
                 <ol>
                     <li>Install npm dependencies with the command <code style="color:red">yarn install</code></li>
-                    <li>Build the client with the command <code style="color:red">yarn run webpack:build</code> or <code style="color:red">yarn start</code></li>
+                    <li>Build the client with the command <code style="color:red">yarn run webapp:build</code> or <code style="color:red">yarn start</code></li>
                     <li>Start the server with <code style="color:red">./mvnw</code> or using your IDE</li>
                 </ol>
 
@@ -94,14 +94,13 @@
             });
         }
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4L9RJVPGJT"></script>
     <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create', 'UA-46075199-1', 'auto');
-        ga('send','pageview');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4L9RJVPGJT');
     </script>
 </body>
 </html>

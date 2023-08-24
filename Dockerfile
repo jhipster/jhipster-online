@@ -1,4 +1,4 @@
-FROM jhipster/jhipster:v7.8.1
+FROM jhipster/jhipster:v8.0.0-beta.2
 USER jhipster
 COPY --chown=jhipster:jhipster . /home/jhipster/jhipster-online/
 RUN \
@@ -8,7 +8,11 @@ RUN \
     sleep 1 && \
     ./mvnw package -Pgcp -DskipTests && \
     mv /home/jhipster/jhipster-online/target/*.war /home/jhipster && \
-    rm -Rf /home/jhipster/jhipster-online/ /home/jhipster/.m2 /home/jhipster/.cache /tmp/* /var/tmp/* 
+    rm -Rf /home/jhipster/jhipster-online/ /home/jhipster/.m2 /home/jhipster/.cache /tmp/* /var/tmp/*
+
+USER root
+RUN \
+    npm install -g generator-jhipster-azure-spring-apps
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \

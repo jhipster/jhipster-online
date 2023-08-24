@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,7 +20,6 @@ package io.github.jhipster.online.security.jwt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,6 +36,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
+import tech.jhipster.config.JHipsterProperties;
 
 class TokenProviderTest {
 

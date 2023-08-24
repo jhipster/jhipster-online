@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -37,12 +37,14 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
-      tap(null, (err: HttpErrorResponse) => {
-        if (err.status === 401 && err.url && !err.url.includes('api/account')) {
-          this.stateStorageService.storeUrl(this.router.routerState.snapshot.url);
-          this.loginService.logout();
-          this.router.navigate(['']);
-          this.loginModalService.open();
+      tap({
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 401 && err.url && !err.url.includes('api/account')) {
+            this.stateStorageService.storeUrl(this.router.routerState.snapshot.url);
+            this.loginService.logout();
+            this.router.navigate(['']);
+            this.loginModalService.open();
+          }
         }
       })
     );

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TestBed, async, tick, fakeAsync, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, tick, fakeAsync, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
@@ -29,20 +29,22 @@ describe('Component Tests', () => {
   describe('ActivateComponent', () => {
     let comp: ActivateComponent;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [ActivateComponent],
-        providers: [
-          {
-            provide: ActivatedRoute,
-            useValue: new MockActivatedRoute({ key: 'ABC123' })
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [ActivateComponent],
+          providers: [
+            {
+              provide: ActivatedRoute,
+              useValue: new MockActivatedRoute({ key: 'ABC123' })
+            }
+          ]
+        })
+          .overrideTemplate(ActivateComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(ActivateComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       const fixture = TestBed.createComponent(ActivateComponent);

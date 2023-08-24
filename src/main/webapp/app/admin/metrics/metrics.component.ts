@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -17,9 +17,9 @@
  * limitations under the License.
  */
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { flatMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
-import { MetricsService, Metrics, MetricsKey, ThreadDump, Thread } from './metrics.service';
+import { MetricsService, Metrics, MetricsKey, Thread } from './metrics.service';
 
 @Component({
   selector: 'jhi-metrics',
@@ -39,27 +39,19 @@ export class MetricsComponent implements OnInit {
 
   refresh(): void {
     this.updatingMetrics = true;
-    this.metricsService
-      .getMetrics()
-      .pipe(
-        flatMap(
-          () => this.metricsService.threadDump(),
-          (metrics: Metrics, threadDump: ThreadDump) => {
-            this.metrics = metrics;
-            this.threads = threadDump.threads;
-            this.updatingMetrics = false;
-            this.changeDetector.detectChanges();
-          }
-        )
-      )
-      .subscribe();
+    combineLatest([this.metricsService.getMetrics(), this.metricsService.threadDump()]).subscribe(([metrics, threadDump]) => {
+      this.metrics = metrics;
+      this.threads = threadDump.threads;
+      this.updatingMetrics = false;
+      this.changeDetector.markForCheck();
+    });
   }
 
   metricsKeyExists(key: MetricsKey): boolean {
-    return this.metrics && this.metrics[key];
+    return this?.metrics && this.metrics[key];
   }
 
   metricsKeyExistsAndObjectNotEmpty(key: MetricsKey): boolean {
-    return this.metrics && this.metrics[key] && JSON.stringify(this.metrics[key]) !== '{}';
+    return this?.metrics && this.metrics[key] && JSON.stringify(this.metrics[key]) !== '{}';
   }
 }

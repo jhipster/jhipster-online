@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -20,7 +20,6 @@ package io.github.jhipster.online.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.JhonlineApp;
 import io.github.jhipster.online.domain.PersistentAuditEvent;
 import io.github.jhipster.online.repository.PersistenceAuditEventRepository;
@@ -31,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Integration tests for {@link AuditEventService}.

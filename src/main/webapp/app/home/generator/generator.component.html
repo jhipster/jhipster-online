@@ -7,6 +7,7 @@
         <hr />
         <jhi-git-provider-alert *ngIf="isAuthenticated()" [tab]="'generate-application'"></jhi-git-provider-alert>
         <jhi-git-provider *ngIf="isAuthenticated()" (sharedData)="updateSharedData($event)" [simpleMode]="true"></jhi-git-provider>
+        <ng-content select="[generator-header]"></ng-content>
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
@@ -17,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!config.hideRepositoryName">
             <div class="col-md-8">
                 <div class="form-group">
                     <label for="repositoryName">Repository name</label>
@@ -27,23 +28,25 @@
             </div>
         </div>
         <hr />
-        <h4>Application type</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="applicationType">Which type of application would you like to create?</label>
-                    <select id="applicationType" [(ngModel)]="model.applicationType" name="applicationType"
-                            class="form-control" #applicationType="ngModel"
-                            (change)="changeApplicationType()">
-                        <option value="monolith">Monolithic application (recommended for simple projects)</option>
-                        <option value="microservice">Microservice application</option>
-                        <option value="gateway">Microservice gateway</option>
-                    </select>
+        <ng-container *ngIf="!config.hideApplicationType">
+            <h4>Application type</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="applicationType">Which type of application would you like to create?</label>
+                        <select id="applicationType" [(ngModel)]="model.applicationType" name="applicationType"
+                                class="form-control" #applicationType="ngModel"
+                                (change)="changeApplicationType()">
+                            <option value="monolith">Monolithic application (recommended for simple projects)</option>
+                            <option value="microservice">Microservice application</option>
+                            <option value="gateway">Microservice gateway</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr />
+            <hr />
+        </ng-container>
         <h4>Server side options</h4>
         <hr />
         <div class="row">
@@ -57,28 +60,23 @@
                     <div *ngIf="packageName.errors" class="alert alert-danger">The package name you have provided is not a valid Java package name.</div>
                 </div>
                 <div class="form-group">
-                    <label for="serverPort">On which port would like your server to run? It should be unique to avoid
-                        port
-                        conflicts.</label>
+                    <label for="serverPort">On which port would like your server to run? It should be unique to avoid port conflicts.</label>
                     <input type="number" class="form-control" id="serverPort" [(ngModel)]="model.serverPort"
                            name="serverPort" #serverPort="ngModel"
                            required>
                 </div>
-                <div class="form-group">
-                    <label for="serviceDiscoveryType">Do you want to use the JHipster Registry to configure, monitor and
-                        scale your application?</label>
+                <div class="form-group" *ngIf="!config.hideServiceDiscoveryType" [hidden]="model.applicationType === 'monolith'">
+                    <label for="serviceDiscoveryType">Do you want to use the Consul as a service registry?</label>
                     <select id="serviceDiscoveryType" [(ngModel)]="model.serviceDiscoveryType"
                             name="serviceDiscoveryType"
                             class="form-control"
                             #serviceDiscoveryType="ngModel" (change)="changeServiceDiscoveryType()">
+                        <option value="consul">Yes</option>
                         <option value="false">No</option>
-                        <option value="eureka">Yes</option>
-                        <option value="consul" [hidden]="model.applicationType === 'monolith'">No, use Consul as an alternative solution (uses Spring Cloud
-                            Consul)
-                        </option>
+                        <option value="eureka">Use JHipster Registry (deprecated) instead</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideAuthenticationType">
                     <label for="authenticationType">Which <i>type</i> of authentication would you like to use?</label>
                     <select id="authenticationType" [(ngModel)]="model.authenticationType" name="authenticationType"
                             class="form-control" #authenticationType="ngModel" (change)="changeAuthenticationType()">
@@ -89,7 +87,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideDatabaseType">
                     <label for="databaseType">Which <i>type</i> of database would you like to use?</label>
                     <select id="databaseType" [(ngModel)]="model.databaseType" name="databaseType" class="form-control"
                             #databaseType="ngModel" (change)="changeDatabaseType()">
@@ -101,45 +99,45 @@
                         <option value="no">No database</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideProdDatabaseType">
                     <label for="prodDatabaseType">Which <i>production</i> database would you like to use?</label>
                     <select id="prodDatabaseType" [(ngModel)]="model.prodDatabaseType" name="prodDatabaseType"
                             class="form-control" #prodDatabaseType="ngModel" (change)="changeProdDatabaseType()">
-                        <option value="postgresql" [hidden]="model.databaseType !== 'sql'">PostgreSQL</option>
-                        <option value="mysql" [hidden]="model.databaseType !== 'sql'">MySQL</option>
-                        <option value="mariadb" [hidden]="model.databaseType !== 'sql'">MariaDB</option>
-                        <option value="oracle" [hidden]="model.databaseType !== 'sql'">Oracle (Please follow our documentation to use the Oracle proprietary
+                        <option value="postgresql" [hidden]="isProdDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
+                        <option value="mysql" [hidden]="isProdDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
+                        <option value="mariadb" [hidden]="isProdDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
+                        <option value="oracle" [hidden]="isProdDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
                             driver)
                         </option>
-                        <option value="mssql" [hidden]="model.databaseType !== 'sql'">Microsoft SQL Server</option>
-                        <option value="mongodb" [hidden]="model.databaseType !== 'mongodb'">MongoDB</option>
-                        <option value="cassandra" [hidden]="model.databaseType !== 'cassandra'">Cassandra</option>
-                        <option value="couchbase" [hidden]="model.databaseType !== 'couchbase'">Couchbase</option>
-                        <option value="neo4j" [hidden]="model.databaseType !== 'neo4j'">Neo4j</option>
-                        <option value="no" [hidden]="model.databaseType !== 'no'">No database</option>
+                        <option value="mssql" [hidden]="isProdDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
+                        <option value="mongodb" [hidden]="isProdDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
+                        <option value="cassandra" [hidden]="isProdDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
+                        <option value="couchbase" [hidden]="isProdDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
+                        <option value="neo4j" [hidden]="isProdDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
+                        <option value="no" [hidden]="isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideDevDatabaseType">
                     <label for="devDatabaseType">Which <i>development</i> database would you like to use?</label>
                     <select id="devDatabaseType" [(ngModel)]="model.devDatabaseType" name="devDatabaseType"
                             class="form-control" #devDatabaseType="ngModel">
-                        <option value="h2Disk" [hidden]="model.databaseType !== 'sql'">H2 with disk-based persistence</option>
-                        <option value="h2Memory" [hidden]="model.databaseType !== 'sql'">H2 with in-memory persistence</option>
-                        <option value="mysql" [hidden]="model.databaseType !== 'sql' || model.prodDatabaseType !== 'mysql'">MySQL</option>
-                        <option value="mariadb" [hidden]="model.databaseType !== 'sql' || model.prodDatabaseType !== 'mariadb'">MariaDB</option>
-                        <option value="postgresql" [hidden]="model.databaseType !== 'sql' || model.prodDatabaseType !== 'postgresql'">PostgreSQL</option>
-                        <option value="oracle" [hidden]="model.databaseType !== 'sql' || model.prodDatabaseType !== 'oracle'">Oracle (Please follow our documentation to use the Oracle proprietary
+                        <option value="h2Disk" [hidden]="isDevDatabaseOptionHidden('sql', 'h2Disk')">H2 with disk-based persistence</option>
+                        <option value="h2Memory" [hidden]="isDevDatabaseOptionHidden('sql', 'h2Memory')">H2 with in-memory persistence</option>
+                        <option value="mysql" [hidden]="isDevDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
+                        <option value="mariadb" [hidden]="isDevDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
+                        <option value="postgresql" [hidden]="isDevDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
+                        <option value="oracle" [hidden]="isDevDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
                             driver)
                         </option>
-                        <option value="mssql" [hidden]="model.databaseType !== 'sql' || model.prodDatabaseType !== 'mssql'">Microsoft SQL Server</option>
-                        <option value="mongodb" [hidden]="model.databaseType !== 'mongodb'">MongoDB</option>
-                        <option value="cassandra" [hidden]="model.databaseType !== 'cassandra'">Cassandra</option>
-                        <option value="couchbase" [hidden]="model.databaseType !== 'couchbase'">Couchbase</option>
-                        <option value="neo4j" [hidden]="model.databaseType !== 'neo4j'">Neo4j</option>
-                        <option value="no" [hidden]="model.databaseType !== 'no'">No database</option>
+                        <option value="mssql" [hidden]="isDevDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
+                        <option value="mongodb" [hidden]="isDevDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
+                        <option value="cassandra" [hidden]="isDevDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
+                        <option value="couchbase" [hidden]="isDevDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
+                        <option value="neo4j" [hidden]="isDevDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
+                        <option value="no" [hidden]="isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideCacheProvider">
                     <label for="cacheProvider">Do you want to use the Spring cache abstraction?</label>
                     <select id="cacheProvider" [(ngModel)]="model.cacheProvider" name="cacheProvider"
                             class="form-control" #cacheProvider="ngModel">
@@ -161,7 +159,7 @@
                         <option [ngValue]="false">No</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideBuildTool">
                     <label for="buildTool">Would you like to use Maven or Gradle for building the backend?</label>
                     <select id="buildTool" [(ngModel)]="model.buildTool" name="buildTool" class="form-control"
                             #buildTool="ngModel">
@@ -169,7 +167,7 @@
                         <option value="gradle">Gradle</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="!config.hideOtherComponents">
                     <label>Which other technologies would you like to use?</label>
                     <div class="container">
                         <div class="row">
@@ -216,79 +214,87 @@
             </div>
         </div>
         <hr />
-        <h4 [hidden]="model.applicationType === 'microservice'">Client side options</h4>
-        <hr [hidden]="model.applicationType === 'microservice'">
-        <div class="row" [hidden]="model.applicationType === 'microservice'">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
-                    <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
-                            class="form-control" #clientFramework="ngModel">
-                        <option value="angularX">Angular</option>
-                        <option value="react">React</option>
-                        <option value="vue">Vue</option>
-                    </select>
+        <ng-container *ngIf="!config.hideClientSideOptions && model.applicationType !== 'microservice'">
+            <h4>Client side options</h4>
+            <hr>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="clientFramework">Which <i>Framework</i> would you like to use for the client?</label>
+                        <select id="clientFramework" [(ngModel)]="model.clientFramework" name="clientFramework"
+                                class="form-control" #clientFramework="ngModel">
+                            <option value="angularX">Angular</option>
+                            <option value="react">React</option>
+                            <option value="vue">Vue</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="withAdminUi">Do you want to generate the admin UI?</label>
+                        <select id="withAdminUi" [(ngModel)]="model.withAdminUi" name="withAdminUi"
+                                class="form-control" #withAdminUi="ngModel">
+                            <option [ngValue]="true">Yes</option>
+                            <option [ngValue]="false">No</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="withAdminUi">Do you want to generate the admin UI?</label>
-                    <select id="withAdminUi" [(ngModel)]="model.withAdminUi" name="withAdminUi"
-                            class="form-control" #withAdminUi="ngModel">
-                        <option [ngValue]="true">Yes</option>
-                        <option [ngValue]="false">No</option>
-                    </select>
+            <hr />
+        </ng-container>
+        <ng-container *ngIf="!config.hideI18nOptions">
+            <h4>Internationalization options</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="enableTranslation">Would you like to enable internationalization support?</label>
+                        <select id="enableTranslation" [(ngModel)]="model.enableTranslation" name="enableTranslation"
+                                class="form-control" #enableTranslation="ngModel">
+                            <option [ngValue]="true">Yes</option>
+                            <option [ngValue]="false">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group" [hidden]="model.enableTranslation === false">
+                        <label for="nativeLanguage">Please choose the native language of the application</label>
+                        <select id="nativeLanguage" [(ngModel)]="model.nativeLanguage" name="nativeLanguage"
+                                class="form-control" #nativeLanguage="ngModel">
+                            <option *ngFor="let option of languageOptions" [value]="option.value">{{option.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" [hidden]="model.enableTranslation === false">
+                        <label for="languages">Please choose additional languages to install</label>
+                        <select id="languages" [(ngModel)]="model.languages" name="languages" class="form-control"
+                                #languages="ngModel" multiple>
+                            <option *ngFor="let option of languageOptions" [value]="option.value">{{option.name}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr />
-        <h4>Internationalization options</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="enableTranslation">Would you like to enable internationalization support?</label>
-                    <select id="enableTranslation" [(ngModel)]="model.enableTranslation" name="enableTranslation"
-                            class="form-control" #enableTranslation="ngModel">
-                        <option [ngValue]="true">Yes</option>
-                        <option [ngValue]="false">No</option>
-                    </select>
-                </div>
-                <div class="form-group" [hidden]="model.enableTranslation === false">
-                    <label for="nativeLanguage">Please choose the native language of the application</label>
-                    <select id="nativeLanguage" [(ngModel)]="model.nativeLanguage" name="nativeLanguage"
-                            class="form-control" #nativeLanguage="ngModel">
-                        <option *ngFor="let option of languageOptions" [value]="option.value">{{option.name}}</option>
-                    </select>
-                </div>
-                <div class="form-group" [hidden]="model.enableTranslation === false">
-                    <label for="languages">Please choose additional languages to install</label>
-                    <select id="languages" [(ngModel)]="model.languages" name="languages" class="form-control"
-                            #languages="ngModel" multiple>
-                        <option *ngFor="let option of languageOptions" [value]="option.value">{{option.name}}</option>
-                    </select>
+            <hr />
+        </ng-container>
+        <ng-container *ngIf="!config.hideTestingOptions">
+            <h4>Testing options</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="testFrameworks">Besides JUnit and Jest, which testing frameworks would you like to
+                            use?</label>
+                        <select id="testFrameworks" [(ngModel)]="model.testFrameworks" name="testFrameworks"
+                                class="form-control" #testFrameworks="ngModel"
+                                multiple>
+                            <option value="gatling">Gatling</option>
+                            <option value="cucumber">Cucumber</option>
+                            <option value="cypress" [hidden]="model.applicationType === 'microservice'">Cypress</option>
+                            <option value="protractor" [hidden]="model.applicationType === 'microservice'">Protractor (deprecated)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr />
-        <h4>Testing options</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="testFrameworks">Besides JUnit and Jest, which testing frameworks would you like to
-                        use?</label>
-                    <select id="testFrameworks" [(ngModel)]="model.testFrameworks" name="testFrameworks"
-                            class="form-control" #testFrameworks="ngModel"
-                            multiple>
-                        <option value="gatling">Gatling</option>
-                        <option value="cucumber">Cucumber</option>
-                        <option value="protractor" [hidden]="model.applicationType === 'microservice'">Protractor</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <hr />
+            <hr />
+        </ng-container>
+        <ng-content select="[generator-footer]"></ng-content>
         <div class="row">
             <div class="col-md-8">
                 <div class="text-center">

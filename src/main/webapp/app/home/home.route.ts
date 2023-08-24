@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -21,6 +21,7 @@ import { Route } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { GENERATOR_ROUTE } from 'app/home/generator/generator.route';
+import { AZURE_ROUTE } from 'app/home/azure-generator/azure-generator.route';
 import { GIT_ROUTE } from 'app/home/git/git.route';
 import { WELCOME_ROUTE } from 'app/home/welcome/welcome.route';
 import { GITHUB_CALLBACK_ROUTE } from 'app/home/git/callback/callback.route';
@@ -38,6 +39,7 @@ export const HOME_ROUTE: Route = {
   canActivate: [UserRouteAccessService],
   children: [
     GENERATOR_ROUTE,
+    AZURE_ROUTE,
     WELCOME_ROUTE,
     GIT_ROUTE,
     GITHUB_CALLBACK_ROUTE,

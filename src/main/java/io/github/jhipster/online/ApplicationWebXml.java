@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,9 +18,9 @@
  */
 package io.github.jhipster.online;
 
-import io.github.jhipster.config.DefaultProfileUtil;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import tech.jhipster.config.DefaultProfileUtil;
 
 /**
  * This is a helper Java class that provides an alternative to creating a {@code web.xml}.

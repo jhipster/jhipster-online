@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -26,7 +26,7 @@ import { CiCdOutputDialogComponent } from './ci-cd.output.component';
 import { CiCdService } from './ci-cd.service';
 
 @Component({
-  selector: 'jhi-generator',
+  selector: 'jhi-cicd',
   templateUrl: './ci-cd.component.html'
 })
 export class CiCdComponent implements OnInit {
