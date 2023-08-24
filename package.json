@@ -129,7 +129,7 @@
     "webpack:test": "yarn run test",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
-    "update-jdl-studio": "cd src/main/resources/static/jdl-studio && git pull origin gh-pages && cd .. && git add jdl-studio && git commit -m 'jdl-studio submodule updated'"
+    "update-jdl-studio": "cd src/main/resources/static/jdl-studio && git pull origin gh-pages --rebase && cd .. && git add jdl-studio && git commit -m 'jdl-studio submodule updated'"
   },
   "jestSonar": {
     "reportPath": "target/test-results/jest",
