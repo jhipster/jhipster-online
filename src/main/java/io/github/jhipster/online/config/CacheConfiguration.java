@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,7 +19,6 @@
 
 package io.github.jhipster.online.config;
 
-import io.github.jhipster.config.JHipsterProperties;
 import java.time.Duration;
 import javax.cache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -32,6 +31,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tech.jhipster.config.JHipsterProperties;
 
 @Configuration
 @EnableCaching

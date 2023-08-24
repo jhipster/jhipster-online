@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -19,7 +19,6 @@
 
 package io.github.jhipster.online.service;
 
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.online.config.CacheConfiguration;
 import io.github.jhipster.online.config.Constants;
 import io.github.jhipster.online.domain.Authority;
@@ -33,7 +32,6 @@ import io.github.jhipster.online.repository.UserRepository;
 import io.github.jhipster.online.security.AuthoritiesConstants;
 import io.github.jhipster.online.security.SecurityUtils;
 import io.github.jhipster.online.service.dto.UserDTO;
-import io.github.jhipster.security.RandomUtil;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -49,6 +47,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.security.RandomUtil;
 
 /**
  * Service class for managing users.

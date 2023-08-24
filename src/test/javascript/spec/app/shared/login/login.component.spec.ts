@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,28 +36,30 @@ describe('Component Tests', () => {
     let mockRouter: MockRouter;
     let mockActiveModal: MockActiveModal;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [JhonlineTestModule],
-        declarations: [LoginModalComponent],
-        providers: [
-          FormBuilder,
-          {
-            provide: LoginService,
-            useClass: MockLoginService
-          }
-        ]
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [JhonlineTestModule],
+          declarations: [LoginModalComponent],
+          providers: [
+            FormBuilder,
+            {
+              provide: LoginService,
+              useClass: MockLoginService
+            }
+          ]
+        })
+          .overrideTemplate(LoginModalComponent, '')
+          .compileComponents();
       })
-        .overrideTemplate(LoginModalComponent, '')
-        .compileComponents();
-    }));
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(LoginModalComponent);
       comp = fixture.componentInstance;
-      mockLoginService = TestBed.get(LoginService);
-      mockRouter = TestBed.get(Router);
-      mockActiveModal = TestBed.get(NgbActiveModal);
+      mockLoginService = TestBed.inject(LoginService) as any;
+      mockRouter = TestBed.inject(Router) as any;
+      mockActiveModal = TestBed.inject(NgbActiveModal) as any;
     });
 
     it('should authenticate the user', inject(

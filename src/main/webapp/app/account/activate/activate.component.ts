@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -18,7 +18,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivateService } from './activate.service';
@@ -34,7 +34,7 @@ export class ActivateComponent implements OnInit {
   constructor(private activateService: ActivateService, private loginModalService: LoginModalService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(flatMap(params => this.activateService.get(params.key))).subscribe(
+    this.route.queryParams.pipe(mergeMap(params => this.activateService.get(params.key))).subscribe(
       () => (this.success = true),
       () => (this.error = true)
     );

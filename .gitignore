@@ -1,3 +1,4 @@
+/.angular/cache
 ######################
 # Project Specific
 ######################
@@ -130,6 +131,7 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+coverage/
 
 ######################
 # Gradle Wrapper

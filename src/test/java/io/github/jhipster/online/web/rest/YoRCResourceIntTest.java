@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -61,7 +61,7 @@ class YoRCResourceIntTest {
 
     private static final String DEFAULT_JHIPSTER_VERSION = "AAAAAAAAAA";
 
-    private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant DEFAULT_CREATION_DATE = Instant.ofEpochMilli(1000L);
 
     private static final String DEFAULT_GIT_PROVIDER = "AAAAAAAAAA";
 

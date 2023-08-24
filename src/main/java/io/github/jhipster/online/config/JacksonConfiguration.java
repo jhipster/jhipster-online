@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -21,10 +21,9 @@ package io.github.jhipster.online.config;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.zalando.problem.ProblemModule;
+import org.zalando.problem.jackson.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 @Configuration
@@ -50,14 +49,6 @@ public class JacksonConfiguration {
     @Bean
     public Hibernate5Module hibernate5Module() {
         return new Hibernate5Module();
-    }
-
-    /*
-     * Jackson Afterburner module to speed up serialization/deserialization.
-     */
-    @Bean
-    public AfterburnerModule afterburnerModule() {
-        return new AfterburnerModule();
     }
 
     /*

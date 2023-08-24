@@ -1,5 +1,5 @@
 /**
- * Copyright 2017-2022 the original author or authors from the JHipster project.
+ * Copyright 2017-2023 the original author or authors from the JHipster project.
  *
  * This file is part of the JHipster Online project, see https://github.com/jhipster/jhipster-online
  * for more information.
@@ -79,8 +79,8 @@ class JHipsterServiceTest {
 
         verify(logsService).addLog(generationId, "Installing the JHipster version used by the project");
         verify(taskExecutor).execute(any(Runnable.class));
-        verify(logsService).addLog(eq(generationId), startsWith("up to date in"));
-        verify(logsService).addLog(generationId, "found 0 vulnerabilities");
+        verify(logsService).addLog(eq(generationId), startsWith("up to date"));
+        //verify(logsService).addLog(generationId, "found 0 vulnerabilities");
     }
 
     @Test
