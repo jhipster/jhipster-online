@@ -83,7 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com  https://static.cloudflareinsights.com; connect-src 'self' https://www.googletagmanager.com  https://*.analytics.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com data:; font-src 'self' https://cdn.linearicons.com data:; manifest-src 'self' https://static.cloudflareinsights.com data:;")
+            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com  https://static.cloudflareinsights.com; connect-src 'self' https://www.googletagmanager.com  https://*.analytics.google.com https://stats.g.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.googletagmanager.com https://www.google.fr data:; font-src 'self' https://cdn.linearicons.com data:; manifest-src 'self' https://static.cloudflareinsights.com data:;")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
