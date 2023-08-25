@@ -64,8 +64,8 @@ export class JhonlineAppModule {
   constructor(public router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        ga('set', 'page', 'start' + event.urlAfterRedirects);
-        ga('send', 'pageview');
+        gtag('set', 'page', 'start' + event.urlAfterRedirects);
+        gtag('event', 'pageview');
       }
     });
   }
