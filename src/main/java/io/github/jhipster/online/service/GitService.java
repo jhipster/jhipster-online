@@ -71,7 +71,7 @@ public class GitService {
         remoteAddCommand.call();
 
         String currentBranch = git.getRepository().getFullBranch();
-        if (currentBranch.equals("refs/heads/master")) {
+        if ("refs/heads/master".equals(currentBranch)) {
             git.branchRename().setNewName("main").call();
         }
         this.push(git, workingDir, user, organization, applicationName, gitProvider);
