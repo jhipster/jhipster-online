@@ -112,6 +112,7 @@
       "path": "./target/angular/",
       "environment": "all"
     },
-    "packageManager": "yarn"
+    "packageManager": "yarn",
+    "analytics": false
   }
 }

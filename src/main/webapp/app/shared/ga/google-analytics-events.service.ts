@@ -22,8 +22,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class GoogleAnalyticsEventsService {
   public emitEvent(eventCategory: string, eventAction: string, eventLabel: string | null = null, eventValue: number | null = null): any {
-    ga('send', 'event', {
-      eventCategory,
+    gtag('event', 'eventCategory', {
       eventLabel,
       eventAction,
       eventValue
