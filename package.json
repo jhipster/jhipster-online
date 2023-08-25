@@ -52,7 +52,7 @@
     "@angular/compiler-cli": "14.2.12",
     "@openapitools/openapi-generator-cli": "1.0.10-4.2.3",
     "@types/echarts": "^4.9.16",
-    "@types/google.analytics": "0.0.40",
+    "@types/gtag.js": "0.0.13",
     "@types/jest": "27.5.2",
     "@types/node": "12.12.17",
     "@typescript-eslint/eslint-plugin": "5.36.1",
