@@ -286,21 +286,9 @@ public class GithubService implements GitProviderService {
     )
         throws Exception {
         log.debug("Syncing user's projects");
-        GitCompany myOrganization;
-        if (currentGithubCompanies.stream().noneMatch(g -> g.getName().equals(ghMyself.getLogin()))) {
-            myOrganization = new GitCompany();
-            myOrganization.setName(githubLogin);
-            myOrganization.setUser(user);
-            myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
-            gitCompanyRepository.save(myOrganization);
-        } else {
-            myOrganization =
-                currentGithubCompanies
-                    .stream()
-                    .filter(g -> g.getName().equals(ghMyself.getLogin()))
-                    .findFirst()
-                    .orElseThrow(Exception::new);
-        }
+        GitCompany myOrganization = isKnownCompany(ghMyself, currentGithubCompanies)
+            ? findKnownGitCompany(ghMyself, currentGithubCompanies)
+            : addNewGitCompany(user, githubLogin);
         try {
             List<String> ownedProjects = gitHub
                 .getMyself()
@@ -313,5 +301,26 @@ public class GithubService implements GitProviderService {
         } catch (IOException e) {
             log.error("Could not sync GitHub repositories for user `{}`: {}", user.getLogin(), e.getMessage());
         }
+    }
+
+    private boolean isKnownCompany(GHMyself ghMyself, Set<GitCompany> currentGithubCompanies) {
+        return currentGithubCompanies.stream().anyMatch(company -> company.getName().equals(ghMyself.getLogin()));
+    }
+
+    private GitCompany addNewGitCompany(User user, String githubLogin) {
+        var myOrganization = new GitCompany();
+        myOrganization.setName(githubLogin);
+        myOrganization.setUser(user);
+        myOrganization.setGitProvider(GitProvider.GITHUB.getValue());
+        gitCompanyRepository.save(myOrganization);
+        return myOrganization;
+    }
+
+    private GitCompany findKnownGitCompany(GHMyself ghMyself, Set<GitCompany> currentGithubCompanies) throws Exception {
+        return currentGithubCompanies
+            .stream()
+            .filter(company -> company.getName().equals(ghMyself.getLogin()))
+            .findFirst()
+            .orElseThrow(Exception::new);
     }
 }

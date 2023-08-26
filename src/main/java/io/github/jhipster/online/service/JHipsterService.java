@@ -48,6 +48,8 @@ public class JHipsterService {
 
     private final String jhipsterCommand;
 
+    private final String npmCommand;
+
     private final Integer timeout;
 
     public JHipsterService(LogsService logsService, ApplicationProperties applicationProperties, Executor taskExecutor) {
@@ -55,6 +57,7 @@ public class JHipsterService {
         this.taskExecutor = taskExecutor;
 
         jhipsterCommand = applicationProperties.getJhipsterCmd().getCmd();
+        npmCommand = applicationProperties.getNpmCmd().getCmd();
         timeout = applicationProperties.getJhipsterCmd().getTimeout();
 
         log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
@@ -62,7 +65,7 @@ public class JHipsterService {
 
     public void installNpmDependencies(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
-        this.runProcess(generationId, workingDir, "npm", "install", "--ignore-scripts", "--package-lock-only");
+        this.runProcess(generationId, workingDir, npmCommand, "install", "--ignore-scripts", "--package-lock-only");
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
@@ -116,40 +119,30 @@ public class JHipsterService {
 
     void runProcess(String generationId, File workingDir, String... command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
-        BufferedReader input = null;
-        try {
-            String line;
-            ProcessBuilder processBuilder = new ProcessBuilder()
-                .directory(workingDir)
-                .command(command)
-                .redirectError(ProcessBuilder.Redirect.DISCARD);
-            Process p = processBuilder.start();
+        ProcessBuilder processBuilder = new ProcessBuilder()
+            .directory(workingDir)
+            .command(command)
+            .redirectError(ProcessBuilder.Redirect.DISCARD);
+        Process p = processBuilder.start();
 
-            taskExecutor.execute(
-                () -> {
-                    try {
-                        p.waitFor(timeout, TimeUnit.SECONDS);
-                        p.destroyForcibly();
-                    } catch (InterruptedException e) {
-                        log.error("Unable to execute process successfully.", e);
-                        Thread.currentThread().interrupt();
-                    }
+        taskExecutor.execute(
+            () -> {
+                try {
+                    p.waitFor(timeout, TimeUnit.SECONDS);
+                    p.destroyForcibly();
+                } catch (InterruptedException e) {
+                    log.error("Unable to execute process successfully.", e);
+                    Thread.currentThread().interrupt();
                 }
-            );
-
-            input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
-                log.debug(line);
-                this.logsService.addLog(generationId, line);
             }
+        );
 
-            input.close();
-        } catch (Exception e) {
-            log.error("Error while running the process", e);
-            if (input != null) {
-                input.close();
-            }
-            throw e;
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            log.debug(line);
+            this.logsService.addLog(generationId, line);
         }
+        input.close();
     }
 }

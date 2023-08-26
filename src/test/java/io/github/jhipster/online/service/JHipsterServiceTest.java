@@ -32,6 +32,7 @@ import io.github.jhipster.online.service.enums.CiCdTool;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.Executor;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,6 +63,10 @@ class JHipsterServiceTest {
 
     @BeforeEach
     void shouldConstructJHipsterService() {
+        final String os = System.getProperty("os.name");
+        final String command = os.contains("indows") ? "npm.cmd" : applicationProperties.getNpmCmd().getCmd();
+        applicationProperties.getNpmCmd().setCmd(command);
+
         jHipsterService = new JHipsterService(logsService, applicationProperties, taskExecutor);
         jHipsterServiceSpy = spy(jHipsterService);
     }
@@ -81,15 +86,18 @@ class JHipsterServiceTest {
     @Test
     void shouldInstallNpmDependencies(@TempDir Path tempDir) throws IOException {
         String generationId = "generation-id";
+        final String command = applicationProperties.getNpmCmd().getCmd();
+        applicationProperties.getNpmCmd().setCmd(command);
+
         willDoNothing()
             .given(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), "npm", "install", "--ignore" + "-scripts", "--package-lock-only");
+            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore" + "-scripts", "--package-lock-only");
 
         jHipsterServiceSpy.installNpmDependencies(generationId, tempDir.toFile());
 
         verify(logsService).addLog(generationId, "Installing the JHipster version used by the project");
         verify(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), "npm", "install", "--ignore-scripts", "--package" + "-lock" + "-only");
+            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore-scripts", "--package" + "-lock" + "-only");
     }
 
     @Test

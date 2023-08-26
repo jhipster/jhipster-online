@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,14 @@ import org.zeroturnaround.zip.ZipUtil;
 
 @Service
 public class GeneratorService {
+
+    public static final String JHIPSTER = "jhipster";
+
+    public static final String APPLICATIONS = "applications";
+
+    public static final String OS_TEMP_DIR = System.getProperty("java.io.tmpdir");
+
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     private final Logger log = LoggerFactory.getLogger(GeneratorService.class);
 
@@ -87,7 +96,9 @@ public class GeneratorService {
     }
 
     private File generateApplication(String applicationId, String applicationConfiguration) throws IOException {
-        File workingDir = new File(applicationProperties.getTmpFolder() + "/jhipster/applications/" + applicationId);
+        final String fromConfig = applicationProperties.getTmpFolder();
+        final String tempDir = StringUtils.isBlank(fromConfig) ? OS_TEMP_DIR : fromConfig;
+        final File workingDir = new File(String.join(FILE_SEPARATOR, tempDir, JHIPSTER, APPLICATIONS, applicationId));
         FileUtils.forceMkdir(workingDir);
         this.generateYoRc(applicationId, workingDir, applicationConfiguration);
         log.info(".yo-rc.json created");
@@ -98,12 +109,10 @@ public class GeneratorService {
 
     private void generateYoRc(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
         this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
-        try (PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8)) {
-            writer.print(applicationConfiguration);
-        } catch (IOException ioe) {
-            log.error("Error creating file .yo-rc.json", ioe);
-            throw ioe;
-        }
+        // removed the catch/log/throw since the exception is handled in calling code.
+        PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8);
+        writer.print(applicationConfiguration);
+        writer.close();
     }
 
     private void zipResult(File workingDir) {

@@ -18,10 +18,10 @@
  */
 package io.github.jhipster.online.service;
 
+import static io.github.jhipster.online.service.GeneratorService.*;
+import static java.util.Arrays.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import io.github.jhipster.online.config.ApplicationProperties;
@@ -30,11 +30,11 @@ import io.github.jhipster.online.domain.enums.GitProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -70,27 +70,44 @@ class GeneratorServiceTest {
 
     @Test
     void generateZippedApplication() throws IOException {
-        String result = generatorService.generateZippedApplication(applicationId, applicationConfiguration);
+        final String cwd = buildCwdPath();
 
-        assertThat(result).isEqualTo("/tmp/jhipster/applications/app-id.zip");
+        final String expected = cwd + ".zip";
+        final String expectedYoRcPath = cwd + FILE_SEPARATOR + ".yo-rc.json";
+
+        final String result = generatorService.generateZippedApplication(applicationId, applicationConfiguration);
+
+        assertThat(result).isEqualTo(expected);
         verify(logsService).addLog(applicationId, "Creating `.yo-rc.json` file");
-        verify(jHipsterService).generateApplication(applicationId, new File("/tmp/jhipster/applications/app-id"));
-        assertThat(new File("/tmp/jhipster/applications/app-id/.yo-rc.json")).isFile().hasContent(applicationConfiguration);
+        verify(jHipsterService).generateApplication(applicationId, new File(cwd));
+        assertThat(new File(expectedYoRcPath)).isFile().hasContent(applicationConfiguration);
     }
 
     @Test
     void generateGitApplication() throws GitAPIException, IOException, URISyntaxException {
         User user = mock(User.class);
-        File workingDir = new File("/tmp/jhipster/applications/app-id");
+        final String cwd = buildCwdPath();
+        File workingDir = new File(cwd);
 
         generatorService.generateGitApplication(user, applicationId, applicationConfiguration, "gh-org", "repo", GitProvider.GITHUB);
 
         verify(logsService).addLog(applicationId, "Creating `.yo-rc.json` file");
-        verify(jHipsterService).generateApplication(applicationId, new File("/tmp/jhipster/applications/app-id"));
-        assertThat(new File("/tmp/jhipster/applications/app-id/.yo-rc.json")).isFile().hasContent(applicationConfiguration);
+        verify(jHipsterService).generateApplication(applicationId, workingDir);
+        assertThat(new File(cwd + FILE_SEPARATOR + ".yo-rc.json")).isFile().hasContent(applicationConfiguration);
         verify(logsService).addLog(applicationId, "Pushing the application to the Git remote repository");
         verify(gitService).pushNewApplicationToGit(user, workingDir, "gh-org", "repo", GitProvider.GITHUB);
         verify(logsService).addLog(applicationId, "Application successfully pushed!");
         verify(gitService).cleanUpDirectory(workingDir);
+    }
+
+    private String buildCwdPath() {
+        final String fromConfig = applicationProperties.getTmpFolder();
+        String workingCopy = StringUtils.isBlank(fromConfig) ? OS_TEMP_DIR : fromConfig;
+        // handling the trailing file separator in case we are in windows
+        if (workingCopy.endsWith(FILE_SEPARATOR)) {
+            int length = workingCopy.length();
+            workingCopy = workingCopy.substring(0, length - 1);
+        }
+        return String.join(FILE_SEPARATOR, asList(workingCopy, JHIPSTER, APPLICATIONS, applicationId));
     }
 }
