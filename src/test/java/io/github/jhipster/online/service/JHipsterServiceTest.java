@@ -113,7 +113,8 @@ class JHipsterServiceTest {
                 "--skip" + "-checks",
                 "--skip-install",
                 "--skip-cache",
-                "--skip-git"
+                "--skip-git",
+                "--force"
             );
 
         jHipsterServiceSpy.generateApplication(generationId, tempDir.toFile());
@@ -128,7 +129,8 @@ class JHipsterServiceTest {
                 "--skip" + "-checks",
                 "--skip-install",
                 "--skip-cache",
-                "--skip-git"
+                "--skip-git",
+                "--force"
             );
     }
 
