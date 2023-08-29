@@ -34,13 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
   gitConfig: GitConfigurationModel;
-  enableAzure = false;
 
-  constructor(
-    private accountService: AccountService,
-    private gitConfigurationService: GitConfigurationService,
-    public route: ActivatedRoute
-  ) {
+  constructor(private accountService: AccountService, private gitConfigurationService: GitConfigurationService) {
     this.gitConfig = this.gitConfigurationService.gitConfig;
   }
 
@@ -50,8 +45,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.account = account;
       this.gitConfigurationService.setupGitConfiguration();
     });
-    // TODO: remove this feature flag once the Azure generator is ready
-    this.enableAzure = Boolean(this.route.snapshot.queryParams['enableAzure']);
   }
 
   isAuthenticated(): boolean {
