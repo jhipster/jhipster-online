@@ -6,7 +6,7 @@ RUN \
     rm -Rf target node_modules && \
     chmod +x mvnw && \
     sleep 1 && \
-    ./mvnw package -Pgcp -DskipTests && \
+    ./mvnw package -Pprod -DskipTests && \
     mv /home/jhipster/jhipster-online/target/*.war /home/jhipster && \
     rm -Rf /home/jhipster/jhipster-online/ /home/jhipster/.m2 /home/jhipster/.cache /tmp/* /var/tmp/*
 
