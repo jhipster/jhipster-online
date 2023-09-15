@@ -143,7 +143,7 @@ public class GitResource {
             HttpRequest httpRequest = HttpRequest
                 .newBuilder()
                 .uri(URI.create(url))
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .header("Accept", MediaType.APPLICATION_JSON_VALUE)
                 .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0")
                 .POST(HttpRequest.BodyPublishers.ofString(buildQueryString(params)))
