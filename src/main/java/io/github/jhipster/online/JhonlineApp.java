@@ -93,6 +93,7 @@ public class JhonlineApp {
             protocol = "https";
         }
         String serverPort = env.getProperty("server.port");
+        String applicationName = env.getProperty("spring.application.name");
         String contextPath = env.getProperty("server.servlet.context-path");
         if (StringUtils.isBlank(contextPath)) {
             contextPath = "/";
@@ -109,7 +110,7 @@ public class JhonlineApp {
             "Local: \t\t{}://localhost:{}{}\n\t" +
             "External: \t{}://{}:{}{}\n\t" +
             "Profile(s): \t{}\n----------------------------------------------------------",
-            env.getProperty("spring.application.name"),
+            applicationName,
             protocol,
             serverPort,
             contextPath,
