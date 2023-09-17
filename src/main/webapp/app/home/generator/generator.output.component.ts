@@ -66,10 +66,8 @@ export class GeneratorOutputDialogComponent implements OnInit {
             setTimeout(() => {
               this.updateLogsData();
             }, 500);
-          } else {
-            if (data.endsWith('Generation finished\n')) {
-              this.displayApplicationUrl = true;
-            }
+          } else if (data.endsWith('Generation finished\n')) {
+            this.displayApplicationUrl = true;
           }
         },
         () => {
