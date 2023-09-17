@@ -54,8 +54,8 @@ export class JHipsterConfigurationModel {
   constructor(data?: Partial<JHipsterConfigurationModel>) {
     if (data) {
       const dataCopy = { ...data };
-      dataCopy.testFrameworks = [...(data.testFrameworks || [])];
-      dataCopy.languages = [...(data.languages || [])];
+      dataCopy.testFrameworks = [...(data.testFrameworks ?? [])];
+      dataCopy.languages = [...(data.languages ?? [])];
       Object.assign(this, data);
     }
   }
