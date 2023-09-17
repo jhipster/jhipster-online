@@ -36,12 +36,12 @@ export class GitComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.gitlabConfigured = this.gitConfig.gitlabConfigured || false;
-    this.githubConfigured = this.gitConfig.githubConfigured || false;
+    this.gitlabConfigured = this.gitConfig.gitlabConfigured ?? false;
+    this.githubConfigured = this.gitConfig.githubConfigured ?? false;
     this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
       this.gitConfig = gitConfig;
-      this.gitlabConfigured = gitConfig.gitlabConfigured || false;
-      this.githubConfigured = gitConfig.githubConfigured || false;
+      this.gitlabConfigured = gitConfig.gitlabConfigured ?? false;
+      this.githubConfigured = gitConfig.githubConfigured ?? false;
     });
 
     this.gitConfig.availableGitProviders.forEach((provider: any) => {

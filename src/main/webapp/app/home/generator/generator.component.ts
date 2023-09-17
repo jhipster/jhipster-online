@@ -124,13 +124,13 @@ export class GeneratorComponent implements OnInit {
     this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
     this.gitConfig = this.gitConfigurationService.gitConfig;
     if (this.gitConfig) {
-      this.gitlabConfigured = this.gitConfig.gitlabConfigured || false;
-      this.githubConfigured = this.gitConfig.githubConfigured || false;
+      this.gitlabConfigured = this.gitConfig.gitlabConfigured ?? false;
+      this.githubConfigured = this.gitConfig.githubConfigured ?? false;
     }
     this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
       if (gitConfig) {
-        this.gitlabConfigured = gitConfig.gitlabConfigured || false;
-        this.githubConfigured = gitConfig.githubConfigured || false;
+        this.gitlabConfigured = gitConfig.gitlabConfigured ?? false;
+        this.githubConfigured = gitConfig.githubConfigured ?? false;
       }
     });
   }
@@ -273,8 +273,8 @@ export class GeneratorComponent implements OnInit {
 
   changeDatabaseType(): void {
     if (this.model.databaseType === 'sql') {
-      this.model.prodDatabaseType = AllProdDatabaseTypes.find(type => !this.isProdDatabaseOptionHidden('sql', type)) || 'mysql';
-      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) || 'h2Disk';
+      this.model.prodDatabaseType = AllProdDatabaseTypes.find(type => !this.isProdDatabaseOptionHidden('sql', type)) ?? 'mysql';
+      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) ?? 'h2Disk';
       this.model.cacheProvider = 'ehcache';
       this.model.enableHibernateCache = true;
     } else if (this.model.databaseType === 'mongodb') {
@@ -310,7 +310,7 @@ export class GeneratorComponent implements OnInit {
 
     if (this.model.databaseType === 'sql') {
       // Find first allowed dev database type
-      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) || 'h2Disk';
+      this.model.devDatabaseType = AllDevDatabaseTypes.find(type => !this.isDevDatabaseOptionHidden('sql', type)) ?? 'h2Disk';
     } else if (this.model.prodDatabaseType === 'mongodb') {
       this.model.devDatabaseType = 'mongodb';
       this.model.cacheProvider = 'no';

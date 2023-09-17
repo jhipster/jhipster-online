@@ -51,6 +51,6 @@ export class JdlMetadataService {
   }
 
   private convert(jdlMetadata: JdlMetadata): JdlMetadata {
-    return Object.assign({}, jdlMetadata);
+    return { ...jdlMetadata };
   }
 }
