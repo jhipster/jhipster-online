@@ -67,7 +67,7 @@ export class PasswordStrengthBarComponent {
   }
 
   getColor(s: number): { idx: number; color: string } {
-    let idx = 0;
+    let idx = 4;
     if (s <= 10) {
       idx = 0;
     } else if (s <= 20) {
@@ -76,8 +76,6 @@ export class PasswordStrengthBarComponent {
       idx = 2;
     } else if (s <= 40) {
       idx = 3;
-    } else {
-      idx = 4;
     }
     return { idx: idx + 1, color: this.colors[idx] };
   }

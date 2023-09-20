@@ -105,15 +105,15 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
     private jdlService: JdlService
   ) {
     this.gitConfig = this.gitConfigurationService.gitConfig;
-    this.gitlabConfigured = this.gitConfig.gitlabConfigured || false;
-    this.githubConfigured = this.gitConfig.githubConfigured || false;
+    this.gitlabConfigured = this.gitConfig.gitlabConfigured ?? false;
+    this.githubConfigured = this.gitConfig.githubConfigured ?? false;
   }
 
   ngOnInit(): void {
     this.gitConfigurationService.sharedData.subscribe((gitConfig: GitConfigurationModel) => {
       this.gitConfig = gitConfig;
-      this.gitlabConfigured = gitConfig.gitlabConfigured || false;
-      this.githubConfigured = gitConfig.githubConfigured || false;
+      this.gitlabConfigured = gitConfig.gitlabConfigured ?? false;
+      this.githubConfigured = gitConfig.githubConfigured ?? false;
     });
 
     this.subscription = this.route.params.subscribe(params => {
