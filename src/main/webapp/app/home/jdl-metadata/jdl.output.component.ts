@@ -62,10 +62,8 @@ export class JdlOutputDialogComponent implements OnInit {
             setTimeout(() => {
               this.updateLogsData();
             }, 2000);
-          } else {
-            if (data.endsWith('Generation finished\n')) {
-              this.displayBranchUrl = true;
-            }
+          } else if (data.endsWith('Generation finished\n')) {
+            this.displayBranchUrl = true;
           }
         },
         () => {

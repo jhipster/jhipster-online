@@ -107,17 +107,17 @@ export class YoRC implements IYoRC {
     public hasCucumber?: boolean,
     public owner?: IGeneratorIdentity
   ) {
-    this.enableHibernateCache = this.enableHibernateCache || false;
-    this.websocket = this.websocket || false;
-    this.searchEngine = this.searchEngine || false;
-    this.messageBroker = this.messageBroker || false;
-    this.serviceDiscoveryType = this.serviceDiscoveryType || false;
-    this.enableSwaggerCodegen = this.enableSwaggerCodegen || false;
-    this.withAdminUi = this.withAdminUi || false;
-    this.useSass = this.useSass || false;
-    this.enableTranslation = this.enableTranslation || false;
-    this.hasProtractor = this.hasProtractor || false;
-    this.hasGatling = this.hasGatling || false;
-    this.hasCucumber = this.hasCucumber || false;
+    this.enableHibernateCache = this.enableHibernateCache ?? false;
+    this.websocket = this.websocket ?? false;
+    this.searchEngine = this.searchEngine ?? false;
+    this.messageBroker = this.messageBroker ?? false;
+    this.serviceDiscoveryType = this.serviceDiscoveryType ?? false;
+    this.enableSwaggerCodegen = this.enableSwaggerCodegen ?? false;
+    this.withAdminUi = this.withAdminUi ?? false;
+    this.useSass = this.useSass ?? false;
+    this.enableTranslation = this.enableTranslation ?? false;
+    this.hasProtractor = this.hasProtractor ?? false;
+    this.hasGatling = this.hasGatling ?? false;
+    this.hasCucumber = this.hasCucumber ?? false;
   }
 }
