@@ -23,7 +23,6 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { GitConfigurationService } from 'app/core/git/git-configuration.service';
 import { GitConfigurationModel } from 'app/core/git/git-configuration.model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-home',
