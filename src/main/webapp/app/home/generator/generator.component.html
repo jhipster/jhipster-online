@@ -82,7 +82,7 @@
                             class="form-control" #authenticationType="ngModel" (change)="changeAuthenticationType()">
                         <option value="jwt">JWT authentication (stateless, with a token)</option>
                         <option value="oauth2">OAuth 2.0 / OIDC Authentication (stateful, works with Keycloak and Okta)</option>
-                        <option value="session" [hidden]="model.serviceDiscoveryType === 'eureka' || model.applicationType !== 'monolith'">HTTP Session
+                        <option value="session" *ngIf="model.serviceDiscoveryType !== 'eureka' && model.applicationType === 'monolith'">HTTP Session
                             Authentication (stateful, default Spring Security mechanism)
                         </option>
                     </select>
@@ -93,7 +93,7 @@
                             #databaseType="ngModel" (change)="changeDatabaseType()">
                         <option value="sql">SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)</option>
                         <option value="mongodb">MongoDB</option>
-                        <option value="cassandra" [hidden]="model.authenticationType === 'oauth2'">Cassandra</option>
+                        <option value="cassandra" *ngIf="model.authenticationType !== 'oauth2'">Cassandra</option>
                         <option value="couchbase">Couchbase</option>
                         <option value="neo4j">Neo4j</option>
                         <option value="no">No database</option>
@@ -103,38 +103,38 @@
                     <label for="prodDatabaseType">Which <i>production</i> database would you like to use?</label>
                     <select id="prodDatabaseType" [(ngModel)]="model.prodDatabaseType" name="prodDatabaseType"
                             class="form-control" #prodDatabaseType="ngModel" (change)="changeProdDatabaseType()">
-                        <option value="postgresql" [hidden]="isProdDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
-                        <option value="mysql" [hidden]="isProdDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
-                        <option value="mariadb" [hidden]="isProdDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
-                        <option value="oracle" [hidden]="isProdDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
+                        <option value="postgresql" *ngIf="!isProdDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
+                        <option value="mysql" *ngIf="!isProdDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
+                        <option value="mariadb" *ngIf="!isProdDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
+                        <option value="oracle" *ngIf="!isProdDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
                             driver)
                         </option>
-                        <option value="mssql" [hidden]="isProdDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
-                        <option value="mongodb" [hidden]="isProdDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
-                        <option value="cassandra" [hidden]="isProdDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
-                        <option value="couchbase" [hidden]="isProdDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
-                        <option value="neo4j" [hidden]="isProdDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" [hidden]="isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
+                        <option value="mssql" *ngIf="!isProdDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
+                        <option value="mongodb" *ngIf="!isProdDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
+                        <option value="cassandra" *ngIf="!isProdDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
+                        <option value="couchbase" *ngIf="!isProdDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
+                        <option value="neo4j" *ngIf="!isProdDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
+                        <option value="no" *ngIf="!isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideDevDatabaseType">
                     <label for="devDatabaseType">Which <i>development</i> database would you like to use?</label>
                     <select id="devDatabaseType" [(ngModel)]="model.devDatabaseType" name="devDatabaseType"
                             class="form-control" #devDatabaseType="ngModel">
-                        <option value="h2Disk" [hidden]="isDevDatabaseOptionHidden('sql', 'h2Disk')">H2 with disk-based persistence</option>
-                        <option value="h2Memory" [hidden]="isDevDatabaseOptionHidden('sql', 'h2Memory')">H2 with in-memory persistence</option>
-                        <option value="mysql" [hidden]="isDevDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
-                        <option value="mariadb" [hidden]="isDevDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
-                        <option value="postgresql" [hidden]="isDevDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
-                        <option value="oracle" [hidden]="isDevDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
+                        <option value="h2Disk" *ngIf="!isDevDatabaseOptionHidden('sql', 'h2Disk')">H2 with disk-based persistence</option>
+                        <option value="h2Memory" *ngIf="!isDevDatabaseOptionHidden('sql', 'h2Memory')">H2 with in-memory persistence</option>
+                        <option value="mysql" *ngIf="!isDevDatabaseOptionHidden('sql', 'mysql')">MySQL</option>
+                        <option value="mariadb" *ngIf="!isDevDatabaseOptionHidden('sql', 'mariadb')">MariaDB</option>
+                        <option value="postgresql" *ngIf="!isDevDatabaseOptionHidden('sql', 'postgresql')">PostgreSQL</option>
+                        <option value="oracle" *ngIf="!isDevDatabaseOptionHidden('sql', 'oracle')">Oracle (Please follow our documentation to use the Oracle proprietary
                             driver)
                         </option>
-                        <option value="mssql" [hidden]="isDevDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
-                        <option value="mongodb" [hidden]="isDevDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
-                        <option value="cassandra" [hidden]="isDevDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
-                        <option value="couchbase" [hidden]="isDevDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
-                        <option value="neo4j" [hidden]="isDevDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" [hidden]="isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
+                        <option value="mssql" *ngIf="!isDevDatabaseOptionHidden('sql', 'mssql')">Microsoft SQL Server</option>
+                        <option value="mongodb" *ngIf="!isDevDatabaseOptionHidden('mongodb', 'mongodb')">MongoDB</option>
+                        <option value="cassandra" *ngIf="!isDevDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
+                        <option value="couchbase" *ngIf="!isDevDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
+                        <option value="neo4j" *ngIf="!isDevDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
+                        <option value="no" *ngIf="!isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideCacheProvider">
@@ -286,8 +286,8 @@
                                 multiple>
                             <option value="gatling">Gatling</option>
                             <option value="cucumber">Cucumber</option>
-                            <option value="cypress" [hidden]="model.applicationType === 'microservice'">Cypress</option>
-                            <option value="protractor" [hidden]="model.applicationType === 'microservice'">Protractor (deprecated)</option>
+                            <option value="cypress" *ngIf="model.applicationType !== 'microservice'">Cypress</option>
+                            <option value="protractor" *ngIf="model.applicationType !== 'microservice'">Protractor (deprecated)</option>
                         </select>
                     </div>
                 </div>
