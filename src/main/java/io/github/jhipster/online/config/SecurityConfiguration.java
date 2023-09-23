@@ -87,7 +87,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
-            .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
+            .permissionsPolicy(permissions -> permissions
+                .policy("geolocation=(none), midi=(none), sync-xhr=(none), microphone=(none), camera=(none), magnetometer=(none), gyroscope=(none), speaker=(none), fullscreen=(none), speaker=(none), payment=(none)")
+            )
         .and()
             .frameOptions()
             .deny()
