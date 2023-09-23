@@ -42,6 +42,8 @@ public class JHipsterService {
 
     private static final String SKIP_INSTALL = "--skip-install";
 
+    private static final String FORCE = "--force";
+
     private final LogsService logsService;
 
     private final Executor taskExecutor;
@@ -79,7 +81,7 @@ public class JHipsterService {
                 SKIP_INSTALL,
                 "--skip-cache",
                 "--skip-git",
-                "--force"
+                FORCE
             );
     }
 
@@ -94,7 +96,7 @@ public class JHipsterService {
                 FORCE_INSIGHT,
                 SKIP_CHECKS,
                 SKIP_INSTALL,
-                "--force"
+                FORCE
             );
     }
 
@@ -113,7 +115,7 @@ public class JHipsterService {
                 FORCE_INSIGHT,
                 SKIP_CHECKS,
                 SKIP_INSTALL,
-                "--force"
+                FORCE
             );
     }
 
