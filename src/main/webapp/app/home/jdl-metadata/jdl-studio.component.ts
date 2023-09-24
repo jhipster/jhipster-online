@@ -67,9 +67,7 @@ export class DeleteJdlStudioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    unsubscribe(this.subscription);
   }
 }
 
@@ -164,12 +162,16 @@ export class ApplyJdlStudioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    unsubscribe(this.subscription);
   }
 
   isAtLeastOneGitProviderAvailableAndConfigured(): boolean {
     return (this.gitConfig.githubAvailable && this.githubConfigured) || (this.gitConfig.gitlabAvailable && this.gitlabConfigured) || false;
   }
 }
+
+const unsubscribe = (subscription: Subscription | undefined) => {
+  if (subscription) {
+    subscription.unsubscribe();
+  }
+};
