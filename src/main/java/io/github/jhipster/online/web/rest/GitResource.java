@@ -37,6 +37,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -326,7 +327,10 @@ public class GitResource {
      */
     @GetMapping("/{gitProvider}/companies/{companyName}/projects")
     @Secured(AuthoritiesConstants.USER)
-    public @ResponseBody ResponseEntity getOrganizationProjects(@PathVariable String gitProvider, @PathVariable String companyName) {
+    public @ResponseBody ResponseEntity<List<String>> getOrganizationProjects(
+        @PathVariable String gitProvider,
+        @PathVariable String companyName
+    ) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         return maybeGitProvider
             .<ResponseEntity>map(
