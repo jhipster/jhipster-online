@@ -28,7 +28,10 @@
 
             urls.sort(function (a, b) {
                 var x = a.name.toLowerCase(), y = b.name.toLowerCase();
-                return x < y ? -1 : x > y ? 1 : 0;
+                if (x === y) {
+                    return 0;
+                }
+                return x < y ? -1 : 1;
             });
 
             // Build a system

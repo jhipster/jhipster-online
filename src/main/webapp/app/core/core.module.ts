@@ -40,7 +40,7 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
 @NgModule({
   imports: [
     HttpClientModule,
-    CookieModule.forRoot(),
+    CookieModule.withOptions(),
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
     NgJhipsterModule.forRoot({
       // set below to true to make alerts look like toast
