@@ -79,7 +79,7 @@ files, using the standard `spring.datasource` keys.
 JHipster Online uses JWT to secure the application. For a production application, it is therefore **mandatory** that:
 
 - The `jhipster.security.authentication.jwt.key` is configured, and that key is stored securely (**not** commited in your application's Git repository).
-  We recommend to configure it as an environnement variable on your server, or in a specific Spring Boot `application.yml` file that is stored
+  We recommend to configure it as an environment variable on your server, or in a specific Spring Boot `application.yml` file that is stored
   in your application's folder on your production server (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
 - The application is only available through HTTPS. You can configure it using Spring Boot (please read the comments in the `application-prod.yml` file), or
   using an Apache 2 HTTP server with Let's Encrypt on front of your application (which is our configuration on the official [JHipster Online website](https://start.jhipster.tech/)).
