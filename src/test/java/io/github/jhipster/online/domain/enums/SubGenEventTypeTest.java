@@ -22,7 +22,6 @@ public class SubGenEventTypeTest {
         assertEquals("spring-controller", SubGenEventType.SPRING_CONTROLLER.getDatabaseValue());
         assertEquals("upgrade", SubGenEventType.UPGRADE.getDatabaseValue());
     }
-
     @Test
     public void testGetDeploymentTools () {
         SubGenEventType[] deploymentTools = SubGenEventType.getDeploymentTools();

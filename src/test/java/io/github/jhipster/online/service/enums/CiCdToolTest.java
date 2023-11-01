@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 public class CiCdToolTest {
-
     @Test
     public void testGetByName() {
         Optional<CiCdTool> ciCdTool = CiCdTool.getByName("TRAVIS");
