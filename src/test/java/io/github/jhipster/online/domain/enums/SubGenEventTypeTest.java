@@ -36,7 +36,7 @@ public class SubGenEventTypeTest {
                 SubGenEventType.CLOUDFOUNDRY,
                 SubGenEventType.AWS,
                 SubGenEventType.OPENSHIFT,
-                SubGenEventType.KUBERNETES,
+                SubGenEventType.KUBERNETES
             },
             deploymentTools
         );
