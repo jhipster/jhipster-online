@@ -154,7 +154,7 @@ public class GitResource {
 
             String jsonResponse = response.thenApply(HttpResponse::body).get(5, TimeUnit.SECONDS);
             GitAccessTokenResponse accessTokenResponse = objectMapper.readValue(jsonResponse, GitAccessTokenResponse.class);
-            this.userService.saveToken(accessTokenResponse.getAccess_token(), gitProviderEnum);
+            this.userService.saveToken(accessTokenResponse.getAccessToken(), gitProviderEnum);
         } catch (InterruptedException e) {
             log.warn("Interrupted!", e);
             // Restore interrupted state...
@@ -258,14 +258,14 @@ public class GitResource {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class GitAccessTokenResponse {
 
-        private String access_token;
+        private String accessToken;
 
-        public String getAccess_token() {
-            return access_token;
+        public String getAccessToken() {
+            return accessToken;
         }
 
-        public void setAccess_token(String access_token) {
-            this.access_token = access_token;
+        public void setAccessToken(String accessToken) {
+            this.accessToken = accessToken;
         }
     }
 
@@ -333,8 +333,8 @@ public class GitResource {
     ) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         return maybeGitProvider
-            .<ResponseEntity>map(
-                gitProvider1 -> new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
+            .<ResponseEntity>map(gitProvider1 ->
+                new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
             )
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
