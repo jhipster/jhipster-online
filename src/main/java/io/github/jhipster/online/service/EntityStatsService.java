@@ -56,6 +56,8 @@ public class EntityStatsService {
 
     private final EntityStatsMapper entityStatsMapper;
 
+    private final CriteriaBuilder builder;
+
     public EntityStatsService(
         EntityStatsRepository entityStatsRepository,
         EntityManager entityManager,
@@ -64,6 +66,7 @@ public class EntityStatsService {
         this.entityStatsRepository = entityStatsRepository;
         this.entityManager = entityManager;
         this.entityStatsMapper = entityStatsMapper;
+        this.builder = entityManager.getCriteriaBuilder();
     }
 
     /**
@@ -118,7 +121,6 @@ public class EntityStatsService {
     }
 
     public List<TemporalCountDTO> getCount(Instant after, TemporalValueType dbTemporalFunction) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<RawSQL> query = builder.createQuery(RawSQL.class);
         Root<EntityStats> root = query.from(EntityStats.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
@@ -132,7 +134,6 @@ public class EntityStatsService {
     }
 
     public List<TemporalDistributionDTO> getFieldCount(Instant after, EntityStatColumn field, TemporalValueType dbTemporalFunction) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
         Root<EntityStats> root = query.from(EntityStats.class);
         ParameterExpression<Instant> parameter = builder.parameter(Instant.class, QueryUtil.DATE);
