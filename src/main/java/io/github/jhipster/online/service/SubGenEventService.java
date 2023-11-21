@@ -21,24 +21,16 @@ package io.github.jhipster.online.service;
 
 import io.github.jhipster.online.domain.GeneratorIdentity;
 import io.github.jhipster.online.domain.SubGenEvent;
-import io.github.jhipster.online.domain.SubGenEvent_;
 import io.github.jhipster.online.domain.enums.SubGenEventType;
 import io.github.jhipster.online.repository.SubGenEventRepository;
-import io.github.jhipster.online.service.dto.RawSQLField;
 import io.github.jhipster.online.service.dto.SubGenEventDTO;
 import io.github.jhipster.online.service.dto.TemporalCountDTO;
 import io.github.jhipster.online.service.dto.TemporalDistributionDTO;
 import io.github.jhipster.online.service.enums.TemporalValueType;
 import io.github.jhipster.online.service.mapper.SubGenEventMapper;
-import io.github.jhipster.online.service.util.QueryUtil;
+import io.github.jhipster.online.service.util.SubGenEventStatisticsService;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -55,18 +47,18 @@ public class SubGenEventService {
 
     private final SubGenEventRepository subGenEventRepository;
 
-    private final EntityManager entityManager;
-
     private final SubGenEventMapper subGenEventMapper;
+
+    private final SubGenEventStatisticsService subGenEventStatisticsService;
 
     public SubGenEventService(
         SubGenEventRepository subGenEventRepository,
-        EntityManager entityManager,
-        SubGenEventMapper subGenEventMapper
+        SubGenEventMapper subGenEventMapper,
+        SubGenEventStatisticsService subGenEventStatisticsService
     ) {
         this.subGenEventRepository = subGenEventRepository;
-        this.entityManager = entityManager;
         this.subGenEventMapper = subGenEventMapper;
+        this.subGenEventStatisticsService = subGenEventStatisticsService;
     }
 
     /**
@@ -121,68 +113,10 @@ public class SubGenEventService {
     }
 
     public List<TemporalCountDTO> getFieldCount(Instant after, SubGenEventType field, TemporalValueType dbTemporalFunction) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<RawSQLField> query = builder.createQuery(RawSQLField.class);
-        Root<SubGenEvent> root = query.from(SubGenEvent.class);
-        ParameterExpression<Instant> dateParameter = builder.parameter(Instant.class, QueryUtil.DATE);
-        ParameterExpression<String> typeParameter = builder.parameter(String.class, QueryUtil.TYPE);
-
-        query
-            .select(
-                builder.construct(
-                    RawSQLField.class,
-                    root.get(dbTemporalFunction.getFieldName()),
-                    root.get(SubGenEvent_.type),
-                    builder.count(root)
-                )
-            )
-            .where(
-                builder.greaterThan(root.get(SubGenEvent_.date).as(Instant.class), dateParameter),
-                builder.equal(root.get(SubGenEvent_.type), typeParameter)
-            )
-            .groupBy(root.get(SubGenEvent_.type), root.get(dbTemporalFunction.getFieldName()));
-
-        return entityManager
-            .createQuery(query)
-            .setParameter(QueryUtil.DATE, after)
-            .setParameter(QueryUtil.TYPE, field.getDatabaseValue())
-            .getResultList()
-            .stream()
-            .map(
-                entry ->
-                    new TemporalCountDTO(
-                        TemporalValueType.absoluteMomentToInstant(entry.getMoment().longValue(), dbTemporalFunction),
-                        entry.getCount()
-                    )
-            )
-            .collect(Collectors.toList());
+        return subGenEventStatisticsService.getFieldCount(after, field, dbTemporalFunction);
     }
 
     public List<TemporalDistributionDTO> getDeploymentToolDistribution(Instant after, TemporalValueType dbTemporalFunction) {
-        Map<SubGenEventType, List<TemporalCountDTO>> entries = Arrays
-            .stream(SubGenEventType.getDeploymentTools())
-            .map(deploymentTool -> new AbstractMap.SimpleEntry<>(deploymentTool, getFieldCount(after, deploymentTool, dbTemporalFunction)))
-            .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-
-        List<TemporalDistributionDTO> result = new ArrayList<>();
-        for (Map.Entry<SubGenEventType, List<TemporalCountDTO>> entry : entries.entrySet()) {
-            for (TemporalCountDTO count : entry.getValue()) {
-                Optional<TemporalDistributionDTO> maybeDistribution = result
-                    .stream()
-                    .filter(td -> td.getDate().equals(count.getDate()))
-                    .findFirst();
-                TemporalDistributionDTO distributionDTO;
-                if (maybeDistribution.isPresent()) {
-                    distributionDTO = maybeDistribution.get();
-                } else {
-                    distributionDTO = new TemporalDistributionDTO(count.getDate());
-                    result.add(distributionDTO);
-                }
-
-                distributionDTO.getValues().put(entry.getKey().getDatabaseValue(), count.getCount());
-            }
-        }
-
-        return result;
+        return subGenEventStatisticsService.getDeploymentToolDistribution(after, dbTemporalFunction);
     }
 }
