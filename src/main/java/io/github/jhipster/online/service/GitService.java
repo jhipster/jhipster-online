@@ -57,17 +57,18 @@ public class GitService {
         commit(git, workingDir, "Initial application generation by JHipster");
 
         log.debug("Adding remote repository {} / {}", organization, applicationName);
-        URIish urIish = null;
-        if (gitProvider.equals(GitProvider.GITHUB)) {
-            urIish = new URIish(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git");
-        } else if (gitProvider.equals(GitProvider.GITLAB)) {
-            urIish =
-                new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
-                .setPass(user.getGitlabOAuthToken());
-        }
+
         RemoteAddCommand remoteAddCommand = git.remoteAdd();
         remoteAddCommand.setName("origin");
-        remoteAddCommand.setUri(urIish);
+
+        if (gitProvider.equals(GitProvider.GITHUB)) {
+            URIish urIish = new URIish(applicationProperties.getGithub().getHost() + "/" + organization + "/" + applicationName + ".git");
+            remoteAddCommand.setUri(urIish);
+        } else if (gitProvider.equals(GitProvider.GITLAB)) {
+            URIish urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
+                .setPass(user.getGitlabOAuthToken());
+            remoteAddCommand.setUri(urIish);
+        }
         remoteAddCommand.call();
 
         String currentBranch = git.getRepository().getFullBranch();
