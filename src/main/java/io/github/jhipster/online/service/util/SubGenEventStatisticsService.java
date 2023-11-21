@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
- package io.github.jhipster.online.service.util;
+package io.github.jhipster.online.service.util;
 
 import io.github.jhipster.online.domain.SubGenEvent;
 import io.github.jhipster.online.domain.SubGenEvent_;
@@ -73,11 +73,12 @@ public class SubGenEventStatisticsService {
             .setParameter(QueryUtil.TYPE, field.getDatabaseValue())
             .getResultList()
             .stream()
-            .map(entry ->
-                new TemporalCountDTO(
-                    TemporalValueType.absoluteMomentToInstant(entry.getMoment().longValue(), dbTemporalFunction),
-                    entry.getCount()
-                )
+            .map(
+                entry ->
+                    new TemporalCountDTO(
+                        TemporalValueType.absoluteMomentToInstant(entry.getMoment().longValue(), dbTemporalFunction),
+                        entry.getCount()
+                    )
             )
             .collect(Collectors.toList());
     }

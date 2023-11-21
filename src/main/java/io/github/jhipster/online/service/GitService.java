@@ -66,7 +66,7 @@ public class GitService {
             remoteAddCommand.setUri(urIish);
         } else if (gitProvider.equals(GitProvider.GITLAB)) {
             URIish urIish = new URIish(applicationProperties.getGitlab().getHost() + "/" + organization + "/" + applicationName + ".git")
-                .setPass(user.getGitlabOAuthToken());
+            .setPass(user.getGitlabOAuthToken());
             remoteAddCommand.setUri(urIish);
         }
         remoteAddCommand.call();

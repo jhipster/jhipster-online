@@ -48,7 +48,8 @@ public class Jdl implements Serializable {
     @JsonIgnore
     private JdlMetadata jdlMetadata;
 
-    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }

@@ -333,8 +333,8 @@ public class GitResource {
     ) {
         Optional<GitProvider> maybeGitProvider = GitProvider.getGitProviderByValue(gitProvider);
         return maybeGitProvider
-            .<ResponseEntity>map(gitProvider1 ->
-                new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
+            .<ResponseEntity>map(
+                gitProvider1 -> new ResponseEntity<>(this.userService.getProjects(companyName, gitProvider1), HttpStatus.OK)
             )
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
