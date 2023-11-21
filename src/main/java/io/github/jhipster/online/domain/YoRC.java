@@ -748,7 +748,7 @@ public class YoRC implements Serializable, CompleteDate {
 
     @Override
     public String toString() {
-        return (
+        String basicInfo =
             "YoRC{" +
             "id=" +
             getId() +
@@ -781,17 +781,12 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", userLanguage='" +
             getUserLanguage() +
-            "'" +
-            ", year=" +
-            getYear() +
-            ", month=" +
-            getMonth() +
-            ", week=" +
-            getWeek() +
-            ", day=" +
-            getDay() +
-            ", hour=" +
-            getHour() +
+            "'";
+
+        String dateTimeInfo =
+            ", year=" + getYear() + ", month=" + getMonth() + ", week=" + getWeek() + ", day=" + getDay() + ", hour=" + getHour();
+
+        String serverInfo =
             ", serverPort='" +
             getServerPort() +
             "'" +
@@ -806,7 +801,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", websocket='" +
             isWebsocket() +
-            "'" +
+            "'";
+
+        String databaseInfo =
             ", databaseType='" +
             getDatabaseType() +
             "'" +
@@ -815,7 +812,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", prodDatabaseType='" +
             getProdDatabaseType() +
-            "'" +
+            "'";
+
+        String serviceInfo =
             ", searchEngine='" +
             isSearchEngine() +
             "'" +
@@ -830,7 +829,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", enableSwaggerCodegen='" +
             isEnableSwaggerCodegen() +
-            "'" +
+            "'";
+
+        String clientInfo =
             ", clientFramework='" +
             getClientFramework() +
             "'" +
@@ -842,7 +843,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", clientPackageManager='" +
             getClientPackageManager() +
-            "'" +
+            "'";
+
+        String applicationInfo =
             ", applicationType='" +
             getApplicationType() +
             "'" +
@@ -854,7 +857,9 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", nativeLanguage='" +
             getNativeLanguage() +
-            "'" +
+            "'";
+
+        String testingInfo =
             ", hasProtractor='" +
             isHasProtractor() +
             "'" +
@@ -863,8 +868,8 @@ public class YoRC implements Serializable, CompleteDate {
             "'" +
             ", hasCucumber='" +
             isHasCucumber() +
-            "'" +
-            "}"
-        );
+            "'}";
+
+        return basicInfo + dateTimeInfo + serverInfo + databaseInfo + serviceInfo + clientInfo + applicationInfo + testingInfo;
     }
 }
