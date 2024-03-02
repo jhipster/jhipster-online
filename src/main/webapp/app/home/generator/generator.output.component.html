@@ -20,7 +20,7 @@ Sending request to the server...
         <div class="row" *ngIf="displayApplicationUrl && githubConfigured && selectedGitProvider === 'GitHub'">
             <div class="col-md-12">
                 <div class="lead">
-                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b><br/>Open your GitHub repository at <a href="{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank" rel="noopener">{{githubHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@ Sending request to the server...
             <div class="col-md-12">
                 <div class="lead">
 
-                    <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
+                    <b>Application generated!</b><br/>Open your GitLab repository at <a href="{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}" target="_blank" rel="noopener">{{gitlabHost}}/{{selectedGitCompany}}/{{repositoryName}}</a>
                 </div>
             </div>
         </div>
