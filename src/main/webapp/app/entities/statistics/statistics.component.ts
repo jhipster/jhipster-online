@@ -89,7 +89,6 @@ export class StatisticsComponent implements AfterViewInit {
     switch (this.timeScale) {
       case 'yearly':
         this.displayCharts(Frequency.MONTHLY);
-        // this.displayGenerationCount(Frequency.YEARLY, this.chartJDL);
         break;
       case 'monthly':
         this.displayCharts(Frequency.WEEKLY);
