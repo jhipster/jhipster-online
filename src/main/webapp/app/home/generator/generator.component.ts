@@ -28,7 +28,7 @@ import { GeneratorService } from './generator.service';
 import { GeneratorOutputDialogComponent } from './generator.output.component';
 import {
   AllDevDatabaseTypes,
-  AllProdDatabaseTypes,
+  AllProdDatabaseTypes, DatabaseType,
   DevDatabaseType,
   GeneratorConfigurationModel,
   ProdDatabaseType
@@ -332,6 +332,10 @@ export class GeneratorComponent implements OnInit {
 
   isProdDatabaseOptionHidden(validDatabaseType: string, databaseName: ProdDatabaseType): boolean {
     return this.model.databaseType !== validDatabaseType || Boolean(this.config?.hideProdDatabaseTypeOptions?.includes(databaseName));
+  }
+
+  isDatabaseTypeOptionHidden(databaseType: DatabaseType): boolean {
+    return Boolean(this.config?.hideDatabaseTypeOptions?.includes(databaseType));
   }
 
   isDevDatabaseOptionHidden(validDatabaseType: string, databaseName: DevDatabaseType): boolean {

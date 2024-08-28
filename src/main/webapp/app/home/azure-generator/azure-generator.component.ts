@@ -31,8 +31,10 @@ export class AzureGeneratorComponent implements OnInit {
     hideApplicationType: true,
     hideServiceDiscoveryType: true,
     hideAuthenticationType: true,
-    hideDatabaseType: true,
-    hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j', 'no'],
+    hideHibernateCache: true,
+    hideDevDatabaseType: true,
+    hideDatabaseTypeOptions: ['cassandra', 'couchbase', 'neo4j', 'no'],
+    hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'cassandra', 'couchbase', 'neo4j', 'no'],
     hideDevDatabaseTypeOptions: [
       'h2Disk',
       'h2Memory',
@@ -40,7 +42,6 @@ export class AzureGeneratorComponent implements OnInit {
       'mariadb',
       'oracle',
       'mssql',
-      'mongodb',
       'cassandra',
       'couchbase',
       'neo4j',
@@ -51,17 +52,18 @@ export class AzureGeneratorComponent implements OnInit {
     hideOtherComponents: true,
     hideClientSideOptions: true,
     hideI18nOptions: true,
-    hideTestingOptions: true
+    hideTestingOptions: true,
+    disableNoDatabaseOptions: true
   };
   azureJHipsterModel: JHipsterConfigurationModel = new JHipsterConfigurationModel();
 
   ngOnInit(): void {
-    this.azureJHipsterModel.devDatabaseType = 'postgresql';
+    this.azureJHipsterModel.databaseType = 'sql';
     this.azureJHipsterModel.prodDatabaseType = 'postgresql';
     this.azureJHipsterModel.cacheProvider = 'no';
     this.azureJHipsterModel.clientFramework = 'react';
     // Repository for this blueprint is
-    // https://github.com/Azure/generator-jhipster-azure-spring-apps
-    this.azureJHipsterModel.blueprints.push({ name: 'generator-jhipster-azure-spring-apps' });
+    // https://github.com/Azure/generator-jhipster-azure-container-apps
+    this.azureJHipsterModel.blueprints.push({ name: 'generator-jhipster-azure-container-apps' });
   }
 }
