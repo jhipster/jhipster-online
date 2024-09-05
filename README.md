@@ -191,7 +191,7 @@ docker compose -f src/main/docker/app.yml up -d
 Import from Git and Open Terminal
 ```
 
-- Update application-dev.yml file, database seccion using your <NAMESPACE> value.
+- Update application-dev.yml file, database seccion using your NAMESPACE value.
 
 ```
 #    url: jdbc:mariadb://mariadb.<NAMESPACE>.svc.cluster.local:3306/jhipsteronline
