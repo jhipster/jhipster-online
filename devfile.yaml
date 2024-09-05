@@ -52,37 +52,37 @@ components:
 commands:
   - id: build
     exec:
-      label: 'Package the application'
+      label: 'Mysql Instance'
       component: tools
-      workingDir: ${PROJECTS_ROOT}/jhipster-online
+      workingDir: ${PROJECTS_ROOT}
       commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml'
       group:
         kind: build
         isDefault: true
   - id: build
     exec:
-      label: 'Package the application'
+      label: 'Package the application with yarn'
       component: tools
-      workingDir: ${PROJECTS_ROOT}/jhipster-online
+      workingDir: ${PROJECTS_ROOT}
       commandLine: 'yarn install'
       group:
         kind: build
         isDefault: true
   - id: run-frontend
     exec:
-      label: 'run-frontend'
+      label: 'Run Frontend'
       component: tools
-      workingDir: ${PROJECT_SOURCE}/jhipster-online
+      workingDir: ${PROJECT_SOURCE}
       commandLine: 'yarn start'
       group:
         kind: build
         isDefault: true
   - id: run-backend
     exec:
-      label: 'run-backend'
+      label: 'Run Backend'
       component: tools
-      workingDir: ${PROJECT_SOURCE}/jhipster-online
-      commandLine: './mvnw'
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: 'chmod 777 .mvnw && ./mvnw'
       group:
         kind: run
         isDefault: true
