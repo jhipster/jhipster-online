@@ -205,16 +205,16 @@ Import from Git and Open Terminal
 oc apply -f src/main/kubernetes/mysql.yaml
 ```
 
-- Run the back-end:
-
-```
-./mvnw -Pdev
-```
-
 - Install and run the front-end:
 
 ```
 yarn install && yarn start
+```
+
+- Run the back-end in other terminal:
+
+```
+./mvnw -Pdev
 ```
 
 ## Deployment to Google App Engine (GAE) Flexible Environment
