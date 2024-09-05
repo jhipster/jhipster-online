@@ -44,7 +44,7 @@ commands:
     exec:
       label: "Package the application"    
       component: tools             
-      workingDir: ${PROJECTS_ROOT}/jhipster-online/app
+      workingDir: ${PROJECTS_ROOT}/jhipster-online
       commandLine: "mvn clean install -DskipTest"
       group:
         kind: build
@@ -53,7 +53,7 @@ commands:
     exec:
       label: "run-app"
       component: tools
-      workingDir: ${PROJECT_SOURCE}/jhipster-online/app
+      workingDir: ${PROJECT_SOURCE}/jhipster-online
       commandLine: "./mvnw"
       group:
         kind: run
