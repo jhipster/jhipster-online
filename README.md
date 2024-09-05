@@ -183,6 +183,40 @@ Then run:
 docker compose -f src/main/docker/app.yml up -d
 ```
 
+### Developer Sandbox using
+
+- Launch Red Hat Dev Spaces
+
+```
+Import from Git and Open Terminal
+```
+
+- Update application-dev.yml file, using your <NAMESPACE> value
+
+```
+#    url: jdbc:mariadb://mariadb.<NAMESPACE>.svc.cluster.local:3306/jhipsteronline
+#    username: jhipster
+#    password: jhipster
+```
+
+- Run the database:
+
+```
+oc apply -f src/main/kubernetes/mysql.yaml
+```
+
+- Run the back-end:
+
+```
+./mvnw -Pdev
+```
+
+- Install and run the front-end:
+
+```
+yarn install && yarn start
+```
+
 ## Deployment to Google App Engine (GAE) Flexible Environment
 
 - The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
