@@ -55,16 +55,16 @@ commands:
       label: 'Package the application with yarn and create Mysql Instance'
       component: tools
       workingDir: ${PROJECTS_ROOT}/jhipster-online
-      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 ./mvnw'
+      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 ./mvnw && echo "do not kill this task, run ./mvnw in other tasks" && yarn start '
       group:
         kind: build
         isDefault: true
   - id: run
     exec:
-      label: 'Run yarn start && ./mvnw'
+      label: 'Run ./mvnw'
       component: tools
       workingDir: ${PROJECTS_ROOT}/jhipster-online
-      commandLine: 'yarn start && ./mvnw'
+      commandLine: './mvnw'
       group:
         kind: run
         isDefault: true
