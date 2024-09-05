@@ -52,37 +52,19 @@ components:
 commands:
   - id: build
     exec:
-      label: 'Mysql Instance'
+      label: 'Package the application with yarn and create Mysql Instance'
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml'
+      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 .mvnw'
       group:
         kind: build
         isDefault: true
-  - id: build
+  - id: run
     exec:
       label: 'Package the application with yarn'
       component: tools
       workingDir: ${PROJECTS_ROOT}
-      commandLine: 'yarn install'
-      group:
-        kind: build
-        isDefault: true
-  - id: run-frontend
-    exec:
-      label: 'Run Frontend'
-      component: tools
-      workingDir: ${PROJECT_SOURCE}
-      commandLine: 'yarn start'
-      group:
-        kind: build
-        isDefault: true
-  - id: run-backend
-    exec:
-      label: 'Run Backend'
-      component: tools
-      workingDir: ${PROJECT_SOURCE}
-      commandLine: 'chmod 777 .mvnw && ./mvnw'
+      commandLine: 'yarn start && ./mvnw'
       group:
         kind: run
         isDefault: true
