@@ -1,0 +1,60 @@
+schemaVersion: 2.1.0
+metadata:
+  name: jhipster-online
+  version: 2.1.0
+components:
+  - name: tools
+    container:  
+      image: 'quay.io/maximilianopizarro/jhipster-devspace'
+      mountSources: true
+      cpuLimit: '4'
+      cpuRequest: '1'
+      memoryLimit: '8G'
+      memoryRequest: '4G'
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+        - name: config
+          path: /home/user/.config
+        - name: npm
+          path: /home/user/.npm
+      endpoints:
+        - exposure: public
+          name: jhipster-online
+          protocol: https
+          targetPort: 8080          
+      env:
+        - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
+          name: JAVA_OPTS
+        - value: $(JAVA_OPTS)
+          name: MAVEN_OPTS
+        - value: '/home/tooling/.sdkman/candidates/java/11.0.15-tem'
+          name: JAVA_HOME          
+  - name: m2
+    volume:
+      size: 512Mi          
+  - name: config
+    volume:
+      size: 512Mi
+  - name: npm
+    volume:
+      size: 512Mi            
+commands:
+  - id: build
+    exec:
+      label: "Package the application"    
+      component: tools             
+      workingDir: ${PROJECTS_ROOT}/jhipster-online/app
+      commandLine: "mvn clean install -DskipTest"
+      group:
+        kind: build
+        isDefault: true
+  - id: run-app
+    exec:
+      label: "run-app"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/jhipster-online/app
+      commandLine: "./mvnw"
+      group:
+        kind: run
+        isDefault: true    
