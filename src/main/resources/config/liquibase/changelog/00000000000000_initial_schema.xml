@@ -5,16 +5,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <property name="autoIncrement" value="true"/>
+   <changeSet id="00000000000000" author="jhipster">
 
-        <property name="autoIncrement" value="true"/>
+        <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
 
+    </changeSet>
+
+    
     <!--
         JHipster core tables.
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
     <changeSet id="00000000000001" author="jhipster">
         <createTable tableName="jhi_user">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(50)">
@@ -41,7 +46,7 @@
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+            <column name="created_date" type="timestamp" >
                 <constraints nullable="false"/>
             </column>
             <column name="reset_date" type="timestamp">
@@ -108,7 +113,7 @@
                   separator=";"
                   tableName="jhi_user_authority"/>
         <createTable tableName="jhi_persistent_audit_event">
-            <column name="event_id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="event_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="principal" type="varchar(50)">
@@ -119,7 +124,7 @@
         </createTable>
 
         <createTable tableName="jhi_persistent_audit_evt_data">
-            <column name="event_id" type="bigint">
+            <column name="event_id" type="bigint" >
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(150)">

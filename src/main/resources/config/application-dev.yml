@@ -31,12 +31,12 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password:
-    #   url: jdbc:mariadb://mariadb.<NAMESPACE>.svc.cluster.local:3306/jhipsteronline
-    #   username: jhipster
-    #   password: jhipster
+    #url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    #username: root
+    #password:
+    url: jdbc:mariadb://mariadb.maximilianopizarro5-dev.svc.cluster.local:3306/jhipsteronline
+    username: jhipster
+    password: jhipster
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -82,17 +82,19 @@ jhipster:
       max-entries: 100 # Number of objects in each cache entry
   # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
   cors:
-    allowed-origins: '*'
+    allowed-origins: 'http://localhost:8080,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:9060,https://localhost:9060'
+    # Enable CORS when running in Dev Spaces
+    allowed-origin-patterns: 'https://*.apps.sandbox-m2.ll9k.p1.openshiftapps.com'
     allowed-methods: '*'
     allowed-headers: '*'
-    exposed-headers: 'Authorization,Link,X-Total-Count'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
     allow-credentials: true
     max-age: 1800
   security:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        base64-secret: ZjA0MzBhNGRmZWY4NGJiMTdiMzY2YzFiNzQwOWY4MjZmMzZhM2I5NDYyODgzMGI1MzA0M2JkMDY1NDgzNmViOGVjZDQzYTRjMWY3NmEyOTc1ZDQxOTAwYzAwZDMxNTQ3NmI1ZTMwNDEyYTM5YjU0ZGYyZWNlN2VkODg1ODlmOWE=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
@@ -119,6 +121,15 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+application:
+  tmp-folder: /tmp
+  jhipster-cmd:
+    cmd: jhipster
+    timeout: 120
+  github:
+    host: https://github.com
+    client-id: Ov23liMrrNkpqCrsYH83
+    client-secret: df42d268e1a835c5a18b8e48ec2562bcf0d99caf
 #application:
 #    tmp-folder: /tmp
 #    jhipster-cmd:
