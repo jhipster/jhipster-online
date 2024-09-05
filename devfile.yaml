@@ -55,7 +55,7 @@ commands:
       label: 'Package the application with yarn and create Mysql Instance'
       component: tools
       workingDir: ${PROJECTS_ROOT}/jhipster-online
-      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 .mvnw'
+      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 ./mvnw'
       group:
         kind: build
         isDefault: true
