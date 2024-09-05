@@ -2,9 +2,15 @@ schemaVersion: 2.1.0
 metadata:
   name: jhipster-online
   version: 2.1.0
+  description: Stack with the JHipster Online on DevSpaces
+  displayName: JHipster Online
+  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/java-maven.jpg
+  versions:
+    - version: v2.33.0
+      default: true
 components:
   - name: tools
-    container:  
+    container:
       image: 'quay.io/maximilianopizarro/jhipster-devspace'
       mountSources: true
       cpuLimit: '4'
@@ -20,41 +26,63 @@ components:
           path: /home/user/.npm
       endpoints:
         - exposure: public
-          name: jhipster-online
+          name: backend
           protocol: https
-          targetPort: 8080          
+          targetPort: 8080
+        - exposure: public
+          name: frontend
+          protocol: https
+          targetPort: 9000
       env:
         - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
           name: JAVA_OPTS
         - value: $(JAVA_OPTS)
           name: MAVEN_OPTS
         - value: '/home/tooling/.sdkman/candidates/java/11.0.15-tem'
-          name: JAVA_HOME          
+          name: JAVA_HOME
   - name: m2
     volume:
-      size: 512Mi          
+      size: 512Mi
   - name: config
     volume:
       size: 512Mi
   - name: npm
     volume:
-      size: 512Mi            
+      size: 512Mi
 commands:
   - id: build
     exec:
-      label: "Package the application"    
-      component: tools             
+      label: 'Package the application'
+      component: tools
       workingDir: ${PROJECTS_ROOT}/jhipster-online
-      commandLine: "mvn clean install -DskipTest"
+      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml'
       group:
         kind: build
         isDefault: true
-  - id: run-app
+  - id: build
     exec:
-      label: "run-app"
+      label: 'Package the application'
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/jhipster-online
+      commandLine: 'yarn install'
+      group:
+        kind: build
+        isDefault: true
+  - id: run-frontend
+    exec:
+      label: 'run-frontend'
       component: tools
       workingDir: ${PROJECT_SOURCE}/jhipster-online
-      commandLine: "./mvnw"
+      commandLine: 'yarn start'
+      group:
+        kind: build
+        isDefault: true
+  - id: run-backend
+    exec:
+      label: 'run-backend'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/jhipster-online
+      commandLine: './mvnw'
       group:
         kind: run
-        isDefault: true    
+        isDefault: true
