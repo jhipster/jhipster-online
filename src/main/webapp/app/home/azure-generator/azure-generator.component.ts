@@ -23,7 +23,7 @@ import { JHipsterConfigurationModel } from '../generator/jhipster.configuration.
 
 @Component({
   selector: 'jhi-azure-generator',
-  templateUrl: './azure-generator.component.html'
+  templateUrl: './azure-generator.component.html',
 })
 export class AzureGeneratorComponent implements OnInit {
   azureGeneratorConfig: GeneratorConfigurationModel = {
@@ -35,25 +35,14 @@ export class AzureGeneratorComponent implements OnInit {
     hideDevDatabaseType: true,
     hideDatabaseTypeOptions: ['cassandra', 'couchbase', 'neo4j', 'no'],
     hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'cassandra', 'couchbase', 'neo4j', 'no'],
-    hideDevDatabaseTypeOptions: [
-      'h2Disk',
-      'h2Memory',
-      'mysql',
-      'mariadb',
-      'oracle',
-      'mssql',
-      'cassandra',
-      'couchbase',
-      'neo4j',
-      'no'
-    ],
+    hideDevDatabaseTypeOptions: ['h2Disk', 'h2Memory', 'mysql', 'mariadb', 'oracle', 'mssql', 'cassandra', 'couchbase', 'neo4j', 'no'],
     hideCacheProvider: true,
     hideBuildTool: true,
     hideOtherComponents: true,
     hideClientSideOptions: true,
     hideI18nOptions: true,
     hideTestingOptions: true,
-    disableNoDatabaseOptions: true
+    disableNoDatabaseOptions: true,
   };
   azureJHipsterModel: JHipsterConfigurationModel = new JHipsterConfigurationModel();
 

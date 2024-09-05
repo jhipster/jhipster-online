@@ -27,7 +27,7 @@ export const AllProdDatabaseTypes: ProdDatabaseType[] = [
   'cassandra',
   'couchbase',
   'neo4j',
-  'no'
+  'no',
 ];
 export const AllDevDatabaseTypes: DevDatabaseType[] = ['h2Disk', 'h2Memory', ...AllProdDatabaseTypes];
 
@@ -44,13 +44,7 @@ export type ProdDatabaseType =
   | 'no';
 export type DevDatabaseType = 'h2Disk' | 'h2Memory' | ProdDatabaseType;
 
-export type DatabaseType =
-  | 'sql'
-  | 'mongodb'
-  | 'cassandra'
-  | 'couchbase'
-  | 'neo4j'
-  | 'no';
+export type DatabaseType = 'sql' | 'mongodb' | 'cassandra' | 'couchbase' | 'neo4j' | 'no';
 
 export interface GeneratorConfigurationModel {
   hideRepositoryName?: boolean;
@@ -69,6 +63,6 @@ export interface GeneratorConfigurationModel {
   hideClientSideOptions?: boolean;
   hideI18nOptions?: boolean;
   hideTestingOptions?: boolean;
-  hideHibernateCache?: boolean
-  disableNoDatabaseOptions?: boolean
+  hideHibernateCache?: boolean;
+  disableNoDatabaseOptions?: boolean;
 }
