@@ -217,6 +217,13 @@ yarn install && yarn start
 ./mvnw -Pdev
 ```
 
+### Tekton Pipeline
+
+```
+oc apply -f src/main/kubernetes/tkn-pipeline.yaml
+oc apply -f src/main/kubernetes/tkn-pipeline-run.yaml
+```
+
 ## Deployment to Google App Engine (GAE) Flexible Environment
 
 - The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
