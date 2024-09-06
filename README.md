@@ -224,6 +224,19 @@ oc apply -f src/main/kubernetes/tkn-pipeline.yaml
 oc apply -f src/main/kubernetes/tkn-pipeline-run.yaml
 ```
 
+Example
+
+```
+tkn pipeline start jhipster-devspace \
+    --param IMAGE_NAME='image-registry.openshift-image-registry.svc:5000/maximilianopizarro5-dev/jhipster'\
+    --param PATH_CONTEXT=/app \
+    --param APP_JAR_VERSION=delivery-0.0.1-SNAPSHOT.jar \
+    --param APP_NAME=jhipster \
+    --param GIT_REPO=https://github.com/maximilianoPizarro/jhipster-devspace \
+    --param GIT_BRANCH=master \
+    --workspace name=workspace,claimName=workspace
+```
+
 ## Deployment to Google App Engine (GAE) Flexible Environment
 
 - The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
