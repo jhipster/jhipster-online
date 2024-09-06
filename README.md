@@ -221,7 +221,12 @@ yarn install && yarn start
 
 ```
 oc apply -f src/main/kubernetes/tkn-pipeline.yaml
-oc apply -f src/main/kubernetes/tkn-pipeline-run.yaml
+```
+
+Example
+
+```
+oc apply -f src/main/kubernetes/tkn-pipeline-run-jhipster.yaml
 ```
 
 Example
