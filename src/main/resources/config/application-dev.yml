@@ -31,12 +31,12 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    #url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    #username: root
-    #password:
-    url: jdbc:mariadb://mariadb.maximilianopizarro5-dev.svc.cluster.local:3306/jhipsteronline
-    username: jhipster
-    password: jhipster
+    url: jdbc:mysql://localhost:3306/jhipster-online?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password:
+    #url: jdbc:mariadb://mariadb.<NAMESPACE>.svc.cluster.local:3306/jhipsteronline
+    #username: jhipster
+    #password: jhipster
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -121,15 +121,6 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
-  tmp-folder: /tmp
-  jhipster-cmd:
-    cmd: jhipster
-    timeout: 120
-  github:
-    host: https://github.com
-    client-id: Ov23liMrrNkpqCrsYH83
-    client-secret: df42d268e1a835c5a18b8e48ec2562bcf0d99caf
 #application:
 #    tmp-folder: /tmp
 #    jhipster-cmd:
