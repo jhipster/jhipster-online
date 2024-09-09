@@ -26,12 +26,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import org.zeroturnaround.zip.ZipUtil;
@@ -56,6 +59,12 @@ public class GeneratorService {
     private final JHipsterService jHipsterService;
 
     private final LogsService logsService;
+
+    @Value("${openshift.devspace.url-devfile}")
+    private String devSpaces;
+
+    @Value("${openshift.tekton.url-pipeline}")
+    private String pipelineJhipster;
 
     public GeneratorService(
         ApplicationProperties applicationProperties,
@@ -102,6 +111,10 @@ public class GeneratorService {
         FileUtils.forceMkdir(workingDir);
         this.generateYoRc(applicationId, workingDir, applicationConfiguration);
         log.info(".yo-rc.json created");
+        this.generateDevSpaces(applicationId, workingDir);
+        log.info("devfile.yaml created");
+        this.generateTektonPipeline(applicationId, workingDir);
+        log.info("pipeline.yaml created");
         this.jHipsterService.generateApplication(applicationId, workingDir);
         log.info("Application generated");
         return workingDir;
@@ -112,6 +125,20 @@ public class GeneratorService {
         // removed the catch/log/throw since the exception is handled in calling code.
         PrintWriter writer = new PrintWriter(workingDir + "/.yo-rc.json", StandardCharsets.UTF_8);
         writer.print(applicationConfiguration);
+        writer.close();
+    }
+
+    private void generateDevSpaces(String applicationId, File workingDir) throws IOException {
+        this.logsService.addLog(applicationId, "Creating `devfile.yaml` file");
+        PrintWriter writer = new PrintWriter(workingDir + "/devfile.yaml", StandardCharsets.UTF_8);
+        writer.print(IOUtils.toString(new URL(devSpaces).openStream(), StandardCharsets.UTF_8));
+        writer.close();
+    }
+
+    private void generateTektonPipeline(String applicationId, File workingDir) throws IOException {
+        this.logsService.addLog(applicationId, "Creating `pipeline.yaml` file");
+        PrintWriter writer = new PrintWriter(workingDir + "/pipeline.yaml", StandardCharsets.UTF_8);
+        writer.print(IOUtils.toString(new URL(pipelineJhipster).openStream(), StandardCharsets.UTF_8));
         writer.close();
     }
 

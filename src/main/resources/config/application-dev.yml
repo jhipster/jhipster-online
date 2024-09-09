@@ -112,6 +112,11 @@ jhipster:
   audit-events:
     retention-period: 30 # Number of days before audit events are deleted.
 
+openshift:
+  devspace:
+    url-devfile: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-devspace/master/jhipster-devspaces.yaml
+  tekton:
+    url-pipeline: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-devspace/master/jhipster-pipeline.yaml
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
