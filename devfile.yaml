@@ -2,11 +2,17 @@ schemaVersion: 2.1.0
 metadata:
   name: jhipster-online
   version: 2.1.0
-  description: Stack with the JHipster Online on DevSpaces
+  description: Stack with the JHipster Online on DevSpaces Red Hat OpenShift
   displayName: JHipster Online
   icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/java-maven.jpg
+  tags:
+    - Java
+    - JHipster
+    - Angular
+    - OpenShift
+    - DevSpaces
   versions:
-    - version: v2.33.0
+    - version: 2.33.0
       default: true
 components:
   - name: tools
@@ -50,21 +56,24 @@ components:
     volume:
       size: 512Mi
 commands:
-  - id: build
+  - id: build-jh-studio
     exec:
-      label: 'Package the application with yarn and create Mysql Instance'
+      label: 'Package the application with yarn and create MariaDB Instance'
       component: tools
-      workingDir: ${PROJECTS_ROOT}/jhipster-online
+      workingDir: ${PROJECT_SOURCE}
       commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 ./mvnw && echo "do not kill this task, run ./mvnw in other tasks" && yarn start '
       group:
         kind: build
         isDefault: true
-  - id: run
+  - id: run-jh-studio
     exec:
       label: 'Run ./mvnw'
       component: tools
-      workingDir: ${PROJECTS_ROOT}/jhipster-online
+      workingDir: ${PROJECT_SOURCE}
       commandLine: './mvnw'
       group:
         kind: run
         isDefault: true
+events:
+  postStart:
+    - init-compile
