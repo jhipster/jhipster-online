@@ -1,27 +1,14 @@
-schemaVersion: 2.2.2
+schemaVersion: 2.2.0
 metadata:
-  name: jhipster-online
-  version: 2.33.0
-  description: Stack with the JHipster Online on DevSpaces Red Hat OpenShift
-  displayName: JHipster Online
+  name: jhipster
+  version: 1.0.0
+  description: Stack with the JHipster Online on DevSpaces
+  displayName: JHipster DevSpaces
   icon: https://raw.githubusercontent.com/maximilianoPizarro/ecommerce-oracle/main/jhipster-icon.png
   website: https://start.jhipster.tech
-  tags:
-    - Java
-    - JHipster
-    - Angular
-    - OpenShift
-    - DevSpaces
   versions:
-    - version: 2.33.0
+    - version: 1.0.0
       default: true
-projects:
-  - name: jhipster-online
-    git:
-      remotes:
-        origin: 'https://github.com/maximilianoPizarro/jhipster-online'
-      checkoutFrom:
-        revision: openshift
 components:
   - name: tools
     container:
@@ -43,21 +30,10 @@ components:
           name: backend
           protocol: https
           targetPort: 8080
-        - exposure: none
-          name: debug
-          targetPort: 4200
-        - exposure: none
+        - exposure: public
           name: frontend
           protocol: https
           targetPort: 9000
-        - exposure: none
-          name: debug-frontend
-          protocol: https
-          targetPort: 9001
-        - exposure: browser-sync
-          name: frontend
-          protocol: https
-          targetPort: 3001                    
       env:
         - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
           name: JAVA_OPTS
@@ -75,13 +51,16 @@ components:
     volume:
       size: 512Mi
 commands:
-  - id: build-jh-studio
+  - id: build
     exec:
-      label: 'Package the application with yarn and create MariaDB Instance'
+      label: 'Create Tekton Pipeline and install npm dependencies'
       component: tools
       workingDir: ${PROJECT_SOURCE}
-      commandLine: 'oc apply -f src/main/kubernetes/mysql.yaml && yarn install && chmod 777 ./mvnw && echo "do not kill this task, run ./mvnw in other tasks" && yarn start'
-  - id: run-jh-studio
+      commandLine: 'oc apply -f pipeline.yaml && npm install && chmod 777 ./mvnw'
+      group:
+        kind: build
+        isDefault: true
+  - id: run
     exec:
       label: 'Run ./mvnw'
       component: tools
@@ -90,6 +69,15 @@ commands:
       group:
         kind: run
         isDefault: true
+  - id: build-prod
+    exec:
+      label: 'Run ./mvnw -Pprod clean verify'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: './mvnw -Pprod clean verify -DskipTests'
+      group:
+        kind: run
+        isDefault: true        
 events:
   postStart:
-    - build-jh-studio
+    - build
