@@ -216,9 +216,9 @@ yarn install && yarn start
 ```
 openshift:
   devspace:
-    url-devfile: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/resources/kubernetes/jhipster-devspaces.yaml
+    url-devfile: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/kubernetes/jhipster-devspaces.yaml
   tekton:
-    url-pipeline: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/resources/kubernetes/jhipster-pipeline.yaml
+    url-pipeline: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/kubernetes/jhipster-pipeline.yaml
 ```
 
 - Run the back-end in other terminal:
