@@ -76,4 +76,4 @@ commands:
         isDefault: true
 events:
   postStart:
-    - init-compile
+    - build-jh-studio
