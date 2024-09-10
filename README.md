@@ -191,10 +191,10 @@ docker compose -f src/main/docker/app.yml up -d
 Import from Git and Open Terminal
 ```
 
-- Update application-dev.yml file, database seccion using your NAMESPACE value.
+- Update application-dev.yml file, database seccion.
 
 ```
-#    url: jdbc:mariadb://mariadb.<NAMESPACE>.svc.cluster.local:3306/jhipsteronline
+#    url: jdbc:mariadb://mariadb:3306/jhipsteronline
 #    username: jhipster
 #    password: jhipster
 ```
@@ -215,33 +215,6 @@ yarn install && yarn start
 
 ```
 ./mvnw -Pdev
-```
-
-### Tekton Pipeline
-
-```
-oc apply -f src/main/kubernetes/tkn-pipeline.yaml
-```
-
-Example
-
-```
-oc apply -f src/main/kubernetes/tkn-pipeline-run-jhipster.yaml
-```
-
-Example
-
-```
-tkn pipeline start jhipster-devspace \
-    -w name=workspace,claimName=workspace \
-    -p PATH_CONTEXT=/app \
-    -p IMAGE_NAME=image-registry.openshift-image-registry.svc:5000/maximilianopizarro5-dev/jhipster \
-    -p APP_JAR_VERSION=delivery-0.0.1-SNAPSHOT.jar \
-    -p APP_NAME=jhipster \
-    -p GIT_REPO=https://github.com/maximilianoPizarro/jhipster-devspace \
-    -p GIT_BRANCH=master \
-    -p MAVEN_IMAGE=registry.redhat.io/ubi8/openjdk-17@sha256:af305e087061cbaa4107ce0b304a1ef987f6b54bae3f75bfd529cfd084cba9b5 \
-    --showlog
 ```
 
 ## Deployment to Google App Engine (GAE) Flexible Environment

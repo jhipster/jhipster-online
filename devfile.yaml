@@ -4,7 +4,7 @@ metadata:
   version: 2.1.0
   description: Stack with the JHipster Online on DevSpaces Red Hat OpenShift
   displayName: JHipster Online
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/java-maven.jpg
+  icon: https://raw.githubusercontent.com/maximilianoPizarro/ecommerce-oracle/main/jhipster-icon.png
   tags:
     - Java
     - JHipster
@@ -14,6 +14,13 @@ metadata:
   versions:
     - version: 2.33.0
       default: true
+projects:
+  - name: jhipster-online
+    git:
+      remotes:
+        origin: 'https://github.com/maximilianoPizarro/jhipster-online'
+      checkoutFrom:
+        revision: openshift
 components:
   - name: tools
     container:
@@ -35,7 +42,10 @@ components:
           name: backend
           protocol: https
           targetPort: 8080
-        - exposure: public
+        - exposure: none
+          name: debug
+          targetPort: 4200
+        - exposure: none
           name: frontend
           protocol: https
           targetPort: 9000

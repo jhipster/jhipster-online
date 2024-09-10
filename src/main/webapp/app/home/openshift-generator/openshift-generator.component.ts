@@ -32,10 +32,10 @@ export class OpenshiftGeneratorComponent implements OnInit {
     hideServiceDiscoveryType: true,
     hideAuthenticationType: true,
     hideDatabaseType: true,
-    hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j', 'no'],
+    hideProdDatabaseTypeOptions: ['mysql', 'postgresql', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j', 'no'],
     hideDevDatabaseTypeOptions: [
       'h2Disk',
-      'h2Memory',
+      'postgresql',
       'mysql',
       'mariadb',
       'oracle',
