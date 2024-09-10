@@ -1,7 +1,7 @@
-schemaVersion: 2.1.0
+schemaVersion: 2.2.2
 metadata:
   name: jhipster-online
-  version: 2.1.0
+  version: 2.33.0
   description: Stack with the JHipster Online on DevSpaces Red Hat OpenShift
   displayName: JHipster Online
   icon: https://raw.githubusercontent.com/maximilianoPizarro/ecommerce-oracle/main/jhipster-icon.png
