@@ -54,8 +54,8 @@ components:
           name: debug-frontend
           protocol: https
           targetPort: 9001
-        - exposure: browser-sync
-          name: frontend
+        - exposure: none
+          name: browser-sync
           protocol: https
           targetPort: 3001                    
       env:
