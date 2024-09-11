@@ -66,13 +66,13 @@ spec:
         registry.redhat.io/ubi8/openjdk-17@sha256:af305e087061cbaa4107ce0b304a1ef987f6b54bae3f75bfd529cfd084cba9b5
       name: MAVEN_IMAGE
       type: string
-    - default: appdemo-0.0.1-SNAPSHOT.jar
+    - default: jhipster-vue-js-application-0.0.1-SNAPSHOT.jar
       name: APP_JAR_VERSION
       type: string
     - default: jhipster
       name: APP_NAME
       type: string
-    - default: 'https://github.com/maximilianoPizarro/app-demo-jhipster-react'
+    - default: 'https://github.com/maximilianoPizarro/jhipster-vuejs-application'
       name: GIT_REPO
       type: string
     - default: main
