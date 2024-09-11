@@ -43,21 +43,21 @@ components:
           name: backend
           protocol: https
           targetPort: 8080
-        - exposure: none
+        - exposure: public
           name: debug
           targetPort: 4200
-        - exposure: none
+        - exposure: public
           name: frontend
           protocol: https
           targetPort: 9000
-        - exposure: none
+        - exposure: public
           name: debug-frontend
           protocol: https
           targetPort: 9001
-        - exposure: none
+        - exposure: public
           name: browser-sync
           protocol: https
-          targetPort: 3001                    
+          targetPort: 3001
       env:
         - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
           name: JAVA_OPTS

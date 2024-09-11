@@ -28,9 +28,9 @@ import { JHipsterConfigurationModel } from '../generator/jhipster.configuration.
 export class OpenshiftGeneratorComponent implements OnInit {
   openshiftGeneratorConfig: GeneratorConfigurationModel = {
     hideRepositoryName: false,
-    hideApplicationType: true,
+    hideApplicationType: false,
     hideServiceDiscoveryType: true,
-    hideAuthenticationType: true,
+    hideAuthenticationType: false,
     hideDatabaseType: true,
     hideProdDatabaseTypeOptions: ['mysql', 'postgresql', 'oracle', 'mssql', 'mongodb', 'cassandra', 'couchbase', 'neo4j', 'no'],
     hideDevDatabaseTypeOptions: [
@@ -47,9 +47,9 @@ export class OpenshiftGeneratorComponent implements OnInit {
       'no'
     ],
     hideCacheProvider: true,
-    hideBuildTool: true,
-    hideOtherComponents: true,
-    hideClientSideOptions: true,
+    hideBuildTool: false,
+    hideOtherComponents: false,
+    hideClientSideOptions: false,
     hideI18nOptions: true,
     hideTestingOptions: true
   };
@@ -59,6 +59,7 @@ export class OpenshiftGeneratorComponent implements OnInit {
     this.openshiftJHipsterModel.devDatabaseType = 'h2Memory';
     this.openshiftJHipsterModel.prodDatabaseType = 'mariadb';
     this.openshiftJHipsterModel.cacheProvider = 'no';
-    this.openshiftJHipsterModel.clientFramework = 'angular';
+    this.openshiftJHipsterModel.clientFramework = 'vue';
+    this.openshiftJHipsterModel.withAdminUi = true;
   }
 }
