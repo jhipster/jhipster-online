@@ -27,7 +27,7 @@ export const AllProdDatabaseTypes: ProdDatabaseType[] = [
   'cassandra',
   'couchbase',
   'neo4j',
-  'no',
+  'no'
 ];
 export const AllDevDatabaseTypes: DevDatabaseType[] = ['h2Disk', 'h2Memory', ...AllProdDatabaseTypes];
 

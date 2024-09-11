@@ -23,7 +23,7 @@ import { JHipsterConfigurationModel } from '../generator/jhipster.configuration.
 
 @Component({
   selector: 'jhi-azure-generator',
-  templateUrl: './azure-generator.component.html',
+  templateUrl: './azure-generator.component.html'
 })
 export class AzureGeneratorComponent implements OnInit {
   azureGeneratorConfig: GeneratorConfigurationModel = {
@@ -42,7 +42,7 @@ export class AzureGeneratorComponent implements OnInit {
     hideClientSideOptions: true,
     hideI18nOptions: true,
     hideTestingOptions: true,
-    disableNoDatabaseOptions: true,
+    disableNoDatabaseOptions: true
   };
   azureJHipsterModel: JHipsterConfigurationModel = new JHipsterConfigurationModel();
 

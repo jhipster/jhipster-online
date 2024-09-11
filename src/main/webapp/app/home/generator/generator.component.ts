@@ -32,12 +32,12 @@ import {
   DatabaseType,
   DevDatabaseType,
   GeneratorConfigurationModel,
-  ProdDatabaseType,
+  ProdDatabaseType
 } from './generator.configuration.model';
 
 @Component({
   selector: 'jhi-generator',
-  templateUrl: './generator.component.html',
+  templateUrl: './generator.component.html'
 })
 export class GeneratorComponent implements OnInit {
   @Input() config: GeneratorConfigurationModel = {};
@@ -65,7 +65,7 @@ export class GeneratorComponent implements OnInit {
     private modalService: NgbModal,
     private generatorService: GeneratorService,
     private gitConfigurationService: GitConfigurationService,
-    private accountService: AccountService,
+    private accountService: AccountService
   ) {}
 
   /**
@@ -116,7 +116,7 @@ export class GeneratorComponent implements OnInit {
       { name: 'Ukrainian', value: 'ua' },
       { name: 'Uzbek (Cyrillic)', value: 'uz-Cyrl-uz' },
       { name: 'Uzbek (Latin)', value: 'uz-Latn-uz' },
-      { name: 'Vietnamese', value: 'vi' },
+      { name: 'Vietnamese', value: 'vi' }
     ];
   }
 
@@ -177,7 +177,7 @@ export class GeneratorComponent implements OnInit {
         (error: any) => {
           console.error('Error generating the application.');
           console.error(error);
-        },
+        }
       );
     }
   }
@@ -192,7 +192,7 @@ export class GeneratorComponent implements OnInit {
         // eslint-disable-next-line no-console
         console.log('Application downloaded');
         this.submitted = false;
-      },
+      }
     );
   }
 
