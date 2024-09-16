@@ -113,11 +113,21 @@ jhipster:
   audit-events:
     retention-period: 30 # Number of days before audit events are deleted.
 
+application:
+  tmp-folder: /tmp
+  jhipster-cmd:
+    cmd: jhipster
+    timeout: 120
+  yq-cmd:
+    cmd: yq
+    timeout: 120
+
 openshift:
   devspace:
     url-devfile: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/kubernetes/jhipster-devspaces.yaml
   tekton:
     url-pipeline: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/kubernetes/jhipster-pipeline.yaml
+    url-pipeline-run: https://raw.githubusercontent.com/maximilianoPizarro/jhipster-online/main/src/main/kubernetes/jhipster-pipeline-run.yaml
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
