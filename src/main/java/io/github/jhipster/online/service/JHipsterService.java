@@ -19,6 +19,8 @@
 
 package io.github.jhipster.online.service;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.service.enums.CiCdTool;
 import java.io.BufferedReader;
@@ -52,6 +54,10 @@ public class JHipsterService {
 
     private final String npmCommand;
 
+    private final String yqCommand;
+
+    private final String githubHost;
+
     private final Integer timeout;
 
     public JHipsterService(LogsService logsService, ApplicationProperties applicationProperties, Executor taskExecutor) {
@@ -60,7 +66,9 @@ public class JHipsterService {
 
         jhipsterCommand = applicationProperties.getJhipsterCmd().getCmd();
         npmCommand = applicationProperties.getNpmCmd().getCmd();
+        yqCommand = applicationProperties.getYqCmd().getCmd();
         timeout = applicationProperties.getJhipsterCmd().getTimeout();
+        githubHost = applicationProperties.getGithub().getHost();
 
         log.info("JHipster service will be using \"{}\" to run generator-jhipster.", jhipsterCommand);
     }
@@ -68,6 +76,30 @@ public class JHipsterService {
     public void installNpmDependencies(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
         this.runProcess(generationId, workingDir, npmCommand, "install", "--ignore-scripts", "--package-lock-only");
+    }
+
+    //TODO need add permisions ubi devspaces for  /usr/local/bin/yq tasks
+    public void yqPatchPipelineRun(String generationId, File workingDir, String applicationConfiguration) throws IOException {
+        log.debug("Reading application configuration");
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
+        String gitCompany = JsonPath.read(document, "$.git-company");
+        String repositoryName = JsonPath.read(document, "$.repository-name");
+        String contextDir = "/pipeline-run.yaml";
+        String gitRepo =
+            "'(.spec.params[] | select(.name == \"GIT_REPO\").value) |=\"" +
+            githubHost +
+            "/" +
+            gitCompany +
+            "/" +
+            repositoryName +
+            ".git\"" +
+            "'";
+        String appJarVersion =
+            "'(.spec.params[] | select(.name == \"APP_JAR_VERSION\").value) |=\"" + repositoryName + "-0.0.1-SNAPSHOT.jar\"" + "'";
+        String pipelineName = "'.metadata.name=\"" + repositoryName + "\"'";
+        this.runProcess(generationId, workingDir, yqCommand, "-Y", "--indentless", "--in-place", appJarVersion, contextDir);
+        this.runProcess(generationId, workingDir, yqCommand, "-Y", "--indentless", "--in-place", gitRepo, contextDir);
+        this.runProcess(generationId, workingDir, yqCommand, "-Y", "--indentless", "--in-place", pipelineName, contextDir);
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {

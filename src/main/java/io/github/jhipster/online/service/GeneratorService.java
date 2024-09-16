@@ -19,6 +19,8 @@
 
 package io.github.jhipster.online.service;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
 import io.github.jhipster.online.config.ApplicationProperties;
 import io.github.jhipster.online.domain.User;
 import io.github.jhipster.online.domain.enums.GitProvider;
@@ -65,6 +67,9 @@ public class GeneratorService {
 
     @Value("${openshift.tekton.url-pipeline}")
     private String pipelineJhipster;
+
+    @Value("${openshift.tekton.url-pipeline-run}")
+    private String pipelineJhipsterRun;
 
     public GeneratorService(
         ApplicationProperties applicationProperties,
@@ -114,7 +119,10 @@ public class GeneratorService {
         this.generateDevSpaces(applicationId, workingDir);
         log.info("devfile.yaml created");
         this.generateTektonPipeline(applicationId, workingDir);
-        log.info("pipeline.yaml created");
+        log.info("pipeline.yaml and pipeline-run.yaml created");
+        // this.jHipsterService.yqPatchPipelineRun(applicationId, workingDir, applicationConfiguration);
+        log.info("yq script created");
+        this.generateYqScript(applicationId, workingDir, applicationConfiguration);
         this.jHipsterService.generateApplication(applicationId, workingDir);
         log.info("Application generated");
         return workingDir;
@@ -139,6 +147,40 @@ public class GeneratorService {
         this.logsService.addLog(applicationId, "Creating `pipeline.yaml` file");
         PrintWriter writer = new PrintWriter(workingDir + "/pipeline.yaml", StandardCharsets.UTF_8);
         writer.print(IOUtils.toString(new URL(pipelineJhipster).openStream(), StandardCharsets.UTF_8));
+        writer.flush();
+        writer.close();
+
+        writer = new PrintWriter(workingDir + "/pipeline-run.yaml", StandardCharsets.UTF_8);
+        writer.print(IOUtils.toString(new URL(pipelineJhipsterRun).openStream(), StandardCharsets.UTF_8));
+        writer.flush();
+        writer.close();
+    }
+
+    private void generateYqScript(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
+        this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
+        String gitCompany = JsonPath.read(document, "$.git-company");
+        String repositoryName = JsonPath.read(document, "$.repository-name");
+        String gitHost = JsonPath.read(document, "$.git-provider");
+        String gitRepo =
+            "'(.spec.params[] | select(.name == \"GIT_REPO\").value) |=\"" +
+            gitHost +
+            "/" +
+            gitCompany +
+            "/" +
+            repositoryName +
+            ".git\"" +
+            "'";
+        String appJarVersion =
+            "'(.spec.params[] | select(.name == \"APP_JAR_VERSION\").value) |=\"" + repositoryName + "-0.0.1-SNAPSHOT.jar\"" + "'";
+        String pipelineName = "'.metadata.name=\"" + repositoryName + "\"'";
+        // removed the catch/log/throw since the exception is handled in calling code.
+        PrintWriter writer = new PrintWriter(workingDir + "/yq-script", StandardCharsets.UTF_8);
+        writer.println("#!/bin/sh");
+        writer.println("yq -Yi " + pipelineName + " /pipeline-run.yaml");
+        writer.println("yq -Yi " + gitRepo + " /pipeline-run.yaml");
+        writer.println("yq -Yi " + appJarVersion + " /pipeline-run.yaml");
+        writer.flush();
         writer.close();
     }
 
