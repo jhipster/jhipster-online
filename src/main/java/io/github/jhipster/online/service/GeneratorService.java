@@ -124,6 +124,7 @@ public class GeneratorService {
         log.info("yq script created");
         this.generateYqScript(applicationId, workingDir, applicationConfiguration);
         this.jHipsterService.generateApplication(applicationId, workingDir);
+        this.openInDevSpaces(applicationId, workingDir, applicationConfiguration);
         log.info("Application generated");
         return workingDir;
     }
@@ -175,6 +176,25 @@ public class GeneratorService {
         //writer.println("yq -Yi " + pipelineName + " /pipeline-run.yaml");
         writer.println("yq -Yi " + gitRepo + " pipeline-run.yaml");
         writer.println("yq -Yi " + appJarVersion + " pipeline-run.yaml");
+        writer.flush();
+        writer.close();
+    }
+
+    private void openInDevSpaces(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
+        this.logsService.addLog(applicationId, "Creating `yq-script` file");
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
+        String gitCompany = JsonPath.read(document, "$.git-company");
+        String repositoryName = JsonPath.read(document, "$.repository-name");
+        //String gitHost = JsonPath.read(document, "$.git-provider");
+        String gitRepo = "https://github.com/" + gitCompany + "/" + repositoryName;
+
+        PrintWriter writer = new PrintWriter(workingDir + "/README.md", StandardCharsets.UTF_8);
+
+        writer.append(
+            "[![Open](https://img.shields.io/static/v1?label=Open%20in&message=Developer%20Sandbox&logo=eclipseche&color=FDB940&labelColor=525C86)](https://workspaces.openshift.com/#" +
+            gitRepo +
+            ")"
+        );
         writer.flush();
         writer.close();
     }
