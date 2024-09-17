@@ -3,7 +3,7 @@ kind: PipelineRun
 metadata:
   name: jhipster
   labels:
-    tekton.dev/pipeline: jhipster-devspace
+    tekton.dev/pipeline: jhipster
 spec:
   params:
     - name: IMAGE_NAME
@@ -21,7 +21,7 @@ spec:
     - name: GIT_BRANCH
       value: main
   pipelineRef:
-    name: jhipster-devspace
+    name: jhipster
   taskRunTemplate:
     serviceAccountName: pipeline
   timeouts:
