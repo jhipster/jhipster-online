@@ -156,30 +156,25 @@ public class GeneratorService {
         writer.close();
     }
 
+    //TODO re-name pipeline name value from jhipster-pipeline.yaml
+
     private void generateYqScript(String applicationId, File workingDir, String applicationConfiguration) throws IOException {
-        this.logsService.addLog(applicationId, "Creating `.yo-rc.json` file");
+        this.logsService.addLog(applicationId, "Creating `yq-script` file");
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(applicationConfiguration);
         String gitCompany = JsonPath.read(document, "$.git-company");
         String repositoryName = JsonPath.read(document, "$.repository-name");
-        String gitHost = JsonPath.read(document, "$.git-provider");
+        //String gitHost = JsonPath.read(document, "$.git-provider");
         String gitRepo =
-            "'(.spec.params[] | select(.name == \"GIT_REPO\").value) |=\"" +
-            gitHost +
-            "/" +
-            gitCompany +
-            "/" +
-            repositoryName +
-            ".git\"" +
-            "'";
+            "'(.spec.params[] | select(.name == \"GIT_REPO\").value) |=\"https://github.com/" + gitCompany + "/" + repositoryName + "\"'";
         String appJarVersion =
             "'(.spec.params[] | select(.name == \"APP_JAR_VERSION\").value) |=\"" + repositoryName + "-0.0.1-SNAPSHOT.jar\"" + "'";
-        String pipelineName = "'.metadata.name=\"" + repositoryName + "\"'";
+        //String pipelineName = "'.metadata.name=\"" + repositoryName + "\"'";
         // removed the catch/log/throw since the exception is handled in calling code.
         PrintWriter writer = new PrintWriter(workingDir + "/yq-script", StandardCharsets.UTF_8);
         writer.println("#!/bin/sh");
-        writer.println("yq -Yi " + pipelineName + " /pipeline-run.yaml");
-        writer.println("yq -Yi " + gitRepo + " /pipeline-run.yaml");
-        writer.println("yq -Yi " + appJarVersion + " /pipeline-run.yaml");
+        //writer.println("yq -Yi " + pipelineName + " /pipeline-run.yaml");
+        writer.println("yq -Yi " + gitRepo + " pipeline-run.yaml");
+        writer.println("yq -Yi " + appJarVersion + " pipeline-run.yaml");
         writer.flush();
         writer.close();
     }

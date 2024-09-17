@@ -62,7 +62,7 @@ commands:
       label: 'Create Tekton Pipeline and Deploy to OpenShift'
       component: tools
       workingDir: ${PROJECT_SOURCE}
-      commandLine: './yq-patch-script && oc apply -f pipeline.yaml && oc apply -f pipeline-run.yaml'
+      commandLine: './yq-script && oc apply -f pipeline.yaml && oc apply -f pipeline-run.yaml'
       group:
         kind: run
         isDefault: false
@@ -92,7 +92,7 @@ commands:
       commandLine: './mvnw -Pprod clean verify -DskipTests'
       group:
         kind: run
-        isDefault: true
+        isDefault: false
 events:
   postStart:
     - build
