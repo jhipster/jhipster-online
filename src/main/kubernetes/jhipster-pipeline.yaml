@@ -1,0 +1,232 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: npm
+spec:
+  description: >-
+    This task can be used to run npm goals on a project.
+
+    This task can be used to run npm goals on a project where package.json is
+    present and has some pre-defined npm scripts.
+  params:
+    - default: .
+      description: The path where package.json of the project is defined.
+      name: PATH_CONTEXT
+      type: string
+    - default:
+        - version
+      description: The npm goals you want to run.
+      name: ARGS
+      type: array
+    - default: 'docker.io/library/node:18.18.2-alpine'
+      description: The node image you want to use.
+      name: IMAGE
+      type: string
+  steps:
+    - args:
+        - $(params.ARGS)
+      command:
+        - npm
+      computeResources: {}
+      env:
+        - name: CI
+          value: 'true'
+      image: $(params.IMAGE)
+      name: npm-run
+      workingDir: $(workspaces.source.path)/$(params.PATH_CONTEXT)
+  workspaces:
+    - name: source
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: jhipster
+spec:
+  params:
+    - default: >-
+        image-registry.openshift-image-registry.svc:5000/maximilianopizarro5-dev/jhipster
+      name: IMAGE_NAME
+      type: string
+    - default: /
+      name: PATH_CONTEXT
+      type: string
+    - default: >-
+        registry.redhat.io/ubi8/openjdk-17@sha256:af305e087061cbaa4107ce0b304a1ef987f6b54bae3f75bfd529cfd084cba9b5
+      name: MAVEN_IMAGE
+      type: string
+    - default: jhipster-vue-js-application-0.0.1-SNAPSHOT.jar
+      name: APP_JAR_VERSION
+      type: string
+    - default: jhipster
+      name: APP_NAME
+      type: string
+    - default: 'https://github.com/maximilianoPizarro/jhipster-vuejs-application'
+      name: GIT_REPO
+      type: string
+    - default: main
+      name: GIT_BRANCH
+      type: string
+  tasks:
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: >-
+            registry.redhat.io/ubi8/openjdk-17@sha256:af305e087061cbaa4107ce0b304a1ef987f6b54bae3f75bfd529cfd084cba9b5
+        - name: GOALS
+          value:
+            - clean
+            - verify
+            - '-Pprod'
+            - >-
+              -Dmaven.repo.local=$(workspaces.source.path)/$(params.PATH_CONTEXT)/.m2
+            - '-Dmaven.test.skip=true'
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: SERVER_USER
+          value: ''
+        - name: SERVER_PASSWORD
+          value: ''
+        - name: PROXY_USER
+          value: ''
+        - name: PROXY_PASSWORD
+          value: ''
+        - name: PROXY_PORT
+          value: ''
+        - name: PROXY_HOST
+          value: ''
+        - name: PROXY_NON_PROXY_HOSTS
+          value: ''
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: $(params.PATH_CONTEXT)
+      runAfter:
+        - npm
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: workspace
+        - name: maven-settings
+          workspace: workspace
+    - name: git-clone
+      params:
+        - name: url
+          value: $(params.GIT_REPO)
+        - name: revision
+          value: $(params.GIT_BRANCH)
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: >-
+            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:c4b2183f7c7997bd401d86b33eefb637b3ef2fa90618e875106292cd69a15c14
+        - name: userHome
+          value: /home/git
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: workspace
+    - name: npm
+      params:
+        - name: PATH_CONTEXT
+          value: $(params.PATH_CONTEXT)
+        - name: ARGS
+          value:
+            - install
+        - name: IMAGE
+          value: 'docker.io/library/node:18.18.2-alpine'
+      runAfter:
+        - oc-apply-manifest
+      taskRef:
+        kind: Task
+        name: npm
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: s2i-binary-build
+      params:
+        - name: SCRIPT
+          value: >-
+            oc start-build jhipster-devspace
+            --from-file=$(workspaces.manifest-dir.path)/$(params.PATH_CONTEXT)/target/$(params.APP_JAR_VERSION)
+        - name: VERSION
+          value: latest
+      runAfter:
+        - maven
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: workspace
+    - name: deploy
+      params:
+        - name: SCRIPT
+          value: oc rollout status deploy/$(params.APP_NAME)
+        - name: VERSION
+          value: latest
+      runAfter:
+        - s2i-binary-build
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: workspace
+    - name: oc-apply-manifest
+      params:
+        - name: SCRIPT
+          value: >-
+            oc apply -f
+            https://raw.githubusercontent.com/maximilianoPizarro/jhipster-devspace/master/template.yaml
+        - name: VERSION
+          value: latest
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: workspace
+  workspaces:
+    - name: workspace
+      optional: false
+  finally: []

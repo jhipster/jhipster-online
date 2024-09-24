@@ -46,17 +46,22 @@
                                  constraintName="FKrwcmar7keuxrohh69romyiown" deferrable="false"
                                  initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
     </changeSet>
+<!--    
     <changeSet author="jhipster" id="1529501926034-9">
         <dropForeignKeyConstraint baseTableName="github_organization" constraintName="fk_github_organization_user_id"/>
     </changeSet>
+
     <changeSet author="jhipster" id="1529501926034-10">
         <dropForeignKeyConstraint baseTableName="github_project"
                                   constraintName="fk_github_project_github_organization_id"/>
     </changeSet>
-    <changeSet author="jhipster" id="1529501926034-11">
-        <dropTable tableName="github_organization"/>
-    </changeSet>
     <changeSet author="jhipster" id="1529501926034-12">
         <dropTable tableName="github_project"/>
     </changeSet>
+-->    
+    <changeSet author="jhipster" id="1529501926034-11">
+        <dropTable tableName="github_organization"/>
+    </changeSet>
+
+
 </databaseChangeLog>

@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: jhipster
+  labels:
+    tekton.dev/pipeline: jhipster
+spec:
+  params:
+    - name: IMAGE_NAME
+      value: 'image-registry.openshift-image-registry.svc:5000/maximilianopizarro5-dev/jhipster'
+    - name: PATH_CONTEXT
+      value: /
+    - name: MAVEN_IMAGE
+      value: 'registry.redhat.io/ubi8/openjdk-17@sha256:af305e087061cbaa4107ce0b304a1ef987f6b54bae3f75bfd529cfd084cba9b5'
+    - name: APP_JAR_VERSION
+      value: delivery-0.0.1-SNAPSHOT.jar
+    - name: APP_NAME
+      value: jhipster
+    - name: GIT_REPO
+      value: 'https://github.com/maximilianoPizarro/jhipster-devspace'
+    - name: GIT_BRANCH
+      value: main
+  pipelineRef:
+    name: jhipster
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: workspace

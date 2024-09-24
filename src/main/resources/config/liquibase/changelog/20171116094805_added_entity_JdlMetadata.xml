@@ -30,11 +30,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+            <column name="created_date" type="timestamp" >
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated_date" type="timestamp" defaultValueDate="${now}">
+            <column name="updated_date" type="timestamp" >
                 <constraints nullable="false"/>
             </column>
 
@@ -72,19 +72,13 @@
             </column>
         </addColumn>
     </changeSet>
-    <!-- END: the primary key cannot be added with H2 -->
+    <!-- END: the primary key cannot be added with H2
 
     <changeSet id="20171116094805-4" author="jhipster">
         <renameColumn newColumnName="name"
                       oldColumnName="github_organizations"
                       tableName="github_organization"
                       columnDataType="varchar(150)"/>
-
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="github_organization"
-                                 constraintName="fk_github_organization_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
 
         <createTable tableName="github_project">
             <column name="github_organization_id" type="bigint">
@@ -104,5 +98,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="github_organization"/>
     </changeSet>
+     -->
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

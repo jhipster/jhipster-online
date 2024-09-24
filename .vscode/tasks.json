@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "devfile",
+			"command": "oc apply -f src/main/kubernetes/mysql.yaml",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
+			"problemMatcher": [],
+			"label": "devfile: OpenShift apply MariaDB Instance (OpenShift cluster)"
+		},
+		{
+			"type": "devfile",
+			"command": "yarn install",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
+			"problemMatcher": [],
+			"label": "devfile: Package the application"
+		},
+		{
+			"type": "devfile",
+			"command": "yarn start",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
+			"problemMatcher": [],
+			"label": "devfile: Start Frontend"
+		},
+		{
+			"type": "devfile",
+			"command": "chmod 777 ./mvnw && ./mvnw",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
+			"problemMatcher": [],
+			"label": "devfile: Start JHipster Online"
+		}
+	]
+}

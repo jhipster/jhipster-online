@@ -49,6 +49,7 @@ export class JHipsterConfigurationModel {
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
+  public skipCommitHook = true;
   public blueprints: BlueprintModel[] = [];
 
   constructor(data?: Partial<JHipsterConfigurationModel>) {

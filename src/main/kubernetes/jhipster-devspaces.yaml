@@ -1,0 +1,98 @@
+schemaVersion: 2.2.0
+metadata:
+  name: jhipster
+  version: 1.0.0
+  description: Stack with the JHipster Online on DevSpaces
+  displayName: JHipster DevSpaces
+  icon: https://raw.githubusercontent.com/maximilianoPizarro/ecommerce-oracle/main/jhipster-icon.png
+  website: https://start.jhipster.tech
+  versions:
+    - version: 1.0.0
+      default: true
+components:
+  - name: tools
+    container:
+      image: 'quay.io/maximilianopizarro/jhipster-devspace'
+      mountSources: true
+      cpuLimit: '4'
+      cpuRequest: '1'
+      memoryLimit: '8G'
+      memoryRequest: '4G'
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+        - name: config
+          path: /home/user/.config
+        - name: npm
+          path: /home/user/.npm
+      endpoints:
+        - exposure: public
+          name: backend
+          protocol: https
+          targetPort: 8080
+        - exposure: public
+          name: frontend
+          protocol: https
+          targetPort: 9000
+      env:
+        - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
+          name: JAVA_OPTS
+        - value: $(JAVA_OPTS)
+          name: MAVEN_OPTS
+        - value: '/home/tooling/.sdkman/candidates/java/11.0.15-tem'
+          name: JAVA_HOME
+  - name: m2
+    volume:
+      size: 512Mi
+  - name: config
+    volume:
+      size: 512Mi
+  - name: npm
+    volume:
+      size: 512Mi
+commands:
+  - id: fix-permissions
+    exec:
+      label: 'fix-permissions to mvnw and yq stripts'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: 'chmod 777 ./mvnw && chmod 777 ./yq-script'
+  - id: deploy
+    exec:
+      label: 'Create Tekton Pipeline and Deploy to OpenShift'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: './yq-script && oc apply -f pipeline.yaml && oc apply -f pipeline-run.yaml'
+      group:
+        kind: run
+        isDefault: false
+  - id: build
+    exec:
+      label: 'Create Tekton Pipeline and install npm dependencies'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: 'npm install'
+      group:
+        kind: build
+        isDefault: true
+  - id: run
+    exec:
+      label: 'Run Dev ./mvnw'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: './mvnw'
+      group:
+        kind: run
+        isDefault: true
+  - id: build-prod
+    exec:
+      label: 'Run ./mvnw -Pprod clean verify'
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: './mvnw -Pprod clean verify -DskipTests'
+      group:
+        kind: run
+        isDefault: false
+events:
+  postStart:
+    - build

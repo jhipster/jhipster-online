@@ -33,6 +33,8 @@ public class ApplicationProperties {
 
     private NpmCmd npmCmd = new NpmCmd();
 
+    private YqCmd yqCmd = new YqCmd();
+
     private final Github github = new Github();
 
     private final Gitlab gitlab = new Gitlab();
@@ -43,6 +45,14 @@ public class ApplicationProperties {
 
     public JhipsterCmd getJhipsterCmd() {
         return jhipsterCmd;
+    }
+
+    public YqCmd getYqCmd() {
+        return yqCmd;
+    }
+
+    public void setYqCmd(YqCmd yqCmd) {
+        this.yqCmd = yqCmd;
     }
 
     public NpmCmd getNpmCmd() {
@@ -102,6 +112,28 @@ public class ApplicationProperties {
     public static class NpmCmd {
 
         private String cmd = "npm";
+        private Integer timeout = 120;
+
+        public String getCmd() {
+            return cmd;
+        }
+
+        public void setCmd(String cmd) {
+            this.cmd = cmd;
+        }
+
+        public Integer getTimeout() {
+            return timeout;
+        }
+
+        public void setTimeout(Integer timeout) {
+            this.timeout = timeout;
+        }
+    }
+
+    public static class YqCmd {
+
+        private String cmd = "yq";
         private Integer timeout = 120;
 
         public String getCmd() {
