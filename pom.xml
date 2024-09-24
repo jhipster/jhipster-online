@@ -5,7 +5,7 @@
 
     <groupId>io.github.jhipster.online</groupId>
     <artifactId>jhonline</artifactId>
-    <version>2.33.0</version>
+    <version>2.33.1</version>
     <packaging>war</packaging>
     <name>Jhonline</name>
 
