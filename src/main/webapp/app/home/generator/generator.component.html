@@ -91,12 +91,12 @@
                     <label for="databaseType">Which <i>type</i> of database would you like to use?</label>
                     <select id="databaseType" [(ngModel)]="model.databaseType" name="databaseType" class="form-control"
                             #databaseType="ngModel" (change)="changeDatabaseType()">
-                        <option value="sql">SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)</option>
-                        <option value="mongodb">MongoDB</option>
-                        <option value="cassandra" *ngIf="model.authenticationType !== 'oauth2'">Cassandra</option>
-                        <option value="couchbase">Couchbase</option>
-                        <option value="neo4j">Neo4j</option>
-                        <option value="no">No database</option>
+                        <option value="sql" *ngIf="!isDatabaseTypeOptionHidden('sql')">SQL (H2, MySQL, MariaDB, PostgreSQL, Oracle, MSSQL)</option>
+                        <option value="mongodb" *ngIf="!isDatabaseTypeOptionHidden('mongodb')">MongoDB</option>
+                        <option value="cassandra" *ngIf="model.authenticationType !== 'oauth2' && !isDatabaseTypeOptionHidden('cassandra')">Cassandra</option>
+                        <option value="couchbase" *ngIf="!isDatabaseTypeOptionHidden('couchbase')">Couchbase</option>
+                        <option value="neo4j" *ngIf="!isDatabaseTypeOptionHidden('neo4j')">Neo4j</option>
+                        <option value="no" *ngIf="!isDatabaseTypeOptionHidden('no')">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideProdDatabaseType">
@@ -114,7 +114,7 @@
                         <option value="cassandra" *ngIf="!isProdDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
                         <option value="couchbase" *ngIf="!isProdDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
                         <option value="neo4j" *ngIf="!isProdDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" *ngIf="!isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
+                        <option value="no" [hidden]="config.disableNoDatabaseOptions == true" *ngIf="!isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideDevDatabaseType">
@@ -134,7 +134,7 @@
                         <option value="cassandra" *ngIf="!isDevDatabaseOptionHidden('cassandra', 'cassandra')">Cassandra</option>
                         <option value="couchbase" *ngIf="!isDevDatabaseOptionHidden('couchbase', 'couchbase')">Couchbase</option>
                         <option value="neo4j" *ngIf="!isDevDatabaseOptionHidden('neo4j', 'neo4j')">Neo4j</option>
-                        <option value="no" *ngIf="!isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
+                        <option value="no" [hidden]="config.disableNoDatabaseOptions == false" *ngIf="!isDevDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
                 <div class="form-group" *ngIf="!config.hideCacheProvider">
@@ -150,7 +150,7 @@
                         <option value="no">No</option>
                     </select>
                 </div>
-                <div class="form-group" [hidden]="model.databaseType !== 'sql' || model.cacheProvider === 'no'">
+                <div class="form-group" [hidden]="model.databaseType !== 'sql' || model.cacheProvider === 'no'" *ngIf="!config.hideHibernateCache">
                     <label for="enableHibernateCache">Do you want to use Hibernate 2nd level cache?</label>
                     <select id="enableHibernateCache" [(ngModel)]="model.enableHibernateCache" name="enableHibernateCache"
                             class="form-control" #enableHibernateCache="ngModel">
