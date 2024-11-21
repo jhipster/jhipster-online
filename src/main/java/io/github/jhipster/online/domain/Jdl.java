@@ -48,7 +48,8 @@ public class Jdl implements Serializable {
     @JsonIgnore
     private JdlMetadata jdlMetadata;
 
-    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -80,16 +81,36 @@ public class Jdl implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (isSameObject(o)) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+
+        if (isNotSameType(o)) {
             return false;
         }
+
         Jdl jdlMetadataObject = (Jdl) o;
-        if (jdlMetadataObject.getId() == null || getId() == null) {
+
+        if (areIdsNull(jdlMetadataObject)) {
             return false;
         }
+
+        return isSameId(jdlMetadataObject);
+    }
+
+    private boolean isSameObject(Object o) {
+        return this == o;
+    }
+
+    private boolean isNotSameType(Object o) {
+        return o == null || getClass() != o.getClass();
+    }
+
+    private boolean areIdsNull(Jdl jdlMetadataObject) {
+        return jdlMetadataObject.getId() == null || getId() == null;
+    }
+
+    private boolean isSameId(Jdl jdlMetadataObject) {
         return Objects.equals(getId(), jdlMetadataObject.getId());
     }
 
