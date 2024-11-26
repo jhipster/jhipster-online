@@ -117,6 +117,29 @@
                         <option value="no" [hidden]="config.disableNoDatabaseOptions == true" *ngIf="!isProdDatabaseOptionHidden('no', 'no') || !config.hideDatabaseType">No database</option>
                     </select>
                 </div>
+                <div class="form-group" *ngIf="config.displayInfraType">
+                    <label>Do you want to enable Bicep or Terraform for deployment?</label>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <input type="checkbox" class="form-control" id="enableTerraform"
+                                       [(ngModel)]="model.enableTerraform" name="enableTerraform"
+                                       #enableTerraform="ngModel" checked>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="enableTerraform">Terraform</label>
+                            </div>
+                            <div class="col-md-1">
+                                <input type="checkbox" class="form-control" id="enableBicep"
+                                       [(ngModel)]="model.enableBicep" name="enableBicep"
+                                       #enableBicep="ngModel" checked>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="enableBicep">Bicep</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group" *ngIf="!config.hideDevDatabaseType">
                     <label for="devDatabaseType">Which <i>development</i> database would you like to use?</label>
                     <select id="devDatabaseType" [(ngModel)]="model.devDatabaseType" name="devDatabaseType"

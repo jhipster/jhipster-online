@@ -33,6 +33,7 @@ export class AzureGeneratorComponent implements OnInit {
     hideAuthenticationType: true,
     hideHibernateCache: true,
     hideDevDatabaseType: true,
+    displayInfraType: true,
     hideDatabaseTypeOptions: ['cassandra', 'couchbase', 'neo4j', 'no'],
     hideProdDatabaseTypeOptions: ['mysql', 'mariadb', 'oracle', 'mssql', 'cassandra', 'couchbase', 'neo4j', 'no'],
     hideDevDatabaseTypeOptions: ['h2Disk', 'h2Memory', 'mysql', 'mariadb', 'oracle', 'mssql', 'cassandra', 'couchbase', 'neo4j', 'no'],
