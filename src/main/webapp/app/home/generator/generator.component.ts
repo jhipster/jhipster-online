@@ -125,8 +125,8 @@ export class GeneratorComponent implements OnInit {
     this.newGenerator();
     this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
     this.iaCToolOptions = [
-      { name: 'Terraform', value: 'terraform'},
-      { name: 'Bicep', value: 'bicep'}
+      { name: 'Terraform', value: 'terraform' },
+      { name: 'Bicep', value: 'bicep' }
     ];
     this.gitConfig = this.gitConfigurationService.gitConfig;
     if (this.gitConfig) {
