@@ -65,5 +65,5 @@ export interface GeneratorConfigurationModel {
   hideTestingOptions?: boolean;
   hideHibernateCache?: boolean;
   disableNoDatabaseOptions?: boolean;
-  displayInfraType?: boolean;
+  hideIaCTool?: boolean;
 }

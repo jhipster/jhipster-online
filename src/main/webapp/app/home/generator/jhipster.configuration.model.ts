@@ -50,8 +50,7 @@ export class JHipsterConfigurationModel {
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
   public blueprints: BlueprintModel[] = [];
-  public enableBicep = false;
-  public enableTerraform = false;
+  public iaCTools = ['bicep', 'terraform'];
 
   constructor(data?: Partial<JHipsterConfigurationModel>) {
     if (data) {
