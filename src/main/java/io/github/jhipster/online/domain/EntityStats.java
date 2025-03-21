@@ -23,8 +23,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,7 +39,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "entity_stats")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class EntityStats implements Serializable, CompleteDate {
+public class EntityStats extends BaseEntity<Long> implements Serializable, CompleteDate {
 
     private static final long serialVersionUID = 1L;
 
@@ -258,28 +263,6 @@ public class EntityStats implements Serializable, CompleteDate {
 
     public void setOwner(GeneratorIdentity generatorIdentity) {
         this.owner = generatorIdentity;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        EntityStats entityStats = (EntityStats) o;
-        if (entityStats.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), entityStats.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override

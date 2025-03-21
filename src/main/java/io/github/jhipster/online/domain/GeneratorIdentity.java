@@ -21,8 +21,13 @@ package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,7 +37,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "generator_identity")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class GeneratorIdentity implements Serializable {
+public class GeneratorIdentity extends BaseEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -96,28 +101,6 @@ public class GeneratorIdentity implements Serializable {
 
     public void setOwner(User user) {
         this.owner = user;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        GeneratorIdentity generatorIdentity = (GeneratorIdentity) o;
-        if (generatorIdentity.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), generatorIdentity.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override

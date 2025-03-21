@@ -22,8 +22,15 @@ package io.github.jhipster.online.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
@@ -35,7 +42,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "git_company")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class GitCompany implements Serializable {
+public class GitCompany extends BaseEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -99,20 +106,6 @@ public class GitCompany implements Serializable {
 
     public void setGitProjects(List<String> gitProjects) {
         this.gitProjects = gitProjects;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        GitCompany authority = (GitCompany) o;
-
-        return Objects.equals(id, authority.id);
     }
 
     @Override
