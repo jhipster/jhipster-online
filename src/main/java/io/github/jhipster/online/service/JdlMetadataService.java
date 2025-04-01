@@ -145,13 +145,21 @@ public class JdlMetadataService {
     public Optional<JdlMetadata> findOne(String id) {
         log.debug("Request to get JdlMetadata : {}", id);
         Optional<JdlMetadata> jdlMetadata = jdlMetadataRepository.findById(id);
-        if (jdlMetadata.isPresent() && jdlMetadata.get().isIsPublic() != null && Boolean.TRUE.equals(jdlMetadata.get().isIsPublic())) {
-            return jdlMetadata;
-        } else if (jdlMetadata.isPresent() && jdlMetadata.get().getUser().equals(this.getUser())) {
-            return jdlMetadata;
-        } else {
-            throw new AccessDeniedException("Current user does not have access to this JDL file");
+        if (jdlMetadata.isPresent()) {
+            JdlMetadata metadata = jdlMetadata.get();
+            if (isPublicAccessible(metadata) || isAccessibleByCurrentUser(metadata)) {
+                return jdlMetadata;
+            }
         }
+        throw new AccessDeniedException("Current user does not have access to this JDL file");
+    }
+
+    private boolean isPublicAccessible(JdlMetadata metadata) {
+        return metadata.isIsPublic() != null && Boolean.TRUE.equals(metadata.isIsPublic());
+    }
+
+    private boolean isAccessibleByCurrentUser(JdlMetadata metadata) {
+        return metadata.getUser().equals(this.getUser());
     }
 
     /**

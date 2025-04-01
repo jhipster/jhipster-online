@@ -46,7 +46,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
      */
     protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
 
-    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final PersistenceAuditEventRepository auditEventRepo;
 
     private final AuditEventConverter auditEventConverter;
 
@@ -56,13 +56,13 @@ public class CustomAuditEventRepository implements AuditEventRepository {
         PersistenceAuditEventRepository persistenceAuditEventRepository,
         AuditEventConverter auditEventConverter
     ) {
-        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
+        this.auditEventRepo = persistenceAuditEventRepository;
         this.auditEventConverter = auditEventConverter;
     }
 
     @Override
     public List<AuditEvent> find(String principal, Instant after, String type) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(
+        Iterable<PersistentAuditEvent> persistentAuditEvents = auditEventRepo.findByPrincipalAndAuditEventDateAfterAndAuditEventType(
             principal,
             after,
             type
@@ -80,7 +80,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvent.setAuditEventDate(event.getTimestamp());
             Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
             persistentAuditEvent.setData(truncate(eventData));
-            persistenceAuditEventRepository.save(persistentAuditEvent);
+            auditEventRepo.save(persistentAuditEvent);
         }
     }
 

@@ -83,9 +83,7 @@ public class UserResource {
     private String applicationName;
 
     private final UserService userService;
-
     private final UserRepository userRepository;
-
     private final MailService mailService;
 
     public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
@@ -102,7 +100,8 @@ public class UserResource {
      * The user needs to be activated on creation.
      *
      * @param userDTO the user to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user,
+     * or with status {@code 400 (Bad Request)} if the login or email is already in use.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
@@ -111,24 +110,18 @@ public class UserResource {
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
 
-        if (userDTO.getId() != null) {
-            throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
-            // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
-            throw new LoginAlreadyUsedException();
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
-            throw new EmailAlreadyUsedException();
-        } else {
-            User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
+        // Delegate validations to the composite validator.
+        CompositeUserValidator validator = new CompositeUserValidator();
+        validator.validate(userDTO, userRepository);
 
-            return ResponseEntity
-                .created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(
-                    HeaderUtil.createAlert(applicationName, "A user is created with identifier " + newUser.getLogin(), newUser.getLogin())
-                )
-                .body(newUser);
-        }
+        // If validation passes, proceed to create the user.
+        User newUser = userService.createUser(userDTO);
+        mailService.sendCreationEmail(newUser);
+
+        return ResponseEntity
+            .created(new URI("/api/users/" + newUser.getLogin()))
+            .headers(HeaderUtil.createAlert(applicationName, "A user is created with identifier " + newUser.getLogin(), newUser.getLogin()))
+            .body(newUser);
     }
 
     /**
@@ -187,7 +180,8 @@ public class UserResource {
      * {@code GET /users/:login} : get the "login" user.
      *
      * @param login the login of the user to find.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user,
+     * or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {

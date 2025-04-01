@@ -23,8 +23,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.jhipster.online.domain.interfaces.CompleteDate;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,7 +39,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "sub_gen_event")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SubGenEvent implements Serializable, CompleteDate {
+public class SubGenEvent extends BaseEntity<Long> implements Serializable, CompleteDate {
 
     private static final long serialVersionUID = 1L;
 
@@ -213,26 +218,6 @@ public class SubGenEvent implements Serializable, CompleteDate {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SubGenEvent subGenEvent = (SubGenEvent) o;
-        if (subGenEvent.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), subGenEvent.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
 
     @Override
     public String toString() {

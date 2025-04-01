@@ -20,8 +20,14 @@ package io.github.jhipster.online.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,7 +36,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "jdl")
-public class Jdl implements Serializable {
+public class Jdl extends BaseEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -76,26 +82,6 @@ public class Jdl implements Serializable {
 
     public void setJdlMetadata(JdlMetadata jdlMetadata) {
         this.jdlMetadata = jdlMetadata;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Jdl jdlMetadataObject = (Jdl) o;
-        if (jdlMetadataObject.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), jdlMetadataObject.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override

@@ -79,6 +79,8 @@ public class UserService {
 
     private final JdlService jdlService;
 
+    private static final long ONE_DAY_IN_SECONDS = 86400;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
@@ -123,7 +125,7 @@ public class UserService {
         log.debug("Reset user password for reset key {}", key);
         return userRepository
             .findOneByResetKey(key)
-            .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
+            .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(ONE_DAY_IN_SECONDS)))
             .map(
                 user -> {
                     user.setPassword(passwordEncoder.encode(newPassword));
