@@ -1,4 +1,4 @@
-FROM jhipster/jhipster:v8.1.0
+FROM jhipster/jhipster:v8.10.0
 USER jhipster
 COPY --chown=jhipster:jhipster . /home/jhipster/jhipster-online/
 RUN \
@@ -12,7 +12,7 @@ RUN \
 
 USER root
 RUN \
-    npm install -g generator-jhipster-azure-spring-apps
+    npm install -g generator-jhipster-azure-container-apps
 
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \

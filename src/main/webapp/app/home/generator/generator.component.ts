@@ -29,6 +29,7 @@ import { GeneratorOutputDialogComponent } from './generator.output.component';
 import {
   AllDevDatabaseTypes,
   AllProdDatabaseTypes,
+  DatabaseType,
   DevDatabaseType,
   GeneratorConfigurationModel,
   ProdDatabaseType
@@ -47,6 +48,7 @@ export class GeneratorComponent implements OnInit {
   submitted = false;
 
   languageOptions: any;
+  iaCToolOptions: any;
 
   selectedGitProvider: string | undefined;
   selectedGitCompany: string | undefined;
@@ -122,6 +124,10 @@ export class GeneratorComponent implements OnInit {
   ngOnInit(): void {
     this.newGenerator();
     this.languageOptions = GeneratorComponent.getAllSupportedLanguageOptions();
+    this.iaCToolOptions = [
+      { name: 'Terraform', value: 'terraform' },
+      { name: 'Bicep', value: 'bicep' }
+    ];
     this.gitConfig = this.gitConfigurationService.gitConfig;
     if (this.gitConfig) {
       this.gitlabConfigured = this.gitConfig.gitlabConfigured ?? false;
@@ -332,6 +338,10 @@ export class GeneratorComponent implements OnInit {
 
   isProdDatabaseOptionHidden(validDatabaseType: string, databaseName: ProdDatabaseType): boolean {
     return this.model.databaseType !== validDatabaseType || Boolean(this.config?.hideProdDatabaseTypeOptions?.includes(databaseName));
+  }
+
+  isDatabaseTypeOptionHidden(databaseType: DatabaseType): boolean {
+    return Boolean(this.config?.hideDatabaseTypeOptions?.includes(databaseType));
   }
 
   isDevDatabaseOptionHidden(validDatabaseType: string, databaseName: DevDatabaseType): boolean {
