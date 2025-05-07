@@ -24,7 +24,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install -g generator-jhipster generator-jhipster-azure-spring-apps@latest"
+	"postCreateCommand": "npm install -g generator-jhipster generator-jhipster-azure-container-apps@latest"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

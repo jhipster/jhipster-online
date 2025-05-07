@@ -1,7 +1,7 @@
 version: '2'
 services:
   jhonline-mysql:
-    image: mysql:8
+    image: mysql:8.2.0
     # volumes:
     #     - ~/volumes/jhipster/jhonline/mysql/:/var/lib/mysql/
     environment:
