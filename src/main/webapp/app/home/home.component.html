@@ -2,24 +2,27 @@
   <div class="col-md-3 side-menu">
     <div>
       <div *ngIf="!isAuthenticated()">
-        <div class="alert alert-info" role="alert">
-          JHipster Online is the best place to generate
-          <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
-          applications, with no installation required!
+        <div class="alert alert-primary" role="alert">
+          <p>
+            JHipster Online is the best place to generate
+            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
+            applications, with no installation required!
+          </p>
+
+          <p class="mb-0">
+            No more command line: fill an easy-to-use Web form, JHipster Online generates a complete
+            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
+            application on your GitHub account.
+          </p>
         </div>
       </div>
-      <div *ngIf="!isAuthenticated()">
-        <div class="alert alert-info" role="alert">
-          No more command line: fill an easy-to-use Web form, JHipster Online generates a complete
-          <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
-          application on your GitHub account.
-        </div>
-      </div>
+
       <div>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-primary" role="alert">
           Check out <a routerLink="/statistics">JHipster statistics</a> to have an overview of what JHipster users are building.
         </div>
       </div>
+
       <nav class="navbar navbar-light">
         <ul class="navbar-nav mr-auto" [ngSwitch]="isAuthenticated()">
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
