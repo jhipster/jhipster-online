@@ -1,94 +1,87 @@
 <div class="row">
-    <div class="col-md-3 side-menu">
-        <div>
-            <div *ngIf="!isAuthenticated()">
-                <div class="alert alert-info" role="alert">
-                    JHipster Online is the best place to generate <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a> applications, with no installation required!
-                </div>
-            </div>
-            <div *ngIf="!isAuthenticated()">
-                <div class="alert alert-info" role="alert">
-                    No more command line: fill an easy-to-use Web form, JHipster Online generates a complete <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a> application on your GitHub account.
-                </div>
-            </div>
-            <div>
-                <div class="alert alert-success" role="alert">
-                    Check out <a routerLink="/statistics">JHipster statistics</a> to have an overview of what JHipster users are building.
-                </div>
-            </div>
-            <nav class="navbar navbar-light">
-                <ul class="navbar-nav mr-auto" [ngSwitch]="isAuthenticated()">
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
-                        <a class="nav-link text-primary mt-3" routerLink="/">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="home" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">Home</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                        *ngIf="(gitConfig.githubAvailable || gitConfig.gitlabAvailable) && isAuthenticated()">
-                        <a class="nav-link text-primary mt-3" routerLink="/git">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="wrench" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">Configure</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a class="nav-link text-primary mt-3" routerLink="/generate-application">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="rocket" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">Create Application</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a class="nav-link text-primary mt-3" routerLink="/generate-azure-application">
-                            <span class="btn-rounded align-middle">
-                                <img src="content/images/azure-logo.svg" alt="Microsoft Azure logo" width="32" height="32">
-                            </span>
-                            <span class="align-middle h5">Create Azure Application</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
-                        <a class="nav-link text-primary mt-3" routerLink="/design-entities">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="object-group" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">Design Entities</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngSwitchCase="true">
-                        <a class="nav-link text-primary mt-3" routerLink="/ci-cd">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="cloud-upload-alt" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">Continuous Integration</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" *ngSwitchCase="false">
-                        <a class="nav-link text-primary mt-3" href="jdl-studio/">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="project-diagram" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">JDL Studio</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a class="nav-link text-primary mt-3" routerLink="/statistics">
-                            <span class="btn-rounded align-middle">
-                                <fa-icon icon="chart-line" size="2x" fixedWidth="true"></fa-icon>
-                            </span>
-                            <span class="align-middle h5">JHipster Statistics</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+  <div class="col-md-3 side-menu">
+    <div>
+      <div *ngIf="!isAuthenticated()">
+        <div class="alert alert-info" role="alert">
+          JHipster Online is the best place to generate
+          <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
+          applications, with no installation required!
         </div>
+      </div>
+      <div *ngIf="!isAuthenticated()">
+        <div class="alert alert-info" role="alert">
+          No more command line: fill an easy-to-use Web form, JHipster Online generates a complete
+          <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage">JHipster</a>
+          application on your GitHub account.
+        </div>
+      </div>
+      <div>
+        <div class="alert alert-success" role="alert">
+          Check out <a routerLink="/statistics">JHipster statistics</a> to have an overview of what JHipster users are building.
+        </div>
+      </div>
+      <nav class="navbar navbar-light">
+        <ul class="navbar-nav mr-auto" [ngSwitch]="isAuthenticated()">
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/">
+              <fa-icon icon="home" fixedWidth="true"></fa-icon>
+              <span>Home</span>
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            *ngIf="(gitConfig.githubAvailable || gitConfig.gitlabAvailable) && isAuthenticated()"
+          >
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/git">
+              <fa-icon icon="wrench" fixedWidth="true"></fa-icon>
+              <span>Configure</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/generate-application">
+              <fa-icon icon="rocket" fixedWidth="true"></fa-icon>
+              <span>Create Application</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/generate-azure-application">
+              <img src="content/images/azure-logo.svg" alt="Microsoft Azure logo" width="16" height="16" />
+              <span>Create Azure Application</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/design-entities">
+              <fa-icon icon="object-group" fixedWidth="true"></fa-icon>
+              <span>Design Entities</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/ci-cd">
+              <fa-icon icon="cloud-upload-alt" fixedWidth="true"></fa-icon>
+              <span>Continuous Integration</span>
+            </a>
+          </li>
+          <li class="nav-item" *ngSwitchCase="false">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" href="jdl-studio/">
+              <fa-icon icon="project-diagram" fixedWidth="true"></fa-icon>
+              <span>JDL Studio</span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/statistics">
+              <fa-icon icon="chart-line" fixedWidth="true"></fa-icon>
+              <span>JHipster Statistics</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <div class="col-md-9">
-        <router-outlet></router-outlet>
-        <router-outlet name="popup"></router-outlet>
-    </div>
+  </div>
+
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+    <router-outlet name="popup"></router-outlet>
+  </div>
 </div>
