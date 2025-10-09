@@ -9,10 +9,11 @@
 // Grayscale and brand colors for use across Bootstrap.
 
 $primary: #236fa4;
-$success: #00a400;
-$info: #54c7ec;
-$warning: #ffba00;
-$danger: #fa383e;
+$secondary: #ebedf0;
+$success: #007300;
+$info: #3b8ba5;
+$warning: #b38200;
+$danger: #af272b;
 $light: #eff8fe;
 $black: #000000;
 
@@ -57,3 +58,15 @@ $navbar-light-hover-color: $primary;
 $navbar-light-active-color: $primary;
 $navbar-light-brand-color: $black;
 $navbar-light-brand-hover-color: $black;
+
+// Buttons
+
+$btn-padding-y: 0.375rem;
+$btn-padding-x: 1.5rem;
+$btn-font-size: 0.875rem;
+$btn-font-weight: 700;
+$btn-border-radius: 0.4rem;
+
+// Links
+
+$link-color: #0f5b90;

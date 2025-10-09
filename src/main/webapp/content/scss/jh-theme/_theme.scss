@@ -1,3 +1,102 @@
 .button-primary {
   color: $white;
 }
+
+.alert {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  color: $primary;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.section-title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 800;
+
+  &-sm {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 800;
+  }
+}
+
+.section-description {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.card {
+  height: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.jho-card-title {
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.jho-card-text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  flex-grow: 1;
+}
+
+.stepper {
+  list-style: none;
+  padding-left: 0;
+}
+
+.stepper-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  position: relative;
+
+  &:not(:last-child) {
+    padding-bottom: 2rem;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 1.5rem;
+      width: 2px;
+      background-color: $primary;
+      position: absolute;
+      bottom: 0.25rem;
+      left: 1rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+  }
+}
+
+.stepper-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border: 1px solid $primary;
+  background-color: rgba($primary, 0.1);
+  color: $primary;
+}
