@@ -5,6 +5,12 @@ Main page styles
   border-right: 1px solid #ddd;
 }
 
+.navbar {
+  a.nav-link {
+    font-weight: 500;
+  }
+}
+
 .hipster {
   display: inline-block;
   width: 347px;

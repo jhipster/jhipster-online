@@ -1,185 +1,174 @@
 <div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1>Registration</h1>
-            <div class="col-md-8">
-                <div class="alert alert-info" *ngIf="!success">
-                    <fa-icon icon="info-circle" fixedWidth="true"></fa-icon> E-mail addresses are only used to secure your account, we will not sell them or send any spam.
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1 class="section-title mb-3">Registration</h1>
 
-            <div class="alert alert-success" *ngIf="success">
-                <strong>User successfully registered!</strong> You can now login.
-            </div>
-
-            <div class="alert alert-danger" *ngIf="error">
-                <strong>Registration failed!</strong> Please try again later.
-            </div>
-
-            <div class="alert alert-danger" *ngIf="errorUserExists">
-                <strong>Login name already registered!</strong> Please choose another one.
-            </div>
-
-            <div class="alert alert-danger" *ngIf="errorEmailExists">
-                <strong>Email is already in use!</strong> Please choose another one.
-            </div>
-
-            <div class="alert alert-danger" *ngIf="doNotMatch">
-                The password and its confirmation do not match!
-            </div>
+      <div class="col-md-8">
+        <div class="alert alert-info" *ngIf="!success">
+          <fa-icon icon="info-circle" fixedWidth="true"></fa-icon> E-mail addresses are only used to secure your account, we will not sell
+          them or send any spam.
         </div>
+      </div>
+
+      <div class="alert alert-success" *ngIf="success"><strong>User successfully registered!</strong> You can now login.</div>
+
+      <div class="alert alert-danger" *ngIf="error"><strong>Registration failed!</strong> Please try again later.</div>
+
+      <div class="alert alert-danger" *ngIf="errorUserExists">
+        <strong>Login name already registered!</strong> Please choose another one.
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorEmailExists"><strong>Email is already in use!</strong> Please choose another one.</div>
+
+      <div class="alert alert-danger" *ngIf="doNotMatch">
+        The password and its confirmation do not match!
+      </div>
     </div>
+  </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
-                <div class="form-group">
-                    <label class="form-control-label" for="login">Username</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="Your username"
-                           formControlName="login" #login>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+        <div class="mb-3">
+          <label class="form-label" for="login">Username</label>
+          <input type="text" class="form-control" id="login" name="login" placeholder="Your username" formControlName="login" #login />
 
-                    <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('login')?.errors?.required">
-                            Your username is required.
-                        </small>
+          <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.required">
+              Your username is required.
+            </small>
 
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('login')?.errors?.minlength">
-                            Your username is required to be at least 1 character.
-                        </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.minlength">
+              Your username is required to be at least 1 character.
+            </small>
 
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('login')?.errors?.maxlength">
-                            Your username cannot be longer than 50 characters.
-                        </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.maxlength">
+              Your username cannot be longer than 50 characters.
+            </small>
 
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('login')?.errors?.pattern">
-                            Your username can only contain letters and digits.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Your email"
-                             formControlName="email">
-
-                    <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.required">
-                            Your email is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.invalid">
-                            Your email is invalid.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.minlength">
-                            Your email is required to be at least 5 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.maxlength">
-                            Your email cannot be longer than 100 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="password">New password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="New password"
-                            formControlName="password">
-
-                    <div *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('password')?.errors?.required">
-                            Your password is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('password')?.errors?.minlength">
-                            Your password is required to be at least 4 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('password')?.errors?.maxlength">
-                            Your password cannot be longer than 50 characters.
-                        </small>
-                    </div>
-
-                    <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="confirmPassword">New password confirmation</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm the new password"
-                            formControlName="confirmPassword">
-
-                    <div *ngIf="registerForm.get('confirmPassword')!.invalid && (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('confirmPassword')?.errors?.required">
-                            Your confirmation password is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('confirmPassword')?.errors?.minlength">
-                            Your confirmation password is required to be at least 4 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength">
-                            Your confirmation password cannot be longer than 50 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">
-                    I have read and understood the terms and conditions below, let's create my account
-                </button>
-            </form>
-            <br />
-            <div *ngIf="!success">
-                <h4>Personal data usage</h4>
-                <p>
-                    <small>
-                        JHipster Online uses your e-mail address only for securing your account (typically to send you a reset
-                        link when you forget your password), or for contacting you in case something important happens to the service. We will
-                        not use it to spam you or give it to any third-party. You will also be able to delete your account easily,
-                        at any time, by clicking on the "delete my account" button in your settings.
-                    </small>
-                </p>
-                <h4>Disclaimer of Warranty</h4>
-                <p>
-                    <small>
-                        THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN
-                        WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND,
-                        EITHER
-                        EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-                        PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE
-                        PROGRAM
-                        PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-                    </small>
-                </p>
-
-                <h4>Limitation of Liability</h4>
-                <p>
-                    <small>
-                        IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER
-                        PARTY
-                        WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL,
-                        SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING
-                        BUT
-                        NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-                        FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED
-                        OF
-                        THE POSSIBILITY OF SUCH DAMAGES.
-                    </small>
-                </p>
-            </div>
+            <small class="form-text text-danger" *ngIf="registerForm.get('login')?.errors?.pattern">
+              Your username can only contain letters and digits.
+            </small>
+          </div>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Your email" formControlName="email" />
+
+          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.required">
+              Your email is required.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.invalid">
+              Your email is invalid.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.minlength">
+              Your email is required to be at least 5 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('email')?.errors?.maxlength">
+              Your email cannot be longer than 100 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="password">New password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="New password" formControlName="password" />
+
+          <div
+            *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)"
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.required">
+              Your password is required.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.minlength">
+              Your password is required to be at least 4 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('password')?.errors?.maxlength">
+              Your password cannot be longer than 50 characters.
+            </small>
+          </div>
+
+          <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="confirmPassword">New password confirmation</label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm the new password"
+            formControlName="confirmPassword"
+          />
+
+          <div
+            *ngIf="
+              registerForm.get('confirmPassword')!.invalid &&
+              (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.required">
+              Your confirmation password is required.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.minlength">
+              Your confirmation password is required to be at least 4 characters.
+            </small>
+
+            <small class="form-text text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength">
+              Your confirmation password cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">
+          I have read and understood the terms and conditions below, let's create my account
+        </button>
+      </form>
+
+      <br />
+
+      <div *ngIf="!success">
+        <h2 class="section-title-sm">Personal data usage</h2>
+        <p>
+          <small>
+            JHipster Online uses your e-mail address only for securing your account (typically to send you a reset link when you forget your
+            password), or for contacting you in case something important happens to the service. We will not use it to spam you or give it
+            to any third-party. You will also be able to delete your account easily, at any time, by clicking on the "delete my account"
+            button in your settings.
+          </small>
+        </p>
+
+        <h2 class="section-title-sm">Disclaimer of Warranty</h2>
+        <p>
+          <small>
+            THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE
+            COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+            INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK
+            AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+            NECESSARY SERVICING, REPAIR OR CORRECTION.
+          </small>
+        </p>
+
+        <h2 class="section-title-sm">Limitation of Liability</h2>
+        <p>
+          <small>
+            IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES
+            AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
+            CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA
+            BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
+            PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+          </small>
+        </p>
+      </div>
     </div>
+  </div>
 </div>

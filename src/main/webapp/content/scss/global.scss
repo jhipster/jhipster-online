@@ -6,24 +6,6 @@
 Bootstrap tweaks
 ===============================================================*/
 
-body,
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 300;
-}
-
-/* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
-a {
-  color: #533f03;
-  font-weight: bold;
-}
-
-a:hover {
-  color: #533f03;
-}
-
 /* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */
 a:not([href]):not([tabindex]):hover.dropdown-item {
   color: $dropdown-link-hover-color;
@@ -100,10 +82,6 @@ Generic styles
 .readonly {
   background-color: #eee;
   opacity: 1;
-}
-
-.footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .hand,

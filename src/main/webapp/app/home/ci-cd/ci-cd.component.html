@@ -1,95 +1,111 @@
 <form #generatorForm="ngForm">
-    <h2><fa-icon [icon]="'cloud-upload-alt'"></fa-icon>&nbsp;<span>Continuous Integration</span></h2>
-    <jhi-alert></jhi-alert>
-    <hr/>
-    <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
-    <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
-    <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    The following tools are supported:
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3><a href="https://github.com/features/actions">GitHub Actions</a></h3>
-                    <ul>
-                        <li><b>Warning!</b> as GitHub recently updated its OAuth2 token policies, you might need to go to the <a href="/git">Configure</a> screen to refresh your token and give "workflow" access to JHipster Online</li>
-                        <li>A <code>github-ci.yml</code> will be added to your project.</li>
-                        <li>Push the project to GitHub; the actions workflow will be configured on your GitHub repo.</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h3><a href="https://jenkins.io/">Jenkins</a></h3>
-                    <ul>
-                        <li>A <code>Jenkinsfile</code> will be added to your project.</li>
-                        <li>Go to your Jenkins instance</li>
-                        <li>Create a new job, using a `Pipeline script from SCM`</li>
-                        <li>Point the SCM configuration to your GitHub or GitLab repository</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h3><a href="https://gitlab.com/">Gitlab</a></h3>
-                    <ul>
-                        <li>A <code>.gitlab-ci.yml</code> will be added to your project.</li>
-                        <li>Your PR now is running using the GitLab Continuous Integration</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h3><a href="https://dev.azure.com">Azure Pipelines</a></h3>
-                    <ul>
-                        <li>A <code>azure-pipelines.yml</code> will be added to your project.</li>
-                        <li>Go to your project in your Azure DevOps organization.</li>
-                        <li>Create a new pipeline using your project</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h3><a href="https://travis-ci.org/">Travis</a></h3>
-                    <ul>
-                        <li>A <code>.travis.yml</code> will be added to your project.</li>
-                        <li>Go to your <a href="https://travis-ci.org/profile" target="_blank" rel="noopener noreferrer">Travis profile page.</a></li>
-                        <li>Click on "Sync account" on your Travis profile page.</li>
-                        <li>Enable your project on your Travis profile page.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h3><a href="https://circleci.com/">CircleCI</a></h3>
-                <ul>
-                    <li>A <code>circle.yml</code> will be added to your project.</li>
-                    <li>Create a CircleCI integration depending on your VCS; https://circleci.com/integrations/</li>
-                </ul>
-            </div>
+  <h2 class="section-title"><span>Continuous Integration</span></h2>
+  <jhi-alert></jhi-alert>
+  <hr />
+
+  <jhi-git-provider-alert [tab]="'ci-cd'"></jhi-git-provider-alert>
+  <jhi-git-provider (sharedData)="updateSharedData($event)"></jhi-git-provider>
+
+  <div *ngIf="isAtLeastOneGitProviderAvailableAndConfigured()">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          The following tools are supported:
         </div>
-        <hr/>
-        <div class="container">
-          <p>
-              Choose the Continuous Integration system you want to configure:
-          </p>
-          <div class="row">
-              <div class="col-md-6">
-                  <div class="form-group">
-                      <select id="ciCdTool" [(ngModel)]="ciCdTool" name="ciCdTool" class="form-control"
-                              #ctrl="ngModel">
-                          <option value="travis">Travis</option>
-                          <option value="jenkins">Jenkins</option>
-                          <option value="gitlab">Gitlab</option>
-                          <option value="azure">Azure Pipelines</option>
-                          <option value="github">GitHub Actions</option>
-                          <option value="circle">CircleCI</option>
-                      </select>
-                  </div>
-              </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h3><a href="https://github.com/features/actions">GitHub Actions</a></h3>
+
+          <ul>
+            <li>
+              <b>Warning!</b> as GitHub recently updated its OAuth2 token policies, you might need to go to the
+              <a href="/git">Configure</a> screen to refresh your token and give "workflow" access to JHipster Online
+            </li>
+            <li>A <code>github-ci.yml</code> will be added to your project.</li>
+            <li>Push the project to GitHub; the actions workflow will be configured on your GitHub repo.</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h3><a href="https://jenkins.io/">Jenkins</a></h3>
+          <ul>
+            <li>A <code>Jenkinsfile</code> will be added to your project.</li>
+            <li>Go to your Jenkins instance</li>
+            <li>Create a new job, using a `Pipeline script from SCM`</li>
+            <li>Point the SCM configuration to your GitHub or GitLab repository</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h3><a href="https://gitlab.com/">GitLab</a></h3>
+          <ul>
+            <li>A <code>.gitlab-ci.yml</code> will be added to your project.</li>
+            <li>Your PR now is running using the GitLab Continuous Integration</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h3><a href="https://dev.azure.com">Azure Pipelines</a></h3>
+          <ul>
+            <li>A <code>azure-pipelines.yml</code> will be added to your project.</li>
+            <li>Go to your project in your Azure DevOps organization.</li>
+            <li>Create a new pipeline using your project</li>
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h3><a href="https://travis-ci.org/">Travis</a></h3>
+          <ul>
+            <li>A <code>.travis.yml</code> will be added to your project.</li>
+            <li>Go to your <a href="https://travis-ci.org/profile" target="_blank" rel="noopener noreferrer">Travis profile page.</a></li>
+            <li>Click on "Sync account" on your Travis profile page.</li>
+            <li>Enable your project on your Travis profile page.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h3><a href="https://circleci.com/">CircleCI</a></h3>
+        <ul>
+          <li>A <code>circle.yml</code> will be added to your project.</li>
+          <li>Create a CircleCI integration depending on your VCS; https://circleci.com/integrations/</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="container">
+      <p>
+        Choose the Continuous Integration system you want to configure:
+      </p>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <select id="ciCdTool" [(ngModel)]="ciCdTool" name="ciCdTool" class="form-select" #ctrl="ngModel">
+              <option value="travis">Travis</option>
+              <option value="jenkins">Jenkins</option>
+              <option value="gitlab">GitLab</option>
+              <option value="azure">Azure Pipelines</option>
+              <option value="github">GitHub Actions</option>
+              <option value="circle">CircleCI</option>
+            </select>
           </div>
         </div>
-        <hr/>
-        <p class="text-center">
-            <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
-            <span>
-            Yes, add Continuous Integration
-            </span>
-            </button>
-        </p>
+      </div>
     </div>
+
+    <hr />
+
+    <p class="text-center">
+      <button class="btn btn-primary" (click)="applyCiCd()" [disabled]="!isGitProviderComponentValid">
+        <span>
+          Yes, add Continuous Integration
+        </span>
+      </button>
+    </p>
+  </div>
 </form>
