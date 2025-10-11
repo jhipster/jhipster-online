@@ -152,7 +152,7 @@
         </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 mt-3 mt-md-0">
         <div class="card text-white bg-primary">
           <div class="card-body">
             <h3 class="jho-card-title">
@@ -190,6 +190,7 @@
   </div>
 
   <div *ngSwitchCase="true">
+    <!-- Source control services -->
     <h2 class="section-title-sm" *ngIf="gitConfig.gitlabAvailable || gitConfig.githubAvailable">
       Using JHipster Online with
       <ng-container *ngIf="gitConfig.githubAvailable && gitConfig.gitlabAvailable">GitHub or GitLab</ng-container>
