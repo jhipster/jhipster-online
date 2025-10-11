@@ -73,7 +73,7 @@ import {
   faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faGithub, faGitlab, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faGitlab, faStackOverflow, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 export const fontAwesomeIcons = [
   faUser,
@@ -113,6 +113,7 @@ export const fontAwesomeIcons = [
   faGithub,
   faGlobe,
   faXTwitter,
+  faStackOverflow,
   faComments,
   faBug,
   faUndo,
