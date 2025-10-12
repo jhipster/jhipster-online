@@ -64,8 +64,15 @@
   gap: 0.25rem;
 
   & a {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
     text-decoration: none;
     font-weight: 500;
+
+    & :first-child {
+      min-width: 1.25rem;
+    }
   }
 }
 
@@ -106,6 +113,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   font-weight: 500;
   border: 1px solid $primary;
   background-color: rgba($primary, 0.1);
