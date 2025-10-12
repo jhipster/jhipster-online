@@ -45,8 +45,12 @@ $body-bg: #eff8fe;
 $font-family-sans-serif: 'Inter', sans-serif;
 $font-size-base: 1rem;
 
-$dropdown-link-hover-color: white;
-$dropdown-link-hover-bg: #343a40;
+$dropdown-link-hover-color: $black;
+$dropdown-link-hover-bg: $secondary;
+
+// Inputs
+
+$form-check-input-checked-bg-color: $primary;
 
 // Navbar
 
