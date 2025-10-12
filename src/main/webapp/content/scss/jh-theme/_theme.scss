@@ -94,14 +94,14 @@
     &::after {
       content: '';
       display: block;
-      height: 1.5rem;
+      height: 1.75rem;
       width: 2px;
       background-color: $primary;
       position: absolute;
-      bottom: 0.25rem;
+      bottom: 0.125rem;
       left: 1rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
+      padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
     }
   }
 }
