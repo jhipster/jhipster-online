@@ -474,7 +474,7 @@
         </div>
       </div>
 
-      <div class="col-12" [hidden]="!model.enableTranslation">
+      <div class="col-12" [hidden]="model.enableTranslation === false">
         <div>
           <label class="form-label" for="nativeLanguage">Native language of the application</label>
           <select
@@ -489,7 +489,7 @@
         </div>
       </div>
 
-      <div class="col-12" [hidden]="!model.enableTranslation">
+      <div class="col-12" [hidden]="model.enableTranslation === false">
         <div>
           <label class="form-label" for="languages">Additional languages to install</label>
           <select id="languages" [(ngModel)]="model.languages" name="languages" class="form-select" #languages="ngModel" multiple>
