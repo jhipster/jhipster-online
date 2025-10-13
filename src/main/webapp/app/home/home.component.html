@@ -48,12 +48,6 @@
               <span>Create Application</span>
             </a>
           </li>
-          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/generate-azure-application">
-              <img src="content/images/azure-logo.svg" alt="Microsoft Azure logo" width="16" height="16" />
-              <span>Create Azure Application</span>
-            </a>
-          </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
             <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/design-entities">
               <fa-icon icon="object-group" fixedWidth="true"></fa-icon>
