@@ -36,6 +36,7 @@ import {
   faExpand,
   faEye,
   faFlag,
+  faGlobe,
   faHdd,
   faHeart,
   faHome,
@@ -72,7 +73,7 @@ import {
   faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faGithub, faGitlab, faTwitter, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faGitlab, faStackOverflow, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 export const fontAwesomeIcons = [
   faUser,
@@ -110,8 +111,9 @@ export const fontAwesomeIcons = [
   faTrashAlt,
   faAsterisk,
   faGithub,
-  faTwitter,
+  faGlobe,
   faXTwitter,
+  faStackOverflow,
   faComments,
   faBug,
   faUndo,

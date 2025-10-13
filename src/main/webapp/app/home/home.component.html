@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-3 side-menu">
+  <div class="col-lg-3 side-menu">
     <div>
       <div *ngIf="!isAuthenticated()">
         <div class="alert alert-primary" role="alert">
@@ -48,12 +48,6 @@
               <span>Create Application</span>
             </a>
           </li>
-          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/generate-azure-application">
-              <img src="content/images/azure-logo.svg" alt="Microsoft Azure logo" width="16" height="16" />
-              <span>Create Azure Application</span>
-            </a>
-          </li>
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngSwitchCase="true">
             <a class="nav-link text-primary d-inline-flex align-items-center gap-2" routerLink="/design-entities">
               <fa-icon icon="object-group" fixedWidth="true"></fa-icon>
@@ -83,7 +77,7 @@
     </div>
   </div>
 
-  <div class="col-md-9">
+  <div class="col-lg-9">
     <router-outlet></router-outlet>
     <router-outlet name="popup"></router-outlet>
   </div>

@@ -21,8 +21,8 @@
       <div class="col-md-12">
         <h2 class="section-title-sm">Application Generation</h2>
 
-        <div class="row">
-          <div class="col-md-6">
+        <div class="row g-3">
+          <div class="col-12">
             <div class="card text-white bg-primary">
               <div class="card-body">
                 <h3 class="jho-card-title">
@@ -41,23 +41,49 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="col-md-6 mt-3 mt-md-0">
-            <div class="card text-white bg-primary">
-              <div class="card-body">
-                <h3 class="jho-card-title">
-                  <fa-icon icon="rocket"></fa-icon>
-                  <span>Using JHipster Online to deploy to Azure Container Apps</span>
-                </h3>
+    <hr />
 
-                <p class="jho-card-text">
-                  JHipster Azure Container Apps is designed to streamline your full-stack Spring application development, leveraging the
-                  robust infrastructure of Azure Container Apps to bring your projects to life with unprecedented ease and efficiency.
-                </p>
+    <!-- Account -->
+    <div>
+      <h2 class="section-title-sm">Account</h2>
 
-                <div class="mt-2">
-                  <a class="btn btn-secondary" routerLink="/generate-azure-application">Create Azure Application</a>
-                </div>
+      <p class="section-description">
+        Logged-in users can generate projects directly on Github & GitLab, add Continuous Integration and manage JDL configurations in their
+        account.
+      </p>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">
+                <fa-icon icon="sign-in-alt"></fa-icon>
+                <span>Sign in</span>
+              </h3>
+              <p class="jho-card-text">If you already have an account, please:</p>
+
+              <div class="mt-2">
+                <button type="button" class="btn btn-secondary" (click)="login()">Sign in</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">
+                <fa-icon icon="user-plus"></fa-icon>
+                <span>Register</span>
+              </h3>
+              <p class="jho-card-text">If you want to create a new account, please:</p>
+
+              <div class="mt-2">
+                <a class="btn btn-secondary" routerLink="account/register">Register</a>
               </div>
             </div>
           </div>
@@ -67,98 +93,88 @@
 
     <hr />
 
-    <!-- Account -->
-    <div class="row">
-      <h2 class="section-title-sm">Account</h2>
+    <!-- JHipster and JHipster Online are Open Source -->
+    <div>
+      <h2 class="section-title-sm">JHipster and JHipster Online are Open Source!</h2>
 
-      <p class="section-description">
-        Logged-in users can generate projects directly on Github & GitLab, add Continuous Integration and manage JDL configurations in their
-        account.
-      </p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">
+                <fa-icon icon="rocket"></fa-icon>
+                <span>JHipster</span>
+              </h3>
 
-      <div class="col-md-6">
-        <div class="card text-white bg-primary">
-          <div class="card-body">
-            <h3 class="jho-card-title">
-              <fa-icon icon="sign-in-alt"></fa-icon>
-              <span>Sign in</span>
-            </h3>
-            <p class="jho-card-text">If you already have an account, please:</p>
+              <p class="jho-card-text">
+                JHipster is a development platform to quickly generate, develop, and deploy modern web applications & microservice
+                architectures.
+              </p>
 
-            <div class="mt-2">
-              <button type="button" class="btn btn-secondary" (click)="login()">Sign in</button>
+              <ul class="mb-0 jho-card-links">
+                <li>
+                  <a class="text-secondary" href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">
+                    <fa-icon [icon]="['fas', 'globe']"></fa-icon>
+                    <span>JHipster homepage</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-secondary" href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">
+                    <fa-icon [icon]="['fab', 'github']"></fa-icon>
+                    <span>JHipster source code on GitHub</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="text-secondary" href="https://x.com/jhipster" target="_blank" rel="noopener noreferrer">
+                    <fa-icon [icon]="['fab', 'x-twitter']"></fa-icon>
+                    <span>JHipster on X</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-6 mt-3 mt-md-0">
-        <div class="card text-white bg-primary">
-          <div class="card-body">
-            <h3 class="jho-card-title">
-              <fa-icon icon="user-plus"></fa-icon>
-              <span>Register</span>
-            </h3>
-            <p class="jho-card-text">If you want to create a new account, please:</p>
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">
+                <fa-icon icon="rocket"></fa-icon>
+                <span>JHipster Online</span>
+              </h3>
 
-            <div class="mt-2">
-              <a class="btn btn-secondary" routerLink="account/register">Register</a>
+              <div class="jho-card-text">
+                <p>
+                  The application on
+                  <a class="text-secondary" href="https://start.jhipster.tech/" target="_blank" rel="noopener noreferrer"
+                    >https://start.jhipster.tech/</a
+                  >
+                  is the official JHipster Online instance, which is managed by the JHipster team.
+                </p>
+
+                <p>
+                  Want to look at our source code or host (and modify!) your own version of JHipster Online? The project is available on
+                  GitHub.
+                </p>
+              </div>
+
+              <ul class="mb-0 jho-card-links">
+                <li>
+                  <a class="text-secondary" href="https://github.com/jhipster/jhipster-online" target="_blank" rel="noopener noreferrer">
+                    <fa-icon [icon]="['fab', 'github']"></fa-icon>
+                    <span>JHipster Online source code on GitHub</span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <hr />
-
-    <!-- JHipster Open Source -->
-    <div class="row">
-      <div class="col-md-12">
-        <h2 class="section-title-sm">JHipster is an Open Source, widely popular application generator</h2>
-        <p class="section-description">
-          If you want more information on JHipster:
-        </p>
-
-        <ul>
-          <li>
-            <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer"
-              >JHipster homepage (with documentation, tutorials, etc.)</a
-            >
-          </li>
-          <li>
-            <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer"
-              >JHipster source code on GitHub</a
-            >
-          </li>
-          <li><a href="https://x.com/jhipster" target="_blank" rel="noopener noreferrer">JHipster on X(aka Twitter)</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <hr />
-
-    <!-- JHipster Online Open Source -->
-    <div class="row">
-      <div class="col-md-12">
-        <h2 class="section-title-sm">JHipster Online is also Open Source!</h2>
-        <p class="section-description">
-          The application on
-          <a href="https://start.jhipster.tech/" target="_blank" rel="noopener noreferrer">https://start.jhipster.tech/</a> is the official
-          JHipster Online instance, which is managed by the JHipster team.
-        </p>
-
-        <p>
-          If you want to look at our source code, or if in your company wants to host (and modify!) its own version of JHipster Online, the
-          project is available on GitHub at
-          <a href="https://github.com/jhipster/jhipster-online" target="_blank" rel="noopener noreferrer"
-            >https://github.com/jhipster/jhipster-online</a
-          >.
-        </p>
       </div>
     </div>
   </div>
 
   <div *ngSwitchCase="true">
+    <!-- Source control services -->
     <h2 class="section-title-sm" *ngIf="gitConfig.gitlabAvailable || gitConfig.githubAvailable">
       Using JHipster Online with
       <ng-container *ngIf="gitConfig.githubAvailable && gitConfig.gitlabAvailable">GitHub or GitLab</ng-container>
@@ -216,51 +232,107 @@
     <hr />
 
     <!-- Next steps -->
-    <h2 class="section-title-sm">Next steps</h2>
+    <div>
+      <h2 class="section-title-sm">Next steps</h2>
 
-    <p class="section-description">
-      Once your application is generated, the following links will be useful:
-    </p>
+      <p class="section-description">
+        Once your application is generated, the following links will be useful:
+      </p>
 
-    <ul>
-      <li>
-        <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" data-translate="home.link.homepage"
-          >JHipster homepage</a
-        >
-      </li>
-      <li>
-        <a
-          href="http://stackoverflow.com/tags/jhipster/info"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-translate="home.link.stackoverflow"
-          >JHipster on Stack Overflow</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/jhipster/generator-jhipster/issues?state=open"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-translate="home.link.bugtracker"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" data-translate="home.link.chat"
-          >JHipster public chat room</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" data-translate="home.link.follow"
-          >follow @jhipster on X(aka Twitter)</a
-        >
-      </li>
-    </ul>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">Useful links</h3>
 
-    <b>
-      If you like JHipster, don't forget to give us a star on
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
-    </b>
+              <ul class="mb-0 jho-card-links">
+                <li>
+                  <a
+                    class="text-secondary"
+                    href="https://www.jhipster.tech/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-translate="home.link.homepage"
+                  >
+                    <fa-icon [icon]="['fas', 'globe']"></fa-icon>
+                    <span>JHipster homepage</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-secondary"
+                    href="http://stackoverflow.com/tags/jhipster/info"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-translate="home.link.stackoverflow"
+                  >
+                    <fa-icon [icon]="['fab', 'stack-overflow']"></fa-icon>
+                    <span>JHipster on Stack Overflow</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-secondary"
+                    href="https://github.com/jhipster/generator-jhipster/issues?state=open"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-translate="home.link.bugtracker"
+                  >
+                    <fa-icon [icon]="['fas', 'bug']"></fa-icon>
+                    <span>JHipster bug tracker</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-secondary"
+                    href="https://gitter.im/jhipster/generator-jhipster"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-translate="home.link.chat"
+                  >
+                    <fa-icon [icon]="['fas', 'comments']"></fa-icon>
+                    <span>JHipster public chat room</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="text-secondary"
+                    href="https://x.com/jhipster"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-translate="home.link.follow"
+                  >
+                    <fa-icon [icon]="['fab', 'x-twitter']"></fa-icon>
+                    <span>follow @jhipster on X</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h3 class="jho-card-title">Like JHipster?</h3>
+
+              <p class="jho-card-text">If you like JHipster, don't forget to give us a star on GitHub!</p>
+
+              <div class="mt-3">
+                <a
+                  class="btn btn-secondary"
+                  href="https://github.com/jhipster/generator-jhipster"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <fa-icon class="me-1" [icon]="['fab', 'github']"></fa-icon>
+                  <span>Star on GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
