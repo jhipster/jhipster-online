@@ -1,4 +1,4 @@
-FROM jhipster/jhipster:v8.11.0
+FROM jhipster/jhipster:v9.0.0-beta.0
 USER jhipster
 COPY --chown=jhipster:jhipster . /home/jhipster/jhipster-online/
 RUN \
