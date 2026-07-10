@@ -31,7 +31,7 @@
     "@scarf/scarf": "^1.1.1",
     "bootstrap": "5.0.2",
     "dayjs": "^1.11.7",
-    "echarts": "^5.4.0",
+    "echarts": "^6.1.0",
     "jquery": "3.6.1",
     "ng-jhipster": "0.16.0",
     "ngx-cookie": "6.0.1",
