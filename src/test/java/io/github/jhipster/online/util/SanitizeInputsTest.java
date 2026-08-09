@@ -55,4 +55,13 @@ class SanitizeInputsTest {
         assertThat(SanitizeInputs.isLettersNumbersAndSpaces("2309/\n482\r$3\t023")).isFalse();
         assertThat(SanitizeInputs.isLettersNumbersAndSpaces("23};09/\n482\r$3\t023**")).isFalse();
     }
+
+    @Test
+    void escapeHtml() {
+        assertThat(SanitizeInputs.escapeHtml(null)).isNull();
+        assertThat(SanitizeInputs.escapeHtml("github")).isEqualTo("github");
+        assertThat(SanitizeInputs.escapeHtml("user@jhipster.tech")).isEqualTo("user@jhipster.tech");
+        assertThat(SanitizeInputs.escapeHtml("<script>alert(1)</script>")).isEqualTo("&lt;script&gt;alert(1)&lt;/script&gt;");
+        assertThat(SanitizeInputs.escapeHtml("\"><img src=x onerror=alert(1)>")).isEqualTo("&quot;&gt;&lt;img src=x onerror=alert(1)&gt;");
+    }
 }

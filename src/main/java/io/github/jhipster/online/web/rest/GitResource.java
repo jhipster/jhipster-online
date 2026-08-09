@@ -136,7 +136,7 @@ public class GitResource {
                     params.put("redirect_uri", applicationProperties.getGitlab().getRedirectUri());
                     break;
                 default:
-                    return new ResponseEntity<>(UNKNOWN_GIT_PROVIDER + gitProvider, HttpStatus.INTERNAL_SERVER_ERROR);
+                    return unknownGitProvider(gitProvider);
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -287,7 +287,7 @@ public class GitResource {
                     this.gitlabService.syncUserFromGitProvider();
                     break;
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
+                    return unknownGitProvider(gitProvider);
             }
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -299,9 +299,17 @@ public class GitResource {
                     log.error("Could not refresh GitLab data for User `{}`: {}", SecurityUtils.getCurrentUserLogin(), e);
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("GitLab data could not be " + "refreshed");
                 default:
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + gitProvider);
+                    return unknownGitProvider(gitProvider);
             }
         }
+    }
+
+    /**
+     * Builds the error response for an unsupported git provider, escaping the user supplied value so that it cannot be
+     * used to inject markup into the response body.
+     */
+    private static ResponseEntity<String> unknownGitProvider(String gitProvider) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UNKNOWN_GIT_PROVIDER + SanitizeInputs.escapeHtml(gitProvider));
     }
 
     /**
