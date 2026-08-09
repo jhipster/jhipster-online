@@ -20,6 +20,7 @@
 package io.github.jhipster.online.util;
 
 import java.util.regex.Pattern;
+import org.springframework.web.util.HtmlUtils;
 
 public class SanitizeInputs {
 
@@ -44,5 +45,13 @@ public class SanitizeInputs {
     public static boolean isLettersNumbersAndSpaces(String inputString) {
         if (inputString == null) return false;
         return ALPHANUMERIC_AND_SPACES_REGEX.matcher(inputString).matches();
+    }
+
+    /**
+     * Escapes HTML markup, so that a user controlled value can safely be echoed back in an HTTP response body.
+     */
+    public static String escapeHtml(String inputString) {
+        if (inputString == null) return null;
+        return HtmlUtils.htmlEscape(inputString);
     }
 }
