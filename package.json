@@ -12,7 +12,7 @@
     "node_modules"
   ],
   "dependencies": {
-    "@angular/common": "14.2.12",
+    "@angular/common": "19.2.16",
     "@angular/compiler": "14.2.12",
     "@angular/core": "14.2.12",
     "@angular/forms": "14.2.12",
