@@ -31,9 +31,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,6 +81,18 @@ public class JHipsterService {
     private static final String INSTALL_PATH = "--install-path";
 
     private static final String JHIPSTER_CLI_SCRIPT = "cli/jhipster.cjs";
+
+    /**
+     * Name of the per-generation temporary directory, created inside the generation directory and handed to the
+     * generator through the environment variables read by Node.js {@code os.tmpdir()}. generator-jhipster writes
+     * there (for instance to generate the KeyStore with {@code keytool}), so it is the only temporary location the
+     * confined process can use. It lives inside the generation directory, which is already readable and writable,
+     * because the Node.js permission model (v24) denies a path once a sibling sharing its prefix is also allowed:
+     * granting both {@code /tmp/wd} and {@code /tmp/wd-tmp} makes {@code /tmp/wd} inaccessible. It is deleted
+     * before the generation directory is zipped or pushed.
+     */
+    private static final String TEMPORARY_DIR_NAME = ".jhipster-online-tmp";
+    private static final List<String> TEMPORARY_DIR_VARIABLES = List.of("TMPDIR", "TMP", "TEMP");
 
     private final LogsService logsService;
 
@@ -128,10 +142,27 @@ public class JHipsterService {
      * Runs a generator-jhipster command under {@code node --permission}: {@code jhipster <args> <options>}.
      */
     private void runJHipster(String generationId, File workingDir, List<String> options, String... args) throws IOException {
-        List<String> command = jhipsterCommand(workingDir);
-        command.addAll(Arrays.asList(args));
-        command.addAll(options);
-        this.runProcess(generationId, workingDir, command.toArray(new String[0]));
+        Path temporaryDir = temporaryDirectory(workingDir);
+        try {
+            List<String> command = jhipsterCommand(workingDir);
+            command.addAll(Arrays.asList(args));
+            command.addAll(options);
+            Map<String, String> environment = TEMPORARY_DIR_VARIABLES
+                .stream()
+                .collect(Collectors.toMap(variable -> variable, variable -> temporaryDir.toString()));
+            this.runProcess(generationId, workingDir, environment, command.toArray(new String[0]));
+        } finally {
+            FileUtils.deleteDirectory(temporaryDir.toFile());
+        }
+    }
+
+    /**
+     * Creates, if needed, the temporary directory of a generation and returns its real path.
+     */
+    private static Path temporaryDirectory(File workingDir) throws IOException {
+        Path temporaryDir = workingDir.toPath().toRealPath().resolve(TEMPORARY_DIR_NAME);
+        FileUtils.forceMkdir(temporaryDir.toFile());
+        return temporaryDir;
     }
 
     /**
@@ -230,11 +261,16 @@ public class JHipsterService {
     }
 
     void runProcess(String generationId, File workingDir, String... command) throws IOException {
+        this.runProcess(generationId, workingDir, Map.of(), command);
+    }
+
+    void runProcess(String generationId, File workingDir, Map<String, String> environment, String... command) throws IOException {
         log.info("Running command: \"{}\" in directory:  \"{}\"", command, workingDir);
         ProcessBuilder processBuilder = new ProcessBuilder()
             .directory(workingDir)
             .command(command)
             .redirectError(ProcessBuilder.Redirect.DISCARD);
+        processBuilder.environment().putAll(environment);
         Process p = processBuilder.start();
 
         taskExecutor.execute(

@@ -21,6 +21,7 @@ package io.github.jhipster.online.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willAnswer;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -32,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,6 +106,15 @@ class JHipsterServiceTest {
         return Files.exists(log) ? Files.lines(log).count() : 0;
     }
 
+    private Path temporaryDirectory(Path workingDir) throws IOException {
+        return workingDir.toRealPath().resolve(".jhipster-online-tmp");
+    }
+
+    private Map<String, String> temporaryDirectoryEnvironment(Path workingDir) throws IOException {
+        String temporaryDir = temporaryDirectory(workingDir).toString();
+        return Map.of("TMPDIR", temporaryDir, "TMP", temporaryDir, "TEMP", temporaryDir);
+    }
+
     private String[] expectedJHipsterCommand(Path workingDir, String... args) throws IOException {
         Path generationDir = workingDir.toRealPath();
         List<String> command = new ArrayList<>(
@@ -137,11 +148,18 @@ class JHipsterServiceTest {
     @Test
     void shouldGenerateApplication(@TempDir Path tempDir) throws IOException {
         String generationId = "generation-id";
-        willDoNothing()
+        Path temporaryDir = temporaryDirectory(tempDir);
+        willAnswer(
+                invocation -> {
+                    assertThat(temporaryDir).isDirectory();
+                    return null;
+                }
+            )
             .given(jHipsterServiceSpy)
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "--skip-checks",
@@ -155,11 +173,13 @@ class JHipsterServiceTest {
 
         jHipsterServiceSpy.generateApplication(generationId, tempDir.toFile());
 
+        assertThat(temporaryDir).doesNotExist();
         verify(logsService).addLog(generationId, "Running JHipster");
         verify(jHipsterServiceSpy)
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "--skip-checks",
@@ -181,6 +201,7 @@ class JHipsterServiceTest {
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "import-jdl",
@@ -201,6 +222,7 @@ class JHipsterServiceTest {
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "import-jdl",
@@ -224,6 +246,7 @@ class JHipsterServiceTest {
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "ci-cd",
@@ -243,6 +266,7 @@ class JHipsterServiceTest {
             .runProcess(
                 generationId,
                 tempDir.toFile(),
+                temporaryDirectoryEnvironment(tempDir),
                 expectedJHipsterCommand(
                     tempDir,
                     "ci-cd",
