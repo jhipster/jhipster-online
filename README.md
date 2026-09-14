@@ -54,7 +54,8 @@ We recommend you use the "Yarn installation" from the official [JHipster install
 
 If you need more configuration options for running the JHipster command, you can modify:
 
-- the location of the `jhipster` command
+- the location of the `jhipster`
+- the location of the `node` command used to run it
 - the timeout value for that command (the default is 120 seconds - please note that on our production server a generation usually
   takes 5 to 6 seconds)
 - the temporary folder in which the application will be generated (`/tmp` by default)
@@ -65,6 +66,7 @@ Those are customized using the Spring Boot `application-*.yml` files as usual, f
 application:
     jhipster-cmd:
         cmd: /usr/local/bin/jhipster
+        node-cmd: /usr/local/bin/node
         timeout: 60
     tmp-folder: /tmp
 ```

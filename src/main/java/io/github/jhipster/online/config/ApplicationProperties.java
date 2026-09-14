@@ -81,6 +81,7 @@ public class ApplicationProperties {
 
         private String cmd = "jhipster";
         private Integer timeout = 120;
+        private String nodeCmd = "node";
 
         public String getCmd() {
             return cmd;
@@ -96,6 +97,14 @@ public class ApplicationProperties {
 
         public void setTimeout(Integer timeout) {
             this.timeout = timeout;
+        }
+
+        public String getNodeCmd() {
+            return nodeCmd;
+        }
+
+        public void setNodeCmd(String nodeCmd) {
+            this.nodeCmd = nodeCmd;
         }
     }
 
