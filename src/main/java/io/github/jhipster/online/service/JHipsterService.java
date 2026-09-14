@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -46,11 +47,20 @@ public class JHipsterService {
 
     private static final String SKIP_INSTALL = "--skip-install";
 
+    private static final String SKIP_CACHE = "--skip-cache";
+
+    private static final String SKIP_GIT = "--skip-git";
+
     private static final String FORCE = "--force";
 
     // Blueprints are npm packages executed during generation. JHipster Online never generates with a
     // blueprint, so they are disabled to prevent a submitted configuration from running arbitrary code.
     private static final String DISABLE_BLUEPRINTS = "--disable-blueprints";
+
+    /**
+     * Options passed to every generator-jhipster command, unless a specific command does not accept one of them.
+     */
+    private static final List<String> DEFAULT_OPTIONS = List.of(SKIP_CHECKS, SKIP_INSTALL, SKIP_CACHE, SKIP_GIT, DISABLE_BLUEPRINTS, FORCE);
 
     /**
      * Node.js permission model flags (https://nodejs.org/api/permissions.html).
@@ -103,12 +113,12 @@ public class JHipsterService {
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
         this.logsService.addLog(generationId, "Running JHipster");
-        this.runJHipster(generationId, workingDir, SKIP_CHECKS, SKIP_INSTALL, "--skip-cache", "--skip-git", DISABLE_BLUEPRINTS, FORCE);
+        this.runJHipster(generationId, workingDir, DEFAULT_OPTIONS);
     }
 
     public void runImportJdl(String generationId, File workingDir, String jdlFileName) throws IOException {
         this.logsService.addLog(generationId, "Running `jhipster import-jdl`");
-        this.runJHipster(generationId, workingDir, "import-jdl", jdlFileName + ".jh", SKIP_CHECKS, SKIP_INSTALL, DISABLE_BLUEPRINTS, FORCE);
+        this.runJHipster(generationId, workingDir, DEFAULT_OPTIONS, "import-jdl", jdlFileName + ".jh");
     }
 
     public void addCiCd(String generationId, File workingDir, CiCdTool ciCdTool) throws IOException {
@@ -117,21 +127,18 @@ public class JHipsterService {
             throw new IllegalArgumentException("Invalid Continuous Integration system");
         }
         this.logsService.addLog(generationId, "Running `jhipster ci-cd`");
-        this.runJHipster(
-                generationId,
-                workingDir,
-                "ci-cd",
-                "--autoconfigure-" + ciCdTool.command(),
-                SKIP_CHECKS,
-                SKIP_INSTALL,
-                DISABLE_BLUEPRINTS,
-                FORCE
-            );
+        // The ci-cd command does not accept --skip-git.
+        List<String> options = DEFAULT_OPTIONS.stream().filter(option -> !SKIP_GIT.equals(option)).collect(Collectors.toList());
+        this.runJHipster(generationId, workingDir, options, "ci-cd", "--autoconfigure-" + ciCdTool.command());
     }
 
-    private void runJHipster(String generationId, File workingDir, String... args) throws IOException {
+    /**
+     * Runs a generator-jhipster command under {@code node --permission}: {@code jhipster <args> <options>}.
+     */
+    private void runJHipster(String generationId, File workingDir, List<String> options, String... args) throws IOException {
         List<String> command = jhipsterCommand(workingDir);
         command.addAll(Arrays.asList(args));
+        command.addAll(options);
         this.runProcess(generationId, workingDir, command.toArray(new String[0]));
     }
 

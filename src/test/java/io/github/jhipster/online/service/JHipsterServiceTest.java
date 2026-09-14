@@ -211,6 +211,8 @@ class JHipsterServiceTest {
                     jdlFileName + ".jh",
                     "--skip-checks",
                     "--skip-install",
+                    "--skip-cache",
+                    "--skip-git",
                     "--disable-blueprints",
                     "--force"
                 )
@@ -229,6 +231,8 @@ class JHipsterServiceTest {
                     jdlFileName + ".jh",
                     "--skip-checks",
                     "--skip-install",
+                    "--skip-cache",
+                    "--skip-git",
                     "--disable-blueprints",
                     "--force"
                 )
@@ -250,6 +254,7 @@ class JHipsterServiceTest {
                     "--autoconfigure-" + ciCdTool.command(),
                     "--skip-checks",
                     "--skip-install",
+                    "--skip-cache",
                     "--disable-blueprints",
                     "--force"
                 )
@@ -268,6 +273,7 @@ class JHipsterServiceTest {
                     "--autoconfigure-" + ciCdTool.command(),
                     "--skip-checks",
                     "--skip-install",
+                    "--skip-cache",
                     "--disable-blueprints",
                     "--force"
                 )
