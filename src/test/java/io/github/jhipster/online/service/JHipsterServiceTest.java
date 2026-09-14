@@ -21,8 +21,6 @@ package io.github.jhipster.online.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -71,9 +69,6 @@ class JHipsterServiceTest {
 
     @BeforeEach
     void shouldConstructJHipsterService() throws IOException {
-        final String os = System.getProperty("os.name");
-        final String command = os.contains("indows") ? "npm.cmd" : applicationProperties.getNpmCmd().getCmd();
-        applicationProperties.getNpmCmd().setCmd(command);
         applicationProperties.getJhipsterCmd().setCmd(createFakeJHipsterInstallation().toString());
 
         jHipsterService = new JHipsterService(logsService, applicationProperties, taskExecutor);
@@ -133,29 +128,10 @@ class JHipsterServiceTest {
     void shouldRunProcess(@TempDir Path tempDir) throws IOException {
         String generationId = "generation-id";
 
-        jHipsterService.installNpmDependencies(generationId, tempDir.toFile());
+        jHipsterService.runProcess(generationId, tempDir.toFile(), "echo", "hello from the process");
 
-        verify(logsService).addLog(generationId, "Installing the JHipster version used by the project");
         verify(taskExecutor).execute(any(Runnable.class));
-        verify(logsService).addLog(eq(generationId), startsWith("up to date"));
-        //verify(logsService).addLog(generationId, "found 0 vulnerabilities");
-    }
-
-    @Test
-    void shouldInstallNpmDependencies(@TempDir Path tempDir) throws IOException {
-        String generationId = "generation-id";
-        final String command = applicationProperties.getNpmCmd().getCmd();
-        applicationProperties.getNpmCmd().setCmd(command);
-
-        willDoNothing()
-            .given(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore" + "-scripts", "--package-lock-only");
-
-        jHipsterServiceSpy.installNpmDependencies(generationId, tempDir.toFile());
-
-        verify(logsService).addLog(generationId, "Installing the JHipster version used by the project");
-        verify(jHipsterServiceSpy)
-            .runProcess(generationId, tempDir.toFile(), command, "install", "--ignore-scripts", "--package" + "-lock" + "-only");
+        verify(logsService).addLog(generationId, "hello from the process");
     }
 
     @Test

@@ -90,8 +90,6 @@ public class JHipsterService {
 
     private volatile Path installPath;
 
-    private final String npmCommand;
-
     private final Integer timeout;
 
     public JHipsterService(LogsService logsService, ApplicationProperties applicationProperties, Executor taskExecutor) {
@@ -100,15 +98,9 @@ public class JHipsterService {
 
         jhipsterCommand = applicationProperties.getJhipsterCmd().getCmd();
         nodeCommand = applicationProperties.getJhipsterCmd().getNodeCmd();
-        npmCommand = applicationProperties.getNpmCmd().getCmd();
         timeout = applicationProperties.getJhipsterCmd().getTimeout();
 
         log.info("JHipster service will be using \"{}\" to run generator-jhipster with \"{} --permission\".", jhipsterCommand, nodeCommand);
-    }
-
-    public void installNpmDependencies(String generationId, File workingDir) throws IOException {
-        this.logsService.addLog(generationId, "Installing the JHipster version used by the project");
-        this.runProcess(generationId, workingDir, npmCommand, "install", "--ignore-scripts", "--package-lock-only");
     }
 
     public void generateApplication(String generationId, File workingDir) throws IOException {
