@@ -31,8 +31,6 @@ public class ApplicationProperties {
 
     private JhipsterCmd jhipsterCmd = new JhipsterCmd();
 
-    private NpmCmd npmCmd = new NpmCmd();
-
     private final Github github = new Github();
 
     private final Gitlab gitlab = new Gitlab();
@@ -43,14 +41,6 @@ public class ApplicationProperties {
 
     public JhipsterCmd getJhipsterCmd() {
         return jhipsterCmd;
-    }
-
-    public NpmCmd getNpmCmd() {
-        return npmCmd;
-    }
-
-    public void setNpmCmd(NpmCmd npmCmd) {
-        this.npmCmd = npmCmd;
     }
 
     public void setJhipsterCmd(JhipsterCmd jhipsterCmd) {
@@ -81,6 +71,7 @@ public class ApplicationProperties {
 
         private String cmd = "jhipster";
         private Integer timeout = 120;
+        private String nodeCmd = "node";
 
         public String getCmd() {
             return cmd;
@@ -97,27 +88,13 @@ public class ApplicationProperties {
         public void setTimeout(Integer timeout) {
             this.timeout = timeout;
         }
-    }
 
-    public static class NpmCmd {
-
-        private String cmd = "npm";
-        private Integer timeout = 120;
-
-        public String getCmd() {
-            return cmd;
+        public String getNodeCmd() {
+            return nodeCmd;
         }
 
-        public void setCmd(String cmd) {
-            this.cmd = cmd;
-        }
-
-        public Integer getTimeout() {
-            return timeout;
-        }
-
-        public void setTimeout(Integer timeout) {
-            this.timeout = timeout;
+        public void setNodeCmd(String nodeCmd) {
+            this.nodeCmd = nodeCmd;
         }
     }
 

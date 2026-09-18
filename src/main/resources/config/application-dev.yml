@@ -120,6 +120,7 @@ jhipster:
 #    tmp-folder: /tmp
 #    jhipster-cmd:
 #        cmd: XXX
+#        node-cmd: node
 #        timeout: 120
 #    github:
 #        host: https://github.com
