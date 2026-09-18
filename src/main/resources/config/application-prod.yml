@@ -136,4 +136,5 @@ application:
   tmp-folder: /tmp
   jhipster-cmd:
     cmd: jhipster
+    node-cmd: node
     timeout: 120
