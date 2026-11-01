@@ -49,6 +49,8 @@ export class JHipsterConfigurationModel {
   public clientFramework = 'angularX';
   public jhiPrefix = 'jhi';
   public withAdminUi = true;
+  public skipClient = false;
+  public skipUserManagement = false;
   public blueprints: BlueprintModel[] = [];
   public iaCTools = ['bicep', 'terraform'];
 
