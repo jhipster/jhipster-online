@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.task.TaskRejectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -168,10 +169,29 @@ public class StatisticsResource {
         return userService.countAll();
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<Boolean> isStatisticsEnabled() {
+        return new ResponseEntity<>(statisticsService.isStatisticsEnabled(), HttpStatus.OK);
+    }
+
+    @PutMapping("/status/{enabled}")
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<Void> setStatisticsEnabled(@PathVariable boolean enabled) {
+        log.info("Setting statistics collection enabled to {}", enabled);
+        statisticsService.setStatisticsEnabled(enabled);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/entry")
     public ResponseEntity<String> addYoRc(HttpServletRequest req, @RequestBody String entry) {
+        if (!statisticsService.isStatisticsEnabled()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         try {
             statisticsService.addEntry(entry, req.getRemoteHost());
+        } catch (TaskRejectedException e) {
+            log.debug("Statistics executor queue is full, dropping YoRC statistics submission: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -180,15 +200,31 @@ public class StatisticsResource {
 
     @PostMapping("/event/{generatorId}")
     public ResponseEntity<String> addSubGenEvent(@RequestBody SubGenEventDTO event, @PathVariable String generatorId) {
+        if (!statisticsService.isStatisticsEnabled()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
-        statisticsService.addSubGenEvent(event, generatorId);
+        try {
+            statisticsService.addSubGenEvent(event, generatorId);
+        } catch (TaskRejectedException e) {
+            log.debug("Statistics executor queue is full, dropping SubGenEvent statistics submission: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/entity/{generatorId}")
     public ResponseEntity<String> addEntityStats(@RequestBody EntityStatsDTO entity, @PathVariable String generatorId) {
+        if (!statisticsService.isStatisticsEnabled()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         generatorId = SanitizeInputs.sanitizeInput(generatorId);
-        statisticsService.addEntityStats(entity, generatorId);
+        try {
+            statisticsService.addEntityStats(entity, generatorId);
+        } catch (TaskRejectedException e) {
+            log.debug("Statistics executor queue is full, dropping EntityStats statistics submission: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
