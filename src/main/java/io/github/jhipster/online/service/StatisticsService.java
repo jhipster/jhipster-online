@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -44,6 +45,8 @@ public class StatisticsService {
     private final Logger log = LoggerFactory.getLogger(StatisticsService.class);
 
     public static final String GENERATOR_IDENTITY_WAS_NOT_CORRECTLY_CREATED = "GeneratorIdentity {} was not correctly created";
+
+    private final AtomicBoolean statisticsEnabled = new AtomicBoolean(true);
 
     private final YoRCService yoRCService;
 
@@ -77,9 +80,22 @@ public class StatisticsService {
         this.yoRCMapper = yoRCMapper;
     }
 
+    public boolean isStatisticsEnabled() {
+        return statisticsEnabled.get();
+    }
+
+    public void setStatisticsEnabled(boolean enabled) {
+        log.info("Statistics collection enabled: {}", enabled);
+        statisticsEnabled.set(enabled);
+    }
+
     @Transactional
     @Async("statisticsExecutor")
     public void addEntry(String entry, String host) throws IOException {
+        if (!statisticsEnabled.get()) {
+            log.debug("Statistics collection is disabled, ignoring YoRC entry");
+            return;
+        }
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNodeRoot = mapper.readTree(entry);
         JsonNode jsonNodeGeneratorJHipster = jsonNodeRoot.get("generator-jhipster");
@@ -129,6 +145,10 @@ public class StatisticsService {
     @Transactional
     @Async("statisticsExecutor")
     public void addSubGenEvent(SubGenEventDTO subGenEventDTO, String generatorGuid) {
+        if (!statisticsEnabled.get()) {
+            log.debug("Statistics collection is disabled, ignoring SubGenEvent");
+            return;
+        }
         Instant now = Instant.now();
         SubGenEvent subGenEvent = subGenEventMapper.toEntity(subGenEventDTO);
         DateUtil.setAbsoluteDate(subGenEvent, now);
@@ -148,6 +168,10 @@ public class StatisticsService {
     @Transactional
     @Async("statisticsExecutor")
     public void addEntityStats(EntityStatsDTO entityStatsDTO, String generatorGuid) {
+        if (!statisticsEnabled.get()) {
+            log.debug("Statistics collection is disabled, ignoring EntityStats");
+            return;
+        }
         Instant now = Instant.now();
         EntityStats entityStats = entityStatsMapper.toEntity(entityStatsDTO);
         DateUtil.setAbsoluteDate(entityStats, now);
