@@ -167,6 +167,12 @@ export class GeneratorComponent implements OnInit {
     if (this.model.enableTranslation && !this.model.languages.includes(this.model.nativeLanguage)) {
       this.model.languages.push(this.model.nativeLanguage);
     }
+    if (this.model.applicationType === 'microservice') {
+      this.model.skipClient = true;
+      this.model.clientFramework = 'no';
+      this.model.withAdminUi = false;
+      this.model.skipUserManagement = true;
+    }
     this.model.jhiPrefix = 'jhi';
   }
 
@@ -251,10 +257,22 @@ export class GeneratorComponent implements OnInit {
       this.model.databaseType = 'sql';
       this.changeDatabaseType();
     }
-    // cache
+    // cache and client options
     if (this.model.applicationType === 'microservice') {
       this.model.cacheProvider = 'hazelcast';
       this.model.enableHibernateCache = true;
+      this.model.skipClient = true;
+      this.model.clientFramework = 'no';
+      this.model.withAdminUi = false;
+      this.model.skipUserManagement = true;
+      this.model.testFrameworks = this.model.testFrameworks.filter(framework => framework !== 'cypress' && framework !== 'protractor');
+    } else {
+      this.model.skipClient = false;
+      this.model.skipUserManagement = false;
+      if (this.model.clientFramework === 'no') {
+        this.model.clientFramework = 'angularX';
+        this.model.withAdminUi = true;
+      }
     }
   }
 
@@ -273,7 +291,9 @@ export class GeneratorComponent implements OnInit {
 
   changeAuthenticationType(): void {
     this.model.databaseType = 'sql';
-    this.model.clientFramework = 'angularX';
+    if (this.model.applicationType !== 'microservice') {
+      this.model.clientFramework = 'angularX';
+    }
     this.changeDatabaseType();
   }
 
@@ -300,6 +320,12 @@ export class GeneratorComponent implements OnInit {
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
       this.model.searchEngine = false;
+    } else if (this.model.databaseType === 'neo4j') {
+      this.model.prodDatabaseType = 'neo4j';
+      this.model.devDatabaseType = 'neo4j';
+      this.model.cacheProvider = 'no';
+      this.model.enableHibernateCache = false;
+      this.model.searchEngine = false;
     } else if (this.model.databaseType === 'no') {
       this.model.devDatabaseType = 'no';
       this.model.prodDatabaseType = 'no';
@@ -323,6 +349,14 @@ export class GeneratorComponent implements OnInit {
       this.model.enableHibernateCache = false;
     } else if (this.model.prodDatabaseType === 'cassandra') {
       this.model.devDatabaseType = 'cassandra';
+      this.model.cacheProvider = 'no';
+      this.model.enableHibernateCache = false;
+    } else if (this.model.prodDatabaseType === 'couchbase') {
+      this.model.devDatabaseType = 'couchbase';
+      this.model.cacheProvider = 'no';
+      this.model.enableHibernateCache = false;
+    } else if (this.model.prodDatabaseType === 'neo4j') {
+      this.model.devDatabaseType = 'neo4j';
       this.model.cacheProvider = 'no';
       this.model.enableHibernateCache = false;
     } else if (this.model.prodDatabaseType === 'no') {
