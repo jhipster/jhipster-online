@@ -185,6 +185,11 @@ Then run:
 docker compose -f src/main/docker/app.yml up -d
 ```
 
+The Docker startup command disables Base64 intrinsics with `-XX:-UseBASE64Intrinsics` to mitigate
+[Java4Shell (CVE-2026-114938)](https://openjdk.org/groups/vulnerability/advisories/2026-11-17).
+Existing deployments must be rebuilt and redeployed, or redeployed with this flag appended to `JAVA_OPTS`.
+This mitigation does not replace upgrading to a patched JDK.
+
 ## Deployment to Google App Engine (GAE) Flexible Environment
 
 - The project can be deployed to [GAE flexible environment](https://cloud.google.com/appengine/docs/flexible/) by simply [creating a tagged release](https://github.com/jhipster/jhipster-online/releases).
