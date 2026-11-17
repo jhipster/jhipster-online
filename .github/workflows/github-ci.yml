@@ -41,11 +41,19 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: |
+            21
+            17
           cache: 'maven'
 
       - name: Stop MySQL server
-        run: sudo /etc/init.d/mysql stop
+        run: |
+          mysql_unit=$(systemctl list-unit-files mysql.service --no-legend)
+          if [[ -n "$mysql_unit" ]]; then
+            sudo systemctl stop mysql.service
+          else
+            echo "No host MySQL service is installed."
+          fi
 
       - name: Install node.js packages
         run: yarn install
@@ -68,8 +76,10 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.projectKey=jhipster_jhipster-online \
           -Dsonar.organization=jhipster \
+          -Dsonar.java.jdkHome="$JAVA_HOME_17_X64" \
           -Dsonar.login=$SONAR_TOKEN
         env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
