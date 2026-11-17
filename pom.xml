@@ -95,17 +95,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Import first to override the Testcontainers versions managed by JHipster. -->
             <dependency>
-                <groupId>tech.jhipster</groupId>
-                <artifactId>jhipster-dependencies</artifactId>
-                <version>${jhipster-dependencies.version}</version>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>1.21.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>1.20.3</version>
+                <groupId>tech.jhipster</groupId>
+                <artifactId>jhipster-dependencies</artifactId>
+                <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
